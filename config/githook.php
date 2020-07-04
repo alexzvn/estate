@@ -52,7 +52,10 @@ return [
     */
     'before_pull' => [
         'php artisan down',
-        'php artisan clear'
+        'php artisan clear',
+        'php artisan route:clear',
+        'php artisan config:clear',
+        'php artisan view:clear',
     ],
 
     /*
