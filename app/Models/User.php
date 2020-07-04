@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
+use Maklad\Permission\Traits\HasRoles;
+
 // use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    use HasRoles;
+    
     /**
      * Define timeout for recent session in minutes
      * Used for check only one auth session at time
