@@ -8,6 +8,12 @@ use Jenssegers\Mongodb\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     /**
+     * Define timeout for recent session in minutes
+     * Used for check only one auth session at time
+     */
+    public const SESSION_TIMEOUT = 15;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -32,5 +38,9 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    protected $dates = [
+        'last_seen'
     ];
 }
