@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1ca03136551882084cdd87a5a4cda23",
+    "content-hash": "c1eccfe140c55252b25e2b1600745ca9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -57,6 +57,48 @@
                 "stack"
             ],
             "time": "2020-05-31T07:17:05+00:00"
+        },
+        {
+            "name": "boytunghc/laravel-git-hook",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/boytunghc/laravel-git-hook.git",
+                "reference": "ea3597f397a8c55345604dd18f1f09b39ed1922e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/boytunghc/laravel-git-hook/zipball/ea3597f397a8c55345604dd18f1f09b39ed1922e",
+                "reference": "ea3597f397a8c55345604dd18f1f09b39ed1922e",
+                "shasum": ""
+            },
+            "require-dev": {
+                "laravel/framework": "^5.0|^6.0",
+                "orchestra/testbench": "^4.0"
+            },
+            "type": "package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Boytunghc\\LaravelGitHook\\Providers\\AppServiceProvider",
+                        "Boytunghc\\LaravelGitHook\\Providers\\RouteServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Boytunghc\\LaravelGitHook\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Alex",
+                    "email": "boytunghc@gmail.com"
+                }
+            ],
+            "description": "Package help deploy application with git hook",
+            "time": "2020-02-21T02:54:40+00:00"
         },
         {
             "name": "brick/math",
