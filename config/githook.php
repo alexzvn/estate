@@ -68,7 +68,7 @@ return [
     */
     'after_pull'  => [
         'composer install --no-dev',
-        'php artisan migrate',
+        'php artisan migrate --force',
         'php artisan optimize',
         'php artisan up',
         'php artisan queue:restart'
