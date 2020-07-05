@@ -74,7 +74,8 @@ return [
         'php artisan migrate --force',
         'php artisan optimize',
         'php artisan up',
-        'php artisan queue:restart'
+        'php artisan queue:restart',
+        'php artisan permission:sync'
     ],
 
     /*
