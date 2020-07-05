@@ -13,7 +13,7 @@ return [
          * `Maklad\Permission\Contracts\Permission` contract.
          */
 
-        'permission' => Maklad\Permission\Models\Permission::class,
+        'permission' => \App\Models\Permission::class,
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
@@ -24,7 +24,7 @@ return [
          * `Maklad\Permission\Contracts\Role` contract.
          */
 
-        'role' => Maklad\Permission\Models\Role::class,
+        'role' => \App\Models\Role::class,
 
     ],
 
@@ -70,4 +70,23 @@ return [
      */
 
     'display_permission_in_exception' => false,
+
+    'sync' => [
+
+        'permissions' => [
+            // 'name' => 'display name'
+            'view' => 'xem',
+            'post.premium.view' => 'Xem tin cho thuê'
+        ],
+
+        'groups' => [
+            [
+                'name' => 'display_name',
+                'permissions'  => [
+                    'view',
+                    'post.premium.view'
+                ],
+            ]
+        ]
+    ],
 ];
