@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Role;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use Maklad\Permission\Traits\HasRoles;
 
@@ -55,17 +56,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->hasRole('Super Admin');
-    }
-
-    public function beAdmin()
-    {
-        return $this->assignRole('Super Admin');
-    }
-
-    public function removeAdmin()
-    {
-        return $this->removeRole('Super Admin');
+        return $this->hasRole(Role::SuperAdmin);
     }
 
     public function hasDifferenceOnline()

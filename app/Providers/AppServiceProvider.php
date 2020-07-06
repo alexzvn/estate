@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -32,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
         //$this->registerPolicies();
 
         Gate::before(function (User $user, $ability) {
-            return $user->isAdmin() ? true : null;
+            return $user->hasRole(Role::SuperAdmin) ? true : null;
         });
     }
 }
