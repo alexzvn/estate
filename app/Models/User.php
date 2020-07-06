@@ -48,6 +48,11 @@ class User extends Authenticatable
         'last_seen'
     ];
 
+    public function posts()
+    {
+        return $this->embedsMany(Post::class);
+    }
+
     public function hasDifferenceOnline()
     {
         return (
