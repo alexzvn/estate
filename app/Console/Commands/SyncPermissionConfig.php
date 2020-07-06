@@ -7,6 +7,7 @@ use App\Models\PermissionGroup;
 use App\Models\Role;
 use Illuminate\Console\Command;
 
+// todo #2 maintain sync group method
 class SyncPermissionConfig extends Command
 {
     /**
