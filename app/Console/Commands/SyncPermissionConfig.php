@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Permission;
 use App\Models\PermissionGroup;
+use App\Models\Role;
 use Illuminate\Console\Command;
 
 class SyncPermissionConfig extends Command
@@ -40,6 +41,7 @@ class SyncPermissionConfig extends Command
     public function handle()
     {
         $this->syncPermission();
+        $this->syncRoles();
         $this->syncPermissionGroup();
     }
 
@@ -50,6 +52,30 @@ class SyncPermissionConfig extends Command
             $perm = Permission::findOrCreate($name);
             $perm->display_name = $displayName;
             $perm->save();
+        }
+    }
+
+    public function syncRoles()
+    {
+        $syncRoles = function ($role)
+        {
+            $model = Role::where('name', $role->name)
+                    ->firstOrCreate(['name' => $role->name]);
+
+            $permWillSync = Permission::all()->filter(
+                function (Permission $perm) use ($role) {
+                    return in_array($perm->name, $role->permissions);
+                }
+            );
+
+            foreach ($permWillSync as $perm) {
+               $model->permissions()->save($perm);
+            }
+        };
+
+        foreach ($this->getRoles() as $role) {
+            $role = (object) $role;
+            $syncRoles($role);
         }
     }
 
@@ -81,6 +107,11 @@ class SyncPermissionConfig extends Command
     private function getPermissions()
     {
         return config('permission.sync.permissions', []);
+    }
+
+    private function getRoles()
+    {
+        return config('permission.sync.roles', []);
     }
 
     private function getPermissionGroups()

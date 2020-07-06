@@ -87,6 +87,13 @@ return [
                     'post.premium.view'
                 ],
             ]
-        ]
+        ],
+
+        'roles' => [
+            [
+                'name' => 'Super Admin',
+                'permissions' => [],
+            ]
+        ],
     ],
 ];
