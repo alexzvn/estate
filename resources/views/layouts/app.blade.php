@@ -18,6 +18,12 @@
 
     <!-- Styles -->
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
+
+    <style>
+        body {
+            background: url("{{ asset('assets/img/background-1.jpg') }}") no-repeat center;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
