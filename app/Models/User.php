@@ -53,6 +53,21 @@ class User extends Authenticatable
         return $this->embedsMany(Post::class);
     }
 
+    public function isAdmin()
+    {
+        return $this->hasRole('Super Admin');
+    }
+
+    public function beAdmin()
+    {
+        return $this->assignRole('Super Admin');
+    }
+
+    public function removeAdmin()
+    {
+        return $this->removeRole('Super Admin');
+    }
+
     public function hasDifferenceOnline()
     {
         return (
