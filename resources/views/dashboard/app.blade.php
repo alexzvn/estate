@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     @stack('meta')
-    <title>Blank Page - Multipurpose Bootstrap Dashboard Template </title>
+    <title>{{ $title ?? config('app.name') }}</title>
 
     <link href="{{ asset('dashboard/assets/css/loader.css') }}" rel="stylesheet" type="text/css" />
     <script src="{{ asset('dashboard/assets/js/loader.js') }}"></script>
