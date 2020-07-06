@@ -73,6 +73,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapManagerRoutes()
     {
         Route::middleware(['web', 'auth', 'auth.staff'])
+            ->prefix('manager')
             ->namespace($this->namespace)
             ->group(base_path('routes/manager.php'));
     }
