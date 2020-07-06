@@ -20,7 +20,7 @@ class AuthenticateStaff
             return abort(403);
         }
 
-        if ($user->hasAllRoles([Role::SuperAdmin, Role::Staff])) {
+        if ($user->hasAnyRole([Role::SuperAdmin, Role::Staff])) {
             return $next($request);
         }
 
