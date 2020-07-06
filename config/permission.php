@@ -93,6 +93,10 @@ return [
             [
                 'name' => 'Super Admin',
                 'permissions' => [],
+            ],
+            [
+                'name' => 'Staff',
+                'permissions' => []
             ]
         ],
     ],
