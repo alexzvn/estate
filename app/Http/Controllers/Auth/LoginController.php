@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -70,7 +71,9 @@ class LoginController extends Controller
 
         $this->storeSessionId($request, $user);
 
-        return $this->sendLoginResponse($request);
+        return $user->hasAnyRole([Role::Staff, Role::SuperAdmin]) ?
+            redirect(RouteServiceProvider::MANAGER) :
+            $this->sendLoginResponse($request);
     }
 
     public function logout(Request $request)
