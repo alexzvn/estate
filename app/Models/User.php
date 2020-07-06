@@ -47,4 +47,13 @@ class User extends Authenticatable
     protected $dates = [
         'last_seen'
     ];
+
+    public function hasDifferenceOnline()
+    {
+        return (
+            ! empty($this->session_id) &&
+            $this->session_id !== request()->session()->getId() &&
+            now()->lessThan($this->last_seen->addMinutes(self::SESSION_TIMEOUT))
+        );
+    }
 }

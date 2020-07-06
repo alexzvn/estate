@@ -62,7 +62,7 @@ class LoginController extends Controller
             return $this->sendFailedLoginResponse($request);
         }
 
-        if ($this->shouldPreventLoginSession($request, $user)) {
+        if ($user->hasDifferenceOnline()) {
             return $this->sendHasSessionLoginResponse($request);
         }
 
@@ -83,15 +83,6 @@ class LoginController extends Controller
         return $this->traitLogout($request);
     }
 
-    protected function shouldPreventLoginSession(Request $request, User $user)
-    {
-        return (
-            $this->hasLoginSession($user) &&
-            ! $this->isSessionOver($user) &&
-            $this->hasDifferenceSession($request, $user)
-        );
-    }
-
     protected function authenticated()
     {
         Auth::logoutOtherDevices(request('password'));
@@ -105,22 +96,5 @@ class LoginController extends Controller
     protected function sendHasSessionLoginResponse(Request $request)
     {
         // todo #1 send has session activity response
-    }
-
-    private function hasLoginSession(User $user)
-    {
-        return ! empty($user->session_id);
-    }
-
-    private function hasDifferenceSession(Request $request, User $user)
-    {
-        return $user->session_id !== $request->session()->getId();
-    }
-
-    private function isSessionOver(User $user)
-    {
-        return now()->greaterThan(
-            $user->last_seen->addMinutes(User::SESSION_TIMEOUT)
-        );
     }
 }
