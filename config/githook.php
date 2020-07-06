@@ -52,7 +52,10 @@ return [
     */
     'before_pull' => [
         'php artisan down',
-        'php artisan clear'
+        'php artisan clear',
+        'php artisan route:clear',
+        'php artisan config:clear',
+        'php artisan view:clear',
     ],
 
     /*
@@ -68,10 +71,11 @@ return [
     */
     'after_pull'  => [
         'composer install --no-dev',
-        'php artisan migrate',
+        'php artisan migrate --force',
         'php artisan optimize',
         'php artisan up',
-        'php artisan queue:restart'
+        'php artisan queue:restart',
+        'php artisan permission:sync'
     ],
 
     /*

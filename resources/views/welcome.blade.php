@@ -1,100 +1,59 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
+@section('content')
+<div class="container bg-white shadow-sm py-5">
+    <div class="row">
+        <div class="col-md-5">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+            <form class="col-md-10 offset-md-2" method="POST" action="{{ route('login') }}">
+                <h2 class="text-center">Đăng nhập</h2>
+                @csrf
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+                <div class="form-group">
+                    <label for="phone">{{ __('Số điện thoại') }}</label>
 
-            .full-height {
-                height: 100vh;
-            }
+                    <input id="phone" type="text" class="form-control form-control-lg rounded-0 @error('phone') is-invalid @enderror" placeholder="Số điện thoại của bạn" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+                    @error('phone')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="form-group">
+                    <label for="password">{{ __('Password') }}</label>
+
+                    <input id="password" type="password" class="form-control form-control-lg rounded-0 @error('password') is-invalid @enderror" placeholder="Mật khẩu" name="password" required autocomplete="current-password">
+
+                    @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
-            </div>
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary rounded-0">
+                        {{ __('Đăng nhập bằng điện thoại') }}
+                    </button>
+
+                    @if (false && Route::has('password.request'))
+                        <a class="btn btn-link" href="{{ route('password.request') }}">
+                            {{ __('Forgot Your Password?') }}
+                        </a>
+                    @endif
+                </div>
+
+                <hr class="w-50 text-center my-4">
+                <p class="text-center">Bạn chưa có tài khoản? Đăng ký ngay</p>
+            </form>
         </div>
-    </body>
-</html>
+        <div class="col-md-7 text-center">
+            <img class="mb-3" width="80%" src="https://cdn.vietnambiz.vn/2020/1/14/random-reinforcement-1578972191747814403297.png" alt="" srcset="">
+            <h4>Chúc bạn 1 buổi tối tốt lành !</h4>
+            <p>Hãy nghỉ ngơi và thư giãn cùng gia đình nhé.</p>
+        </div>
+    </div>
+</div>
+@endsection

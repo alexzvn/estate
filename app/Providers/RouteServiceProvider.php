@@ -24,6 +24,13 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/home';
 
     /**
+     * The path to the admin dashboard for application
+     * 
+     * @var string
+     */
+    public const MANAGER = '/manager';
+
+    /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
@@ -46,7 +53,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        $this->mapManagerRoutes();
     }
 
     /**
@@ -61,6 +68,21 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
+    }
+
+    /**
+     * Define the "manager" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapManagerRoutes()
+    {
+        Route::middleware(['web', 'auth', 'auth.staff'])
+            ->prefix('manager')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/manager.php'));
     }
 
     /**
