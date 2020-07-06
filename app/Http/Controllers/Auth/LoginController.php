@@ -56,7 +56,7 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where($this->username(), $request->{$this->username()})->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             $this->incrementLoginAttempts($request);
@@ -99,5 +99,10 @@ class LoginController extends Controller
     protected function sendHasSessionLoginResponse(Request $request)
     {
         // todo #1 send has session activity response
+    }
+
+    protected function username()
+    {
+        return 'phone';
     }
 }
