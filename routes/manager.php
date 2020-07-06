@@ -13,3 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', 'Manager\ManagerController@index');
+Route::get('/role', 'Manager\Role\RoleController@index');

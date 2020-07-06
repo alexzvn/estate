@@ -83,6 +83,8 @@
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="{{ asset('dashboard/plugins/font-icons/feather/feather.min.js') }}"></script>
+    <script>feather.replace();</script>
     @stack('script')
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 </body>
