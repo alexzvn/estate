@@ -46,7 +46,7 @@
                 </div>
 
                 <hr class="w-50 text-center my-4">
-                <p class="text-center">Bạn chưa có tài khoản? Đăng ký ngay</p>
+                <p class="text-center">Bạn chưa có tài khoản? <a href="{{ route('register') }}">Đăng ký ngay</a></p>
             </form>
         </div>
         <div class="col-md-7 text-center">
