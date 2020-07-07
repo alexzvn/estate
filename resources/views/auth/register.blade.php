@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container bg-white shadow py-5">
-    <div class="row">
+    <div class="row h-100">
         <div class="col-md-5">
 
             <form class="col-md-10 offset-md-2" method="POST" action="{{ route('register') }}">
@@ -66,7 +66,7 @@
                 <p class="text-center">Đã có tài khoản rồi? <a href="{{ route('login') }}">Đăng nhập ở đây</a></p>
             </form>
         </div>
-        <div class="col-md-7 text-center">
+        <div class="col-md-7 text-center my-auto">
             <img class="mb-3" width="80%" src="https://cdn.vietnambiz.vn/2020/1/14/random-reinforcement-1578972191747814403297.png" alt="" srcset="">
             <h4>Chúc bạn 1 buổi tối tốt lành !</h4>
             <p>Hãy nghỉ ngơi và thư giãn cùng gia đình nhé.</p>
