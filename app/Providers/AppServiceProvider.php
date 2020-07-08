@@ -30,8 +30,6 @@ class AppServiceProvider extends ServiceProvider
             \DB::connection( 'mongodb' )->enableQueryLog();
         }
 
-        //$this->registerPolicies();
-
         Gate::before(function (User $user, $ability) {
             return $user->hasPermissionTo('all') ? true : null;
         });

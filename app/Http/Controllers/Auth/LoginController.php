@@ -71,7 +71,7 @@ class LoginController extends Controller
 
         $this->storeSessionId($request, $user);
 
-        return $user->hasPermissionTo('manager.dashboard.access') ?
+        return $user->can('manager.dashboard.access') ?
             redirect(RouteServiceProvider::MANAGER) :
             $this->sendLoginResponse($request);
     }
