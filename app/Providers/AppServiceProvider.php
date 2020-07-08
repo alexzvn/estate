@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
         //$this->registerPolicies();
 
         Gate::before(function (User $user, $ability) {
-            return $user->hasRole(Role::SuperAdmin) ? true : null;
+            return $user->hasPermissionTo('*') ? true : null;
         });
     }
 }

@@ -88,6 +88,8 @@ return [
              * Permission for manager goes here
              * ----------------------------------------------
              */
+            'manager.dashboard.access' => 'Truy cập trang quản trị',
+
             'manager.category.view'   => 'Xem',
             'manager.category.create' => 'Tạo mới',
             'manager.category.modify' => 'Chỉnh sửa',
@@ -117,7 +119,15 @@ return [
 
         'groups' => [
             [
-                'name' => 'Danh mục',
+                'name' => 'Quản lý bài viết',
+                'permissions'  => [
+                    'manager.post.view',
+                    'manager.post.create',
+                    'manager.post.modify',
+                    'manager.post.delete',
+                ]
+            ],[
+                'name' => 'Quản lý danh mục',
                 'permissions'  => [
                     'manager.category.view',
                     'manager.category.create',
@@ -125,7 +135,7 @@ return [
                     'manager.category.delete',
                 ]
             ],[
-                'name' => 'Thành viên',
+                'name' => 'Quản lý thành viên',
                 'permissions'  => [
                     'manager.user.view',
                     'manager.user.create',
@@ -133,7 +143,7 @@ return [
                     'manager.user.delete',
                 ]
             ],[
-                'name' => 'Vai Trò',
+                'name' => 'Quản lý vai Trò',
                 'permissions'  => [
                     'manager.role.view',
                     'manager.role.create',
@@ -141,7 +151,7 @@ return [
                     'manager.role.delete',
                 ]
             ],[
-                'name' => 'Nhân viên',
+                'name' => 'Quản lý nhân viên',
                 'permissions'  => [
                     'manager.staff.view',
                     'manager.staff.create',
@@ -156,8 +166,8 @@ return [
                 'name' => 'Super Admin',
                 'permissions' => ['*'],
             ],[
-                'name' => 'Staff',
-                'permissions' => []
+                'name' => 'Nhân viên',
+                'permissions' => ['manager.dashboard.access']
             ]
         ],
     ],
