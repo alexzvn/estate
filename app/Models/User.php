@@ -16,7 +16,7 @@ class User extends Authenticatable
      * Define timeout for recent session in minutes
      * Used for check only one auth session at time
      */
-    public const SESSION_TIMEOUT = 15;
+    public const SESSION_TIMEOUT = 30;
 
     /**
      * The attributes that are mass assignable.
