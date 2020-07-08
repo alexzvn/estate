@@ -117,10 +117,13 @@ return [
 
         ],
 
+        /**
+         * Group permission by function and name
+         */
         'groups' => [
             [
                 'name' => 'Quản lý bài viết',
-                'permissions'  => [
+                'permissions' => [
                     'manager.post.view',
                     'manager.post.create',
                     'manager.post.modify',
@@ -128,7 +131,7 @@ return [
                 ]
             ],[
                 'name' => 'Quản lý danh mục',
-                'permissions'  => [
+                'permissions' => [
                     'manager.category.view',
                     'manager.category.create',
                     'manager.category.modify',
@@ -136,7 +139,7 @@ return [
                 ]
             ],[
                 'name' => 'Quản lý thành viên',
-                'permissions'  => [
+                'permissions' => [
                     'manager.user.view',
                     'manager.user.create',
                     'manager.user.modify',
@@ -144,7 +147,7 @@ return [
                 ]
             ],[
                 'name' => 'Quản lý vai Trò',
-                'permissions'  => [
+                'permissions' => [
                     'manager.role.view',
                     'manager.role.create',
                     'manager.role.modify',
@@ -152,13 +155,18 @@ return [
                 ]
             ],[
                 'name' => 'Quản lý nhân viên',
-                'permissions'  => [
+                'permissions' => [
                     'manager.staff.view',
                     'manager.staff.create',
                     'manager.staff.modify',
                     'manager.staff.delete',
                 ]
-            ],
+            ],[
+                'name' => 'Khác',
+                'permissions' => [
+                    'manager.dashboard.access'
+                ]
+            ]
         ],
 
         'roles' => [
