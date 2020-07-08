@@ -74,7 +74,7 @@ return [
     'sync' => [
 
         'permissions' => [
-            '*' => 'Tất cả quyền hạn',
+            'all' => 'Tất cả quyền hạn',
 
             /**
              * ----------------------------------------------
@@ -172,7 +172,7 @@ return [
         'roles' => [
             [
                 'name' => 'Super Admin',
-                'permissions' => ['*'],
+                'permissions' => ['all'],
             ],[
                 'name' => 'Nhân viên',
                 'permissions' => ['manager.dashboard.access']
