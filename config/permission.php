@@ -74,27 +74,88 @@ return [
     'sync' => [
 
         'permissions' => [
-            // 'name' => 'display name'
-            'view' => 'xem',
-            'post.premium.view' => 'Xem tin cho thuê'
+            '*' => 'Tất cả quyền hạn',
+
+            /**
+             * ----------------------------------------------
+             * Permission for customer goes here
+             * ----------------------------------------------
+             */
+            'post.premium.view' => 'Xem tin cho thuê',
+
+            /**
+             * ----------------------------------------------
+             * Permission for manager goes here
+             * ----------------------------------------------
+             */
+            'manager.category.view'   => 'Xem',
+            'manager.category.create' => 'Tạo mới',
+            'manager.category.modify' => 'Chỉnh sửa',
+            'manager.category.delete' => 'Xóa',
+
+            'manager.user.view'   => 'Xem',
+            'manager.user.create' => 'Tạo mới',
+            'manager.user.modify' => 'Chỉnh sửa',
+            'manager.user.delete' => 'Xóa',
+
+            'manager.role.view'   => 'Xem',
+            'manager.role.create' => 'Tạo mới',
+            'manager.role.modify' => 'Chỉnh sửa',
+            'manager.role.delete' => 'Xóa',
+
+            'manager.post.view'   => 'Xem',
+            'manager.post.create' => 'Tạo mới',
+            'manager.post.modify' => 'Chỉnh sửa',
+            'manager.post.delete' => 'Xóa',
+
+            'manager.staff.view'   => 'Xem',
+            'manager.staff.create' => 'Tạo mới',
+            'manager.staff.modify' => 'Chỉnh sửa',
+            'manager.staff.delete' => 'Xóa',
+
         ],
 
         'groups' => [
             [
-                'name' => 'display_name',
+                'name' => 'Danh mục',
                 'permissions'  => [
-                    'view',
-                    'post.premium.view'
-                ],
-            ]
+                    'manager.category.view',
+                    'manager.category.create',
+                    'manager.category.modify',
+                    'manager.category.delete',
+                ]
+            ],[
+                'name' => 'Thành viên',
+                'permissions'  => [
+                    'manager.user.view',
+                    'manager.user.create',
+                    'manager.user.modify',
+                    'manager.user.delete',
+                ]
+            ],[
+                'name' => 'Vai Trò',
+                'permissions'  => [
+                    'manager.role.view',
+                    'manager.role.create',
+                    'manager.role.modify',
+                    'manager.role.delete',
+                ]
+            ],[
+                'name' => 'Nhân viên',
+                'permissions'  => [
+                    'manager.staff.view',
+                    'manager.staff.create',
+                    'manager.staff.modify',
+                    'manager.staff.delete',
+                ]
+            ],
         ],
 
         'roles' => [
             [
                 'name' => 'Super Admin',
-                'permissions' => [],
-            ],
-            [
+                'permissions' => ['*'],
+            ],[
                 'name' => 'Staff',
                 'permissions' => []
             ]
