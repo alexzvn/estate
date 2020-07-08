@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function posts()
     {
-        return $this->embedsMany(Post::class);
+        return $this->hasMany(Post::class);
     }
 
     public function isAdmin()
