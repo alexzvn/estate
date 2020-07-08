@@ -71,7 +71,7 @@ class LoginController extends Controller
 
         $this->storeSessionId($request, $user);
 
-        return $user->hasAnyRole([Role::Staff, Role::SuperAdmin]) ?
+        return $user->hasPermissionTo('manager.dashboard.access') ?
             redirect(RouteServiceProvider::MANAGER) :
             $this->sendLoginResponse($request);
     }
