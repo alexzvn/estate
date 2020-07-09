@@ -27,7 +27,7 @@
                         @foreach ($roles as $role)
                         <tr>
                             <td class="text-center" >{{ $loop->index }}</td>
-                            <td class="text-bold">{{ $role->name }}</td>
+                            <td>{{ $role->name }}</td>
                             <td>
                                 <i class="role-remove t-icon t-hover-icon" data-feather="trash-2" data-id="{{ $role->id }}"></i>
                                 <i class="role-edit t-icon t-hover-icon" data-feather="edit" data-id="{{ $role->id }}"></i>
