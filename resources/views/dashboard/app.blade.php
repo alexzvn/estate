@@ -7,8 +7,13 @@
     @stack('meta')
     <title>{{ $title ?? config('app.name') }}</title>
 
+    @if (! session('loader'))
     <link href="{{ asset('dashboard/assets/css/loader.css') }}" rel="stylesheet" type="text/css" />
     <script src="{{ asset('dashboard/assets/js/loader.js') }}"></script>
+        @php
+        session(['loader' => true]);
+        @endphp
+    @endif
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
@@ -30,12 +35,16 @@
 
 </head>
 <body>
+    @if (! session('loader'))
     @include('dashboard.layouts.loader')
+    @endif
+
     @include('dashboard.layouts.navbar')
     @include('dashboard.layouts.breadcrumbs')
 
     <!--  BEGIN MAIN CONTAINER  -->
     <div class="main-container" id="container">
+
 
         <div class="overlay"></div>
         <div class="search-overlay"></div>
@@ -67,6 +76,8 @@
 
     </div>
     <!-- END MAIN CONTAINER -->
+
+    <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">@csrf</form>
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
     <script src="{{ asset('dashboard/assets/js/libs/jquery-3.1.1.min.js') }}"></script>
