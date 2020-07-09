@@ -74,7 +74,7 @@ return [
     'sync' => [
 
         'permissions' => [
-            'all' => 'Tất cả quyền hạn',
+            '*' => 'Tất cả quyền hạn',
 
             'login.multiple.devices' => 'Đăng nhập nhiều thiết bị',
 
@@ -175,7 +175,7 @@ return [
         'roles' => [
             [
                 'name' => 'Super Admin',
-                'permissions' => ['all'],
+                'permissions' => ['*'],
             ],[
                 'name' => 'Nhân viên',
                 'permissions' => [

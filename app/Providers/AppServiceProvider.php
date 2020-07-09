@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Gate::before(function (User $user, $ability) {
-            return $user->hasPermissionTo('all') ? true : null;
+            return $user->hasPermissionTo('*') ? true : null;
         });
     }
 }
