@@ -63,13 +63,15 @@ class LoginController extends Controller
             return $this->sendFailedLoginResponse($request);
         }
 
-        if ($user->hasDifferenceOnline()) {
+        if ($user->cannot('login.multiple.devices') && $user->hasDifferenceOnline()) {
             return $this->sendHasSessionLoginResponse($request);
         }
 
-        Auth::login($user, $request->has('remember'));
+        if ($user->cannot('login.multiple.devices')) {
+            $this->storeSessionId($request, $user);
+        }
 
-        $this->storeSessionId($request, $user);
+        Auth::login($user, $request->has('remember'));
 
         return $user->can('manager.dashboard.access') ?
             redirect(RouteServiceProvider::MANAGER) :
@@ -88,7 +90,9 @@ class LoginController extends Controller
 
     protected function authenticated()
     {
-        Auth::logoutOtherDevices(request('password'));
+        if (Auth::user()->cannot('login.multiple.devices')) {
+            Auth::logoutOtherDevices(request('password'));
+        }
     }
 
     protected function storeSessionId(Request $request, User $user)

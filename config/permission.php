@@ -76,6 +76,8 @@ return [
         'permissions' => [
             'all' => 'Tất cả quyền hạn',
 
+            'login.multiple.devices' => 'Đăng nhập nhiều thiết bị',
+
             /**
              * ----------------------------------------------
              * Permission for customer goes here
@@ -164,7 +166,8 @@ return [
             ],[
                 'name' => 'Khác',
                 'permissions' => [
-                    'manager.dashboard.access'
+                    'manager.dashboard.access',
+                    'login.multiple.devices'
                 ]
             ]
         ],
@@ -175,7 +178,10 @@ return [
                 'permissions' => ['all'],
             ],[
                 'name' => 'Nhân viên',
-                'permissions' => ['manager.dashboard.access']
+                'permissions' => [
+                    'manager.dashboard.access',
+                    'login.multiple.devices'
+                ]
             ]
         ],
     ],
