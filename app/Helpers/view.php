@@ -1,6 +1,12 @@
 <?php
 
-function echoActiveIf(bool $should, $active = 'active')
+function echoActiveIf($expression, $active = 'active')
 {
-    if ($should) echo $active;
+    if (is_bool($expression)) {
+        echo $active; return;
+    }
+
+    if (is_string($expression)) {
+        echo request()->route()->getName() === $expression ? $active : '';
+    }
 }
