@@ -13,5 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'Manager\ManagerController@index');
-Route::get('/role', 'Manager\Role\RoleController@index');
+Route::get('/', 'Manager\ManagerController@index')->name('manager');
+
+
+Route::group(['prefix' => 'role', 'namespace' => 'Manager\Role'], function () {
+    Route::get('/', 'RoleController@index')->name('manager.role');
+    Route::get('/create', 'RoleController@index')->name('manager.role.create');
+    Route::get('/{id}/view', 'RoleController@index')->name('manager.role.view');
+    Route::post('/{id}/update', 'RoleController@index')->name('manager.role.update');
+    Route::get('/{id}/delete', 'RoleController@index')->name('manager.role.delete');
+});
