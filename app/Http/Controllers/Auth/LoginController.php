@@ -102,7 +102,7 @@ class LoginController extends Controller
 
     protected function sendHasSessionLoginResponse(Request $request)
     {
-        // todo #1 send has session activity response
+        return view('auth.reject');
     }
 
     protected function username()
