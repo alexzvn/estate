@@ -20,9 +20,7 @@
                 <div class="border-top p-3" style="background-color: rgb(223, 223, 223);">
                     <div class="form-row">
 
-                        <div class="col-1">
-                            <button class="btn btn-light btn-lg w-100"><i class="fas fa-filter"></i></button>
-                        </div>
+                        
                         <div class="col-11">
                             <div class="input-group">
                                 <input type="text" style="border: solid #3490dc;" class="form-control form-control-lg border-right-0" placeholder="Tìm kiếm thông tin trên website">
@@ -30,6 +28,9 @@
                                     <button class="btn btn-lg btn-primary" type="button">Tìm kiếm</button>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-1">
+                            <button class="btn btn-light btn-lg w-100"><i class="fas fa-filter"></i></button>
                         </div>
 
                     </div>
