@@ -13,7 +13,7 @@ class PostController extends Controller
     {
         return view('dashboard.post.create', [
             'provinces' => Province::with('districts')->active()->get(['name']),
-            'category' => Category::with('children')->parentOnly()->get(['name']),
+            'categories' => Category::with('children')->parentOnly()->get(['name']),
         ]);
     }
 }

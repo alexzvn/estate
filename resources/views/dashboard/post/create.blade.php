@@ -1,4 +1,7 @@
 @extends('dashboard.app')
+@push('style')
+<link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
+@endpush
 
 @section('content')
 <div class="col-md-12">
@@ -63,9 +66,16 @@
                             <div class="form-group input-group-sm">
                                 <label for="category">Danh mục</label>
                                 <select class="form-control" name="category" id="category">
-                                  <option>Danh mục 1</option>
-                                  <option>Danh mục 2</option>
-                                  <option>Danh mục 3</option>
+                                  @foreach ($categories as $item)
+                                    @if (!$item->children)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @continue
+                                    @endif
+                                    <option value="{{ $item->id }}" disabled style="font-weight: bold; color: #0e1726;"><strong> {{ $item->name }} </strong></option>
+                                    @foreach ($item->children as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                  @endforeach
                                 </select>
                             </div>
                         </div>
@@ -87,14 +97,30 @@
                                 <label for="district">Quận/huyện</label>
                                 <select class="form-control" name="district" id="district">
                                     <option value="" selected>Trống</option>
-                                    <option>Danh mục 1</option>
-                                    <option>Danh mục 2</option>
-                                    <option>Danh mục 3</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
+                </div>
+            </div>
+
+            <div class="statbox widget box box-shadow my-3">
+                <div class="widget-header">
+                    <div class="row">
+                        <h4>Thêm ảnh cho tin</h4>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="custom-file-container" data-upload-id="myFirstImage">
+                        <label>Chọn ảnh đại diện <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image">x</a></label>
+                        <label class="custom-file-container__custom-file" >
+                            <input type="file" class="custom-file-container__custom-file__custom-file-input" accept="image/*">
+                            <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+                            <span class="custom-file-container__custom-file__custom-file-control"></span>
+                        </label>
+                        <div class="custom-file-container__image-preview"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,6 +158,7 @@
 @push('script')
 <script src="https://cdn.ckeditor.com/ckeditor5/20.0.0/classic/ckeditor.js"></script>
 <script src="{{ asset('dashboard/plugins/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
+<script src="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.js') }}"></script>
 <script>
 
     $('#price').inputmask({
@@ -148,6 +175,8 @@
     .catch( err => {
         console.error( err.stack );
     });
+
+    var firstUpload = new FileUploadWithPreview('myFirstImage')
 </script>
 @endpush
 
