@@ -16,14 +16,11 @@ class AuthenticateStaff
      */
     public function handle($request, Closure $next)
     {
-        if (! ($user = $request->user())) {
-            return abort(403);
-        }
 
-        if ($user->hasAnyRole([Role::SuperAdmin, Role::Staff])) {
+        if (($user = $request->user()) && $user->can('manager.dashboard.access')) {
             return $next($request);
         }
 
-        return abort(403);
+        return abort(404);
     }
 }

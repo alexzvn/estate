@@ -74,29 +74,114 @@ return [
     'sync' => [
 
         'permissions' => [
-            // 'name' => 'display name'
-            'view' => 'xem',
-            'post.premium.view' => 'Xem tin cho thuê'
+            '*' => 'Tất cả quyền hạn',
+
+            'login.multiple.devices' => 'Đăng nhập nhiều thiết bị',
+
+            /**
+             * ----------------------------------------------
+             * Permission for customer goes here
+             * ----------------------------------------------
+             */
+            'post.premium.view' => 'Xem tin cho thuê',
+
+            /**
+             * ----------------------------------------------
+             * Permission for manager goes here
+             * ----------------------------------------------
+             */
+            'manager.dashboard.access' => 'Truy cập trang quản trị',
+
+            'manager.category.view'   => 'Xem',
+            'manager.category.create' => 'Tạo mới',
+            'manager.category.modify' => 'Chỉnh sửa',
+            'manager.category.delete' => 'Xóa',
+
+            'manager.user.view'   => 'Xem',
+            'manager.user.create' => 'Tạo mới',
+            'manager.user.modify' => 'Chỉnh sửa',
+            'manager.user.delete' => 'Xóa',
+
+            'manager.role.view'   => 'Xem',
+            'manager.role.create' => 'Tạo mới',
+            'manager.role.modify' => 'Chỉnh sửa',
+            'manager.role.delete' => 'Xóa',
+
+            'manager.post.view'   => 'Xem',
+            'manager.post.create' => 'Tạo mới',
+            'manager.post.modify' => 'Chỉnh sửa',
+            'manager.post.delete' => 'Xóa',
+
+            'manager.staff.view'   => 'Xem',
+            'manager.staff.create' => 'Tạo mới',
+            'manager.staff.modify' => 'Chỉnh sửa',
+            'manager.staff.delete' => 'Xóa',
+
         ],
 
+        /**
+         * Group permission by function and name
+         */
         'groups' => [
             [
-                'name' => 'display_name',
-                'permissions'  => [
-                    'view',
-                    'post.premium.view'
-                ],
+                'name' => 'Quản lý bài viết',
+                'permissions' => [
+                    'manager.post.view',
+                    'manager.post.create',
+                    'manager.post.modify',
+                    'manager.post.delete',
+                ]
+            ],[
+                'name' => 'Quản lý danh mục',
+                'permissions' => [
+                    'manager.category.view',
+                    'manager.category.create',
+                    'manager.category.modify',
+                    'manager.category.delete',
+                ]
+            ],[
+                'name' => 'Quản lý thành viên',
+                'permissions' => [
+                    'manager.user.view',
+                    'manager.user.create',
+                    'manager.user.modify',
+                    'manager.user.delete',
+                ]
+            ],[
+                'name' => 'Quản lý vai Trò',
+                'permissions' => [
+                    'manager.role.view',
+                    'manager.role.create',
+                    'manager.role.modify',
+                    'manager.role.delete',
+                ]
+            ],[
+                'name' => 'Quản lý nhân viên',
+                'permissions' => [
+                    'manager.staff.view',
+                    'manager.staff.create',
+                    'manager.staff.modify',
+                    'manager.staff.delete',
+                ]
+            ],[
+                'name' => 'Khác',
+                'permissions' => [
+                    'manager.dashboard.access',
+                    'login.multiple.devices'
+                ]
             ]
         ],
 
         'roles' => [
             [
                 'name' => 'Super Admin',
-                'permissions' => [],
-            ],
-            [
-                'name' => 'Staff',
-                'permissions' => []
+                'permissions' => ['*'],
+            ],[
+                'name' => 'Nhân viên',
+                'permissions' => [
+                    'manager.dashboard.access',
+                    'login.multiple.devices'
+                ]
             ]
         ],
     ],

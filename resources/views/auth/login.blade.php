@@ -49,7 +49,7 @@
                 <p class="text-center">Bạn chưa có tài khoản? <a href="{{ route('register') }}">Đăng ký ngay</a></p>
             </form>
         </div>
-        <div class="col-md-7 text-center">
+        <div class="col-md-7 text-center my-auto">
             <img class="mb-3" width="80%" src="https://cdn.vietnambiz.vn/2020/1/14/random-reinforcement-1578972191747814403297.png" alt="" srcset="">
             <h4>Chúc bạn 1 buổi tối tốt lành !</h4>
             <p>Hãy nghỉ ngơi và thư giãn cùng gia đình nhé.</p>

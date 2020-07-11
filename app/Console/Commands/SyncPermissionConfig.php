@@ -50,9 +50,17 @@ class SyncPermissionConfig extends Command
     protected function syncPermission()
     {
         foreach ($this->getPermissions() as $name => $displayName) {
-            $perm = Permission::findOrCreate($name);
-            $perm->display_name = $displayName;
-            $perm->save();
+
+            if ($perm = Permission::where('name', $name)->first()) {
+                $perm->display_name = $displayName;
+                $perm->save();
+                continue;
+            }
+
+            $perm = Permission::create([
+                'name' => $name,
+                'display_name' => $displayName
+            ]);
         }
     }
 

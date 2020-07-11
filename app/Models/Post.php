@@ -28,7 +28,12 @@ class Post extends Model
 
     public function metas()
     {
-        return $this->embedsMany(PostMeta::class);
+        return $this->hasMany(PostMeta::class);
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
     }
 
     public function getMetas()
