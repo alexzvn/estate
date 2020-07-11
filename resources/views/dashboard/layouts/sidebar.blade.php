@@ -45,12 +45,19 @@
                         <ul class="collapse submenu list-unstyled @active(request()->is('manager/post/*'), 'show')" id="submenu" data-parent="#accordionExample">
                             <li>
                                 <a href="javascript:void(0);"> Tin xin phí </a>
+                                {{-- Duyệt từ tin crawl --}}
                             </li>
                             <li>
-                                <a href="javascript:void(0)">Tin cần thuê</a>
+                                <a href="javascript:void(0)">Cần thuê - cần mua </a>
+                                {{-- Tin crawl từ trang khác xử lý sau --}}
                             </li>
                             <li>
-                                <a href="javascript:void(0);"> Tin chờ duyệt </a>
+                                <a href="javascript:void(0)">Tin thị trường</a> 
+                                {{-- Tin ảnh collection --}}
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);">Tin web online </a>
+                                {{-- Tin crawl từ trang khác --}}
                             </li>
                         </ul>
                     </li>
