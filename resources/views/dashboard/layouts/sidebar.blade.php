@@ -33,7 +33,7 @@
                     </li>
 
                     <li class="menu">
-                        <a href="#submenu" data-toggle="collapse" @active('manager.post', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                        <a href="#submenu" data-toggle="collapse" @active(request()->is('manager/post/*'), 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="file-text"></i>
                                 <span>Tin BĐS</span>
@@ -42,7 +42,7 @@
                                 <i data-feather="chevron-right"></i>
                             </div>
                         </a>
-                        <ul class="collapse submenu list-unstyled @active('manager.post', 'show')" id="submenu" data-parent="#accordionExample">
+                        <ul class="collapse submenu list-unstyled @active(request()->is('manager/post/*'), 'show')" id="submenu" data-parent="#accordionExample">
                             <li>
                                 <a href="javascript:void(0);"> Tin xin phí </a>
                             </li>
