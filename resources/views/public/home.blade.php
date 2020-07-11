@@ -3,25 +3,7 @@
 @section('content')
 <div class="container">
 
-    <div class="row justify-content-center h-100">
-        <div class="col-md-10 rounded bg-white shadow">
-            <div class="m-4 ">
-                <form action="" method="get">
-
-                    <div class="input-group">
-                        <input type="text" class="form-control form-control-lg" placeholder="Tìm kiếm thông tin trên website">
-                        <div class="input-group-append">
-                            <button class="btn btn-lg btn-primary" type="button">Tìm kiếm</button>
-                        </div>
-                    </div>
-                    <a href="#" class="d-block m-1"><i class="fas fa-filter"></i> Hiện tìm kiếm nâng cao?</a>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row bg-white mt-5 p-2 shadow-sm">
+    <div class="row bg-white p-2 shadow rounded">
         <div class="col-md-12">
             <div class="border rounded">
                 <ul class="nav nav-tabs nav-custom-tabs mx-3" id="myTab" role="tablist">
@@ -35,38 +17,19 @@
                       <a class="nav-link" id="contact-tab" data-toggle="tab" href="#section-3" role="tab">Contact</a>
                     </li>
                 </ul>
-                <div class="border-top p-3" style="background-color: #f2f2f2;">
+                <div class="border-top p-3" style="background-color: rgb(223, 223, 223);">
                     <div class="form-row">
 
-                        <div class="col">
-                            <select class="form-control" name="location" id="select-location">
-                                <option value="1">Toàn quốc</option>
-                            </select>
+                        <div class="col-1">
+                            <button class="btn btn-light btn-lg w-100"><i class="fas fa-filter"></i></button>
                         </div>
-                        <div class="col">
-                            <select class="form-control" name="location" id="select-location">
-                                <option value="1">Toàn quốc</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select class="form-control" name="location" id="select-location">
-                                <option value="1">Toàn quốc</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select class="form-control" name="location" id="select-location">
-                                <option value="1">Toàn quốc</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select class="form-control" name="location" id="select-location">
-                                <option value="1">Toàn quốc</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select class="form-control" name="location" id="select-location">
-                                <option value="1">Toàn quốc</option>
-                            </select>
+                        <div class="col-11">
+                            <div class="input-group">
+                                <input type="text" style="border: solid #3490dc;" class="form-control form-control-lg border-right-0" placeholder="Tìm kiếm thông tin trên website">
+                                <div class="input-group-append">
+                                    <button class="btn btn-lg btn-primary" type="button">Tìm kiếm</button>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
