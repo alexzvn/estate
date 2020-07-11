@@ -2,7 +2,9 @@
 
 function echoActiveIf($expression, $active = 'active')
 {
-    if (is_bool($expression)) {
+    // var_dump($expression);
+
+    if (is_bool($expression) && $expression) {
         echo $active; return;
     }
 
