@@ -83,7 +83,10 @@ return [
              * Permission for customer goes here
              * ----------------------------------------------
              */
-            'post.premium.view' => 'Xem tin cho thuê',
+            'post.premium.sell.view' => 'Xem tin bán nhà đất',
+            'post.premium.rent.view' => 'Xem tin thuê nhà đất',
+            'post.premium.market.view' => 'Xem tin thị trường',
+            'post.premium.sell_rent.view' => 'Xem tin cần mua, cần thuê',
 
             /**
              * ----------------------------------------------
