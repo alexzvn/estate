@@ -14,22 +14,13 @@
                             </div>
                         </a>
                     </li>
-    
+
                     <li class="menu">
-                        <a href="#role" @active('manager.role', 'data-active="true"') data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                            <div class="">
-                                <i data-feather="award"></i>
-                                <span>Vai trò</span>
-                            </div>
+                        <a href="{{ route('manager.category') }}" @active('manager.category', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div>
-                                <i data-feather="chevron-right"></i>
+                                <i data-feather="bookmark"></i> <span>Quản lý danh mục</span>
                             </div>
                         </a>
-                        <ul class="submenu list-unstyled collapse @active('manager.role', 'show')" id="role" data-parent="#accordionExample" style="">
-                            <li class="@active('manager.role')">
-                                <a href="{{ route('manager.role') }}"> Tất cả vai trò </a>
-                            </li>
-                        </ul>
                     </li>
 
                     <li class="menu">
@@ -42,7 +33,10 @@
                                 <i data-feather="chevron-right"></i>
                             </div>
                         </a>
-                        <ul class="collapse submenu list-unstyled @active(request()->is('manager/post/*'), 'show')" id="submenu" data-parent="#accordionExample">
+                        <ul class="collapse submenu list-unstyled @active('m', 'show')" id="submenu" data-parent="#accordionExample">
+                            <li>
+                                <a href="{{ route('manager.post.create') }}" style="color: red">Tạo tin mới</a>
+                            </li>
                             <li>
                                 <a href="javascript:void(0);"> Tin xin phí </a>
                                 {{-- Duyệt từ tin crawl --}}
@@ -58,6 +52,23 @@
                             <li>
                                 <a href="javascript:void(0);">Tin web online </a>
                                 {{-- Tin crawl từ trang khác --}}
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="menu">
+                        <a href="#role" @active('manager.role', 'data-active="true"') data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="award"></i>
+                                <span>Vai trò</span>
+                            </div>
+                            <div>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <ul class="submenu list-unstyled collapse @active('manager.role', 'show')" id="role" data-parent="#accordionExample" style="">
+                            <li class="@active('manager.role')">
+                                <a href="{{ route('manager.role') }}"> Tất cả vai trò </a>
                             </li>
                         </ul>
                     </li>
