@@ -12,8 +12,11 @@ use BenSampo\Enum\Enum;
  */
 final class PostMeta extends Enum
 {
-    const Province = 'Address Province';
-    const City     = 'Address City';
-    const District = 'Address District';
-    const Street   = 'Address Street';
+    const Province   = 'Address Province';
+    const City       = 'Address City';
+    const District   = 'Address District';
+    const Street     = 'Address Street';
+    const Phone      = 'Phone';
+    const Price      = 'Price';
+    const Commission = 'Commission';
 }
