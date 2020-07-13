@@ -27,6 +27,7 @@ Route::group(['prefix' => 'role', 'namespace' => 'Manager\Role'], function () {
 Route::group(['prefix' => 'post', 'namespace' => 'Manager\Post'], function () {
     Route::get('/', 'PostController@index')->name('manager.post');
     Route::get('/create', 'PostController@create')->name('manager.post.create');
+    Route::post('/store', 'PostController@store')->name('manager.post.store');
     Route::get('/{id}/view', 'PostController@index')->name('manager.post.view');
     Route::post('/{id}/update', 'PostController@index')->name('manager.post.update');
     Route::get('/{id}/delete', 'PostController@index')->name('manager.post.delete');
