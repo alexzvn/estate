@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Manager\Post;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
-use App\Models\Category;
-use App\Models\Location\Province;
+use App\Repository\Category;
+use App\Repository\Location\Province;
 
 class PostController extends Controller
 {
