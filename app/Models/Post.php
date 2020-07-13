@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\EmptyClass;
 use App\Models\Traits\CanFilter;
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use App\Enums\PostMeta as Meta;
