@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Manager\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
 use App\Models\Category;
-use App\Models\Location\VietNam\Province;
+use App\Models\Location\Province;
 
 class PostController extends Controller
 {

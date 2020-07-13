@@ -2,7 +2,7 @@
 
 namespace App\Repository\Location;
 
-use App\Models\Location\VietNam\Ward as VietNamWard;
+use App\Models\Location\Ward as VietNamWard;
 use App\Repository\BaseRepository;
 
 class Ward extends BaseRepository

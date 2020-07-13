@@ -2,7 +2,7 @@
 
 namespace App\Repository\Location;
 
-use App\Models\Location\VietNam\Province as VietNamProvince;
+use App\Models\Location\Province as VietNamProvince;
 use App\Repository\BaseRepository;
 
 class Province extends BaseRepository

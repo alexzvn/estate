@@ -2,7 +2,7 @@
 
 namespace App\Repository\Location;
 
-use App\Models\Location\VietNam\District as VietNamDistrict;
+use App\Models\Location\District as VietNamDistrict;
 use App\Repository\BaseRepository;
 
 class District extends BaseRepository
