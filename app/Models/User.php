@@ -3,15 +3,17 @@
 namespace App\Models;
 
 use App\Enums\Role;
+use App\Models\Traits\CanVerifyPhone;
+use App\Contracts\Auth\MustVerifyPhone;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use Maklad\Permission\Traits\HasRoles;
 
 // use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyPhone
 {
-    use HasRoles;
-    
+    use HasRoles, CanVerifyPhone;
+
     /**
      * Define timeout for recent session in minutes
      * Used for check only one auth session at time
