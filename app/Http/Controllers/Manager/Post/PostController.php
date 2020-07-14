@@ -36,7 +36,7 @@ class PostController extends Controller
 
         $post->categories()->save(Category::find($request->category));
 
-        $post->metas()->saveMany($this->makeMetas([
+        $post->metas()->saveMany(Meta::fromMany([
             PostMeta::Phone      => str_replace('.', '', $request->phone),
             PostMeta::Price      => (int) str_replace(',', '', $request->price),
             PostMeta::Province   => $request->province,
@@ -45,17 +45,5 @@ class PostController extends Controller
         ]));
 
         return $post;
-    }
-
-    protected function makeMetas(array $metas)
-    {
-        foreach ($metas as $name => $value) {
-            $meta[] = Meta::fill([
-                'name' => $name,
-                'value' => $value
-            ]);
-        }
-
-        return collect($meta ?? []);
     }
 }
