@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Manager\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Category\StoreRequest;
-use App\Models\Category;
+use App\Repository\Category;
 
 class CategoryController extends Controller
 {
     public function index()
     {
         return view('dashboard.category.index', [
-            'categories' => Category::parentOnly()->with('children')->get()
+            'categories' => Category::parentOnly()->with('children.children.children')->get()
         ]);
     }
 

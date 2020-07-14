@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\EmptyClass;
 use App\Models\Traits\CanFilter;
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use App\Enums\PostMeta as Meta;
@@ -38,7 +38,7 @@ class Post extends Model
 
     public function getMetas()
     {
-        return array_reduce($this->metas, function ($carry, $item)
+        return ($this->metas ?? collect())->reduce(function ($carry, $item)
         {
             $carry->{$item->name} = $item->value;
             return $carry;

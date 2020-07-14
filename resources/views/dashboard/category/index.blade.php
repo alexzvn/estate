@@ -23,7 +23,12 @@
                    <select class="custom-select" name="parent" id="parent">
                        <option value="" selected>--- Chọn ---</option>
                        @foreach ($categories as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        <option style="font-weight: bold;" value="{{ $item->id }}">{{ $item->name }}</option>
+                       @if ($item->children)
+                           @foreach ($item->children as $item)
+                           <option value="{{ $item->id }}">{{ $item->name }}</option>
+                           @endforeach
+                       @endif
                        @endforeach
                    </select>
                </div>
@@ -60,19 +65,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $cat)
+                    @foreach ($categories as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $cat->name }}</td>
-                            <td>{{ $cat->description ?? 'N/A' }}</td>
+                            <td style="font-weight: bold;">{{ $item->name }}</td>
+                            <td>{{ $item->description ?? 'N/A' }}</td>
                         </tr>
-                        @if ($cat->children)
-                            @foreach ($cat->children as $item)
+                        @if ($item->children)
+                            @foreach ($item->children as $item)
                             <tr>
                                 <td></td>
                                 <td><i data-feather="corner-down-right"></i> {{ $item->name }}</td>
                                 <td>{{ $item->description ?? 'N/A' }}</td>
                             </tr>
+                            @if ($item->children)
+                                @foreach ($item->children as $item)
+                                <tr>
+                                    <td></td>
+                                    <td><i class="ml-4" data-feather="corner-down-right"></i> {{ $item->name }}</td>
+                                    <td>{{ $item->description ?? 'N/A' }}</td>
+                                </tr>
+                                @endforeach
+                            @endif
                             @endforeach
                         @endif
                     @endforeach

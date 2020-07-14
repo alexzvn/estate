@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Location\VietNam\District;
-use App\Models\Location\VietNam\Province;
-use App\Models\Location\VietNam\Ward;
+use App\Models\Location\District;
+use App\Models\Location\Province;
+use App\Models\Location\Ward;
 
 $address = json_decode(file_get_contents(base_path('address.json')));
 

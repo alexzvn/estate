@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
-use App\Enums\Role;
-use Jenssegers\Mongodb\Auth\User as Authenticatable;
+use App\Enums\Role as Type;
+use App\Models\Traits\CanFilter;
+use App\Models\Traits\CanVerifyPhone;
 use Maklad\Permission\Traits\HasRoles;
+use App\Contracts\Auth\MustVerifyPhone;
+use Jenssegers\Mongodb\Eloquent\Builder;
+use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
 // use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyPhone
 {
-    use HasRoles;
-    
+    use HasRoles, CanVerifyPhone, CanFilter;
+
     /**
      * Define timeout for recent session in minutes
      * Used for check only one auth session at time
@@ -43,6 +47,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'phone_verified_at' => 'datetime'
     ];
 
     protected $dates = [
@@ -56,7 +61,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->hasRole(Role::SuperAdmin);
+        return $this->hasRole(Type::SuperAdmin);
     }
 
     public function hasDifferenceOnline()
@@ -66,5 +71,17 @@ class User extends Authenticatable
             $this->session_id !== request()->session()->getId() &&
             now()->lessThan($this->last_seen->addMinutes(self::SESSION_TIMEOUT))
         );
+    }
+
+    protected function filterRoles(Builder $builder, $roles)
+    {
+        $roles = is_string($roles) ? explode(',', $roles) : $roles;
+
+        return $builder->whereHas('roles', function (Builder $builder) use ($roles)
+        {
+            foreach ($roles as $role) {
+                $builder->orWhere('_id', $role);
+            }
+        });
     }
 }

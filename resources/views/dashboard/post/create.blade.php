@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="col-md-12">
-    <form class="row" action="" method="post">
+    <form class="row" action="{{ route('manager.post.store') }}" method="post">
         <div class="col-md-9">
             <div class="statbox widget box box-shadow">
                 <div class="widget-header">
@@ -47,9 +47,9 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
-                              <label for="roses_percent">Hoa Hồng</label>
+                              <label for="commission">Hoa Hồng</label>
                               <input type="text"
-                                class="form-control" name="roses_percent" id="roses_percent" placeholder="" step="1" value="" min="0" max="100">
+                                class="form-control" name="commission" id="commission" placeholder="" step="1" value="" min="0" max="100">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -115,7 +115,7 @@
                     <div class="custom-file-container" data-upload-id="myFirstImage">
                         <label>Chọn ảnh đại diện <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image">x</a></label>
                         <label class="custom-file-container__custom-file" >
-                            <input type="file" class="custom-file-container__custom-file__custom-file-input" accept="image/*">
+                            <input type="file" name="avatar" class="custom-file-container__custom-file__custom-file-input" accept="image/*">
                             <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
                             <span class="custom-file-container__custom-file__custom-file-control"></span>
                         </label>
@@ -138,9 +138,9 @@
                     <div class="form-group input-group-sm">
                       <label for="status">Trạng thái</label>
                       <select class="form-control" name="status" id="status">
-                        <option>Bản nháp</option>
-                        <option>Chờ duyệt</option>
-                        <option>Xuất bản</option>
+                        <option value="0">Bản nháp</option>
+                        <option value="1">Chờ duyệt</option>
+                        <option value="2">Xuất bản</option>
                       </select>
                     </div>
 

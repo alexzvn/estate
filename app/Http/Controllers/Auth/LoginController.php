@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Enums\Role;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Repository\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -95,7 +95,7 @@ class LoginController extends Controller
         }
     }
 
-    protected function storeSessionId(Request $request, User $user)
+    protected function storeSessionId(Request $request, $user)
     {
         $user->forceFill(['session_id' => $request->session()->getId()])->save();
     }

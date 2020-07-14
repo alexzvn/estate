@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Location\VietNam;
+namespace App\Models\Location;
 
 use Jenssegers\Mongodb\Eloquent\Model;
 

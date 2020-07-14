@@ -19,6 +19,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
     <link href="{{ asset('dashboard/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('dashboard/assets/css/plugins.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('dashboard/plugins/notification/snackbar/snackbar.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
@@ -26,6 +27,11 @@
     <style>
         .layout-px-spacing {
             min-height: calc(100vh - 166px)!important;
+        }
+
+        .form-group label, label {
+            font-size: 16px;
+            color: #161a2d;
         }
     </style>
 
@@ -84,6 +90,7 @@
     <script src="{{ asset('dashboard/bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('dashboard/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('dashboard/plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('dashboard/plugins/notification/snackbar/snackbar.min.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/app.js') }}"></script>
     <script>
         $(document).ready(function() {
@@ -96,6 +103,7 @@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     <script src="{{ asset('dashboard/plugins/font-icons/feather/feather.min.js') }}"></script>
     <script>feather.replace();</script>
+    @include('dashboard.layouts.alert')
     @stack('script')
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 </body>

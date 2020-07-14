@@ -85,11 +85,11 @@
                         </a>
                         <ul class="collapse submenu list-unstyled @active('manager.user', 'show')" id="submenu2" data-parent="#accordionExample">
                             <li>
-                                <a href="javascript:void(0);"> Tất cả </a>
+                                <a href="{{ route('manager.user') }}"> Tất cả </a>
                             </li>
                             @foreach ($roles as $item)
                             <li>
-                                <a href="javascript:void(0);"> {{ $item->name }} </a>
+                                <a href="{{ route('manager.user') . "?roles=$item->id" }}"> {{ $item->name }} </a>
                             </li>
                             @endforeach
                         </ul>

@@ -18,13 +18,13 @@ trait CanFilter
      */
     protected $filterable = [];
 
-    public function scopeFilter(Builder $query, Request $request)
+    public function scopeFilterRequest(Builder $query, Request $request)
     {
         foreach ($request->all() as $field => $value) {
 
             if ($value === '') continue;
 
-            $method = 'filter' . Str::studly($value);
+            $method = 'filter' . Str::studly($field);
 
             if (method_exists($this, $method)) {
                 $this->$method($query, $value);
