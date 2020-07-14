@@ -45,31 +45,21 @@ function rolesToString($roles) {
                             <td>{{ $user->phone }}</td>
                             <td>{{ rolesToString($user->roles) }}</td>
                             <td>
-                                <i class="role-remove t-icon t-hover-icon" data-feather="trash-2" data-id="{{ $user->id }}"></i>
-                                <i class="role-edit t-icon t-hover-icon" data-feather="edit" data-id="{{ $user->id }}"></i>
+                                <a href="{{ route('manager.user.view', ['id' => $user->id]) }}">
+                                    <i class="role-edit t-icon t-hover-icon" data-feather="edit"></i>
+                                </a>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
 
-                {!! $users->appends($_GET)->render() !!}
+                <div class="d-flex justify-content-center">
+                    {!! $users->appends($_GET)->render() !!}
+                </div>
             </div>
 
         </div>
     </div>
 </div>
 @endsection
-
-@push('script')
-<script>
-    $(document).ready(() => {
-        $('.role-remove').each(function () {
-            var $this = $(this);
-            $this.on("click", function () {
-                alert($(this).data('id'));
-            });
-        });
-    });
-</script>
-@endpush
