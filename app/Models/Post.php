@@ -38,7 +38,7 @@ class Post extends Model
 
     public function getMetas()
     {
-        return array_reduce($this->metas, function ($carry, $item)
+        return ($this->metas ?? collect())->reduce(function ($carry, $item)
         {
             $carry->{$item->name} = $item->value;
             return $carry;
