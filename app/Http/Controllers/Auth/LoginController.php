@@ -95,7 +95,7 @@ class LoginController extends Controller
         }
     }
 
-    protected function storeSessionId(Request $request, User $user)
+    protected function storeSessionId(Request $request, $user)
     {
         $user->forceFill(['session_id' => $request->session()->getId()])->save();
     }
