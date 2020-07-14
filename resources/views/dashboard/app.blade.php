@@ -27,6 +27,11 @@
         .layout-px-spacing {
             min-height: calc(100vh - 166px)!important;
         }
+
+        .form-group label, label {
+            font-size: 16px;
+            color: #161a2d;
+        }
     </style>
 
     @stack('style')
