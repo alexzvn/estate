@@ -84,4 +84,13 @@ class User extends Authenticatable implements MustVerifyPhone
             }
         });
     }
+
+    protected function filterPhone(Builder $builder, $phone)
+    {
+        if (preg_match('/^[0-9]+$/', $phone)) {
+            return $builder->where('phone', 'like', "%$phone%");
+        }
+
+        return $builder->where('phone', $phone);
+    }
 }
