@@ -24,7 +24,7 @@ trait CanFilter
 
             if ($value === '') continue;
 
-            $method = 'filter' . Str::studly($value);
+            $method = 'filter' . Str::studly($field);
 
             if (method_exists($this, $method)) {
                 $this->$method($query, $value);
