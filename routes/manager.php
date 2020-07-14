@@ -44,8 +44,9 @@ Route::group(['prefix' => 'category', 'namespace' => 'Manager\Category'], functi
 
 Route::group(['prefix' => 'user', 'namespace' => 'Manager\User'], function () {
     Route::get('/', 'UserController@index')->name('manager.user');
-    Route::get('/create', 'UserController@index')->name('manager.user.create');
-    Route::get('/{id}/view', 'UserController@index')->name('manager.user.view');
-    Route::post('/{id}/update', 'UserController@index')->name('manager.user.update');
-    Route::get('/{id}/delete', 'UserController@index')->name('manager.user.delete');
+    Route::get('/create', 'UserController@create')->name('manager.user.create');
+    Route::get('/{id}', 'UserController@edit')->name('manager.user.view');
+    Route::post('/{id}/update', 'UserController@update')->name('manager.user.update');
+    Route::post('/{id}/delete', 'UserController@delete')->name('manager.user.delete');
+    Route::get('/{id}/verify/phone', 'UserController@verifyPhone')->name('manager.user.verify.phone');
 });
