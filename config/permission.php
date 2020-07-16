@@ -77,6 +77,9 @@ return [
             '*' => 'Tất cả quyền hạn',
 
             'login.multiple.devices' => 'Đăng nhập nhiều thiết bị',
+            'post.province.access.*' => 'Xem bài bất kỳ thành phố',
+            // 'post.district.access.*' => 'Xem bài từ bất kỳ Quận huyện',
+            'post.category.access.*' => 'Xem bài bất kỳ danh mục',
 
             /**
              * ----------------------------------------------
@@ -104,6 +107,12 @@ return [
             'manager.user.create' => 'Tạo mới',
             'manager.user.modify' => 'Chỉnh sửa',
             'manager.user.delete' => 'Xóa',
+
+            'manager.customer.view'        => 'Xem thông tin',
+            'manager.customer.view.all'    => 'Xem khách từ bất kỳ thành phố',
+            'manager.customer.update'      => 'Cập nhật thông tin',
+            'manager.customer.assign.role' => 'Gán quyền cho khách',
+            'manager.customer.create'      => 'Tạo tài khoản mới',
 
             'manager.role.view'   => 'Xem',
             'manager.role.create' => 'Tạo mới',
@@ -167,10 +176,21 @@ return [
                     'manager.staff.delete',
                 ]
             ],[
+                'name' => 'Quản lý khách hàng',
+                'permissions' => [
+                    'manager.customer.view',
+                    'manager.customer.view.all',
+                    'manager.customer.update',
+                    'manager.customer.assign.role',
+                    'manager.customer.create',
+                ]
+            ],[
                 'name' => 'Khác',
                 'permissions' => [
                     'manager.dashboard.access',
-                    'login.multiple.devices'
+                    'login.multiple.devices',
+                    'post.province.access.*',
+                    'post.category.access.*'
                 ]
             ]
         ],
