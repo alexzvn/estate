@@ -64,6 +64,13 @@ class User extends Authenticatable implements MustVerifyPhone
         return $this->hasRole(Type::SuperAdmin);
     }
 
+    public function markPhoneAsNotVerified()
+    {
+        return $this->forceFill([
+            'phone_verified_at' => null,
+        ])->save();
+    }
+
     public function hasDifferenceOnline()
     {
         return (

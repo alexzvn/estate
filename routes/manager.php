@@ -49,4 +49,5 @@ Route::group(['prefix' => 'user', 'namespace' => 'Manager\User'], function () {
     Route::post('/{id}/update', 'UserController@update')->name('manager.user.update');
     Route::post('/{id}/delete', 'UserController@delete')->name('manager.user.delete');
     Route::get('/{id}/verify/phone', 'UserController@verifyPhone')->name('manager.user.verify.phone');
+    Route::get('/{id}/unverified/phone', 'UserController@unverifiedPhone')->name('manager.user.unverified.phone');
 });
