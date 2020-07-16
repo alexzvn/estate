@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller as BaseController;
-use App\Models\Role;
-use Illuminate\Http\Request;
+use App\Repository\Role;
 
 class Controller extends BaseController
 {
     public function __construct() {
-        view()->share('roles', Role::all());
+
+        $roles = Role::all();
+
+        view()->share('roles', $roles);
+        view()->share('customerRoles', $roles->filter(function ($role) {
+            return $role->customer;
+        }));
     }
 }
