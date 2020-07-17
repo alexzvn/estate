@@ -3,15 +3,19 @@
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
 @endpush
 
+@php
+    $meta = $post->meta;
+@endphp
+
 @section('content')
 <div class="col-md-12">
-    <form class="row" action="{{ route('manager.post.store') }}" method="post">
+    <form class="row" action="{{ route('manager.post.update', ['id' => $post->id]) }}" method="post">
         <div class="col-md-9">
             <div class="statbox widget box box-shadow">
                 <div class="widget-header">
                     <div class="row">
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Tạo tin mới</h4>
+                            <h4>Chỉnh sửa bài viết</h4>
                         </div>
                     </div>
                 </div>
@@ -20,11 +24,11 @@
                     <div class="form-group input-group-sm">
                         <label for="title">Tiêu đề</label>
                         <input type="text"
-                        class="form-control" name="title" id="title" aria-describedby="title" placeholder="Tiêu đề tin" required>
+                        class="form-control" value="{{ $post->title }}" name="title" id="title" aria-describedby="title" placeholder="Tiêu đề tin" required>
                     </div>
                     <div class="form-group">
                         <label for="post_content">Nội dung</label>
-                        <textarea class="form-control" name="post_content" id="post_content" rows="3"></textarea>
+                        <textarea class="form-control" name="post_content" id="post_content" rows="3">{!! $post->content !!}</textarea>
                     </div>
                 </div>
             </div>
@@ -42,21 +46,21 @@
                             <div class="form-group input-group-sm">
                               <label for="price">Giá tiền</label>
                               <input type="text"
-                                class="form-control" name="price" id="price" placeholder="Giá tin" required>
+                                class="form-control" value="{{ $meta->price->value ?? '' }}" name="price" id="price" placeholder="Giá tin" required>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                               <label for="commission">Hoa Hồng</label>
                               <input type="text"
-                                class="form-control" name="commission" id="commission" placeholder="" step="1" value="" min="0" max="100">
+                                class="form-control" value="{{ $meta->commission->value ?? '' }}" name="commission" id="commission" placeholder="" step="1" value="" min="0" max="100">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                                 <label for="phone">Số điện thoại</label>
                                 <input type="text"
-                                  class="form-control" name="phone" id="phone" placeholder="0355...." required>
+                                  class="form-control" value="{{ $meta->phone->value ?? '' }}" name="phone" id="phone" placeholder="0355...." required>
                               </div>
                         </div>
                     </div>
@@ -69,12 +73,12 @@
                                   @foreach ($categories as $item)
                                     @if (!$item->children || count($item->children) < 1)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @continue
-                                    @endif
-                                    <option value="{{ $item->id }}" disabled style="font-weight: bold; color: #0e1726;"><strong> {{ $item->name }} </strong></option>
-                                    @foreach ($item->children as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
+                                    @else
+                                        <option value="{{ $item->id }}" disabled style="font-weight: bold; color: #0e1726;"><strong> {{ $item->name }} </strong></option>
+                                        @foreach ($item->children as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    @endUnless
                                   @endforeach
                                 </select>
                             </div>
@@ -86,7 +90,7 @@
                                 <select class="form-control" name="province" id="province">
                                     <option value="" selected>Trống</option>
                                     @foreach ($provinces as $province)
-                                    <option value="{{ $province->id }}">{{ $province->name }}</option>
+                                    <option value="{{ $province->id }}" {{ $meta->province->value == $province->id ? 'selected' :'' }}>{{ $province->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -97,6 +101,7 @@
                                 <label for="district">Quận/huyện</label>
                                 <select class="form-control" name="district" id="district">
                                     <option value="" selected>Trống</option>
+                                    
                                 </select>
                             </div>
                         </div>
@@ -144,7 +149,7 @@
                       </select>
                     </div>
 
-                    <button type="submit" class="btn btn-success"><i data-feather="plus"></i> Tạo mới</button>
+                    <button type="submit" class="btn btn-primary float-right">Cập nhật</button>
                 </div>
             </div>
         </div>

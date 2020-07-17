@@ -29,9 +29,10 @@ Route::group(['prefix' => 'post', 'namespace' => 'Manager\Post'], function () {
     Route::get('/', 'PostController@index')->name('manager.post');
     Route::get('/create', 'PostController@create')->name('manager.post.create');
     Route::post('/store', 'PostController@store')->name('manager.post.store');
-    Route::get('/{id}/view', 'PostController@index')->name('manager.post.view');
-    Route::post('/{id}/update', 'PostController@index')->name('manager.post.update');
-    Route::get('/{id}/delete', 'PostController@index')->name('manager.post.delete');
+    Route::get('/{id}/view', 'PostController@view')->name('manager.post.view');
+    Route::post('/{id}/update', 'PostController@update')->name('manager.post.update');
+    Route::get('/{id}/delete', 'PostController@delete')->name('manager.post.delete');
+    Route::get('/{id}/delete/force', 'PostController@forceDelete')->name('manager.post.delete.force');
 });
 
 Route::group(['prefix' => 'category', 'namespace' => 'Manager\Category'], function () {

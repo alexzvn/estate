@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\EmptyClass;
+use Illuminate\Support\Str;
+use App\Enums\PostMeta as Meta;
 use App\Models\Traits\CanFilter;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
-use App\Enums\PostMeta as Meta;
 
 class Post extends Model
 {
@@ -36,13 +37,19 @@ class Post extends Model
         return $this->hasMany(Category::class);
     }
 
-    public function getMetas()
+    public function loadMeta()
     {
-        return ($this->metas ?? collect())->reduce(function ($carry, $item)
+        $metaEnum   = collect(Meta::toArray())->flip();
+        $this->meta = new EmptyClass;
+
+        $this->metas->each(function ($meta) use ($metaEnum)
         {
-            $carry->{$item->name} = $item->value;
-            return $carry;
-        }, new EmptyClass);
+            if (isset($metaEnum[$meta->name])) {
+                $this->meta->{Str::camel($metaEnum[$meta->name])} = $meta;
+            }
+        });
+
+        return $this;
     }
 
     public function filterProvince(Builder $builder, $value)
