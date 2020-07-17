@@ -9,6 +9,6 @@ function echoActiveIf($expression, $active = 'active')
     }
 
     if (is_string($expression)) {
-        echo request()->route()->getName() === $expression ? $active : '';
+        echo request()->routeIs($expression) ? $active : '';
     }
 }
