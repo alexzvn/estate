@@ -16,12 +16,25 @@ use Mews\Purifier\Facades\Purifier;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('dashboard.post.list', [
-            'meta' => PostMeta::class,
-            'posts' => Post::with(['metas', 'categories'])->select(['name', 'title'])->paginate(20)
-        ]);
+        $posts = Post::with(['metas.province', 'categories'])
+            ->select(['name', 'title'])
+            ->filterRequest($request)
+            ->paginate(20);
+
+        return view('dashboard.post.list', compact('posts'));
+    }
+
+    public function trashed(Request $request)
+    {
+        $posts = Post::onlyTrashed()
+            ->with(['metas.province', 'categories'])
+            ->select(['name', 'title'])
+            ->filterRequest($request)
+            ->paginate(20);
+
+        return view('dashboard.post.list', compact('posts'));
     }
 
     public function view(string $id, Post $post)

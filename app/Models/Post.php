@@ -83,4 +83,9 @@ class Post extends Model
             $q->where('name', Meta::Street)->where('value', $value);
         });
     }
+
+    public function filterStatus(Builder $builder, $value)
+    {
+        return $builder->where('status', (int) $value);
+    }
 }
