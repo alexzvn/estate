@@ -18,10 +18,11 @@ Route::get('/', 'Manager\ManagerController@index')->name('manager');
 
 Route::group(['prefix' => 'role', 'namespace' => 'Manager\Role'], function () {
     Route::get('/', 'RoleController@index')->name('manager.role');
-    Route::get('/create', 'RoleController@index')->name('manager.role.create');
-    Route::get('/{id}/view', 'RoleController@index')->name('manager.role.view');
-    Route::post('/{id}/update', 'RoleController@index')->name('manager.role.update');
-    Route::get('/{id}/delete', 'RoleController@index')->name('manager.role.delete');
+    Route::get('/create', 'RoleController@create')->name('manager.role.create');
+    Route::post('/store', 'RoleController@store')->name('manager.role.store');
+    Route::get('/{id}/view', 'RoleController@view')->name('manager.role.view');
+    Route::post('/{id}/update', 'RoleController@update')->name('manager.role.update');
+    Route::post('/{id}/delete', 'RoleController@delete')->name('manager.role.delete');
 });
 
 Route::group(['prefix' => 'post', 'namespace' => 'Manager\Post'], function () {

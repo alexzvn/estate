@@ -8,7 +8,7 @@
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                     <h4>
                         Danh sách vai trò 
-                        <button class="btn btn-success rounded-circle"><i data-feather="plus"></i></button>
+                        <a href="{{ route('manager.role.create') }}" class="btn btn-success rounded-circle"><i data-feather="plus"></i></a>
                     </h4>
                 </div>
             </div>
@@ -29,8 +29,9 @@
                             <td class="text-center" >{{ $loop->index }}</td>
                             <td>{{ $role->name }}</td>
                             <td>
-                                <i class="role-remove t-icon t-hover-icon" data-feather="trash-2" data-id="{{ $role->id }}"></i>
-                                <i class="role-edit t-icon t-hover-icon" data-feather="edit" data-id="{{ $role->id }}"></i>
+                                <a href="{{ route('manager.role.view', ['id' => $role->id]) }}">
+                                    <i class="t-icon t-hover-icon" data-feather="edit" data-id="{{ $role->id }}"></i>
+                                </a>
                             </td>
                         </tr>
                         @endforeach
@@ -42,16 +43,3 @@
     </div>
 </div>
 @endsection
-
-@push('script')
-<script>
-    $(document).ready(() => {
-        $('.role-remove').each(function () {
-            var $this = $(this);
-            $this.on("click", function () {
-                alert($(this).data('id'));
-            });
-        });
-    });
-</script>
-@endpush
