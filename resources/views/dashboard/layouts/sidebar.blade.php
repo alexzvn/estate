@@ -33,12 +33,12 @@
                                 <i data-feather="chevron-right"></i>
                             </div>
                         </a>
-                        <ul class="collapse submenu list-unstyled @active('m', 'show')" id="submenu" data-parent="#accordionExample">
+                        <ul class="collapse submenu list-unstyled @active(request()->routeIs('manager.post*'), 'show')" id="submenu" data-parent="#accordionExample">
                             <li>
                                 <a href="{{ route('manager.post.create') }}" style="color: red">Tạo tin mới</a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);"> Tin xin phí </a>
+                                <a href="{{ route('manager.post') }}?status=2"> Tin xin phí </a>
                                 {{-- Duyệt từ tin crawl --}}
                             </li>
                             <li>
@@ -50,8 +50,11 @@
                                 {{-- Tin ảnh collection --}}
                             </li>
                             <li>
-                                <a href="javascript:void(0);">Tin web online </a>
+                                <a href="{{ route('manager.post') }}?status=1">Tin web online </a>
                                 {{-- Tin crawl từ trang khác --}}
+                            </li>
+                            <li>
+                                <a href="{{ route('manager.post.trashed') }}">Tin đã xóa </a>
                             </li>
                         </ul>
                     </li>

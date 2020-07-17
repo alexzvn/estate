@@ -68,21 +68,21 @@
                     @foreach ($categories as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td style="font-weight: bold;">{{ $item->name }}</td>
+                            <td style="font-weight: bold;"> <a href="{{ route('manager.category.view', ['id' => $item->id]) }}">{{ $item->name }}</a></td>
                             <td>{{ $item->description ?? 'N/A' }}</td>
                         </tr>
                         @if ($item->children)
                             @foreach ($item->children as $item)
                             <tr>
                                 <td></td>
-                                <td><i data-feather="corner-down-right"></i> {{ $item->name }}</td>
+                                <td><i data-feather="corner-down-right"></i> <a href="{{ route('manager.category.view', ['id' => $item->id]) }}">{{ $item->name }}</a></td>
                                 <td>{{ $item->description ?? 'N/A' }}</td>
                             </tr>
                             @if ($item->children)
                                 @foreach ($item->children as $item)
                                 <tr>
                                     <td></td>
-                                    <td><i class="ml-4" data-feather="corner-down-right"></i> {{ $item->name }}</td>
+                                    <td><i class="ml-4" data-feather="corner-down-right"></i> <a href="{{ route('manager.category.view', ['id' => $item->id]) }}">{{ $item->name }}</a></td>
                                     <td>{{ $item->description ?? 'N/A' }}</td>
                                 </tr>
                                 @endforeach

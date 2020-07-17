@@ -39,4 +39,11 @@ class Category extends Model
     {
         return $this->hasMany(self::class, 'parent_id');
     }
+
+    public function removeChildren()
+    {
+        foreach ($this->children()->get() as $child) {
+            $child->forceFill(['parent_id' => null])->save();
+        }
+    }
 }

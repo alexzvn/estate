@@ -2,6 +2,7 @@
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('dashboard/plugins/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard/assets/css/elements/tooltip.css') }}">
 @endpush
 @push('meta')
     <meta name="user_id" content="{{ $user->id }}">
@@ -31,9 +32,9 @@
                       <label for="phone">
                           Số điện thoại
                             @if (! $user->hasVerifiedPhone())
-                            <a href="{{ route('manager.user.verify.phone', ['id' => $user->id]) }}" id="verify-phone" class="badge badge-primary">Xác thực SĐT</a>
+                            <a href="{{ route('manager.user.verify.phone', ['id' => $user->id]) }}" class="badge badge-warning bs-tooltip" title="Nhấn để xác thực SĐT">Chưa xác thực</a>
                             @else
-                            <span class="badge badge-success"> Đã xác thực</span>
+                            <a href="{{ route('manager.user.unverified.phone', ['id' => $user->id]) }}" class="badge badge-success bs-tooltip" title="Nhấn để bỏ xác thực SĐT"> Đã xác thực</a>
                             @endif
                       </label>
                       <input type="text" value="{{ $user->phone }}" name="phone" id="phone" class="form-control" placeholder="Số điện thoại">
@@ -94,6 +95,7 @@
 @push('script')
 <script src="{{ asset('dashboard/plugins/select2/select2.min.js') }}"></script>
 <script src="{{ asset('dashboard/plugins/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/elements/tooltip.js') }}"></script>
 <script>
 $(".tagging").select2({
     tags: true
@@ -102,14 +104,6 @@ $(".tagging").select2({
 $('#submit').click(function () {
     if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
         document.getElementById('update-form').submit();
-    }
-});
-
-$('#verify-phone').click(function (e) {
-    if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
-        document.getElementById('update-form').submit();
-    } else {
-        e.preventDefault();
     }
 });
 

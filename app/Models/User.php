@@ -64,6 +64,13 @@ class User extends Authenticatable implements MustVerifyPhone
         return $this->hasRole(Type::SuperAdmin);
     }
 
+    public function markPhoneAsNotVerified()
+    {
+        return $this->forceFill([
+            'phone_verified_at' => null,
+        ])->save();
+    }
+
     public function hasDifferenceOnline()
     {
         return (
@@ -83,5 +90,14 @@ class User extends Authenticatable implements MustVerifyPhone
                 $builder->orWhere('_id', $role);
             }
         });
+    }
+
+    protected function filterPhone(Builder $builder, $phone)
+    {
+        if (preg_match('/^[0-9]+$/', $phone)) {
+            return $builder->where('phone', 'like', "%$phone%");
+        }
+
+        return $builder->where('phone', $phone);
     }
 }

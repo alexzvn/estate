@@ -79,4 +79,18 @@ class UserController extends Controller
 
         return back()->with('success', 'Xác thực số điện thoại thành công');
     }
+
+    public function unverifiedPhone(string $id, User $user)
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = $user->findOrFail($id);
+
+        if ($user->hasVerifiedPhone()) {
+            $user->markPhoneAsNotVerified();
+        }
+
+        return back()->with('success', 'Bỏ xác thực thành công');
+    }
 }

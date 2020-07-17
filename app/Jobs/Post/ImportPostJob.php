@@ -51,13 +51,16 @@ class ImportPostJob implements ShouldQueue
 
         $date = array_reverse(explode('/', $this->post->createDate));
 
-        $post = $post->create([
+        $post = $post->forceFill([
             'title'      => $this->post->title ?? '',
             'content'    => Purifier::clean($this->post->content) ?? '',
             'hash'       => $this->post->hash,
             'publish_at' => Carbon::createFromDate(...$date),
             'status'     => PostStatus::Pending
         ]);
+
+        $post->content = nl2br($post->content);
+        $post->save();
 
         $post->metas()->saveMany($this->makeMetas());
 
