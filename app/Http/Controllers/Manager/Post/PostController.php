@@ -46,7 +46,7 @@ class PostController extends Controller
             'post' => $post,
             'provinces' => $provinces,
             'districts' => District::all(),
-            'categories' => Category::with('children.chilred.children')->parentOnly()->get(),
+            'categories' => Category::with('children.children.children')->parentOnly()->get(),
         ]);
     }
 
@@ -56,7 +56,7 @@ class PostController extends Controller
 
         return view('dashboard.post.create', [
             'provinces' => Province::with('districts')->active()->get(['name']),
-            'categories' => Category::with('children.chilred.children')->parentOnly()->get(),
+            'categories' => Category::with('children.children.children')->parentOnly()->get(),
         ]);
     }
 
