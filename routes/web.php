@@ -13,14 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    if (request()->user()) {
-        return redirect('/home');
-    }
-
-    return view('welcome');
-});
+Route::get('/', 'PublicController@index');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'Customer\HomeController@index')->name('home');
+Route::get('/post/{id}/view', 'Customer\HomeController@viewPost')->name('home.post.view');

@@ -187,6 +187,7 @@ return [
             ],[
                 'name' => 'Khác',
                 'permissions' => [
+                    '*',
                     'manager.dashboard.access',
                     'login.multiple.devices',
                     'post.province.access.*',

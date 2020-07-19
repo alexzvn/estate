@@ -8,7 +8,7 @@
             <div class="border rounded">
                 <ul class="nav nav-tabs nav-custom-tabs mx-3" id="myTab" role="tablist">
                     <li class="nav-item">
-                      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#section-1" role="tab">Home</a>
+                      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#section-1" role="tab">Cho Thuê</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" id="profile-tab" data-toggle="tab" href="#section-2" role="tab">Profile</a>
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="col-1">
-                            <button class="btn btn-light btn-lg w-100"><i class="fas fa-filter"></i></button>
+                            <button class="btn btn-light btn-lg w-100"><i class="fa fa-filter"></i></button>
                         </div>
 
                     </div>
@@ -41,38 +41,16 @@
             <div class="col-md-9" id="myTabContent">
                 <div class="tab-content" >
                     <div class="tab-pane fade show active" id="section-1" role="tabpanel">
-                        <table class="table table-hover">
-                            <thead>
-                              <tr>
-                                <th scope="col" width="6%">TT</th>
-                                <th scope="col" width="75%">Tiêu đề</th>
-                                <th scope="col">Giá</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              @foreach (range(1, 20) as $item)
-                              <tr>
-                                <th class="text-muted" scope="row">{{ $loop->iteration }}</th>
-                                <td>
-                                    <p class="mb-0"><strong>Integer ultrices enim aliquam ultrices varius. In hac habitasse platea dictumst.</strong> <br>
-                                    <span class="text-muted">
-                                        <strong>Loại: </strong> Cho thuê chung cư
-                                        - Mỹ đình
-                                        - Ngày 03/07/2019
-                                    </span>
-                                    </p>
-                                </td>
-                                <td>Otto</td>
-                              </tr>
-                              @endforeach
-                            </tbody>
-                          </table>
+                        @include('customer.components.posts-table', compact('posts'))
+                        {{ $posts->appends($_GET)->render() }}
                     </div>
                     <div class="tab-pane fade" id="section-2" role="tabpanel">
-
+                        @include('customer.components.posts-table', compact('posts'))
+                        {{ $posts->appends($_GET)->render() }}
                     </div>
                     <div class="tab-pane fade" id="section-3" role="tabpanel">
-
+                        @include('customer.components.posts-table', compact('posts'))
+                        {{ $posts->appends($_GET)->render() }}
                     </div>
                 </div>
             </div>
@@ -85,10 +63,51 @@
             </div>
         </div>
     </div>
+</div>
 
-    
+<!-- Modal -->
+<div class="modal fade modal-" id="post-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin nguồn chính chủ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body" id="post-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
+
+@push('script')
+<script>
+$(document).ready(function () {
+    $('tr[data-post-id]').on('click', function () {
+        let body = $('#post-body');
+        let id = $(this).data('post-id');
+
+        body.html('');
+        $('#post-modal').modal();
+
+        fetch(`/post/${id}/view`)
+        .then(res => {
+            if (res.ok) {
+                return res.text();
+            }
+        }).then(response => {
+            body.html(response);
+        });
+    });
+});
+</script>
+@endpush
 
 @push('style')
 <style>

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\EmptyClass;
 use Illuminate\Support\Str;
 use App\Enums\PostMeta as Meta;
+use App\Enums\PostStatus;
 use App\Models\Traits\CanFilter;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
@@ -50,6 +51,11 @@ class Post extends Model
         });
 
         return $this;
+    }
+
+    public function scopePublished(Builder $builder)
+    {
+        return $builder->where('status', (string) PostStatus::Published)->whereNotNull('publish_at');
     }
 
     public function filterProvince(Builder $builder, $value)
