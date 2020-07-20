@@ -35,7 +35,7 @@
                             <td>{{ $loop->index }}</td>
                             <td style="font-weight: bold">{{ $post->title }}</td>
                             <td>{{ $meta->province->province->name ?? 'N/a' }}</td>
-                            <td>{{ $meta->categories[0]->name ?? 'N/a' }}</td>
+                            <td>{{ $post->categories[0]->name ?? 'N/a' }}</td>
                             <td>{{ $meta->phone->value ?? 'N/a' }}</td>
                             <td>
                                 <a href="{{ route('manager.post.view', ['id' => $post->id]) }}">
