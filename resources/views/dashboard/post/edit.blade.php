@@ -4,7 +4,7 @@
 @endpush
 
 @php
-    $meta = $post->meta;
+    $category = $post->categories[0] ?? null;
 @endphp
 
 @section('content')
@@ -70,13 +70,16 @@
                             <div class="form-group input-group-sm">
                                 <label for="category">Danh mục</label>
                                 <select class="form-control" name="category" id="category">
+                                @php
+                                    $catId = $category->id ?? null;
+                                @endphp
                                   @foreach ($categories as $item)
                                     @if (!$item->children || count($item->children) < 1)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        <option value="{{ $item->id }}" {{ $item->id == $catId ? 'selected' : '' }}>{{ $item->name }}</option>
                                     @else
                                         <option value="{{ $item->id }}" disabled style="font-weight: bold; color: #0e1726;"><strong> {{ $item->name }} </strong></option>
                                         @foreach ($item->children as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        <option value="{{ $item->id }}" {{ $item->id == $catId ? 'selected' : '' }}>{{ $item->name }}</option>
                                         @endforeach
                                     @endUnless
                                   @endforeach
@@ -91,6 +94,11 @@
                                     <option value="" selected>Trống</option>
                                     @foreach ($provinces as $province)
                                     <option value="{{ $province->id }}" {{ $meta->province->value == $province->id ? 'selected' :'' }}>{{ $province->name }}</option>
+                                    @php
+                                        if ($meta->province->value == $province->id) {
+                                            $activeProvince = $province;
+                                        }
+                                    @endphp
                                     @endforeach
                                 </select>
                             </div>
@@ -101,7 +109,11 @@
                                 <label for="district">Quận/huyện</label>
                                 <select class="form-control" name="district" id="district">
                                     <option value="" selected>Trống</option>
-                                    
+                                    @isset($activeProvince)
+                                    @foreach ($activeProvince->districts as $district)
+                                    <option value="{{ $district->id }}" {{ $meta->district->value == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
+                                    @endforeach
+                                    @endisset
                                 </select>
                             </div>
                         </div>
