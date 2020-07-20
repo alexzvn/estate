@@ -11,12 +11,12 @@ use BenSampo\Enum\Enum;
  */
 final class PostStatus extends Enum
 {
-    const Draft     = 0;
+    const Draft     = '0';
 
     /**
      * Waiting post need action from admin
      */
-    const Pending   = 1;
+    const Pending   = '1';
 
-    const Published = 2;
+    const Published = '2';
 }

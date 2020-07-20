@@ -6,21 +6,23 @@ namespace App\Jobs\Post;
 use stdClass;
 use Carbon\Carbon;
 
+use App\Enums\PostMeta;
+use App\Repository\Meta;
+use App\Repository\Post;
+use App\Enums\PostStatus;
+use App\Models\Category as ModelsCategory;
+use Illuminate\Support\Str;
+
+use App\Repository\Category;
+
 use Illuminate\Bus\Queueable;
+use Mews\Purifier\Facades\Purifier;
+use App\Repository\Location\District;
+use App\Repository\Location\Province;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-
-use Mews\Purifier\Facades\Purifier;
-
-use App\Enums\PostMeta;
-use App\Enums\PostStatus;
-use App\Repository\Meta;
-use App\Repository\Post;
-use App\Repository\Category;
-use App\Repository\Location\District;
-use App\Repository\Location\Province;
 
 class ImportPostJob implements ShouldQueue
 {
@@ -61,7 +63,6 @@ class ImportPostJob implements ShouldQueue
 
         $post->content = nl2br($post->content);
         $post->save();
-
         $post->metas()->saveMany($this->makeMetas());
 
         if ($category = $this->getCategory()) {
@@ -84,6 +85,9 @@ class ImportPostJob implements ShouldQueue
 
     protected function getCategory()
     {
-        return Category::where('name', 'regexp', "/{$this->post->category}/")->first();
+        $category = ucfirst(Str::lower($this->post->category));
+        $category = Category::where('name', 'like', "%$category%")->first();
+
+        return $category;
     }
 }

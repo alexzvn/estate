@@ -18,9 +18,11 @@ trait CanFilter
      */
     protected $filterable = [];
 
-    public function scopeFilterRequest(Builder $query, Request $request)
+    public function scopeFilterRequest(Builder $query, $filters)
     {
-        foreach ($request->all() as $field => $value) {
+        $filters = $filters instanceof Request ? $filters->all() : $filters;
+
+        foreach ($filters as $field => $value) {
 
             if ($value === '') continue;
 

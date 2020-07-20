@@ -5,6 +5,7 @@ namespace App\Models;
 use App\EmptyClass;
 use Illuminate\Support\Str;
 use App\Enums\PostMeta as Meta;
+use App\Enums\PostStatus;
 use App\Models\Traits\CanFilter;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
@@ -34,7 +35,7 @@ class Post extends Model
 
     public function categories()
     {
-        return $this->hasMany(Category::class);
+        return $this->belongsToMany(Category::class);
     }
 
     public function loadMeta()
@@ -50,6 +51,11 @@ class Post extends Model
         });
 
         return $this;
+    }
+
+    public function scopePublished(Builder $builder)
+    {
+        return $builder->where('status', (string) PostStatus::Published)->whereNotNull('publish_at');
     }
 
     public function filterProvince(Builder $builder, $value)
@@ -86,6 +92,6 @@ class Post extends Model
 
     public function filterStatus(Builder $builder, $value)
     {
-        return $builder->where('status', (int) $value);
+        return $builder->where('status', $value);
     }
 }

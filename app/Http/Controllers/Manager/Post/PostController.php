@@ -44,6 +44,7 @@ class PostController extends Controller
 
         return view('dashboard.post.edit', [
             'post' => $post,
+            'meta' => $post->meta,
             'provinces' => $provinces,
             'districts' => District::all(),
             'categories' => Category::with('children.children.children')->parentOnly()->get(),

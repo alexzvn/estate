@@ -32,7 +32,7 @@ class UpdatePost extends FormRequest
             'price'    => 'required|regex:/^[0-9,.]+$/',
             'category' => 'required|exists:categories,_id',
             'province' => 'nullable|exists:provinces,_id',
-            'district' => 'nullable|exists:district,_id',
+            'district' => 'nullable|exists:districts,_id',
             'status'   => [
                 'required',
                 Rule::in(PostStatus::getValues())
