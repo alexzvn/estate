@@ -92,6 +92,6 @@ class Post extends Model
 
     public function filterStatus(Builder $builder, $value)
     {
-        return $builder->where('status', (int) $value);
+        return $builder->where('status', $value);
     }
 }
