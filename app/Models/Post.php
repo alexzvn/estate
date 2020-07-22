@@ -7,21 +7,44 @@ use Illuminate\Support\Str;
 use App\Enums\PostMeta as Meta;
 use App\Enums\PostStatus;
 use App\Models\Traits\CanFilter;
+use App\Models\Traits\ElasticquentSearch;
+use Elasticquent\ElasticquentTrait;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use SoftDeletes, CanFilter;
+    use SoftDeletes, CanFilter, ElasticquentTrait;
+    use ElasticquentSearch;
 
     protected $fillable = [
         'content', 'title', 'type', 'status'
     ];
 
+    protected $mappingProperties = [
+        'title' => [
+          'type' => 'text',
+          "analyzer" => "standard",
+        ],
+        'content' => [
+          'type' => 'text',
+          "analyzer" => "standard",
+        ]
+    ];
+
     protected $dates = [
         'publish_at'
     ];
+
+    public function getIndexDocumentData()
+    {
+        $this->getKey();
+        $data = $this->toArray();
+        unset($data['_id']);
+
+        return $data;
+    }
 
     public function user()
     {
@@ -56,6 +79,11 @@ class Post extends Model
     public function scopePublished(Builder $builder)
     {
         return $builder->where('status', (string) PostStatus::Published)->whereNotNull('publish_at');
+    }
+
+    public function filterQuery(Builder $builder, $value)
+    {
+        return $this->scopeFilterSearch($builder, $value);
     }
 
     public function filterProvince(Builder $builder, $value)
