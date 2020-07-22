@@ -11,7 +11,7 @@
         "php": "^7.2.5",
         "bensampo/laravel-enum": "^2.0",
         "boytunghc/laravel-git-hook": "^1.0",
-        "elasticquent/elasticquent": "^1.0",
+        "elasticquent/elasticquent": "dev-master",
         "ezyang/htmlpurifier": "^4.13",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
