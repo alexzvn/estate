@@ -19,14 +19,19 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        $post = Post::withRelation()
+            ->published()
+            ->filterRequest($request)
+            ->select(['title', 'publish_at']);
+
         return view('customer.home', [
-            'posts' => Post::published()->filterRequest($request)->select(['title', 'publish_at'])->paginate(10),
+            'posts' => $post->paginate(10),
         ]);
     }
 
     public function viewPost(string $id)
     {
-        $post = Post::published()->findOrFail($id);
+        $post = Post::withRelation()->published()->findOrFail($id);
 
         return view('customer.components.post-content', [
             'post' => $post,

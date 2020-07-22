@@ -1,5 +1,5 @@
 <table class="table table-hover">
-    <thead>
+    <thead style="background-color: #ececec;">
       <tr>
         <th scope="col" width="6%">TT</th>
         <th scope="col" width="75%">Tiêu đề</th>
@@ -20,11 +20,12 @@
       <tr class="cursor-pointer" data-post-id="{{ $item->id }}">
         <th class="text-muted" scope="row">{{ $loop->iteration + $index }}</th>
         <td>
-            <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ $item->title }}</strong> - {{ $meta->district->district->name ?? '' }} <br>
-            <span class="text-muted">
-                <strong>Loại: </strong> {{ $item->categories[0]->name ?? '' }}
-                - {{ $meta->province->province->name ?? 'N/a' }}
-                - Ngày {{ $item->publish_at ? $item->publish_at->format('d/m/Y') : 'N/a' }}
+            <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ Str::of($item->title)->limit(80) }}</strong> <br>
+
+            <span class="mb-0" style="font-size: 12px;">
+                <strong>Danh mục: </strong> <i>{{ $item->categories[0]->name ?? '' }}</i> <span class="text-muted">|</span>
+                <strong>Quận/huyện: </strong> <i>{{ $meta->district->district->name ?? 'N/a' }}</i> <span class="text-muted">|</span>
+                <strong>Ngày đăng: </strong> <i>{{ $item->publish_at ? $item->publish_at->format('d/m/Y') : 'N/a' }}</i>
             </span>
             </p>
         </td>
