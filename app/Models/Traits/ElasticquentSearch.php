@@ -22,10 +22,6 @@ trait ElasticquentSearch
             return $carry;
         }, []);
 
-        if (! $filter) {
-            return $builder;
-        }
-
         return $builder->whereIn($keyName, $filter);
     }
 
@@ -40,7 +36,7 @@ trait ElasticquentSearch
         $body = $response->json();
 
         if (empty($body['hits']['total']['value'])) {
-            return new ElasticquentResultCollection([]);
+            return new ElasticquentResultCollection([], $body);
         }
 
         foreach ($body['hits']['hits'] as $item) {
