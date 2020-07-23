@@ -24,6 +24,8 @@ class SaveSetting extends FormRequest
     public function rules()
     {
         return [
+            'title' => 'required|string',
+            'role' => 'required|exists:roles,_id',
             'provinces' => 'required|array|exists:provinces,_id',
         ];
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Requests\Manager\SaveSetting;
 use App\Repository\Location\Province;
+use App\Repository\Role;
 use App\Repository\Setting;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,8 @@ class SettingController extends Controller
     public function index()
     {
         return view('dashboard.setting', [
-            'provinces' => Province::all()
+            'provinces' => Province::all(),
+            'roles' => Role::all(),
         ]);
     }
 
@@ -21,7 +23,10 @@ class SettingController extends Controller
         Province::whereIn('_id', $request->provinces)->update(['active' => true]);
         Province::whereNotIn('_id', $request->provinces)->update(['active' => false]);
 
-        $setting->setConfigs($request->only('title'));
+        $setting->setConfigs([
+            'title' => $request->title,
+            'user.role.default' => $request->role,
+        ]);
 
         return redirect(route('manager.setting'))->with('success', 'Cập nhật thành công');
     }

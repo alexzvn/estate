@@ -26,11 +26,22 @@
                         class="form-control" name="title" id="title" value="{{ $setting->title }}" placeholder="">
                     </div>
 
+
+
                     <div class="form-group">
                       <label for="provinces">Chọn khu vực hoạt động</label>
                       <select class="form-control tagging" name="provinces[]" id="provinces" multiple>
                         @foreach ($provinces as $item)
                             <option value="{{ $item->id }}" {{ $item->active ? 'selected' : '' }}>{{ $item->name }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="role">Vai trò mặc định cho tài khoản mới</label>
+                      <select class="form-control" name="role" id="role">
+                        @foreach ($roles as $item)
+                            <option value="{{ $item->id }}" {{ $item->id === $setting->config('user.role.default') ? 'selected' : '' }}>{{ $item->name }}</option>
                         @endforeach
                       </select>
                     </div>
