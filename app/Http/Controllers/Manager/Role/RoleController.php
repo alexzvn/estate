@@ -57,7 +57,7 @@ class RoleController extends Controller
         ]);
 
         $role->save();
-        $role->syncPermissions($this->permissionIdToName($request->permissions));
+        $role->syncPermissions($this->permissionIdToName($request->permissions ?? []));
 
         return redirect(route('manager.role'))
             ->with('success', 'Tạo vai trò mới thành công');
