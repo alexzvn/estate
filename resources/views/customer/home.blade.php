@@ -22,7 +22,7 @@
 
                         <div class="col-md-11">
                             <div class="input-group">
-                                <input type="text" style="border: solid #3490dc;" class="form-control form-control-lg border-right-0" placeholder="Tìm kiếm thông tin trên website">
+                                <input type="text" name="query" value="{{ request('query') }}" style="border: solid #3490dc;" class="form-control form-control-lg border-right-0" placeholder="Tìm kiếm thông tin trên website">
                                 <div class="input-group-append">
                                     <button class="btn btn-lg btn-primary" type="submit">Tìm kiếm</button>
                                 </div>
