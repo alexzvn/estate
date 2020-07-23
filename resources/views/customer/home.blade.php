@@ -54,10 +54,12 @@
             </div>
 
             <div class="col-md-3">
+                @if ($setting->notification)
                 <div class="p-2 text-justify" style="background-color: aliceblue; font-size: 17px; font-family; border-top: 4px solid #9ce8d9 !important;">
                     <h5 class="text-center text-uppercase">Thông Báo</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis quis elit tincidunt, sagittis dolor eget, semper nunc. Phasellus dapibus feugiat odio, non molestie eros placerat at.</p>
+                    <p style="font-size: 16px;">{{ $setting->notification }}</p>
                 </div>
+                @endif
             </div>
         </div>
     </div>

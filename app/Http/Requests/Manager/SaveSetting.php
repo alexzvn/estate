@@ -26,6 +26,7 @@ class SaveSetting extends FormRequest
         return [
             'title' => 'required|string',
             'role' => 'required|exists:roles,_id',
+            'notification' => 'nullable|string',
             'provinces' => 'required|array|exists:provinces,_id',
         ];
     }

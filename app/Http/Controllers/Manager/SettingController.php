@@ -26,6 +26,7 @@ class SettingController extends Controller
         $setting->setConfigs([
             'title' => $request->title,
             'user.role.default' => $request->role,
+            'notification' => $request->notification
         ]);
 
         return redirect(route('manager.setting'))->with('success', 'Cập nhật thành công');
