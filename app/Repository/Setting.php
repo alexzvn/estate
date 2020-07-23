@@ -73,7 +73,7 @@ class Setting extends BaseRepository
      */
     protected function getConfig(string $key)
     {
-        return Cache::tags($this->cacheTags)
+        return Cache::tags(self::$cacheTags)
             ->rememberForever($key, function () use ($key) {
                 return $this->model()->where('key', $key)->first()->value ?? null;
             });
@@ -81,7 +81,7 @@ class Setting extends BaseRepository
 
     protected function loadSetting()
     {
-        Cache::tags($this->cacheTags)
+        Cache::tags(self::$cacheTags)
             ->rememberForever('preload', function () {
                 return $this->model()->where('preload', true)->get();
             })
