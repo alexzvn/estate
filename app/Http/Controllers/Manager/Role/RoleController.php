@@ -42,7 +42,9 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id)->fill($request->only('name'));
 
-        $role->syncPermissions($this->permissionIdToName($request->permissions));
+        if ($request->permissions) {
+            $role->syncPermissions($this->permissionIdToName($request->permissions));
+        }
 
         $role->forceFill(['customer' => (bool) $request->for_customer])->save();
 
@@ -57,7 +59,10 @@ class RoleController extends Controller
         ]);
 
         $role->save();
-        $role->syncPermissions($this->permissionIdToName($request->permissions ?? []));
+
+        if ($request->permissions) {
+            $role->syncPermissions($this->permissionIdToName($request->permissions));
+        }
 
         return redirect(route('manager.role'))
             ->with('success', 'Tạo vai trò mới thành công');
