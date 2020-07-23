@@ -13,25 +13,24 @@
                     <li class="nav-item">
                       <a class="nav-link" id="profile-tab" data-toggle="tab" href="#section-2" role="tab">Cần Thuê</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item d-none">
                       <a class="nav-link" id="contact-tab" data-toggle="tab" href="#section-3" role="tab">Thị Trường</a>
                     </li>
                 </ul>
                 <div class="border-top p-3" style="background-color: #f7f7f7;">
-                    <div class="form-row justify-content-center">
+                    <form action="" method="GET" class="form-row justify-content-center">
 
-                        
                         <div class="col-md-11">
                             <div class="input-group">
-                                <input type="text" style="border: solid #3490dc;" class="form-control form-control-lg border-right-0" placeholder="Tìm kiếm thông tin trên website">
+                                <input type="text" name="query" value="{{ request('query') }}" style="border: solid #3490dc;" class="form-control form-control-lg border-right-0" placeholder="Tìm kiếm thông tin trên website">
                                 <div class="input-group-append">
-                                    <button class="btn btn-lg btn-primary" type="button">Tìm kiếm</button>
+                                    <button class="btn btn-lg btn-primary" type="submit">Tìm kiếm</button>
                                 </div>
                             </div>
                             {{-- <a href="javascript:void(0)">Tìm kiếm nâng cao<i class="fa fa-filter"></i></a> --}}
                         </div>
 
-                    </div>
+                    </form>
 
                 </div>
             </div>
@@ -40,25 +39,27 @@
             <div class="col-md-9" id="myTabContent">
                 <div class="tab-content" >
                     <div class="tab-pane fade show active" id="section-1" role="tabpanel">
-                        @include('customer.components.posts-table', compact('posts'))
-                        {{ $posts->appends($_GET)->render() }}
+                        @include('customer.components.posts-table', ['posts' => $sellPosts])
+                        {{ $sellPosts->appends($_GET)->render() }}
                     </div>
                     <div class="tab-pane fade" id="section-2" role="tabpanel">
+                        @include('customer.components.posts-table', ['posts' => $rentPosts])
+                        {{ $rentPosts->appends($_GET)->render() }}
+                    </div>
+                    {{-- <div class="tab-pane fade" id="section-3" role="tabpanel">
                         @include('customer.components.posts-table', compact('posts'))
                         {{ $posts->appends($_GET)->render() }}
-                    </div>
-                    <div class="tab-pane fade" id="section-3" role="tabpanel">
-                        @include('customer.components.posts-table', compact('posts'))
-                        {{ $posts->appends($_GET)->render() }}
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
             <div class="col-md-3">
+                @if ($setting->notification)
                 <div class="p-2 text-justify" style="background-color: aliceblue; font-size: 17px; font-family; border-top: 4px solid #9ce8d9 !important;">
                     <h5 class="text-center text-uppercase">Thông Báo</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis quis elit tincidunt, sagittis dolor eget, semper nunc. Phasellus dapibus feugiat odio, non molestie eros placerat at.</p>
+                    <p style="font-size: 16px;">{{ $setting->notification }}</p>
                 </div>
+                @endif
             </div>
         </div>
     </div>

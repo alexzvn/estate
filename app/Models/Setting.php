@@ -14,5 +14,5 @@ class Setting extends Model
         'preload' => 'boolean'
     ];
 
-    protected $timestamps = false;
+    public $timestamps = false;
 }

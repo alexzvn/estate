@@ -24,7 +24,7 @@ trait CanFilter
 
         foreach ($filters as $field => $value) {
 
-            if ($value === '') continue;
+            if ($value === '' || is_null($value)) continue;
 
             $method = 'filter' . Str::studly($field);
 

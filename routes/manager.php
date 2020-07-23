@@ -54,3 +54,8 @@ Route::group(['prefix' => 'user', 'namespace' => 'Manager\User'], function () {
     Route::get('/{id}/verify/phone', 'UserController@verifyPhone')->name('manager.user.verify.phone');
     Route::get('/{id}/unverified/phone', 'UserController@unverifiedPhone')->name('manager.user.unverified.phone');
 });
+
+Route::group(['prefix' => 'setting', 'namespace' => 'Manager'], function () {
+    Route::get('/', 'SettingController@index')->name('manager.setting');
+    Route::post('/update', 'SettingController@update')->name('manager.setting.update');
+});

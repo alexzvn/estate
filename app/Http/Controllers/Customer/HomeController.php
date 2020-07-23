@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Http\Controllers\Controller;
 use App\Repository\Post;
+use Illuminate\Support\Str;
+use App\Repository\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
@@ -19,14 +21,42 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $post = Post::withRelation()
+        $sellPosts = $this->defaultQuery($request)
+            ->filterRequest([
+                'categories' => $this->getListCategories('BÁN')
+            ]);
+
+        $rentPosts = $this->defaultQuery($request)
+            ->filterRequest([
+                'categories' => $this->getListCategories('THUÊ')
+            ]);
+
+        return view('customer.home', [
+            'sellPosts' => $sellPosts->paginate(10),
+            'rentPosts' => $rentPosts->paginate(10),
+        ]);
+    }
+
+    public function getListCategories(string $query)
+    {
+        $cat = Category::parentOnly()->where('name', 'like', "%$query%")->first();
+
+        if (! $cat) {
+            return [];
+        }
+
+        return $cat->children()->get()->map(function ($cat)
+        {
+            return $cat->id;
+        });
+    }
+
+    public function defaultQuery(Request $request)
+    {
+        return Post::withRelation()
             ->published()
             ->filterRequest($request)
             ->select(['title', 'publish_at']);
-
-        return view('customer.home', [
-            'posts' => $post->paginate(10),
-        ]);
     }
 
     public function viewPost(string $id)

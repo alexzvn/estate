@@ -11,11 +11,11 @@ use Jenssegers\Mongodb\Eloquent\Builder;
  */
 trait ElasticquentSearch
 {
-    public function scopeFilterSearch(Builder $builder, string $value)
+    public function scopeFilterSearch(Builder $builder, $value = '')
     {
         $keyName = $this->getKeyName();
 
-        $filter = $this->esearch($value)->reduce(function ($carry, $model) use ($keyName)
+        $filter = $this->esearch($value ?? '')->reduce(function ($carry, $model) use ($keyName)
         {
             $carry[] = $model->$keyName;
 
