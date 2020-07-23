@@ -18,20 +18,19 @@
                     </li>
                 </ul>
                 <div class="border-top p-3" style="background-color: #f7f7f7;">
-                    <div class="form-row justify-content-center">
+                    <form action="" method="GET" class="form-row justify-content-center">
 
-                        
                         <div class="col-md-11">
                             <div class="input-group">
                                 <input type="text" style="border: solid #3490dc;" class="form-control form-control-lg border-right-0" placeholder="Tìm kiếm thông tin trên website">
                                 <div class="input-group-append">
-                                    <button class="btn btn-lg btn-primary" type="button">Tìm kiếm</button>
+                                    <button class="btn btn-lg btn-primary" type="submit">Tìm kiếm</button>
                                 </div>
                             </div>
                             {{-- <a href="javascript:void(0)">Tìm kiếm nâng cao<i class="fa fa-filter"></i></a> --}}
                         </div>
 
-                    </div>
+                    </form>
 
                 </div>
             </div>
