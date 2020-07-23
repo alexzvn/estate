@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Enums\Role;
 use App\Models\User;
+use App\Repository\Setting;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(Setting::class);
     }
 
     /**
@@ -33,5 +34,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function (User $user, $ability) {
             return $user->hasPermissionTo('*') ? true : null;
         });
+
+        
+
+        view()->share('setting', $this->app->make(Setting::class));
     }
 }
