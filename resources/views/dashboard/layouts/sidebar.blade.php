@@ -97,6 +97,15 @@
                             @endforeach
                         </ul>
                     </li>
+
+                    <li class="menu">
+                        <a href="{{ route('manager.setting') }}" @active('manager.setting*', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div>
+                                <i data-feather="settings"></i> <span>Cài đặt</span>
+                            </div>
+                        </a>
+                    </li>
+
                 </ul>
                 
             </nav>
