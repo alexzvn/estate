@@ -35,34 +35,36 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 row mt-2">
-            <div class="col-md-{{ $setting->notification ? '9' : '12' }}" id="myTabContent">
-                <div class="tab-content" >
-                    <div class="tab-pane fade show active" id="section-1" role="tabpanel">
-                        @include('customer.components.posts-table', ['posts' => $sellPosts])
-                        {{ $sellPosts->appends($_GET)->render() }}
+        <div class="col-md-12 mt-2">
+            <div class="row">
+                <div class="col-md-{{ $setting->notification ? '9' : '12' }}" id="myTabContent">
+                    <div class="tab-content" >
+                        <div class="tab-pane fade show active" id="section-1" role="tabpanel">
+                            @include('customer.components.posts-table', ['posts' => $sellPosts])
+                            {{ $sellPosts->appends($_GET)->render() }}
+                        </div>
+                        <div class="tab-pane fade" id="section-2" role="tabpanel">
+                            @include('customer.components.posts-table', ['posts' => $rentPosts])
+                            {{ $rentPosts->appends($_GET)->render() }}
+                        </div>
+                        {{-- <div class="tab-pane fade" id="section-3" role="tabpanel">
+                            @include('customer.components.posts-table', compact('posts'))
+                            {{ $posts->appends($_GET)->render() }}
+                        </div> --}}
                     </div>
-                    <div class="tab-pane fade" id="section-2" role="tabpanel">
-                        @include('customer.components.posts-table', ['posts' => $rentPosts])
-                        {{ $rentPosts->appends($_GET)->render() }}
-                    </div>
-                    {{-- <div class="tab-pane fade" id="section-3" role="tabpanel">
-                        @include('customer.components.posts-table', compact('posts'))
-                        {{ $posts->appends($_GET)->render() }}
-                    </div> --}}
                 </div>
-            </div>
-
-            @if (empty($setting->notification))
-            <div class="col-md-3">
-                @if ($setting->notification)
-                <div class="p-2 text-justify" style="background-color: aliceblue; font-size: 17px; font-family; border-top: 4px solid #9ce8d9 !important;">
-                    <h5 class="text-center text-uppercase">Thông Báo</h5>
-                    <p style="font-size: 16px;">{{ $setting->notification }}</p>
+    
+                @if (empty($setting->notification))
+                <div class="col-md-3">
+                    @if ($setting->notification)
+                    <div class="p-2 text-justify" style="background-color: aliceblue; font-size: 17px; font-family; border-top: 4px solid #9ce8d9 !important;">
+                        <h5 class="text-center text-uppercase">Thông Báo</h5>
+                        <p style="font-size: 16px;">{{ $setting->notification }}</p>
+                    </div>
+                    @endif
                 </div>
                 @endif
             </div>
-            @endif
         </div>
     </div>
 </div>
