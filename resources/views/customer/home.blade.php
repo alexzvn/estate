@@ -13,7 +13,7 @@
                     <li class="nav-item">
                       <a class="nav-link" id="profile-tab" data-toggle="tab" href="#section-2" role="tab">Cần Thuê</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item d-none">
                       <a class="nav-link" id="contact-tab" data-toggle="tab" href="#section-3" role="tab">Thị Trường</a>
                     </li>
                 </ul>
@@ -39,17 +39,17 @@
             <div class="col-md-9" id="myTabContent">
                 <div class="tab-content" >
                     <div class="tab-pane fade show active" id="section-1" role="tabpanel">
-                        @include('customer.components.posts-table', compact('posts'))
-                        {{ $posts->appends($_GET)->render() }}
+                        @include('customer.components.posts-table', ['posts' => $sellPosts])
+                        {{ $sellPosts->appends($_GET)->render() }}
                     </div>
                     <div class="tab-pane fade" id="section-2" role="tabpanel">
+                        @include('customer.components.posts-table', ['posts' => $rentPosts])
+                        {{ $rentPosts->appends($_GET)->render() }}
+                    </div>
+                    {{-- <div class="tab-pane fade" id="section-3" role="tabpanel">
                         @include('customer.components.posts-table', compact('posts'))
                         {{ $posts->appends($_GET)->render() }}
-                    </div>
-                    <div class="tab-pane fade" id="section-3" role="tabpanel">
-                        @include('customer.components.posts-table', compact('posts'))
-                        {{ $posts->appends($_GET)->render() }}
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
