@@ -30,7 +30,9 @@
                       </label>
                     </div>
 
+                    @can('manager.role.modify')
                     <button type="submit" class="btn btn-primary float-right">Tạo mới</button>
+                    @endcan
                 </div>
             </div>
 

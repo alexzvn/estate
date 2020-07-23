@@ -15,6 +15,7 @@
                         </a>
                     </li>
 
+                    @can('manager.category.view')
                     <li class="menu">
                         <a href="{{ route('manager.category') }}" @active('manager.category', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div>
@@ -22,7 +23,9 @@
                             </div>
                         </a>
                     </li>
+                    @endcan
 
+                    @can('manager.post.view')
                     <li class="menu">
                         <a href="#submenu" data-toggle="collapse" @active(request()->is('manager/post/*'), 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div class="">
@@ -34,9 +37,11 @@
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled @active(request()->routeIs('manager.post*'), 'show')" id="submenu" data-parent="#accordionExample">
+                            @can('manager.post.create')
                             <li>
                                 <a href="{{ route('manager.post.create') }}" style="color: red">Tạo tin mới</a>
                             </li>
+                            @endcan
                             <li>
                                 <a href="{{ route('manager.post') }}?status=2"> Tin xin phí </a>
                                 {{-- Duyệt từ tin crawl --}}
@@ -58,24 +63,20 @@
                             </li>
                         </ul>
                     </li>
+                    @endcan
 
+                    @can('manager.role.view')
                     <li class="menu">
-                        <a href="#role" @active('manager.role', 'data-active="true"') data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{ route('manager.role') }}" @active('manager.role', 'data-active="true"') data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="award"></i>
                                 <span>Vai trò</span>
                             </div>
-                            <div>
-                                <i data-feather="chevron-right"></i>
-                            </div>
                         </a>
-                        <ul class="submenu list-unstyled collapse @active('manager.role', 'show')" id="role" data-parent="#accordionExample" style="">
-                            <li class="@active('manager.role')">
-                                <a href="{{ route('manager.role') }}"> Tất cả vai trò </a>
-                            </li>
-                        </ul>
                     </li>
+                    @endcan
 
+                    @can('manager.user.view')
                     <li class="menu">
                         <a href="#submenu2" @active('manager.user', 'data-active="true"') data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
@@ -97,7 +98,9 @@
                             @endforeach
                         </ul>
                     </li>
+                    @endcan
 
+                    @can('manager.site.setting')
                     <li class="menu">
                         <a href="{{ route('manager.setting') }}" @active('manager.setting*', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div>
@@ -105,6 +108,8 @@
                             </div>
                         </a>
                     </li>
+                    @endcan
+
 
                 </ul>
                 

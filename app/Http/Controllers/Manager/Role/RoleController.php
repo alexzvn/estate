@@ -18,13 +18,15 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $this->authorize('role.view');
+        $this->authorize('manager.role.view');
 
         return view('dashboard.role.list', ['roles' => Role::all()]);
     }
 
     public function create()
     {
+        $this->authorize('manager.role.create');
+
         return view('dashboard.role.create', [
             'groups' => PermissionGroup::with('permissions')->get()
         ]);
@@ -32,6 +34,8 @@ class RoleController extends Controller
 
     public function view(string $id, Role $role)
     {
+        $this->authorize('manager.role.view');
+
         return view('dashboard.role.view', [
             'role' => $role->with('permissions')->findOrFail($id),
             'groups' => PermissionGroup::with('permissions')->get()
@@ -70,6 +74,8 @@ class RoleController extends Controller
 
     public function delete(string $id, Role $role)
     {
+        $this->authorize('manager.role.delete');
+
         $role->findOrFail($id)->delete();
 
         return redirect(route('manager.role'))->with('success', 'Xóa thành công');

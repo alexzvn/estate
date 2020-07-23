@@ -14,6 +14,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('manager.user.view');
+        
         return view('dashboard.user.index', [
             'users' => User::filterRequest($request)->latest()->paginate(20)
         ]);
@@ -21,11 +23,15 @@ class UserController extends Controller
 
     public function create()
     {
+        $this->authorize('manager.user.create');
+
         return view('dashboard.user.create');
     }
 
     public function edit(string $id, User $user)
     {
+        $this->authorize('manager.user.modify');
+
         return view('dashboard.user.view', [
             'user' => $user->with(['roles', 'permissions'])->findOrFail($id),
             'roles' => Role::all(),
@@ -68,9 +74,8 @@ class UserController extends Controller
 
     public function verifyPhone(string $id, User $user)
     {
-        /**
-         * @var \App\Models\User
-         */
+        $this->authorize('manager.user.verify.phone');
+
         $user = $user->findOrFail($id);
 
         if (! $user->hasVerifiedPhone()) {
@@ -82,9 +87,8 @@ class UserController extends Controller
 
     public function unverifiedPhone(string $id, User $user)
     {
-        /**
-         * @var \App\Models\User
-         */
+        $this->authorize('manager.user.verify.phone');
+
         $user = $user->findOrFail($id);
 
         if ($user->hasVerifiedPhone()) {

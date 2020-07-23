@@ -18,6 +18,8 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('manager.post.view');
+
         $posts = Post::with(['metas.province', 'categories'])
             ->select(['name', 'title'])
             ->filterRequest($request)
@@ -28,6 +30,8 @@ class PostController extends Controller
 
     public function trashed(Request $request)
     {
+        $this->authorize('manager.post.view');
+
         $posts = Post::onlyTrashed()
             ->with(['metas.province', 'categories'])
             ->select(['name', 'title'])
@@ -39,6 +43,8 @@ class PostController extends Controller
 
     public function view(string $id, Post $post)
     {
+        $this->authorize('manager.post.view');
+
         $post = $post->with(['categories', 'metas'])->findOrFail($id)->loadMeta();
         $provinces = Province::with('districts')->active()->get();
 
@@ -88,8 +94,6 @@ class PostController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $this->authorize('manager.post.create');
-
         $post = Post::create(
             array_merge($request->all(), [
                 'content' => Purifier::clean($request->post_content)

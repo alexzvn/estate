@@ -15,7 +15,7 @@ class UpdatePost extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user() && $this->user()->can('manager.post.modify');
     }
 
     /**

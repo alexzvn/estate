@@ -161,7 +161,9 @@
                       </select>
                     </div>
 
+                    @can('manager.post.modify')
                     <button type="submit" class="btn btn-primary float-right">Cập nhật</button>
+                    @endcan
                 </div>
             </div>
         </div>

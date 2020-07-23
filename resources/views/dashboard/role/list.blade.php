@@ -7,8 +7,10 @@
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                     <h4>
-                        Danh sách vai trò 
+                        Danh sách vai trò
+                        @can('manager.role.create')
                         <a href="{{ route('manager.role.create') }}" class="btn btn-success rounded-circle"><i data-feather="plus"></i></a>
+                        @endcan
                     </h4>
                 </div>
             </div>

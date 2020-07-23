@@ -84,7 +84,9 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
+                    @can('manager.user.modify')
                     <a id="submit" class="btn btn-primary">Cập Nhật</a>
+                    @endcan
                 </div>
             </div>
         </div>

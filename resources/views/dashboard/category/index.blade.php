@@ -1,6 +1,9 @@
 @extends('dashboard.app')
 
 @section('content')
+
+@can('manager.category.create')
+
 <div class="col-md-5">
     <div class="statbox widget box shadow-none mb-3">
         <div class="widget-header">
@@ -45,6 +48,7 @@
         </div>
     </div>
 </div>
+@endcan
 
 <div class="col-md-7">
     <div class="statbox widget box box-shadow mb-3">

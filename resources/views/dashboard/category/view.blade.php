@@ -52,12 +52,17 @@
                          <label for="description">Mô tả</label>
                          <textarea class="form-control" name="description" id="description" rows="3" placeholder="Mô tả về danh mục này?"></textarea>
                        </div>
-        
+
+                       
                        <div>
+                            @can('manager.category.modify')
                             <button id="delete" type="button" class="btn btn-danger float-left">Xóa</button>
+                            @endcan
+                            @can('manager.category.delete')
                             <button type="submit" class="btn btn-primary float-right">Cập nhật</button>
+                            @endcan
                        </div>
-        
+
                    </form>
                 </div>
             </div>

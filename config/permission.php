@@ -107,6 +107,7 @@ return [
             'manager.user.create' => 'Tạo mới',
             'manager.user.modify' => 'Chỉnh sửa',
             'manager.user.delete' => 'Xóa',
+            'manager.user.verify.phone' => 'Xác thực SĐT',
 
             'manager.customer.view'        => 'Xem thông tin',
             'manager.customer.view.all'    => 'Xem khách từ bất kỳ thành phố',
@@ -123,11 +124,6 @@ return [
             'manager.post.create' => 'Tạo mới',
             'manager.post.modify' => 'Chỉnh sửa',
             'manager.post.delete' => 'Xóa',
-
-            'manager.staff.view'   => 'Xem',
-            'manager.staff.create' => 'Tạo mới',
-            'manager.staff.modify' => 'Chỉnh sửa',
-            'manager.staff.delete' => 'Xóa',
 
             'manager.site.setting' => 'Cẫu hình trang web',
 
@@ -160,6 +156,7 @@ return [
                     'manager.user.create',
                     'manager.user.modify',
                     'manager.user.delete',
+                    'manager.user.verify.phone'
                 ]
             ],[
                 'name' => 'Quản lý vai Trò',
@@ -168,14 +165,6 @@ return [
                     'manager.role.create',
                     'manager.role.modify',
                     'manager.role.delete',
-                ]
-            ],[
-                'name' => 'Quản lý nhân viên',
-                'permissions' => [
-                    'manager.staff.view',
-                    'manager.staff.create',
-                    'manager.staff.modify',
-                    'manager.staff.delete',
                 ]
             ],[
                 'name' => 'Quản lý khách hàng',

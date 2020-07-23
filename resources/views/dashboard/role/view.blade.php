@@ -29,8 +29,14 @@
                       </label>
                     </div>
 
+                    
+
+                    @can('manager.role.delete')
                     <button id="delete" type="button" class="btn btn-outline-danger float-left">Xóa</button>
+                    @endcan
+                    @can('manager.role.modify')
                     <button type="submit" class="btn btn-primary float-right">Cập nhật</button>
+                    @endcan
                 </div>
             </div>
 
