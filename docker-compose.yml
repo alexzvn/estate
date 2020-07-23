@@ -7,7 +7,7 @@ services:
     volumes:
       - ./.docker/data/mongo:/data/db
     ports:
-      - 27017:27017
+      - ${DB_PORT}:27017
     # environment:
       # MONGO_INITDB_ROOT_USERNAME: root
       # MONGO_INITDB_ROOT_PASSWORD: example
@@ -20,7 +20,7 @@ services:
       - cluster.name=es-docker-cluster
       - cluster.initial_master_nodes=es01
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
         soft: -1
@@ -29,3 +29,11 @@ services:
       - .docker/data/elastic:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
+
+  redis:
+    image: redis
+    restart: always
+    volumes:
+      - ./.docker/data/redis:/data
+    ports:
+      - ${REDIS_PORT}:6379
