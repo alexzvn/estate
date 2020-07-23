@@ -37,7 +37,7 @@
         </div>
         <div class="col-md-12 mt-2">
             <div class="row">
-                <div class="col-md-{{ $setting->notification ? '9' : '12' }}" id="myTabContent">
+                <div class="col-md-{{ $setting->notification ? '9' : '12' }} px-0" id="myTabContent">
                     <div class="tab-content" >
                         <div class="tab-pane fade show active" id="section-1" role="tabpanel">
                             @include('customer.components.posts-table', ['posts' => $sellPosts])
@@ -55,7 +55,7 @@
                 </div>
     
                 @if (empty($setting->notification))
-                <div class="col-md-3">
+                <div class="col-md-3 pr-0">
                     @if ($setting->notification)
                     <div class="p-2 text-justify" style="background-color: aliceblue; font-size: 17px; font-family; border-top: 4px solid #9ce8d9 !important;">
                         <h5 class="text-center text-uppercase">Thông Báo</h5>
