@@ -129,6 +129,8 @@ return [
             'manager.staff.modify' => 'Chỉnh sửa',
             'manager.staff.delete' => 'Xóa',
 
+            'manager.site.setting' => 'Cẫu hình trang web',
+
         ],
 
         /**
@@ -191,7 +193,8 @@ return [
                     'manager.dashboard.access',
                     'login.multiple.devices',
                     'post.province.access.*',
-                    'post.category.access.*'
+                    'post.category.access.*',
+                    'manager.site.setting',
                 ]
             ]
         ],
