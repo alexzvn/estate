@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Contracts\RepositoryInterface;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 abstract class BaseRepository implements RepositoryInterface
 {
@@ -15,6 +16,11 @@ abstract class BaseRepository implements RepositoryInterface
      * @var \Jenssegers\Mongodb\Eloquent\Model
      */
     protected $model;
+
+    public function setModel(Model $model)
+    {
+        $this->model = $model;
+    }
 
     public function model()
     {
