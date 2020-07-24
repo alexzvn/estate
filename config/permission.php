@@ -116,7 +116,7 @@ return [
 
             'manager.customer.view'        => 'Xem thông tin',
             'manager.customer.view.all'    => 'Xem khách từ bất kỳ thành phố',
-            'manager.customer.update'      => 'Cập nhật thông tin',
+            'manager.customer.modify'      => 'Cập nhật thông tin',
             'manager.customer.assign.role' => 'Gán quyền cho khách',
             'manager.customer.create'      => 'Tạo tài khoản mới',
 
@@ -176,8 +176,8 @@ return [
                 'permissions' => [
                     'manager.customer.view',
                     'manager.customer.view.all',
-                    'manager.customer.update',
                     'manager.customer.assign.role',
+                    'manager.customer.modify',
                     'manager.customer.create',
                 ]
             ],[
