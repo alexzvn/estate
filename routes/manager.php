@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'Manager\ManagerController@index')->name('manager');
+Route::get('/', 'ManagerController@index')->name('manager');
 
 
-Route::group(['prefix' => 'role', 'namespace' => 'Manager\Role'], function () {
+Route::group(['prefix' => 'role', 'namespace' => 'Role'], function () {
     Route::get('/', 'RoleController@index')->name('manager.role');
     Route::get('/create', 'RoleController@create')->name('manager.role.create');
     Route::post('/store', 'RoleController@store')->name('manager.role.store');
@@ -25,7 +25,7 @@ Route::group(['prefix' => 'role', 'namespace' => 'Manager\Role'], function () {
     Route::post('/{id}/delete', 'RoleController@delete')->name('manager.role.delete');
 });
 
-Route::group(['prefix' => 'post', 'namespace' => 'Manager\Post'], function () {
+Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::get('/', 'PostController@index')->name('manager.post');
     Route::get('/create', 'PostController@create')->name('manager.post.create');
     Route::post('/store', 'PostController@store')->name('manager.post.store');
@@ -36,7 +36,7 @@ Route::group(['prefix' => 'post', 'namespace' => 'Manager\Post'], function () {
     Route::post('/{id}/delete/force', 'PostController@forceDelete')->name('manager.post.delete.force');
 });
 
-Route::group(['prefix' => 'category', 'namespace' => 'Manager\Category'], function () {
+Route::group(['prefix' => 'category', 'namespace' => 'Category'], function () {
     Route::get('/', 'CategoryController@index')->name('manager.category');
     Route::get('/create', 'CategoryController@create')->name('manager.category.create');
     Route::post('/store', 'CategoryController@store')->name('manager.category.store');
@@ -45,7 +45,7 @@ Route::group(['prefix' => 'category', 'namespace' => 'Manager\Category'], functi
     Route::post('/{id}/delete', 'CategoryController@delete')->name('manager.category.delete');
 });
 
-Route::group(['prefix' => 'user', 'namespace' => 'Manager\User'], function () {
+Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
     Route::get('/', 'UserController@index')->name('manager.user');
     Route::get('/create', 'UserController@create')->name('manager.user.create');
     Route::get('/{id}', 'UserController@edit')->name('manager.user.view');
@@ -55,7 +55,7 @@ Route::group(['prefix' => 'user', 'namespace' => 'Manager\User'], function () {
     Route::get('/{id}/unverified/phone', 'UserController@unverifiedPhone')->name('manager.user.unverified.phone');
 });
 
-Route::group(['prefix' => 'setting', 'namespace' => 'Manager'], function () {
+Route::group(['prefix' => 'setting'], function () {
     Route::get('/', 'SettingController@index')->name('manager.setting');
     Route::post('/update', 'SettingController@update')->name('manager.setting.update');
 });
