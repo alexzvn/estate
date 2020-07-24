@@ -78,7 +78,7 @@
 
                     @can('manager.user.view')
                     <li class="menu">
-                        <a href="#submenu2" @active('manager.user', 'data-active="true"') data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#menu-user" @active('manager.user', 'data-active="true"') data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="users"></i>
                                 <span> Thành viên</span>
@@ -87,13 +87,37 @@
                                 <i data-feather="chevron-right"></i>
                             </div>
                         </a>
-                        <ul class="collapse submenu list-unstyled @active('manager.user', 'show')" id="submenu2" data-parent="#accordionExample">
+                        <ul class="collapse submenu list-unstyled @active('manager.user', 'show')" id="menu-user" data-parent="#accordionExample">
                             <li>
                                 <a href="{{ route('manager.user') }}"> Tất cả </a>
                             </li>
-                            @foreach ($roles as $item)
+                            @foreach ($roles->where('customer', '<>', true) as $item)
                             <li>
                                 <a href="{{ route('manager.user') . "?roles=$item->id" }}"> {{ $item->name }} </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                    @endcan
+
+                    @can('manager.customer.view')
+                    <li class="menu">
+                        <a href="#menu-customer" @active('manager.customer*', 'data-active="true"') data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="users"></i>
+                                <span> Khách hàng</span>
+                            </div>
+                            <div>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled @active('manager.customer*', 'show')" id="menu-customer" data-parent="#accordionExample">
+                            <li>
+                                <a href="{{ route('manager.customer') }}"> Tất cả </a>
+                            </li>
+                            @foreach ($roles->where('customer', true) as $item)
+                            <li>
+                                <a href="{{ route('manager.customer') . "?roles=$item->id" }}"> {{ $item->name }} </a>
                             </li>
                             @endforeach
                         </ul>
