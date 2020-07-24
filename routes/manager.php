@@ -59,8 +59,16 @@ Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
     Route::get('/{id}', 'UserController@edit')->name('manager.user.view');
     Route::post('/{id}/update', 'UserController@update')->name('manager.user.update');
     Route::post('/{id}/delete', 'UserController@delete')->name('manager.user.delete');
-    Route::get('/{id}/verify/phone', 'UserController@verifyPhone')->name('manager.user.verify.phone');
-    Route::get('/{id}/unverified/phone', 'UserController@unverifiedPhone')->name('manager.user.unverified.phone');
+});
+
+Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
+    Route::get('/', 'CustomerController@index')->name('manager.customer');
+    Route::get('/create', 'CustomerController@create')->name('manager.customer.create');
+    Route::get('/{id}', 'CustomerController@view')->name('manager.customer.view');
+    Route::post('/{id}/update', 'CustomerController@update')->name('manager.customer.update');
+    Route::post('/{id}/delete', 'CustomerController@delete')->name('manager.customer.delete');
+    Route::get('/{id}/verify/phone', 'CustomerController@verifyPhone')->name('manager.customer.verify.phone');
+    Route::get('/{id}/unverified/phone', 'CustomerController@unverifiedPhone')->name('manager.customer.unverified.phone');
 });
 
 Route::group(['prefix' => 'setting'], function () {
