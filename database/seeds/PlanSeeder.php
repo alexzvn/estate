@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class SubscriptionSeeder extends Seeder
+class PlanSeeder extends Seeder
 {
     /**
      * Run the database seeds.

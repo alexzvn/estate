@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Location\Province;
 use Jenssegers\Mongodb\Eloquent\Model;
 
-class Subscription extends Model
+class Plan extends Model
 {
     protected $fillable = [
         'name', 'price'

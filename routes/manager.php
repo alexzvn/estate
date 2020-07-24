@@ -36,6 +36,14 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::post('/{id}/delete/force', 'PostController@forceDelete')->name('manager.post.delete.force');
 });
 
+Route::group(['prefix' => 'plan', 'namespace' => 'Plan'], function () {
+    Route::get('/', 'PlanController@index')->name('manager.plan');
+    Route::post('/store', 'PlanController@store')->name('manager.plan.store');
+    Route::post('/{id}/update', 'PlanController@update')->name('manager.plan.update');
+    Route::get('/{id}/view', 'PlanController@view')->name('manager.plan.view');
+    Route::post('/{id}/delete', 'PlanController@delete')->name('manager.plan.delete');
+});
+
 Route::group(['prefix' => 'category', 'namespace' => 'Category'], function () {
     Route::get('/', 'CategoryController@index')->name('manager.category');
     Route::get('/create', 'CategoryController@create')->name('manager.category.create');

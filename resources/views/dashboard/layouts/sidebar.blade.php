@@ -67,7 +67,7 @@
 
                     @can('manager.role.view')
                     <li class="menu">
-                        <a href="{{ route('manager.role') }}" @active('manager.role', 'data-active="true"') data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{ route('manager.role') }}" @active('manager.role', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="award"></i>
                                 <span>Vai trò</span>
@@ -97,6 +97,16 @@
                             </li>
                             @endforeach
                         </ul>
+                    </li>
+                    @endcan
+
+                    @can('manager.plan.view')
+                    <li class="menu">
+                        <a href="{{ route('manager.plan') }}" @active('manager.plan*', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div>
+                                <i data-feather="package"></i> <span>Các gói đăng ký</span>
+                            </div>
+                        </a>
                     </li>
                     @endcan
 

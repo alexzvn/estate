@@ -98,6 +98,11 @@ return [
              */
             'manager.dashboard.access' => 'Truy cập trang quản trị',
 
+            'manager.plan.view' => 'Xem',
+            'manager.plan.create' => 'Tạo mới',
+            'manager.plan.modify' => 'Chỉnh sửa',
+            'manager.plan.delete' => 'Xóa',
+
             'manager.category.view'   => 'Xem',
             'manager.category.create' => 'Tạo mới',
             'manager.category.modify' => 'Chỉnh sửa',
@@ -174,6 +179,14 @@ return [
                     'manager.customer.update',
                     'manager.customer.assign.role',
                     'manager.customer.create',
+                ]
+            ],[
+                'name' => 'Gói đăng ký', 
+                'permissions' => [
+                    'manager.plan.view',
+                    'manager.plan.create',
+                    'manager.plan.modify',
+                    'manager.plan.delete',
                 ]
             ],[
                 'name' => 'Khác',
