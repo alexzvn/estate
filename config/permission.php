@@ -112,13 +112,13 @@ return [
             'manager.user.create' => 'Tạo mới',
             'manager.user.modify' => 'Chỉnh sửa',
             'manager.user.delete' => 'Xóa',
-            'manager.user.verify.phone' => 'Xác thực SĐT',
 
             'manager.customer.view'        => 'Xem thông tin',
             'manager.customer.view.all'    => 'Xem khách từ bất kỳ thành phố',
             'manager.customer.modify'      => 'Cập nhật thông tin',
             'manager.customer.assign.role' => 'Gán quyền cho khách',
             'manager.customer.create'      => 'Tạo tài khoản mới',
+            'manager.customer.verify.phone' => 'Xác thực SĐT',
 
             'manager.role.view'   => 'Xem',
             'manager.role.create' => 'Tạo mới',
@@ -161,7 +161,6 @@ return [
                     'manager.user.create',
                     'manager.user.modify',
                     'manager.user.delete',
-                    'manager.user.verify.phone'
                 ]
             ],[
                 'name' => 'Quản lý vai Trò',
@@ -179,6 +178,7 @@ return [
                     'manager.customer.assign.role',
                     'manager.customer.modify',
                     'manager.customer.create',
+                    'manager.customer.verify.phone',
                 ]
             ],[
                 'name' => 'Gói đăng ký', 

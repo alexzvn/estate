@@ -34,6 +34,16 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->model;
     }
 
+    public function __get(string $key)
+    {
+        return $this->model->$key;
+    }
+
+    public function __set(string $key, $value)
+    {
+        $this->model->$key = $value;
+    }
+
     public function __call(string $method, array $args = [])
     {
         return $this->forwardCallTo($this->model, $method, $args);

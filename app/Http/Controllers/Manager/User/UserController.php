@@ -30,7 +30,7 @@ class UserController extends Controller
 
     public function edit(string $id, User $user)
     {
-        $this->authorize('manager.user.modify');
+        $this->authorize('manager.user.view');
 
         return view('dashboard.user.view', [
             'user' => $user->with(['roles', 'permissions'])->findOrFail($id),
@@ -52,11 +52,7 @@ class UserController extends Controller
             'phone' => str_replace('.', '', $request->phone)
         ])->save();
 
-        if ($request->roles) {
-            $user->syncRoles(Role::findMany($request->roles));
-        } else {
-            $user->syncRoles([]);
-        }
+        $user->roles()->sync($request->roles ?? [])
 
         if (! empty($request->password)) {
             $user->forceFill([
@@ -70,31 +66,5 @@ class UserController extends Controller
     public function delete()
     {
         # code...
-    }
-
-    public function verifyPhone(string $id, User $user)
-    {
-        $this->authorize('manager.user.verify.phone');
-
-        $user = $user->findOrFail($id);
-
-        if (! $user->hasVerifiedPhone()) {
-            $user->markPhoneAsVerified();
-        }
-
-        return back()->with('success', 'Xác thực số điện thoại thành công');
-    }
-
-    public function unverifiedPhone(string $id, User $user)
-    {
-        $this->authorize('manager.user.verify.phone');
-
-        $user = $user->findOrFail($id);
-
-        if ($user->hasVerifiedPhone()) {
-            $user->markPhoneAsNotVerified();
-        }
-
-        return back()->with('success', 'Bỏ xác thực thành công');
     }
 }
