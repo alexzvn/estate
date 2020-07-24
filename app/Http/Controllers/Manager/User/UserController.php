@@ -52,7 +52,7 @@ class UserController extends Controller
             'phone' => str_replace('.', '', $request->phone)
         ])->save();
 
-        $user->roles()->sync($request->roles ?? [])
+        $user->roles()->sync($request->roles ?? []);
 
         if (! empty($request->password)) {
             $user->forceFill([
