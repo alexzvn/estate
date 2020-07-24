@@ -87,6 +87,14 @@ class User extends Authenticatable implements MustVerifyPhone
         );
     }
 
+    public function scopeOnlyCustomer(Builder $builder)
+    {
+        return $builder->whereHas('roles', function (Builder $builder)
+        {
+            $builder->where('customer', true);
+        });
+    }
+
     protected function filterRoles(Builder $builder, $roles)
     {
         $roles = is_string($roles) ? explode(',', $roles) : $roles;
