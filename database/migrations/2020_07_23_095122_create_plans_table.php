@@ -14,7 +14,7 @@ class CreatePlansTable extends Migration
     public function up()
     {
         Schema::create('plans', function (Blueprint $collection) {
-            $collection->index(['province_ids', 'category_ids']);
+            $collection->timestamps();
         });
     }
 
