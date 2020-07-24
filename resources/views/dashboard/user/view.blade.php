@@ -32,9 +32,9 @@
                       <label for="phone">
                           Số điện thoại
                             @if (! $user->hasVerifiedPhone())
-                            <a href="{{ route('manager.user.verify.phone', ['id' => $user->id]) }}" class="badge badge-warning bs-tooltip" title="Nhấn để xác thực SĐT">Chưa xác thực</a>
+                            <a href="{{ route('manager.customer.verify.phone', ['id' => $user->id]) }}" class="badge badge-warning bs-tooltip" title="Nhấn để xác thực SĐT">Chưa xác thực</a>
                             @else
-                            <a href="{{ route('manager.user.unverified.phone', ['id' => $user->id]) }}" class="badge badge-success bs-tooltip" title="Nhấn để bỏ xác thực SĐT"> Đã xác thực</a>
+                            <a href="{{ route('manager.customer.unverified.phone', ['id' => $user->id]) }}" class="badge badge-success bs-tooltip" title="Nhấn để bỏ xác thực SĐT"> Đã xác thực</a>
                             @endif
                       </label>
                       <input type="text" value="{{ $user->phone }}" name="phone" id="phone" class="form-control" placeholder="Số điện thoại">
