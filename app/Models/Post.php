@@ -81,6 +81,11 @@ class Post extends Model
         return $builder->where('status', (string) PostStatus::Published)->whereNotNull('publish_at');
     }
 
+    public function filterType(Builder $builder, $type)
+    {
+        return $builder->where('type', $type);
+    }
+
     public function filterCategories(Builder $builder, $values)
     {
         $values = is_string($values) ? [$values] : $values;

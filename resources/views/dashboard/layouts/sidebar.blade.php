@@ -1,4 +1,5 @@
-        <!--  BEGIN SIDEBAR  -->
+<?php use App\Enums\PostType; ?>
+<!--  BEGIN SIDEBAR  -->
         
         <div class="sidebar-wrapper sidebar-theme">
             
@@ -43,19 +44,23 @@
                             </li>
                             @endcan
                             <li>
-                                <a href="{{ route('manager.post') }}?status=2"> Tin xin phí </a>
+                                <a href="{{ route('manager.post') }}"> Tất cả </a>
                                 {{-- Duyệt từ tin crawl --}}
                             </li>
                             <li>
+                                <a href="{{ route('manager.post') }}?type={{ PostType::PostFee }}"> Tin xin phí </a>
+                                {{-- Duyệt từ tin crawl --}}
+                            </li>
+                            <li class="d-none">
                                 <a href="javascript:void(0)">Cần thuê - cần mua </a>
                                 {{-- Tin crawl từ trang khác xử lý sau --}}
                             </li>
-                            <li>
+                            <li class="d-none">
                                 <a href="javascript:void(0)">Tin thị trường</a> 
                                 {{-- Tin ảnh collection --}}
                             </li>
                             <li>
-                                <a href="{{ route('manager.post') }}?status=1">Tin web online </a>
+                                <a href="{{ route('manager.post') }}?type={{ PostType::Online }}">Tin web online </a>
                                 {{-- Tin crawl từ trang khác --}}
                             </li>
                             <li>
