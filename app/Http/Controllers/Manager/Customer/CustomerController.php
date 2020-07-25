@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Customer\StoreCustomer;
 use App\Http\Requests\Manager\Customer\UpdateCustomer;
+use App\Repository\Plan;
 
 class CustomerController extends Controller
 {
@@ -25,6 +26,7 @@ class CustomerController extends Controller
         $this->authorize('manager.customer.view');
 
         return view('dashboard.customer.view', [
+            'plans' => Plan::all(),
             'user' => $user->with(['roles', 'permissions'])->onlyCustomer()->findOrFail($id),
         ]);
     }
@@ -52,9 +54,11 @@ class CustomerController extends Controller
     public function update(UpdateCustomer $request)
     {
         $user = $request->updateUser;
+        $attr = $request->all();
 
-        $user->fill($request->all());
-        $user->fill([
+        unset($attr['password']);
+
+        $user->fill($attr)->fill([
             'phone' => str_replace('.', '', $request->phone)
         ])->save();
 

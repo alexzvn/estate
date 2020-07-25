@@ -45,10 +45,12 @@ class UserController extends Controller
     
     public function update(UpdateUser $request)
     {
+        $attr = $request->all();
+        unset($attr['password']);
+
         $user = $request->updateUser;
 
-        $user->fill($request->all());
-        $user->fill([
+        $user->fill($attr)->fill([
             'phone' => str_replace('.', '', $request->phone)
         ])->save();
 
