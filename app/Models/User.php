@@ -56,6 +56,11 @@ class User extends Authenticatable implements MustVerifyPhone
         'last_seen'
     ];
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'customer_id');
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class);
