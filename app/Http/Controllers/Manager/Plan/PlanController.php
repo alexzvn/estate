@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manager\Plan;
 
+use App\Enums\PostType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Plan\StorePlan;
@@ -18,8 +19,9 @@ class PlanController extends Controller
 
         return view('dashboard.plan.index', [
             'plans' => Plan::all(),
+            'postTypes' => PostType::getValues(),
             'provinces' => Province::active()->get(),
-            'categories' => Category::parentOnly()->with('children')->get(),
+            'categories' => Category::parentOnly()->get(),
         ]);
     }
 
@@ -27,10 +29,13 @@ class PlanController extends Controller
     {
         $this->authorize('manager.plan.view');
 
+        
+
         return view('dashboard.plan.edit', [
             'plan' => $plan->with(['provinces', 'categories'])->findOrFail($id),
+            'postTypes' => PostType::getValues(),
             'provinces' => Province::active()->get(),
-            'categories' => Category::parentOnly()->with('children')->get(),
+            'categories' => Category::parentOnly()->get(),
         ]);
     }
 
@@ -43,7 +48,8 @@ class PlanController extends Controller
     {
         $plan->fill([
             'name' => $request->name,
-            'price' => (float) str_replace(',', '', $request->price ?? '')
+            'price' => (float) str_replace(',', '', $request->price ?? ''),
+            'types' => $request->post_type ?? []
         ])->save();
 
         $this->savePlansRelation($plan, $request);
@@ -54,9 +60,11 @@ class PlanController extends Controller
     public function update(UpdatePlan $request)
     {
         $plan = $request->getPlan();
+
         $plan->fill([
             'name' => $request->name,
-            'price' => (float) str_replace(',', '', $request->price ?? '')
+            'price' => (float) str_replace(',', '', $request->price ?? ''),
+            'types' => $request->post_type ?? []
         ])->save();
 
 

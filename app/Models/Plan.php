@@ -8,7 +8,7 @@ use Jenssegers\Mongodb\Eloquent\Model;
 class Plan extends Model
 {
     protected $fillable = [
-        'name', 'price'
+        'name', 'price', 'types'
     ];
 
     public function provinces()

@@ -11,9 +11,9 @@ use BenSampo\Enum\Enum;
  */
 final class PostType extends Enum
 {
-    const Sell =   'Tin mua/bán';
+    const PostFee =   'Tin Xin Phí';
 
-    const Rent =   'Tin cho thuê';
+    const Online =   'Tin web online';
 
     const Market = 'Tin thị trường';
 }

@@ -37,13 +37,12 @@
         
                         <div class="form-row">
         
-                            @foreach ($categories as $item)
                             <div class="col-md-4 col-sm-6 mb-4">
         
-                                <p class="text-info m-0"><strong>Danh mục {{ $item->name }} được truy cập</strong></p>
+                                <p class="text-info m-0"><strong>Danh mục được truy cập</strong></p>
         
                                 <div class="ml-3">
-                                    @foreach ($item->children as $item)
+                                    @foreach ($categories as $item)
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="categories[]" id="categories"
@@ -54,8 +53,22 @@
                                     @endforeach
                                 </div>
                             </div>
-                            @endforeach
-        
+
+                            <div class="col-md-4 col-sm-6 mb-4">
+                                <p class="text-info m-0"><strong>Loại tin được truy cập</strong></p>
+
+                                <div class="ml-3">
+                                    @foreach ($postTypes as $name)
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" name="post_type[]" id="post_type" value="{{ $name }}">
+                                            {{ $name }}
+                                        </label>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+
                             <div class="col-md-4 col-sm-6 mb-4">
                             <p class="text-info m-0"><strong>Thành phố được truy cập:</strong></p>
                             @foreach ($provinces as $item)

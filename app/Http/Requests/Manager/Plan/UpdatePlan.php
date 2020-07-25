@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Manager\Plan;
 
+use App\Enums\PostType;
 use App\Repository\Plan;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePlan extends FormRequest
 {
@@ -29,6 +31,7 @@ class UpdatePlan extends FormRequest
         return [
             'name' => 'required|string|unique:plans,name,'. $plan->name .',name',
             'price' => 'nullable|string|regex:/^[0-9,.]+$/',
+            'post_type' => ['nullable', 'array', Rule::in(PostType::getValues())],
             'categories' => 'nullable|array|exists:categories,_id',
             'provinces' => 'nullable|array|exists:provinces,_id'
         ];
