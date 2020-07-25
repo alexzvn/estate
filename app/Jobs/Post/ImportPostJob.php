@@ -10,6 +10,7 @@ use App\Enums\PostMeta;
 use App\Repository\Meta;
 use App\Repository\Post;
 use App\Enums\PostStatus;
+use App\Enums\PostType;
 use App\Models\Category as ModelsCategory;
 use Illuminate\Support\Str;
 
@@ -58,7 +59,8 @@ class ImportPostJob implements ShouldQueue
             'content'    => Purifier::clean($this->post->content) ?? '',
             'hash'       => $this->post->hash,
             'publish_at' => Carbon::createFromDate(...$date),
-            'status'     => PostStatus::Pending
+            'status'     => PostStatus::Pending,
+            'type'       => PostType::Online,
         ]);
 
         $post->content = nl2br($post->content);
