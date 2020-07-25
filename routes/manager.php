@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'ManagerController@index')->name('manager');
 
-
+/**
+ * ROLE
+ */
 Route::group(['prefix' => 'role', 'namespace' => 'Role'], function () {
     Route::get('/', 'RoleController@index')->name('manager.role');
     Route::get('/create', 'RoleController@create')->name('manager.role.create');
@@ -25,6 +27,9 @@ Route::group(['prefix' => 'role', 'namespace' => 'Role'], function () {
     Route::post('/{id}/delete', 'RoleController@delete')->name('manager.role.delete');
 });
 
+/**
+ * POST
+ */
 Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::get('/', 'PostController@index')->name('manager.post');
     Route::get('/create', 'PostController@create')->name('manager.post.create');
@@ -36,6 +41,9 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::post('/{id}/delete/force', 'PostController@forceDelete')->name('manager.post.delete.force');
 });
 
+/**
+ * PLAN
+ */
 Route::group(['prefix' => 'plan', 'namespace' => 'Plan'], function () {
     Route::get('/', 'PlanController@index')->name('manager.plan');
     Route::post('/store', 'PlanController@store')->name('manager.plan.store');
@@ -44,6 +52,9 @@ Route::group(['prefix' => 'plan', 'namespace' => 'Plan'], function () {
     Route::post('/{id}/delete', 'PlanController@delete')->name('manager.plan.delete');
 });
 
+/**
+ * CATEGORY
+ */
 Route::group(['prefix' => 'category', 'namespace' => 'Category'], function () {
     Route::get('/', 'CategoryController@index')->name('manager.category');
     Route::get('/create', 'CategoryController@create')->name('manager.category.create');
@@ -53,6 +64,9 @@ Route::group(['prefix' => 'category', 'namespace' => 'Category'], function () {
     Route::post('/{id}/delete', 'CategoryController@delete')->name('manager.category.delete');
 });
 
+/**
+ * USER
+ */
 Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
     Route::get('/', 'UserController@index')->name('manager.user');
     Route::get('/create', 'UserController@create')->name('manager.user.create');
@@ -61,6 +75,9 @@ Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
     Route::post('/{id}/delete', 'UserController@delete')->name('manager.user.delete');
 });
 
+/**
+ * CUSTOMER
+ */
 Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
     Route::get('/', 'CustomerController@index')->name('manager.customer');
     Route::get('/create', 'CustomerController@create')->name('manager.customer.create');
@@ -72,6 +89,9 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
     Route::get('/{id}/unverified/phone', 'CustomerController@unverifiedPhone')->name('manager.customer.unverified.phone');
 });
 
+/**
+ * SETTING
+ */
 Route::group(['prefix' => 'setting'], function () {
     Route::get('/', 'SettingController@index')->name('manager.setting');
     Route::post('/update', 'SettingController@update')->name('manager.setting.update');
