@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Manager\Post;
 
+use App\Enums\PostType;
 use App\Enums\PostStatus;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -33,6 +34,10 @@ class UpdatePost extends FormRequest
             'category' => 'required|exists:categories,_id',
             'province' => 'nullable|exists:provinces,_id',
             'district' => 'nullable|exists:districts,_id',
+            'type'     => [
+                'nullable',
+                Rule::in(PostType::getValues())
+            ],
             'status'   => [
                 'required',
                 Rule::in(PostStatus::getValues())

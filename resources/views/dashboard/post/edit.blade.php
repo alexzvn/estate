@@ -1,3 +1,5 @@
+<?php use App\Enums\PostType; ?>
+
 @extends('dashboard.app')
 @push('style')
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
@@ -152,6 +154,16 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
+                    <div class="form-group input-group-sm">
+                        <label for="type">Loại Tin</label>
+                        <select class="form-control" name="type" id="type">
+                          <option value="">Trống</option>
+                          @foreach (PostType::getValues() as $name)
+                          <option value="{{ $name }}" {{ $post->type === $name ? 'selected' : '' }}>{{ $name }}</option>
+                          @endforeach
+                        </select>
+                    </div>
+
                     <div class="form-group input-group-sm">
                       <label for="status">Trạng thái</label>
                       <select class="form-control" name="status" id="status">
