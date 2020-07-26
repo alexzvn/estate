@@ -56,12 +56,12 @@
 
                             <div class="col-md-4 col-sm-6 mb-4">
                                 <p class="text-info m-0"><strong>Loại tin được truy cập</strong></p>
-
                                 <div class="ml-3">
                                     @foreach ($postTypes as $name)
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="post_type[]" id="post_type" value="{{ $name }}">
+                                            <input type="checkbox" class="form-check-input" name="post_type[]"
+                                            id="post_type" value="{{ $name }}" {{ in_array($name, $plan->types ?? []) ? 'checked': '' }}>
                                             {{ $name }}
                                         </label>
                                     </div>
