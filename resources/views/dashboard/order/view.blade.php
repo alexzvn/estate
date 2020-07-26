@@ -74,7 +74,6 @@
                                     @foreach (range(1, 24) as $i)
                                         <option {{ $order->month === $i ? 'selected' : '' }} value="{{ $i }}" >{{ $i }} Tháng</option>
                                     @endforeach
-                                    <option value="" {{ empty($order->expires_at) ? 'selected' : '' }}>Vô thời hạn</option>
                                   </select>
                                 </div>
                             </div>
