@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'ManagerController@index')->name('manager');
 
 /**
- * ROLE
+ * ROLES
  */
 Route::group(['prefix' => 'role', 'namespace' => 'Role'], function () {
     Route::get('/', 'RoleController@index')->name('manager.role');
@@ -28,7 +28,7 @@ Route::group(['prefix' => 'role', 'namespace' => 'Role'], function () {
 });
 
 /**
- * POST
+ * POSTS
  */
 Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::get('/', 'PostController@index')->name('manager.post');
@@ -42,7 +42,7 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
 });
 
 /**
- * PLAN
+ * PLANS
  */
 Route::group(['prefix' => 'plan', 'namespace' => 'Plan'], function () {
     Route::get('/', 'PlanController@index')->name('manager.plan');
@@ -53,7 +53,7 @@ Route::group(['prefix' => 'plan', 'namespace' => 'Plan'], function () {
 });
 
 /**
- * CATEGORY
+ * CATEGORYS
  */
 Route::group(['prefix' => 'category', 'namespace' => 'Category'], function () {
     Route::get('/', 'CategoryController@index')->name('manager.category');
@@ -65,7 +65,7 @@ Route::group(['prefix' => 'category', 'namespace' => 'Category'], function () {
 });
 
 /**
- * USER
+ * USERS
  */
 Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
     Route::get('/', 'UserController@index')->name('manager.user');
@@ -76,7 +76,7 @@ Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
 });
 
 /**
- * CUSTOMER
+ * CUSTOMERS
  */
 Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
     Route::get('/', 'CustomerController@index')->name('manager.customer');
@@ -87,10 +87,26 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
     Route::post('/{id}/delete', 'CustomerController@delete')->name('manager.customer.delete');
     Route::get('/{id}/verify/phone', 'CustomerController@verifyPhone')->name('manager.customer.verify.phone');
     Route::get('/{id}/unverified/phone', 'CustomerController@unverifiedPhone')->name('manager.customer.unverified.phone');
+
+    Route::group(['prefix' => '{id}/order'], function () {
+        Route::get('/', 'OrderController@index')->name('manager.customer.order');
+        Route::post('/store', 'CustomerController@storeOrder')->name('manager.customer.order.store');
+    });
 });
 
 /**
- * SETTING
+ * ORDERS
+ */
+Route::group(['prefix' => 'order', 'namespace' => 'Order'], function () {
+    Route::get('/', 'OrderController@index')->name('manager.order');
+    Route::get('/create', 'OrderController@create')->name('manager.order.create');
+    Route::post('/store', 'OrderController@store')->name('manager.order.store');
+    Route::get('/{id}/view', 'OrderController@view')->name('manager.order.view');
+    Route::post('/{id}/update', 'OrderController@update')->name('manager.order.update');
+});
+
+/**
+ * SETTINGS
  */
 Route::group(['prefix' => 'setting'], function () {
     Route::get('/', 'SettingController@index')->name('manager.setting');

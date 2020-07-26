@@ -10,9 +10,10 @@
 
 @section('content')
 <div id="tableLight" class="col-lg-12 col-12 layout-spacing">
-    <form id="update-form" class="row" action="{{ route('manager.customer.update', ['id' => $user->id]) }}" method="POST">
-        @csrf
+        <div class="row">
         <div class="col-md-8 mb-4">
+            <form id="update-form" action="{{ route('manager.customer.update', ['id' => $user->id]) }}" method="POST">
+            @csrf
             <div class="statbox widget box box-shadow">
                 <div class="widget-header">
                     <div class="row">
@@ -62,6 +63,7 @@
 
                 </div>
             </div>
+            </form>
         </div>
 
         <div class="col-md-4">
@@ -70,18 +72,44 @@
                     <div class="row">
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                             <h4>Tác vụ</h4>
-
                         </div>
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                    @can('manager.user.modify')
+                    @can('manager.customer.modify')
                     <a id="submit" class="btn btn-primary">Cập Nhật</a>
                     @endcan
                 </div>
             </div>
+
+            <div class="statbox widget box box-shadow mt-3">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Đăng ký gói mới cho khách hàng</h4>
+        
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+
+                    <form action="{{ route('manager.customer.order.store', ['id' => $user->id]) }}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label for="plans">Chọn các gói</label>
+                            <select class="form-control tagging" name="plans[]" id="plans" multiple required>
+                                @foreach ($plans as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Tiếp tục</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </form>
+    </div>
 </div>
 @endsection
 

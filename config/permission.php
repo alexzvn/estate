@@ -120,6 +120,9 @@ return [
             'manager.customer.create'      => 'Tạo tài khoản mới',
             'manager.customer.verify.phone' => 'Xác thực SĐT',
 
+            'manager.customer.order.create' => '',
+            'manager.customer.order.view' => '',
+
             'manager.role.view'   => 'Xem',
             'manager.role.create' => 'Tạo mới',
             'manager.role.modify' => 'Chỉnh sửa',

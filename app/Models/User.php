@@ -68,7 +68,7 @@ class User extends Authenticatable implements MustVerifyPhone
 
     public function subscriptions()
     {
-        return $this->hasMany(UserSubscription::class);
+        return $this->hasMany(Subscription::class);
     }
 
     public function isAdmin()

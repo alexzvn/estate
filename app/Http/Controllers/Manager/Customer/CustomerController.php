@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Manager\Customer;
 
+use App\Repository\Plan;
 use App\Repository\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Customer\StoreCustomer;
 use App\Http\Requests\Manager\Customer\UpdateCustomer;
-use App\Repository\Plan;
+use App\Http\Requests\Manager\Customer\Order\StoreOrder;
+use App\Models\Order;
 
 class CustomerController extends Controller
 {
@@ -100,5 +102,16 @@ class CustomerController extends Controller
         }
 
         return back()->with('success', 'Bỏ xác thực thành công');
+    }
+
+    public function storeOrder(string $id, StoreOrder $request)
+    {
+        $order = User::findOrFail($id)->orders()->create([
+            'status' => Order::PENDING,
+        ]);
+
+        $order->plans()->sync($request->plans ?? []);
+
+        return redirect(route('manager.order.view', ['id' => $order->id]));
     }
 }

@@ -16,6 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $collection) {
             $collection->index(['verifier_id', 'customer_id']);
             $collection->integer('status');
+            $collection->timestamp(['activate_at', 'expires_at']);
         });
     }
 

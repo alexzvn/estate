@@ -15,7 +15,15 @@ class Order extends Model
     public const PAID = 2;
 
     protected $fillable = [
-        'price', 'after_discount_price','discount', 'discount_type', 'status' ,'verified'
+        'month',
+        'price',
+        'status',
+        'verified',
+        'discount',
+        'discount_type',
+        'after_discount_price',
+        'activate_at',
+        'expires_at',
     ];
 
     protected $casts = [
@@ -24,9 +32,14 @@ class Order extends Model
         'price' => 'float',
     ];
 
+    protected $dates = [
+        'activate_at',
+        'expires_at'
+    ];
+
     public function plans()
     {
-        return $this->hasMany(Plan::class);
+        return $this->belongsToMany(Plan::class);
     }
 
     public function verifier()
