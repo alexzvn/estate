@@ -1,89 +1,20 @@
-@extends('layouts.app')
+@extends('customer.layouts.app')
 
 @section('content')
 <div class="container">
 
     <div class="row bg-white p-2 shadow rounded">
-        <div class="col-md-12 px-0">
-            <div class="border rounded-top">
-                <ul class="nav nav-tabs nav-custom-tabs mx-3" id="myTab" role="tablist">
-                    <li class="nav-item">
-                      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#section-1" role="tab">Mua Bán</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#section-2" role="tab">Cần Thuê</a>
-                    </li>
-                    <li class="nav-item d-none">
-                      <a class="nav-link" id="contact-tab" data-toggle="tab" href="#section-3" role="tab">Thị Trường</a>
-                    </li>
-                </ul>
-                <div class="border-top p-3" style="background-color: #f7f7f7;">
-                    <form action="" method="GET">
+        
+        @include('customer.components.tabs')
 
-                        <div class="row">
-                            <div class="col-md-5 pl-0">
-                                <div class="form-row">
-                                    <label for="query" class="col-md-3 col-form-label text-md-right"><strong>Tìm kiếm</strong></label>
-
-                                    <div class="col-md-9">
-                                        <input id="query" type="text" class="form-control" name="query" value="{{ request('query') }}" placeholder="Nhập từ khóa tìm kiếm...">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2 pl-0">
-                                <div class="form-group">
-                                  <select class="form-control" name="categories" id="categories">
-                                    <option value="">Chọn chuyên mục</option>
-                                    @foreach ($categories as $item)
-                                    <option style="color: black; font-weight: bold;" disabled>{{ $item->name }}</option>
-                                        @foreach ($item->children ?? [] as $item)
-                                        <option value="{{ $item->id }}" {{ $item->id === request('categories') ? 'selected' : ''}}>{{ $item->name }}</option>
-                                        @endforeach
-                                    @endforeach
-                                  </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2 pl-0">
-                                <div class="form-group">
-                                    <select class="form-control" name="province" id="province">
-                                      <option value="">Chọn Tỉnh/TP</option>
-                                      @foreach ($provinces as $item)
-                                          <option value="{{ $item->id }}" {{ $item->id === request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-                            </div>
-
-                            <div class="col-md-3 pl-0">
-                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                                <a class="btn btn-link" href="#" role="button">Tìm kiếm nâng cao <i class="fa fa-caret-down" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </div>
-
-                    </form>
-
-                </div>
-            </div>
-        </div>
         <div class="col-md-12 mt-2">
             <div class="row">
                 <div class="col-md-{{ $setting->notification ? '9' : '12' }} px-0" id="myTabContent">
                     <div class="tab-content" >
                         <div class="tab-pane fade show active" id="section-1" role="tabpanel">
-                            @include('customer.components.posts-table', ['posts' => $sellPosts])
-                            {{ $sellPosts->appends($_GET)->render() }}
-                        </div>
-                        <div class="tab-pane fade" id="section-2" role="tabpanel">
-                            @include('customer.components.posts-table', ['posts' => $rentPosts])
-                            {{ $rentPosts->appends($_GET)->render() }}
-                        </div>
-                        {{-- <div class="tab-pane fade" id="section-3" role="tabpanel">
-                            @include('customer.components.posts-table', compact('posts'))
+                            @include('customer.components.posts-table', ['posts' => $posts])
                             {{ $posts->appends($_GET)->render() }}
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
     
@@ -97,6 +28,7 @@
                     @endif
                 </div>
                 @endif
+
             </div>
         </div>
     </div>
