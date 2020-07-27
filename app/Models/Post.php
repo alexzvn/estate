@@ -109,6 +109,14 @@ class Post extends Model
         });
     }
 
+    public function filterProvinces(Builder $builder, $value)
+    {
+        return $builder->whereHas('metas', function (Builder $q) use ($value)
+        {
+            $q->where('name', Meta::Province)->whereIn('value', $value);
+        });
+    }
+
     public function filterCity(Builder $builder, $value)
     {
         return $builder->whereHas('metas', function (Builder $q) use ($value)
