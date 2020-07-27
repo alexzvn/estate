@@ -20,7 +20,7 @@ Auth::routes();
 
 Route::group(['middleware' => 'verified', 'namespace' => 'Customer'], function ()
 {
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home', 'PostController@index')->name('home');
     Route::get('/online', 'PostController@online')->name('post.online');
     Route::get('/fee', 'PostController@fee')->name('post.fee');
     Route::get('/market', 'PostController@market')->name('post.market');

@@ -27,11 +27,17 @@ class PostController extends Controller
     protected $access;
 
     public function __construct() {
-        $this->customer = new Customer(request()->user());
-        $this->access   = $this->customer->access();
 
-        view()->share('categories', $this->accessCategories());
-        view()->share('provinces',  $this->accessProvinces());
+        $this->middleware(function ($request, $next)
+        {
+            $this->customer = new Customer($request->user());
+            $this->access   = $this->customer->access();
+
+            view()->share('categories', $this->accessCategories());
+            view()->share('provinces',  $this->accessProvinces());
+
+            return $next($request);
+        });
     }
 
     public function index()

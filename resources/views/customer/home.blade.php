@@ -17,7 +17,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 @if (empty($setting->notification))
                 <div class="col-md-3 pr-0">
                     @if ($setting->notification)
