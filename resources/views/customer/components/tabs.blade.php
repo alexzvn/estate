@@ -5,10 +5,10 @@
                 <a class="nav-link @active('home')" href="{{ route('home') }}">Tất cả</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @active('post.fee')" href="{{ route('post.fee') }}">Tin Online</a>
+                <a class="nav-link @active('post.online')" href="{{ route('post.online') }}">Tin Online</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @active('post.online')" href="{{ route('post.online') }}">Tin Xin Phí</a>
+                <a class="nav-link @active('post.fee')" href="{{ route('post.fee') }}">Tin Xin Phí</a>
             </li>
             <li class="nav-item d-none">
                 <a class="nav-link">Tin thị trường</a>
