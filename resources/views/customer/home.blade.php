@@ -26,19 +26,19 @@
                                     <label for="query" class="col-md-3 col-form-label text-md-right"><strong>Tìm kiếm</strong></label>
 
                                     <div class="col-md-9">
-                                        <input id="query" type="text" class="form-control" name="query" value="{{ old('query') }}" placeholder="Nhập từ khóa tìm kiếm...">
+                                        <input id="query" type="text" class="form-control" name="query" value="{{ request('query') }}" placeholder="Nhập từ khóa tìm kiếm...">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-md-2 pl-0">
                                 <div class="form-group">
-                                  <select class="form-control" name="category" id="category">
+                                  <select class="form-control" name="categories" id="categories">
                                     <option value="">Chọn chuyên mục</option>
                                     @foreach ($categories as $item)
-                                    <option disabled>{{ $item->name }}</option>
+                                    <option style="color: black; font-weight: bold;" disabled>{{ $item->name }}</option>
                                         @foreach ($item->children ?? [] as $item)
-                                        <option value="{{ $item->id }}" {{ $item->id === old('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                                        <option value="{{ $item->id }}" {{ $item->id === request('categories') ? 'selected' : ''}}>{{ $item->name }}</option>
                                         @endforeach
                                     @endforeach
                                   </select>
@@ -50,7 +50,7 @@
                                     <select class="form-control" name="province" id="province">
                                       <option value="">Chọn Tỉnh/TP</option>
                                       @foreach ($provinces as $item)
-                                          <option value="{{ $item->id }}" {{ $item->id === old('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                                          <option value="{{ $item->id }}" {{ $item->id === request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
                                       @endforeach
                                     </select>
                                   </div>
