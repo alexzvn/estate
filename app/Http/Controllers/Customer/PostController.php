@@ -85,12 +85,17 @@ class PostController extends Controller
     {
         $access = $this->access;
 
+        $categories = Category::flat($this->accessCategories())
+            ->map(function ($cat) {
+                return $cat->id;
+            });
+
         return Post::withRelation()
             ->filterRequest(request())
             ->published()
             ->whereIn('type', $access->getPostTypes())
             ->filterRequest([
-                'categories' => Category::flat($this->accessCategories()),
+                'categories' => $categories,
                 'provinces'  => $access->getProvinces()
             ]);
     }
