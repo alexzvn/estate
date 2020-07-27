@@ -20,9 +20,13 @@ class Category extends BaseRepository
     public static function flat(Collection $categories)
     {
         return $categories->reduce(function (Collection $carry, $item) {
-            $carry = $carry->concat($item);
+            $carry->push($item);
 
-            return $item->children ? $carry->concat($item->children) : $carry;
+            if ($item->children) {
+                return $carry->push(...$item->children);
+            }
+
+            return $carry;
         }, collect());
     }
 }
