@@ -10,8 +10,13 @@ class AccessManager
 {
     protected $customer;
 
+    private $subscriptions;
+
     public function __construct(User $customer) {
         $this->customer = $customer;
+
+        $this->subscriptions = $this->customer->subscriptions()->active()
+            ->with(['plan', 'plan.categories', 'plan.provinces'])->get();
     }
 
     public function getPostTypes()
@@ -62,10 +67,7 @@ class AccessManager
      */
     public function plans()
     {
-        $subs = $this->customer->subscriptions()->active()
-            ->with(['plan', 'plan.categories', 'plan.provinces'])->get();
-
-        return $subs->map(function ($sub)
+        return $this->subscriptions->map(function ($sub)
         {
             return $sub->plan;
         });
