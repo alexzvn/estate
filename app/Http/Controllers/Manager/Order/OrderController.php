@@ -12,13 +12,19 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function store(string $id)
+    public function index()
     {
+        $this->authorize('manager.order.view');
 
+        return view('dashboard.order.index', [
+            'orders' => Order::with(['plans', 'customer'])->paginate()
+        ]);
     }
 
     public function view(string $id, Order $order)
     {
+        $this->authorize('manager.order.view');
+
         $order = $order->findOrFail($id);
 
         return view('dashboard.order.view', [
@@ -26,6 +32,15 @@ class OrderController extends Controller
             'plans' => $order->plans,
             'order' => $order,
         ]);
+    }
+
+    public function delete(string $id, Order $order)
+    {
+        $this->authorize('manager.order.delete');
+
+        $order->findOrFail($id)->delete();
+
+        return redirect(route('manager.order'))->with('success', 'Xóa thành công');
     }
 
     public function update(string $id, UpdateOrder $request)

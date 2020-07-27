@@ -103,6 +103,7 @@ Route::group(['prefix' => 'order', 'namespace' => 'Order'], function () {
     Route::post('/store', 'OrderController@store')->name('manager.order.store');
     Route::get('/{id}/view', 'OrderController@view')->name('manager.order.view');
     Route::post('/{id}/update', 'OrderController@update')->name('manager.order.update');
+    Route::post('/{id}/delete', 'OrderController@delete')->name('manager.order.delete');
 });
 
 /**
