@@ -103,7 +103,7 @@ class Post extends Model
 
     public function filterProvince(Builder $builder, $value)
     {
-        return $builder->whereHas(PostMeta::class, function (Builder $q) use ($value)
+        return $builder->whereHas('metas', function (Builder $q) use ($value)
         {
             $q->where('name', Meta::Province)->where('value', $value);
         });
@@ -111,7 +111,7 @@ class Post extends Model
 
     public function filterCity(Builder $builder, $value)
     {
-        return $builder->whereHas(PostMeta::class, function (Builder $q) use ($value)
+        return $builder->whereHas('metas', function (Builder $q) use ($value)
         {
             $q->where('name', Meta::City)->where('value', $value);
         });
@@ -119,7 +119,7 @@ class Post extends Model
 
     public function filterDistrict(Builder $builder, $value)
     {
-        return $builder->whereHas(PostMeta::class, function (Builder $q) use ($value)
+        return $builder->whereHas('metas', function (Builder $q) use ($value)
         {
             $q->where('name', Meta::District)->where('value', $value);
         });
@@ -127,7 +127,7 @@ class Post extends Model
 
     public function filterStreet(Builder $builder, $value)
     {
-        return $builder->whereHas(PostMeta::class, function (Builder $q) use ($value)
+        return $builder->whereHas('metas', function (Builder $q) use ($value)
         {
             $q->where('name', Meta::Street)->where('value', $value);
         });
