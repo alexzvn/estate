@@ -90,7 +90,7 @@ class PostController extends Controller
             ->published()
             ->whereIn('type', $access->getPostTypes())
             ->filterRequest([
-                'categories' => $access->getCategories(),
+                'categories' => Category::flat($this->accessCategories()),
                 'provinces'  => $access->getProvinces()
             ]);
     }
