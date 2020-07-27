@@ -18,16 +18,49 @@
                     </li>
                 </ul>
                 <div class="border-top p-3" style="background-color: #f7f7f7;">
-                    <form action="" method="GET" class="form-row justify-content-center">
+                    <form action="" method="GET">
 
-                        <div class="col-md-11">
-                            <div class="input-group">
-                                <input type="text" name="query" value="{{ request('query') }}" style="border: solid #3490dc;" class="form-control form-control-lg border-right-0" placeholder="Tìm kiếm thông tin trên website">
-                                <div class="input-group-append">
-                                    <button class="btn btn-lg btn-primary" type="submit">Tìm kiếm</button>
+                        <div class="row">
+                            <div class="col-md-5 pl-0">
+                                <div class="form-row">
+                                    <label for="query" class="col-md-3 col-form-label text-md-right"><strong>Tìm kiếm</strong></label>
+
+                                    <div class="col-md-9">
+                                        <input id="query" type="text" class="form-control" name="query" value="{{ old('query') }}" placeholder="Nhập từ khóa tìm kiếm...">
+                                    </div>
                                 </div>
                             </div>
-                            {{-- <a href="javascript:void(0)">Tìm kiếm nâng cao<i class="fa fa-filter"></i></a> --}}
+
+                            <div class="col-md-2 pl-0">
+                                <div class="form-group">
+                                  <select class="form-control" name="category" id="category">
+                                    <option value="">Chọn chuyên mục</option>
+                                    @foreach ($categories as $item)
+                                    <option disabled>{{ $item->name }}</option>
+                                        @foreach ($item->children ?? [] as $item)
+                                        <option value="{{ $item->id }}" {{ $item->id === old('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                                        @endforeach
+                                    @endforeach
+                                  </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 pl-0">
+                                <div class="form-group">
+                                    <select class="form-control" name="province" id="province">
+                                      <option value="">Chọn Tỉnh/TP</option>
+                                      @foreach ($provinces as $item)
+                                          <option value="{{ $item->id }}" {{ $item->id === old('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                            </div>
+
+                            <div class="col-md-3 pl-0">
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                <a class="btn btn-link" href="#" role="button">Tìm kiếm nâng cao <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                </a>
+                            </div>
                         </div>
 
                     </form>

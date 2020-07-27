@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Repository\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Repository\Location\Province;
 
 class HomeController extends Controller
 {
@@ -34,6 +35,8 @@ class HomeController extends Controller
         return view('customer.home', [
             'sellPosts' => $sellPosts->paginate(10),
             'rentPosts' => $rentPosts->paginate(10),
+            'categories' => Category::parentOnly()->with('children')->get(),
+            'provinces' => Province::active()->get(),
         ]);
     }
 
