@@ -1,17 +1,19 @@
 <form action="" method="GET">
 
     <div class="row">
-        <div class="col-md-5 pl-0">
+        <div class="col-md-5 pl-md-0">
             <div class="form-row">
-                <label for="query" class="col-md-3 col-form-label text-md-right"><strong>Tìm kiếm</strong></label>
+                <label for="query" class="col-md-3 col-form-label text-md-right d-none d-md-block"><strong>Tìm kiếm: </strong></label>
 
                 <div class="col-md-9">
+                    <div class="form-group">
                     <input id="query" type="text" class="form-control" name="query" value="{{ request('query') }}" placeholder="Nhập từ khóa tìm kiếm...">
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-2 pl-0">
+        <div class="col-md-2 pl-md-0">
             <div class="form-group">
               <select class="form-control" name="categories" id="categories">
                 <option value="">Chọn chuyên mục</option>
@@ -25,7 +27,7 @@
             </div>
         </div>
 
-        <div class="col-md-2 pl-0">
+        <div class="col-md-2 pl-md-0">
             <div class="form-group">
                 <select class="form-control" name="district" id="district">
                   <option value="">Chọn Quận/Huyện</option>
@@ -36,7 +38,7 @@
               </div>
         </div>
 
-        <div class="col-md-3 pl-0">
+        <div class="col-md-3 pl-md-0">
             <button type="submit" class="btn btn-primary">Tìm kiếm</button>
             <a class="btn btn-link" href="#" role="button">Tìm kiếm nâng cao <i class="fa fa-caret-down" aria-hidden="true"></i>
             </a>
