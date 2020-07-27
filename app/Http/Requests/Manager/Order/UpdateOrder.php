@@ -15,7 +15,7 @@ class UpdateOrder extends FormRequest
      */
     public function authorize()
     {
-        return $this->user() && $this->user()->can('manager.order.update');
+        return $this->user() && $this->user()->can('manager.order.modify');
     }
 
     /**

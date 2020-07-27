@@ -120,8 +120,10 @@ return [
             'manager.customer.create'      => 'Tạo tài khoản mới',
             'manager.customer.verify.phone' => 'Xác thực SĐT',
 
-            'manager.customer.order.create' => '',
-            'manager.customer.order.view' => '',
+            'manager.order.view'   => 'Xem',
+            'manager.order.create' => 'Tạo mới',
+            'manager.order.modify' => 'Chỉnh sửa',
+            'manager.order.delete' => 'Xóa',
 
             'manager.role.view'   => 'Xem',
             'manager.role.create' => 'Tạo mới',
@@ -190,6 +192,14 @@ return [
                     'manager.plan.create',
                     'manager.plan.modify',
                     'manager.plan.delete',
+                ]
+            ],[
+                'name' => 'Quản lý đơn hàng',
+                'permissions' => [
+                    'manager.order.view',
+                    'manager.order.create',
+                    'manager.order.modify',
+                    'manager.order.delete',
                 ]
             ],[
                 'name' => 'Khác',

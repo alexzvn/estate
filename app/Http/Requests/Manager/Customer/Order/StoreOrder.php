@@ -13,7 +13,7 @@ class StoreOrder extends FormRequest
      */
     public function authorize()
     {
-        return $this->user() && $this->user()->can('manager.customer.order.create');
+        return $this->user() && $this->user()->can('manager.order.create');
     }
 
     /**
