@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Jenssegers\Mongodb\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
+    use SoftDeletes;
+
     public const DISCOUNT_PERCENT = 1;
 
     public const DISCOUNT_NORMAL  = 2;
