@@ -17,10 +17,13 @@ Route::get('/', 'PublicController@index');
 
 Auth::routes();
 
-Route::group(['middleware' => 'verified'], function ()
+Route::group(['middleware' => 'verified', 'namespace' => 'Customer'], function ()
 {
-    Route::get('/home', 'Customer\HomeController@index')->name('home');
-    Route::get('/post/{id}/view', 'Customer\HomeController@viewPost')->name('home.post.view');
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/online', 'PostController@online')->name('post.online');
+    Route::get('/fee', 'PostController@fee')->name('post.fee');
+    Route::get('/market', 'PostController@market')->name('post.market');
+    Route::get('/post/{id}/view', 'PostController@view')->name('post.view');
 });
 
 
