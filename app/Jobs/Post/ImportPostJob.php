@@ -59,7 +59,7 @@ class ImportPostJob implements ShouldQueue
             'content'    => Purifier::clean($this->post->content) ?? '',
             'hash'       => $this->post->hash,
             'publish_at' => Carbon::createFromDate(...$date),
-            'status'     => PostStatus::Pending,
+            'status'     => PostStatus::Published,
             'type'       => PostType::Online,
         ]);
 
