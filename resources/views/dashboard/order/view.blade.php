@@ -104,10 +104,14 @@
                         <h5 class="my-3">Tổng tiền: <span id="total-value" class="text-danger">{{ $order->after_discount_price !== null ? number_format($order->after_discount_price) : number_format($plans->sum('price')) }}đ</span></h5>
 
                         @if ($order->verified)
-                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <button id="submit" class="btn btn-primary">Cập nhật</button>
                         @else
-                        <button type="submit" class="btn btn-success">Xác nhận & kích hoạt đơn hàng</button>
+                        <button id="submit" class="btn btn-success">Xác nhận & kích hoạt đơn hàng</button>
                         @endif
+
+                        @can('manager.order.delete')
+                        <a id="delete-btn" href="javascript:void(0)" class="btn btn-danger btn-sm float-right">Xóa đơn hàng</a>
+                        @endcan
 
                     </form>
                 </div>
@@ -115,6 +119,11 @@
         </div>
     </div>
 </div>
+
+@can('manager.order.delete')
+<form id="delete-form" action="{{ route('manager.order.delete', ['id' => $order->id]) }}" method="post">@csrf</form>
+@endcan
+
 @endsection
 
 @push('script')
@@ -140,6 +149,12 @@ $(".tagging").select2({
 $('#submit').click(function () {
     if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
         document.getElementById('update-form').submit();
+    }
+});
+
+$('#delete-btn').click(function () {
+    if (confirm('Bạn có muốn xóa đơn hàng này không')) {
+        document.getElementById('delete-form').submit();
     }
 });
 

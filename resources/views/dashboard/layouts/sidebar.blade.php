@@ -129,6 +129,16 @@
                     </li>
                     @endcan
 
+                    @can('manager.order.view')
+                    <li class="menu">
+                        <a href="{{ route('manager.order') }}" @active('manager.order', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div>
+                                <i data-feather="credit-card"></i> <span>Quản lý đơn hàng</span>
+                            </div>
+                        </a>
+                    </li>
+                    @endcan
+
                     @can('manager.plan.view')
                     <li class="menu">
                         <a href="{{ route('manager.plan') }}" @active('manager.plan*', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
