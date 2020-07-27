@@ -20,55 +20,8 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request)
+    public function index(PostController $post)
     {
-        $sellPosts = $this->defaultQuery($request)
-            ->filterRequest([
-                'categories' => $this->getListCategories('BÁN')
-            ]);
-
-        $rentPosts = $this->defaultQuery($request)
-            ->filterRequest([
-                'categories' => $this->getListCategories('THUÊ')
-            ]);
-
-        return view('customer.home', [
-            'sellPosts' => $sellPosts->paginate(10),
-            'rentPosts' => $rentPosts->paginate(10),
-            'categories' => Category::parentOnly()->with('children')->get(),
-            'provinces' => Province::active()->get(),
-        ]);
-    }
-
-    public function getListCategories(string $query)
-    {
-        $cat = Category::parentOnly()->where('name', 'like', "%$query%")->first();
-
-        if (! $cat) {
-            return [];
-        }
-
-        return $cat->children()->get()->map(function ($cat)
-        {
-            return $cat->id;
-        });
-    }
-
-    public function defaultQuery(Request $request)
-    {
-        return Post::withRelation()
-            ->published()
-            ->filterRequest($request)
-            ->select(['title', 'publish_at']);
-    }
-
-    public function viewPost(string $id)
-    {
-        $post = Post::withRelation()->published()->findOrFail($id);
-
-        return view('customer.components.post-content', [
-            'post' => $post,
-            'meta' => $post->loadMeta()->meta
-        ]);
+        return $post->index();
     }
 }
