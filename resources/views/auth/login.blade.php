@@ -7,6 +7,23 @@
 
             <form class="col-md-10 offset-md-2" method="POST" action="{{ route('login') }}">
                 <h2 class="text-center">Đăng nhập</h2>
+
+                @if (session()->has('reject.title'))
+                <div class="alert alert-danger" role="alert" style="border: dashed brown;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <strong>{{ session('reject.title') }}</strong>
+                    @if (session()->has('reject.message'))
+                    <p class="m-0" style="color: black;">{{ session('reject.message') }}</p>
+                    @endif
+                    
+                </div>
+                @endif
+
+                
+
                 @csrf
 
                 <div class="form-group">

@@ -102,7 +102,9 @@ class LoginController extends Controller
 
     protected function sendHasSessionLoginResponse(Request $request)
     {
-        return view('auth.reject');
+        return view('auth.login')
+            ->with('reject.title', 'Tài khoản này đã đăng nhập từ nơi khác.')
+            ->with('reject.message', 'Xin hãy đăng xuất tài khoản trên thiết bị cũ hoặc đợi '.\App\Models\User::SESSION_TIMEOUT.' phút để đăng nhập lại.');
     }
 
     protected function username()

@@ -17,5 +17,10 @@ Route::get('/', 'PublicController@index');
 
 Auth::routes();
 
-Route::get('/home', 'Customer\HomeController@index')->name('home');
-Route::get('/post/{id}/view', 'Customer\HomeController@viewPost')->name('home.post.view');
+Route::group(['middleware' => 'verified'], function ()
+{
+    Route::get('/home', 'Customer\HomeController@index')->name('home');
+    Route::get('/post/{id}/view', 'Customer\HomeController@viewPost')->name('home.post.view');
+});
+
+
