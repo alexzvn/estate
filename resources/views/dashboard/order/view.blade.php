@@ -19,7 +19,9 @@
                 <div class="widget-header">
                     <div class="row">
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Cập nhật đơn hàng
+                            <h4>
+                                @include('dashboard.layouts.back-button', ['link' => route('manager.customer.view', ['id' => $order->customer->id])])
+                                Cập nhật đơn hàng
                                 <span class="badge badge-{{ $order->status === $order::PAID ? 'success' : 'warning' }}">
                                     {{ $order->status === $order::PAID ? 'Đã thanh toán' : 'Chưa thanh toán' }}
                                 </span>

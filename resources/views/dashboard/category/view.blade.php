@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                             <h4>
-                                <a href="{{ route('manager.category') }}" class="btn btn-outline-secondary btn-sm rounded-circle"><i class="t-icon" data-feather="arrow-left"></i></a>
+                                @include('dashboard.layouts.back-button', ['link' => route('manager.category')])
                                 Sửa danh mục
                             </h4>
                         </div>
