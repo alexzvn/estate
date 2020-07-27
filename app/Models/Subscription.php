@@ -28,8 +28,8 @@ class Subscription extends Model
 
     public function scopeActive(Builder $builder)
     {
-        return $builder->where('expires_at', '<=', now())
-                       ->orWhereNotNull('expires_at');
+        return $builder->where('expires_at', '>=', now())
+                       ->orWhereNull('expires_at');
     }
 
     public function scopeUnlimited(Builder $builder)
