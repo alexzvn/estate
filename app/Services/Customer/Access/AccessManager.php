@@ -35,7 +35,7 @@ class AccessManager
     {
         return $this->plans()->reduce(function (Collection $carry, $item)
         {
-            if ($item->categories) {
+            if ($item && $item->categories) {
                 return $carry->concat($item->categories->map(function ($cat)
                 {
                     return $cat->id;
@@ -50,7 +50,7 @@ class AccessManager
     {
         return $this->plans()->reduce(function (Collection $carry, $item)
         {
-            if ($item->provinces) {
+            if ($item && $item->provinces) {
                 return $carry->concat($item->provinces->map(function ($province)
                 {
                     return $province->id;
@@ -67,6 +67,13 @@ class AccessManager
      */
     public function plans()
     {
+        $this->subscriptions->each(function ($sub) 
+        {
+            if (empty($sub->plan)) {
+                $sub->delete(); //auto delete subscription for non-exists plan
+            }
+        });
+
         return $this->subscriptions->map(function ($sub)
         {
             return $sub->plan;

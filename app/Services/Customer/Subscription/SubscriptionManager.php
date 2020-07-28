@@ -19,14 +19,14 @@ trait SubscriptionManager
 
     private function makeSubscriptions(Order $order, $subscriptions)
     {
-        return $order->plans->reduce(function (Collection $carry, $item) use ($subscriptions, $order) {
+        return $order->plans->reduce(function (Collection $carry, $plan) use ($subscriptions, $order) {
 
-            $sub = $subscriptions->filter(function ($sub) use ($item) {
-                return $sub->plan->id === $item->id;
+            $sub = $subscriptions->filter(function ($sub) use ($plan) {
+                return $sub->plan && $sub->plan->id === $plan->id;
             })->first();
 
             if (! $sub) {
-                $sub = Subscription::create()->forceFill(['plan_id' => $item->id]);
+                $sub = Subscription::create()->forceFill(['plan_id' => $plan->id]);
             }
 
             $sub->expires_at = $order->expires_at;
