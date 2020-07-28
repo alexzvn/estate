@@ -63,6 +63,8 @@
 
 @push('script')
 <script>
+
+
 $(document).ready(function () {
     $('tr[data-post-id]').on('click', function () {
         let body = $('#post-body');
@@ -82,26 +84,4 @@ $(document).ready(function () {
     });
 });
 </script>
-@endpush
-
-@push('style')
-<style>
-.nav-custom-tabs {
-    border: 0;
-}
-
-.nav-custom-tabs .nav-item .nav-link {
-    text-transform: uppercase;
-    background: none;
-    color: gray;
-    border: 0;
-}
-
-.nav-custom-tabs .nav-item .nav-link.active {
-    color: black;
-    font-weight: bolder;
-    border-bottom: solid 3px #3e92cc;
-}
-
-</style>
 @endpush
