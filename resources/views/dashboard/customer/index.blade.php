@@ -1,17 +1,5 @@
 @extends('dashboard.app')
 
-@php
-function rolesToString($roles) {
-    if (! $roles) return 'N/A';
-
-    $carry = $roles->reduce(function ($carry, $item) {
-        return $carry = "$carry, $item->name";
-    }, '');
-
-    return ltrim(ltrim($carry, ','));
-}
-@endphp
-
 @section('content')
 <div id="tableLight" class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
@@ -35,17 +23,27 @@ function rolesToString($roles) {
                             <th class="text-center">#</th>
                             <th>Họ tên</th>
                             <th>Số điện thoại</th>
-                            <th>Vai trò</th>
+                            <th>Đã chi</th>
+                            <th>Đăng ký</th>
+                            <th>Hết hạn</th>
+                            <th>Hđ gần nhất</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
+                        @php
+                            $orderFirst = $user->orders->first();
+                            $order = $user->orders->last();
+                        @endphp
                         <tr>
                             <td class="text-center" >{{ $loop->index }}</td>
-                            <td style="font-weight: bold">{{ $user->name }}</td>
+                            <td style="font-weight: bold">{{ $user->name }} @if($user->hasVerifiedPhone()) <i class="text-success" width="15" height="15" data-feather="check-circle"></i> @endif</td>
                             <td>{{ $user->phone }}</td>
-                            <td>{{ rolesToString($user->roles) }}</td>
+                            <td>{{ number_format($user->orders->sum('after_discount_price')) }} đ</td>
+                            <td>{{ $orderFirst && $orderFirst->activate_at ? $orderFirst->activate_at->format('d/m/Y') : 'N/a' }}</td>
+                            <td>{{ $order && $order->expires_at ? $order->expires_at->format('d/m/Y') : 'N/a' }}</td>
+                            <td>{{ $order && $order->created_at ? $order->created_at->format('d/m/Y') : 'N/a'  }}</td>
                             <td>
                                 <a href="{{ route('manager.customer.view', ['id' => $user->id]) }}">
                                     <i class="role-edit t-icon t-hover-icon" data-feather="edit"></i>

@@ -19,7 +19,7 @@ class CustomerController extends Controller
         $this->authorize('manager.customer.view');
 
         return view('dashboard.customer.index', [
-            'users' => User::with('roles')->filterRequest($request)->onlyCustomer()->paginate(20)
+            'users' => User::with('orders')->filterRequest($request)->onlyCustomer()->paginate(20)
         ]);
     }
 
