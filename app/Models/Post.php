@@ -167,4 +167,41 @@ class Post extends Model
     {
         return $builder->where('status', $value);
     }
+
+    public function filterPrice(Builder $builder, $price)
+    {
+        if (! is_string($price)) {
+            return $builder;
+        }
+
+        $price = explode('-', $price);
+        $min = (int) $price[0] ?? 0;
+        $max = (int) $price[1] ?? 0;
+
+        if ($min) {
+            $builder = $this->filterMinPrice($builder, $min);
+        }
+
+        if ($max) {
+            $builder = $this->filterMaxPrice($builder, $max);
+        }
+
+        return $builder;
+    }
+
+    public function filterMinPrice(Builder $builder, int $price)
+    {
+        return $builder->whereHas('metas', function (Builder $q) use ($price)
+        {
+            $q->where('name', Meta::Price)->where('value', '>=', $price);
+        });
+    }
+
+    public function filterMaxPrice(Builder $builder, int $price)
+    {
+        return $builder->whereHas('metas', function (Builder $q) use ($price)
+        {
+            $q->where('name', Meta::Price)->where('value', '<=', $price);
+        });
+    }
 }

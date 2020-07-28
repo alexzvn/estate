@@ -2,6 +2,31 @@
 <link rel="stylesheet" href="{{ asset('assets/vendor/datepicker/css/bootstrap-datepicker.standalone.min.css') }}">
 @endpush
 
+@php
+$filterPrices = [
+    '-1000000' => '< 1 triệu',
+    '1000000-3000000' => '1 - 3 triệu',
+    '3000000-5000000' => '3 - 5 triệu',
+    '5000000-10000000' => '5 - 10 triệu',
+    '10000000-20000000' => '10 - 20 triệu',
+    '20000000-30000000' => '20 - 30 triệu',
+    '30000000-40000000' => '30 - 40 triệu',
+    '40000000-70000000' => '40 - 70 triệu',
+    '70000000-100000000' => '70 - 100 triệu',
+    '100000000-500000000' => '100 - 500 triệu',
+    '500000000-800000000' => '500 - 800 triệu',
+    '800000000-1000000000' => '800 triệu - 1 tỷ',
+    '1000000000-2000000000' => '1 - 2 tỷ',
+    '2000000000-3000000000' => '2 - 3 tỷ',
+    '3000000000-5000000000' => '3 - 5 tỷ',
+    '5000000000-7000000000' => '5 - 7 tỷ',
+    '7000000000-10000000000' => '7 - 10 tỷ',
+    '10000000000-20000000000' => '10 - 20 tỷ',
+    '20000000000-30000000000' => '20 - 30 tỷ',
+    '30000000000-' => '> 30 tỷ',
+];
+@endphp
+
 <form id="search-form" action="" method="GET">
     <div class="row">
         <div class="col-md-5 pl-md-0 order-first">
@@ -72,6 +97,16 @@
                     </div>
                 </div>
         
+                <div class="col-md-2 pl-md-0">
+                    <div class="form-group">
+                        <select class="form-control" name="price" id="price">
+                          <option value="">Chọn khoảng giá</option>
+                          @foreach ($filterPrices as $value => $name)
+                              <option value="{{ $value }}" {{ $value === request('price') ? 'selected' : ''}}>{{ $name }}</option>
+                          @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-2 pl-md-0">
                     <div class="form-group">
                         <select class="form-control" name="province" id="province">
