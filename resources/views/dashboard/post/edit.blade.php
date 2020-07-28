@@ -32,6 +32,9 @@
                         <label for="post_content">Nội dung</label>
                         <textarea class="form-control" name="post_content" id="post_content" rows="3">{!! $post->content !!}</textarea>
                     </div>
+                    <div>
+                        <p class="text-muted m-0">Ngày cập nhật cuối cùng là <span class="text-info">{{ $post->updated_at->format('H:i:s d/m/Y ') }}</span></p>
+                    </div>
                 </div>
             </div>
 
