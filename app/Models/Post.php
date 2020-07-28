@@ -8,6 +8,7 @@ use App\Enums\PostMeta as Meta;
 use App\Enums\PostStatus;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\ElasticquentSearch;
+use Carbon\Carbon;
 use Elasticquent\ElasticquentTrait;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
@@ -87,6 +88,24 @@ class Post extends Model
     public function filterType(Builder $builder, $type)
     {
         return $builder->where('type', $type);
+    }
+
+    public function filterFrom(Builder $builder, $date)
+    {
+        if ($date = strtotime($date)) {
+            $builder->where('publish_at', '>=', Carbon::createFromTimestamp($date)->subDay());
+        }
+
+        return $builder;
+    }
+
+    public function filterTo(Builder $builder, $date)
+    {
+        if ($date = strtotime($date)) {
+            $builder->where('publish_at', '<=', Carbon::createFromTimestamp($date)->addDay());
+        }
+
+        return $builder;
     }
 
     public function filterCategories(Builder $builder, $values)
