@@ -7,18 +7,12 @@
       </tr>
     </thead>
     <tbody>
-      @if ($posts->perPage())
-      @php
-        $index = $posts->perPage() * ($posts->currentPage() - 1);
-      @endphp
-      @endif
-
       @foreach ($posts as $item)
       @php
         $meta = $item->loadMeta()->meta;
       @endphp
       <tr class="cursor-pointer" data-post-id="{{ $item->id }}">
-        <th class="text-muted" scope="row">{{ $loop->iteration + $index }}</th>
+        <th class="text-muted" scope="row">{{ $loop->iteration }}</th>
         <td>
             <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ Str::of($item->title)->limit(80) }}</strong> <br>
 
