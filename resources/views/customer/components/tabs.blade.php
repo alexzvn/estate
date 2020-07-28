@@ -2,9 +2,6 @@
     <div class="border rounded-top">
         <ul class="nav nav-tabs nav-custom-tabs mx-3">
             <li class="nav-item">
-                <a class="nav-link @active('home')" href="{{ route('home') }}">Tất cả</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link @active('post.online')" href="{{ route('post.online') }}">Tin Online</a>
             </li>
             <li class="nav-item">
