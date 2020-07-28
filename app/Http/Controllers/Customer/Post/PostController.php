@@ -1,45 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Customer;
+namespace App\Http\Controllers\Customer\Post;
 
 use App\Enums\PostType;
-use App\Http\Controllers\Controller;
-use App\Repository\Category;
-use App\Repository\Location\Province;
 use App\Repository\Post;
-use App\Services\Customer\Customer;
-use Illuminate\Http\Request;
+use App\Repository\Category;
+use App\Http\Controllers\Customer\Post\BaseController;
 
-class PostController extends Controller
+class PostController extends BaseController
 {
-    /**
-     * Customer service
-     *
-     * @var \App\Services\Customer\Customer
-     */
-    protected $customer;
-
-    /**
-     * Customer access
-     *
-     * @var \App\Services\Customer\Access\AccessManager
-     */
-    protected $access;
-
-    public function __construct() {
-
-        $this->middleware(function ($request, $next)
-        {
-            $this->customer = new Customer($request->user());
-            $this->access   = $this->customer->access();
-
-            view()->share('categories', $this->accessCategories());
-            view()->share('provinces',  $this->accessProvinces());
-
-            return $next($request);
-        });
-    }
-
     public function index()
     {
         return view('customer.home',[
@@ -72,6 +41,7 @@ class PostController extends Controller
 
         return view('customer.components.post-content', [
             'post' => $post,
+            'customer' => $this->customer,
             'meta' => $post->loadMeta()->meta
         ]);
     }
@@ -98,17 +68,5 @@ class PostController extends Controller
                 'categories' => $categories,
                 'provinces'  => $access->getProvinces()
             ]);
-    }
-
-    public function accessProvinces()
-    {
-        return Province::with('districts')
-            ->findMany($this->access->getProvinces());
-    }
-
-    public function accessCategories()
-    {
-        return Category::with('children')
-            ->findMany($this->access->getCategories());
     }
 }

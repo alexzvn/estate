@@ -76,6 +76,16 @@ class User extends Authenticatable implements MustVerifyPhone
         return $this->hasRole(Type::SuperAdmin);
     }
 
+    public function blacklistPosts()
+    {
+        return $this->belongsToMany(Post::class, null, 'user_blacklist_ids', 'post_blacklist_ids');
+    }
+
+    public function savePosts()
+    {
+        return $this->belongsToMany(Post::class, null, 'user_save_ids', 'post_save_ids');
+    }
+
     public function markPhoneAsNotVerified()
     {
         return $this->forceFill([

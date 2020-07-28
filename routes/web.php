@@ -21,10 +21,14 @@ Auth::routes();
 Route::group(['middleware' => ['verified', 'auth'], 'namespace' => 'Customer'], function ()
 {
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/online', 'PostController@online')->name('post.online');
-    Route::get('/fee', 'PostController@fee')->name('post.fee');
-    Route::get('/market', 'PostController@market')->name('post.market');
-    Route::get('/post/{id}/view', 'PostController@view')->name('post.view');
+    Route::get('/online', 'Post\PostController@online')->name('post.online');
+    Route::get('/fee', 'Post\PostController@fee')->name('post.fee');
+    Route::get('/market', 'Post\PostController@market')->name('post.market');
+    Route::get('/post/{id}/view', 'Post\PostController@view')->name('post.view');
+
+    Route::get('/post/{id}/action/blacklist', 'Post\ActionController@blacklist')->name('post.action.blacklist');
+    Route::get('/post/{id}/action/save', 'Post\ActionController@save')->name('post.action.save');
+    Route::get('/post/{id}/action/report', 'Post\ActionController@report')->name('post.action.report');
 });
 
 

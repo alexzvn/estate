@@ -63,7 +63,7 @@
 
 @push('script')
 <script>
-
+(function (window) {
 
 $(document).ready(function () {
     $('tr[data-post-id]').on('click', function () {
@@ -80,8 +80,43 @@ $(document).ready(function () {
             }
         }).then(response => {
             body.html(response);
+            registerAction();
         });
     });
 });
+
+function registerAction() {
+    let id = $('#modal-post-data').data('post-id');
+
+    $('#post-save').click(function () {
+        fetchAction(`/post/${id}/action/save`);
+    });
+
+    $('#post-report').click(function () {
+        if (confirm('Bạn có thực sự muốn báo môi giới tin này?')) {
+            fetchAction(`/post/${id}/action/report`);
+        }
+    });
+
+    $('#post-blacklist').click(function () {
+        if (confirm('Bạn có muốn xóa tin này không?')) {
+            fetchAction(`/post/${id}/action/blacklist`);
+        }
+    });
+}
+
+function fetchAction(url) {
+    fetch(url)
+    .then(res => {
+        if (res.ok || res.status === 404) {
+            return res.text();
+        } else {
+            alert('Có lỗi trong quá trình thực hiện, \n xin hãy thử làm mới lại trang');
+        }
+    }).then(text => {
+        alert(text);
+    })
+}
+}(window));
 </script>
 @endpush
