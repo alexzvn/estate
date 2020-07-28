@@ -78,7 +78,10 @@ class Post extends Model
 
     public function scopePublished(Builder $builder)
     {
-        return $builder->where('status', (string) PostStatus::Published)->whereNotNull('publish_at');
+        return $builder
+            ->whereNotNull('publish_at')
+            ->orderBy('publish_at', 'desc')
+            ->where('status', (string) PostStatus::Published);
     }
 
     public function filterType(Builder $builder, $type)

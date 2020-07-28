@@ -18,7 +18,7 @@ Route::get('/', 'PublicController@index');
 
 Auth::routes();
 
-Route::group(['middleware' => 'verified', 'namespace' => 'Customer'], function ()
+Route::group(['middleware' => ['verified', 'auth'], 'namespace' => 'Customer'], function ()
 {
     Route::get('/home', 'PostController@index')->name('home');
     Route::get('/online', 'PostController@online')->name('post.online');

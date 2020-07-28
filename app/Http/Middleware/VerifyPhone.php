@@ -29,6 +29,6 @@ class VerifyPhone
         $request->session()->flash('reject.title', 'Tài khoản của bạn chưa xác thực');
         $request->session()->flash('reject.message', 'Tài khoản của bạn cần xác thực và cấp quyền xem tin. Vui lòng liên hệ hotline để được hướng dẫn.');
 
-        return response()->view('auth.login');
+        return redirect(route('login'));
     }
 }
