@@ -167,9 +167,9 @@
                     <div class="form-group input-group-sm">
                       <label for="status">Trạng thái</label>
                       <select class="form-control" name="status" id="status">
-                        <option value="0">Bản nháp</option>
-                        <option value="1">Chờ duyệt</option>
-                        <option value="2">Xuất bản</option>
+                        <option value="0" {{ $post->status == 0 ? 'selected' :'' }}>Bản nháp</option>
+                        <option value="1" {{ $post->status == 1 ? 'selected' :'' }}>Chờ duyệt</option>
+                        <option value="2" {{ $post->status == 2 ? 'selected' :'' }}>Xuất bản</option>
                       </select>
                     </div>
 
