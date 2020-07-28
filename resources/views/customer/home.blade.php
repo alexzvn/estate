@@ -17,7 +17,9 @@
                         </div>
                         @else
                             @include('customer.components.posts-table', ['posts' => $posts])
-                            {{ $posts->appends($_GET)->render() }}
+                            <div class="d-flex justify-content-center">
+                                {{ $posts->withQueryString()->onEachSide(1)->links() }}
+                            </div>
                         @endif
                 </div>
 
