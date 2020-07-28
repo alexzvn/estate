@@ -106,6 +106,7 @@ return [
             'manager.category.view'   => 'Xem',
             'manager.category.create' => 'Tạo mới',
             'manager.category.modify' => 'Chỉnh sửa',
+            'manager.category.modify.force' => 'Chỉnh sửa khi đã xác thực',
             'manager.category.delete' => 'Xóa',
 
             'manager.user.view'   => 'Xem',
@@ -199,6 +200,7 @@ return [
                     'manager.order.view',
                     'manager.order.create',
                     'manager.order.modify',
+                    'manager.order.modify.force',
                     'manager.order.delete',
                 ]
             ],[

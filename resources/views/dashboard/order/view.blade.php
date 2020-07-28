@@ -76,7 +76,7 @@
                             <div class="col-md-3">
                                 <div class="form-group input-group-sm">
                                     <label for="price">Giá tiền các gói</label>
-                                    <input type="text" name="price" id="price" class="form-control price" value="{{ $plans->sum('price') }}" data-value="{{ $plans->sum('price') }}" disabled>
+                                    <input type="text" name="price" id="price" class="form-control price" value="{{ $order->price ?? $plans->sum('price') }}" data-value="{{ $plans->sum('price') }}" disabled>
                                 </div>
                             </div>
 
@@ -125,9 +125,11 @@
                         <h5 class="my-3">Tổng tiền: <span id="total-value" class="text-danger">{{ $order->after_discount_price !== null ? number_format($order->after_discount_price) : number_format($plans->sum('price')) }}đ</span></h5>
 
                         @if ($order->verified)
-                        <button id="submit" class="btn btn-primary">Cập nhật</button>
+                            @can('manager.category.modify.force')
+                            <button id="submit" class="btn btn-primary">Cập nhật</button>
+                            @endcan
                         @else
-                        <button id="submit" class="btn btn-success">Cập nhật</button>
+                            <button id="submit" class="btn btn-success">Cập nhật</button>
                         @endif
 
                         @can('manager.order.delete')
@@ -187,7 +189,7 @@
 
     $('#update-form').change(function () {
         let form = {
-            price: $('#price').data('value'),
+            price: $('#price').val().replace(/,/g, '') - 0,
             expires: $('#expires_month').val() - 0,
             discount: $('#discount').val() - 0,
             discount_type: $('#discount_type').val() - 0

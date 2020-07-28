@@ -3,8 +3,9 @@
 namespace App\Http\Requests\Manager\Order;
 
 use App\Models\Order;
-use Illuminate\Foundation\Http\FormRequest;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateOrder extends FormRequest
 {
@@ -26,11 +27,24 @@ class UpdateOrder extends FormRequest
     public function rules()
     {
         return [
+            'manual'        => 'nullable|boolean',
+            'verified'      => 'nullable|boolean',
             'activated_at'  => 'nullable|date',
-            'expires_at'    => 'nullable|date',
+            'expires_at'    => 'required_with:manual|date',
+            'price'         => 'required_with:manual|string',
             'expires_month' => 'nullable|numeric',
             'discount'      => 'nullable|numeric',
             'discount_type' => ['required', Rule::in([Order::DISCOUNT_NORMAL, Order::DISCOUNT_PERCENT])],
         ];
+    }
+
+    public function activeAt()
+    {
+        return $this->activated_at ? Carbon::createFromTimestamp(strtotime($this->activated_at)) : now();
+    }
+
+    public function expiresAt()
+    {
+        return $this->expires_at ? Carbon::createFromTimestamp(strtotime($this->expires_at)) : null;
     }
 }

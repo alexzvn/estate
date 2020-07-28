@@ -47,43 +47,51 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        $startAt = $request->activated_at ? Carbon::createFromTimestamp(strtotime($request->activated_at)) : now();
-
-        if (! $order->verified || $order->status === ModelsOrder::PENDING) {
+        if (! $order->status !== ModelsOrder::PAID && $request->verified ) { //activate order in first time
             (new Customer($order->customer))->renewSubscription($order);
         }
 
-        $order->fill($request->all())->fill([
-            'month' => $request->expires_month,
-            'price' => $order->plans->sum('price') ?? 0,
-            'status'=> ModelsOrder::PAID,
-            'verified' => true,
-            'activate_at' => $startAt,
-            'expires_at' => $this->getExpires($request),
-        ]);
-
-        $order = $this->calcOrder($order);
-
-        $order->save();
+        if ($order->status === ModelsOrder::PENDING || $this->authorize('manager.category.modify.force')) {
+            $request->manual ?
+                $this->updateManual($order, $request)->save():
+                $this->updateAuto($order, $request)->save();
+        }
 
         return redirect(route('manager.order.view', ['id' => $order->id]));
     }
 
-    private function getExpires(Request $request)
+    protected function updateAuto(ModelsOrder $order, UpdateOrder $request)
     {
-        if ($request->expires_at) {
-            return Carbon::createFromTimestamp(strtotime($request->expires_at));
-        } elseif($request->expires_month ) {
-            return now()->addMonths($request->expires_month);
-        }
+        $order->fill($request->all())->fill([
+            'month' => $request->expires_month,
+            'price' => $order->plans->sum('price') ?? 0,
+            'status'=> $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
+            'verified' => (bool) $request->verified,
+            'activate_at' => $request->activeAt(),
+            'expires_at' => $request->expiresAt(),
+        ]);
 
-        return null;
+        return $this->orderCalcDiscount($order, $order->price * $order->month);
     }
 
-    private function calcOrder(ModelsOrder $order)
+    protected function updateManual(ModelsOrder $order, UpdateOrder $request)
     {
-        $price = $order->price * $order->month;
+        $price = (int) str_replace(',', '', $request->price ?? 0);
 
+        $order->fill($request->all())->fill([
+            'month' => null,
+            'price' => $price,
+            'status'=> $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
+            'verified' => (bool) $request->verified,
+            'activate_at' => $request->activeAt(),
+            'expires_at' => $request->expiresAt(),
+        ]);
+
+        return $this->orderCalcDiscount($order, $order->price);
+    }
+
+    private function orderCalcDiscount(ModelsOrder $order, int $price)
+    {
         if ($order->discount_type == ModelsOrder::DISCOUNT_NORMAL) {
             $price -= $order->discount;
         } else {
