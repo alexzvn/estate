@@ -114,6 +114,11 @@ class User extends Authenticatable implements MustVerifyPhone
         ])->save();
     }
 
+    public function emptySession()
+    {
+        $this->forceFill(['session_id' => null])->save();
+    }
+
     public function hasDifferenceOnline()
     {
         return (

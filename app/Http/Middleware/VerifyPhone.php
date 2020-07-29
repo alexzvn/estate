@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\LoginController;
 
 class VerifyPhone
 {
@@ -24,7 +24,7 @@ class VerifyPhone
             return $next($request);
         }
 
-        Auth::logout();
+        app(LoginController::class)->logout($request);
 
         $request->session()->flash('reject.title', 'Tài khoản của bạn chưa xác thực');
         $request->session()->flash('reject.message', 'Tài khoản của bạn cần xác thực và cấp quyền xem tin. Vui lòng liên hệ hotline để được hướng dẫn.');

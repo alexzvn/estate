@@ -81,8 +81,7 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         if ($user = $request->user()) {
-            $user->session_id = null;
-            $user->save();
+            $user->emptySession();
         }
 
         return $this->traitLogout($request);
@@ -102,9 +101,10 @@ class LoginController extends Controller
 
     protected function sendHasSessionLoginResponse(Request $request)
     {
-        return view('auth.login')
-            ->with('reject.title', 'Tài khoản này đã đăng nhập từ nơi khác.')
-            ->with('reject.message', 'Xin hãy đăng xuất tài khoản trên thiết bị cũ hoặc đợi '.\App\Models\User::SESSION_TIMEOUT.' phút để đăng nhập lại.');
+        $request->session()->flash('reject.title', 'Tài khoản này đã đăng nhập từ nơi khác.');
+        $request->session()->flash('reject.message', 'Xin hãy đăng xuất tài khoản trên thiết bị cũ hoặc đợi '.\App\Models\User::SESSION_TIMEOUT.' phút để đăng nhập lại.');
+
+        return view('auth.login');
     }
 
     protected function username()
