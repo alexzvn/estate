@@ -37,6 +37,9 @@ function planToString($plans) {
                             <th>Số điện thoại</th>
                             <th>Các gói đăng ký</th>
                             <th>Giá tiền</th>
+                            <th>Ngày kích hoạt</th>
+                            <th>Ngày hết hạn</th>
+                            <th>Giá tiền</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -49,6 +52,8 @@ function planToString($plans) {
                             <td>{{ $order->customer->phone }}</td>
                             <td>{{ planToString($order->plans) }}</td>
                             <td>{{ $order->after_discount_price ? number_format($order->after_discount_price) : number_format($order->price) }}đ</td>
+                            <td>{{ $order->activate_at ? $order->activate_at->format('d/m/Y H:i:s') : 'N/a' }}</td>
+                            <td>{{ $order->expires_at ? $order->expires_at->format('d/m/Y H:i:s') : $order->month . ' tháng' }}</td>
                             <td>
                                 <span class="badge badge-{{ $order->status === $order::PAID ? 'success' : 'warning' }}">
                                     {{ $order->status === $order::PAID ? 'Đã thanh toán' : 'Chưa thanh toán' }}

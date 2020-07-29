@@ -17,7 +17,7 @@ class OrderController extends Controller
         $this->authorize('manager.order.view');
 
         return view('dashboard.order.index', [
-            'orders' => Order::with(['plans', 'customer'])->paginate()
+            'orders' => Order::with(['plans', 'customer'])->latest()->paginate()
         ]);
     }
 
