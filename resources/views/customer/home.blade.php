@@ -10,7 +10,7 @@
         <div class="col-md-12 mt-2">
             <div class="row">
                 <div class="col-md-{{ $setting->notification ? '9' : '12' }} px-0" id="myTabContent">
-                        @if (! empty(request()->user()->subscriptions))
+                        @if (request()->user()->subscriptions->isEmpty())
                         <div class="text-center">
                             <img src="{{ asset('assets/img/empty-state.jpg') }}" alt="" style="height: 100%; max-width: 100%;">
                             <h3 style="color: cadetblue;">Có vẻ bạn chưa đăng ký gói tin nào. <br> Hãy liên hệ hotline để đăng ký và bắt đầu xem tin nhé!</h3>
