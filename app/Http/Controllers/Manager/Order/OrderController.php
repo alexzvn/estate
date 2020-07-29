@@ -47,7 +47,7 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        $hasNotOrdered = $order->status !== ModelsOrder::PAID;
+        $hasNotOrdered = $order->status !== ModelsOrder::PAID && is_null($order->verifier);
 
         if ($order->status === ModelsOrder::PENDING || $this->authorize('manager.category.modify.force')) {
             $request->manual ?
