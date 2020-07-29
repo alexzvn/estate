@@ -14,7 +14,7 @@ class SettingController extends Controller
     {
         return view('dashboard.setting', [
             'provinces' => Province::all(),
-            'roles' => Role::all(),
+            'roles' => Role::customer()->get(),
         ]);
     }
 
@@ -28,6 +28,8 @@ class SettingController extends Controller
             'user.role.default' => $request->role,
             'notification' => $request->notification
         ]);
+
+        $setting->saveConfig();
 
         return redirect(route('manager.setting'))->with('success', 'Cập nhật thành công');
     }
