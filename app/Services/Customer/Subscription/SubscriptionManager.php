@@ -29,9 +29,15 @@ trait SubscriptionManager
                 $sub = Subscription::create()->forceFill(['plan_id' => $plan->id]);
             }
 
-            $sub->expires_at = $order->expires_at ?
-                                    $order->expires_at :
-                                    now()->addMonths($order->month);
+            if ($order->expires_at) {                                                // user has set expires time then set subscription to this time
+                $sub->expires_at = $order->expires_at;
+            } elseif ($sub->expires_at && now()->lessThan($sub->expires_at)) {       // subscription already have expires time then plus months
+                $sub->expires_at = $sub->expires_at->addMonths($order->month);
+            } else {                                                                 // otherwise
+                $sub->expires_at = now()->addMonths($order->month);
+            }
+
+            $sub->save();
 
             return $carry->push($sub);
 
