@@ -175,6 +175,7 @@
                 </div>
             </div>
 
+            @can('manager.order.create')
             <div class="statbox widget box box-shadow mt-3">
                 <div class="widget-header">
                     <div class="row">
@@ -201,6 +202,8 @@
                     </form>
                 </div>
             </div>
+            @endcan
+
         </div>
     </div>
 </div>
