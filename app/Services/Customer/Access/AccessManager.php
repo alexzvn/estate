@@ -67,16 +67,17 @@ class AccessManager
      */
     public function plans()
     {
-        $this->subscriptions->each(function ($sub) 
-        {
-            if (empty($sub->plan)) {
-                $sub->delete(); //auto delete subscription for non-exists plan
-            }
-        });
+        return $this->subscriptions
+            ->filter(function ($sub)
+            {
+                if (empty($sub->plan)) {
+                    $sub->delete();
+                }
 
-        return $this->subscriptions->map(function ($sub)
-        {
-            return $sub->plan;
-        });
+                return $sub->plan;
+            })->map(function ($sub)
+            {
+                return $sub->plan;
+            });
     }
 }
