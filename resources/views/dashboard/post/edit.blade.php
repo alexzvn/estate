@@ -75,6 +75,7 @@
                             <div class="form-group input-group-sm">
                                 <label for="category">Danh mục</label>
                                 <select class="form-control" name="category" id="category">
+                                <option value="">Chọn danh mục</option>
                                 @php
                                     $catId = $category->id ?? null;
                                 @endphp

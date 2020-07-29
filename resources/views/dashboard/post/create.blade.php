@@ -68,6 +68,7 @@
                             <div class="form-group input-group-sm">
                                 <label for="category">Danh mục</label>
                                 <select class="form-control" name="category" id="category">
+                                    <option value="">Chọn danh mục</option>
                                   @foreach ($categories as $item)
                                     @if (!$item->children || count($item->children) < 1)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
