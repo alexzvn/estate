@@ -25,4 +25,9 @@ class Role extends Model
     {
         return $builder->where('customer', true);
     }
+
+    public function scopeStaff(Builder $builder)
+    {
+        return $builder->where('customer', '<>', true);
+    }
 }

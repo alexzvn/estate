@@ -7,11 +7,14 @@ use App\Repository\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Manager\Controller;
+use App\Http\Requests\Manager\Customer\AssignCustomer;
 use App\Http\Requests\Manager\Customer\StoreCustomer;
 use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Order;
+use App\Repository\Role;
 use App\Repository\Subscription;
+use Illuminate\Support\Collection;
 
 class CustomerController extends Controller
 {
@@ -19,18 +22,35 @@ class CustomerController extends Controller
     {
         $this->authorize('manager.customer.view');
 
-        return view('dashboard.customer.index', [
-            'users' => User::with('orders')->filterRequest($request)->onlyCustomer()->latest()->paginate(20)
-        ]);
+        $users = User::with(['orders', 'supporter'])
+            ->filterRequest($request)
+            ->onlyCustomer()
+            ->latest()->paginate(20);
+
+        return view('dashboard.customer.index', compact('users'));
     }
 
     public function view(string $id, User $user)
     {
         $this->authorize('manager.customer.view');
 
+        $user = $user->with(['permissions', 'subscriptions.plan'])
+                    ->onlyCustomer()->findOrFail($id);
+
+        if ($user->supporter_id !== auth()->id() && request()->user()->cannot('manager.user.assign.customer')) {
+            abort(403);
+        }
+
+        $staffs = Role::with('users')->staff()->get()
+            ->reduce(function (Collection $carry, $role)
+            {
+                return $carry->push(...$role->users);
+            }, collect());
+
         return view('dashboard.customer.view', [
             'plans' => Plan::all(),
-            'user' => $user->with(['permissions', 'subscriptions.plan'])->onlyCustomer()->findOrFail($id),
+            'staffs' => $staffs->unique('id'),
+            'user' => $user,
         ]);
     }
 
@@ -70,6 +90,24 @@ class CustomerController extends Controller
                 'password' => Hash::make($request->password)
             ])->save();
         }
+
+        if ($request->user()->can('manager.user.assign.customer')) {
+            $this->assignCustomer($user->id, app(AssignCustomer::class));
+        }
+
+        return back()->with('success', 'Cập nhật thành công');
+    }
+
+    public function assignCustomer(string $customerId, AssignCustomer $request)
+    {
+        $customer = User::whereHas('roles', function ($q)
+        {
+            $q->where('customer', true);
+        })->findOrFail($customerId);
+
+        $customer->forceFill([
+            'supporter_id' => empty($request->supporter_id) ? null : $request->supporter_id,
+        ])->save();
 
         return back()->with('success', 'Cập nhật thành công');
     }

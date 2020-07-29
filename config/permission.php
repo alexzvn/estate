@@ -113,6 +113,7 @@ return [
             'manager.user.create' => 'Tạo mới',
             'manager.user.modify' => 'Chỉnh sửa',
             'manager.user.delete' => 'Xóa',
+            'manager.user.assign.customer' => 'Gán người CSKH',
 
             'manager.customer.view'         => 'Xem thông tin',
             'manager.customer.view.all'     => 'Xem thông tin khách bất kỳ',
@@ -170,6 +171,7 @@ return [
                     'manager.user.create',
                     'manager.user.modify',
                     'manager.user.delete',
+                    'manager.user.assign.customer',
                 ]
             ],[
                 'name' => 'Quản lý vai Trò',

@@ -59,6 +59,18 @@
                       <input type="email" value="{{ $user->email }}" name="email" id="email" class="form-control" placeholder="Email" required>
                     </div>
 
+                    @can('manager.user.assign.customer')
+                        <div class="form-group input-group-sm">
+                          <label for="supporter_id">Chọn CSKH</label>
+                          <select class="form-control" name="supporter_id" id="supporter_id">
+                            <option value="">Trống</option>
+                            @foreach ($staffs as $staff)
+                                <option value="{{ $staff->id }}" {{ $staff->id === $user->supporter_id ? 'selected' : '' }}>{{ $staff->name }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                    @endcan
+
                     <hr>
 
                     <a href="javascript:void(0)" id="change-password" class="text-info">Đặt lại mật khẩu?</a>

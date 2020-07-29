@@ -27,6 +27,7 @@
                             <th>Đăng ký</th>
                             <th>Hết hạn</th>
                             <th>Hđ gần nhất</th>
+                            <th>CSKH</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -45,9 +46,18 @@
                             <td>{{ $order && $order->expires_at ? $order->expires_at->format('d/m/Y') : 'N/a' }}</td>
                             <td>{{ $order && $order->created_at ? $order->created_at->format('d/m/Y') : 'N/a'  }}</td>
                             <td>
+                                @if ($supporter = $user->supporter)
+                                    <span class="text-info">{{ $supporter->id == Auth::id() ? 'Bạn' : "$supporter->name - $supporter->phone" }}</span>
+                                @else
+                                N/a
+                                @endif
+                            </td>
+                            <td>
+                                @if (($supporter && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer'))
                                 <a href="{{ route('manager.customer.view', ['id' => $user->id]) }}">
                                     <i class="role-edit t-icon t-hover-icon" data-feather="edit"></i>
                                 </a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
