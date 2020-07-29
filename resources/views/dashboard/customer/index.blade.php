@@ -47,7 +47,7 @@
                             <td>{{ $order && $order->created_at ? $order->created_at->format('d/m/Y') : 'N/a'  }}</td>
                             <td>
                                 @if ($supporter = $user->supporter)
-                                    <span class="text-info">{{ $supporter->id == Auth::id() ? 'Bạn' : "$supporter->name - $supporter->phone" }}</span>
+                                    <span class="text-info">{{ $supporter->id == Auth::id() ? 'Bạn' : "$supporter->name" }}</span>
                                 @else
                                 N/a
                                 @endif
