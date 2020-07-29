@@ -111,6 +111,8 @@ class PostController extends Controller
             PostMeta::Commission => $request->commission
         ]));
 
+        $request->user()->posts()->save($post);
+
         return redirect(route('manager.post.view', ['id' => $post->id]))
             ->with('success', 'Tạo mới thành công');
     }
