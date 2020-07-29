@@ -35,12 +35,12 @@
                         @endphp
                         <tr>
                             <td>{{ $loop->index }}</td>
-                            <td style="font-weight: bold">{{ $post->title }}</td>
+                            <td style="font-weight: bold">{{ Str::limit($post->title, 70, '...') }}</td>
                             <td>{{ $meta->province->province->name ?? 'N/a' }}</td>
                             <td>{{ $post->categories[0]->name ?? 'N/a' }}</td>
                             <td>{{ $meta->phone->value ?? 'N/a' }}</td>
                             <td>{{ $post->publish_at ? $post->publish_at->format('d/m/Y H:i:s') : $post->updated_at->format('d/m/Y H:i:s')  }}</td>
-                            <td>{{ $post->user ? $post->user->name : 'Hệ thống' }}</td>
+                            <td>{{ $post->user ? $post->user->name . ' - ' . $post->user->phone : 'Hệ thống' }}</td>
                             <td>
                                 <a href="{{ route('manager.post.view', ['id' => $post->id]) }}">
                                     <i class="role-edit t-icon t-hover-icon" data-feather="edit"></i>

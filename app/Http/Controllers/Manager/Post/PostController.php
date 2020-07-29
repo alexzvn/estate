@@ -21,7 +21,6 @@ class PostController extends Controller
         $this->authorize('manager.post.view');
 
         $posts = Post::with(['metas.province', 'categories', 'user'])
-            ->select(['name', 'title'])
             ->filterRequest($request)
             ->latest()
             ->paginate(30);
