@@ -23,7 +23,8 @@ class PostController extends Controller
         $posts = Post::with(['metas.province', 'categories'])
             ->select(['name', 'title'])
             ->filterRequest($request)
-            ->paginate(20);
+            ->latest()
+            ->paginate(30);
 
         return view('dashboard.post.list', compact('posts'));
     }
