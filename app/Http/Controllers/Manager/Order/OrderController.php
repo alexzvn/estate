@@ -47,14 +47,17 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        if (! $order->status !== ModelsOrder::PAID && $request->verified ) { //activate order in first time
-            (new Customer($order->customer))->renewSubscription($order);
-        }
+        $hasNotOrdered = $order->status !== ModelsOrder::PAID;
 
         if ($order->status === ModelsOrder::PENDING || $this->authorize('manager.category.modify.force')) {
             $request->manual ?
                 $this->updateManual($order, $request)->save():
                 $this->updateAuto($order, $request)->save();
+        }
+
+        if ($hasNotOrdered && $request->verified ) { //activate order in first time
+            (new Customer($order->customer))->renewSubscription($order);
+            $order->verifier()->save($request->user());
         }
 
         return redirect(route('manager.order.view', ['id' => $order->id]));
@@ -63,7 +66,7 @@ class OrderController extends Controller
     protected function updateAuto(ModelsOrder $order, UpdateOrder $request)
     {
         $order->fill($request->all())->fill([
-            'month' => $request->expires_month,
+            'month' => (int) $request->expires_month,
             'price' => $order->plans->sum('price') ?? 0,
             'status'=> $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
             'verified' => (bool) $request->verified,
