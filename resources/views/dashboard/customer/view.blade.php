@@ -82,8 +82,8 @@
                                 <tr>
                                     <th class="checkbox-column">
                                         {{-- <div class="custom-control custom-checkbox checkbox-primary">
-                                          <input type="checkbox" class="custom-control-input todochkbox" id="todoAll">
-                                          <label class="custom-control-label" for="todoAll"></label>
+                                        <input type="checkbox" class="custom-control-input todochkbox" id="todoAll">
+                                        <label class="custom-control-label" for="todoAll"></label>
                                         </div> --}}
                                     </th>
                                     <th class="">Tên gói</th>
@@ -94,14 +94,14 @@
                             </thead>
                             <tbody>
                                 @foreach ($user->subscriptions as $item)
-                                 @if (! ($plan = $item->plan) && $item->verified)
-                                     @continue
-                                 @endif
+                                @if (! ($plan = $item->plan) && $item->verified)
+                                    @continue
+                                @endif
                                 <tr>
                                     <td class="checkbox-column">
                                         <div class="custom-control custom-checkbox checkbox-primary">
-                                          <input type="checkbox" class="custom-control-input todochkbox" id="check-{{ $loop->index }}" name="subscriptions[]" value="{{ $item->id }}">
-                                          <label class="custom-control-label" for="check-{{ $loop->index }}"></label>
+                                        <input type="checkbox" class="custom-control-input todochkbox" id="check-{{ $loop->index }}" name="subscriptions[]" value="{{ $item->id }}">
+                                        <label class="custom-control-label" for="check-{{ $loop->index }}"></label>
                                         </div>
                                     </td>
                                     <td>
@@ -118,7 +118,11 @@
 
                                     <td class="text-center">
                                         <ul class="table-controls">
-                                            <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="text-danger" data-feather="trash-2"></i></a></li>
+                                            <li>
+                                                <a class="delete-sub" href="javascript:void(0)" data-id="{{ $item->id }}">
+                                                    <i class="text-danger" data-feather="trash-2"></i>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </td>
                                 </tr>
@@ -175,6 +179,8 @@
         </div>
     </div>
 </div>
+
+<form id="delete-sub-form" action="#" method="post">@csrf</form>
 @endsection
 
 @push('script')
@@ -182,20 +188,34 @@
 <script src="{{ asset('dashboard/plugins/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
 <script src="{{ asset('dashboard/assets/js/elements/tooltip.js') }}"></script>
 <script>
-$(".tagging").select2({
-    tags: true
-});
+(function (window) {
+    $(".tagging").select2({
+        tags: true
+    });
 
-$('#submit').click(function () {
-    if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
-        document.getElementById('update-form').submit();
-    }
-});
+    $('#submit').click(function () {
+        if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
+            document.getElementById('update-form').submit();
+        }
+    });
 
-$('#change-password').click(function () {
-    $('#change-password-input').fadeIn();
-});
+    $('#change-password').click(function () {
+        $('#change-password-input').fadeIn();
+    });
 
-$('#phone').inputmask("9999.999.999")
+    $('#phone').inputmask("9999.999.999");
+
+    $(document).ready(function () {
+        $('.delete-sub').on('click', function () {
+            let id = $(this).data('id');
+            let form = $('#delete-sub-form');
+
+            if (confirm('Bạn có thật sự muốn xóa gói đăng ký này?')) {
+                form.attr('action', `/manager/customer/subscription/${id}/delete`);
+                form.submit();
+            }
+        });
+    });
+}(window));
 </script>
 @endpush

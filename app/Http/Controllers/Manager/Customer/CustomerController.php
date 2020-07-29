@@ -11,6 +11,7 @@ use App\Http\Requests\Manager\Customer\StoreCustomer;
 use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Order;
+use App\Repository\Subscription;
 
 class CustomerController extends Controller
 {
@@ -115,8 +116,10 @@ class CustomerController extends Controller
         return redirect(route('manager.order.view', ['id' => $order->id]));
     }
 
-    public function deleteSubscription($id )
+    public function deleteSubscription(string $id)
     {
-        
+        Subscription::findOrFail($id)->delete();
+
+        return back()->with('success', 'Xóa thành công');
     }
 }
