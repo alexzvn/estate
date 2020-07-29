@@ -39,7 +39,7 @@
                             <td>{{ $meta->province->province->name ?? 'N/a' }}</td>
                             <td>{{ $post->categories[0]->name ?? 'N/a' }}</td>
                             <td>{{ $meta->phone->value ?? 'N/a' }}</td>
-                            <td>{{ $post->publish_at ? $post->publish_at->format('d/m/Y H:i:s') }}</td>
+                            <td>{{ $post->publish_at ? $post->publish_at->format('d/m/Y H:i:s') : $post->updated_at->format('d/m/Y H:i:s')  }}</td>
                             <td>{{ $post->user ? $post->user->name : 'Hệ thống' }}</td>
                             <td>
                                 <a href="{{ route('manager.post.view', ['id' => $post->id]) }}">
