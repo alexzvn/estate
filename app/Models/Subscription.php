@@ -21,20 +21,14 @@ class Subscription extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function isUnlimited()
+    public function isActivated()
     {
-        return $this->expires_at === null;
+        return $this->expires_at !== null && $this->expires_at->greaterThan(now());
     }
 
     public function scopeActive(Builder $builder)
     {
-        return $builder->where('expires_at', '>=', now())
-                       ->orWhereNull('expires_at');
-    }
-
-    public function scopeUnlimited(Builder $builder)
-    {
-        return $builder->whereNull('expires_at');
+        return $builder->where('expires_at', '>=', now());
     }
 
     public function scopeLimited(Builder $builder)

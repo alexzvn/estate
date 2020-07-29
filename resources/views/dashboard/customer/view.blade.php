@@ -97,7 +97,6 @@
                                  @if (! ($plan = $item->plan) && $item->verified)
                                      @continue
                                  @endif
-                                 
                                 <tr>
                                     <td class="checkbox-column">
                                         <div class="custom-control custom-checkbox checkbox-primary">
@@ -110,7 +109,7 @@
                                     </td>
                                     <td>{{ $item->expires_at ? $item->expires_at->format('d/m/Y') : 'N/a' }}</td>
                                     <td class="text-center">
-                                        @if (now()->lessThan($item->expires_at))
+                                        @if ($item->isActivated())
                                             <span class="badge badge-success">Đang hoạt động</span>
                                         @else
                                             <span class="badge badge-warning">Ngừng hoạt động</span>
