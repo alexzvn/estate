@@ -29,7 +29,7 @@ class CustomerController extends Controller
 
         return view('dashboard.customer.view', [
             'plans' => Plan::all(),
-            'user' => $user->with(['roles', 'permissions'])->onlyCustomer()->findOrFail($id),
+            'user' => $user->with(['permissions', 'subscriptions.plan'])->onlyCustomer()->findOrFail($id),
         ]);
     }
 
@@ -113,5 +113,10 @@ class CustomerController extends Controller
         $order->plans()->sync($request->plans ?? []);
 
         return redirect(route('manager.order.view', ['id' => $order->id]));
+    }
+
+    public function deleteSubscription($id )
+    {
+        
     }
 }

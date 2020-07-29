@@ -3,6 +3,7 @@
 @push('style')
     <link rel="stylesheet" href="{{ asset('dashboard/plugins/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard/assets/css/elements/tooltip.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
 @endpush
 @push('meta')
     <meta name="user_id" content="{{ $user->id }}">
@@ -64,6 +65,70 @@
                 </div>
             </div>
             </form>
+
+            <div class="statbox widget box box-shadow my-3">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Các gói đã đăng ký</h4>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
+                            <thead>
+                                <tr>
+                                    <th class="checkbox-column">
+                                        {{-- <div class="custom-control custom-checkbox checkbox-primary">
+                                          <input type="checkbox" class="custom-control-input todochkbox" id="todoAll">
+                                          <label class="custom-control-label" for="todoAll"></label>
+                                        </div> --}}
+                                    </th>
+                                    <th class="">Tên gói</th>
+                                    <th class="">Hết hạn</th>
+                                    <th class="text-center">Trạng thái</th>
+                                    <th class="text-center">Icons</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($user->subscriptions as $item)
+                                 @if (! ($plan = $item->plan) && $item->verified)
+                                     @continue
+                                 @endif
+                                 
+                                <tr>
+                                    <td class="checkbox-column">
+                                        <div class="custom-control custom-checkbox checkbox-primary">
+                                          <input type="checkbox" class="custom-control-input todochkbox" id="check-{{ $loop->index }}" name="subscriptions[]" value="{{ $item->id }}">
+                                          <label class="custom-control-label" for="check-{{ $loop->index }}"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0">{{ $plan->name }}</p>
+                                    </td>
+                                    <td>{{ $item->expires_at ? $item->expires_at->format('d/m/Y') : 'N/a' }}</td>
+                                    <td class="text-center">
+                                        @if (now()->lessThan($item->expires_at))
+                                            <span class="badge badge-success">Đang hoạt động</span>
+                                        @else
+                                            <span class="badge badge-warning">Ngừng hoạt động</span>
+                                        @endif
+                                    </td>
+
+                                    <td class="text-center">
+                                        <ul class="table-controls">
+                                            <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="text-danger" data-feather="trash-2"></i></a></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-4">

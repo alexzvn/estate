@@ -91,6 +91,7 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
     Route::group(['prefix' => '{id}/order'], function () {
         Route::get('/', 'OrderController@index')->name('manager.customer.order');
         Route::post('/store', 'CustomerController@storeOrder')->name('manager.customer.order.store');
+        Route::post('/delete', 'CustomerController@storeOrder')->name('manager.customer.order.delete');
     });
 });
 
