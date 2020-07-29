@@ -57,7 +57,8 @@ class OrderController extends Controller
 
         if ($hasNotOrdered && $request->verified ) { //activate order in first time
             (new Customer($order->customer))->renewSubscription($order);
-            $order->verifier()->save($request->user());
+            $order->verifier_id = $request->user()->id;
+            $order->save();
         }
 
         return redirect(route('manager.order.view', ['id' => $order->id]));
