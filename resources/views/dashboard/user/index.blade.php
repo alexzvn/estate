@@ -20,9 +20,9 @@ function rolesToString($roles) {
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                     <h4>
                         Danh sách thành viên
-                        @can('manager.user.create')
+                        {{-- @can('manager.user.create')
                         <button class="btn btn-success rounded-circle"><i data-feather="plus"></i></button>
-                        @endcan
+                        @endcan --}}
                     </h4>
                 </div>
             </div>
