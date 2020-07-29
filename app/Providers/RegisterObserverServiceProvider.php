@@ -19,9 +19,6 @@ class RegisterObserverServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Category::observe(CategoryObserver::class);
-        Province::observe(ProvinceObserver::class);
-
         Post::observe(PostObserver::class);
     }
 }
