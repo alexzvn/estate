@@ -64,7 +64,7 @@ class PostController extends BaseController
             ->filterRequest(request())
             ->published()
             ->whereIn('type', $access->getPostTypes())
-            ->whereNotIn('_id', $this->customer->post_blacklist_ids)
+            ->whereNotIn('_id', $this->customer->post_blacklist_ids ?? [])
             ->filterRequest([
                 'categories' => $categories,
                 'provinces'  => $access->getProvinces()
