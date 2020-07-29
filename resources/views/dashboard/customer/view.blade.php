@@ -94,7 +94,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($user->subscriptions as $item)
-                                @if ($plan = $item->plan && $item->verified)
+                                @if ($plan = $item->plan)
                                 <tr>
                                     <td class="checkbox-column">
                                         <div class="custom-control custom-checkbox checkbox-primary">
