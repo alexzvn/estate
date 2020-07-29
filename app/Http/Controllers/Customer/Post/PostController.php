@@ -12,21 +12,21 @@ class PostController extends BaseController
     public function index()
     {
         return view('customer.home',[
-            'posts' => $this->defaultPost()->paginate(),
+            'posts' => $this->defaultPost()->paginate(20),
         ]);
     }
 
     public function fee()
     {
         return view('customer.post.fee', [
-            'posts' => $this->defaultPost()->where('type', PostType::PostFee)->paginate()
+            'posts' => $this->defaultPost()->where('type', PostType::PostFee)->paginate(20)
         ]);
     }
 
     public function online()
     {
         return view('customer.post.online', [
-            'posts' => $this->defaultPost()->where('type', PostType::Online)->paginate()
+            'posts' => $this->defaultPost()->where('type', PostType::Online)->paginate(20)
         ]);
     }
 
