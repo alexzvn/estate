@@ -7,9 +7,9 @@ use Jenssegers\Mongodb\Eloquent\Builder;
 
 class Subscription extends Model
 {
-    protected $fillable = ['expires_at'];
+    protected $fillable = ['expires_at', 'activate_at'];
 
-    protected $dates = ['expires_at'];
+    protected $dates = ['expires_at', 'activate_at'];
 
     public function plan()
     {
