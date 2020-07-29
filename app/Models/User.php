@@ -53,7 +53,8 @@ class User extends Authenticatable implements MustVerifyPhone
     ];
 
     protected $dates = [
-        'last_seen'
+        'last_seen',
+        'banned_at',
     ];
 
     public function orders()
@@ -69,6 +70,21 @@ class User extends Authenticatable implements MustVerifyPhone
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    public function isBanned()
+    {
+        return ! empty($this->banned_at);
+    }
+
+    public function ban()
+    {
+        return $this->forceFill(['banned_at' => now()])->save();
+    }
+
+    public function pardon()
+    {
+        return $this->forceFill(['banned_at' => null])->save();
     }
 
     public function isAdmin()

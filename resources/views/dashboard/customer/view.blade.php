@@ -19,8 +19,20 @@
                 <div class="widget-header">
                     <div class="row">
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Thông tin {{ $user->name }}</h4>
+                            <h4>Thông tin {{ $user->name }}
 
+                                @if ($user->isBanned())
+                                    @can('manager.customer.pardon')
+                                        <a href="{{ route('manager.customer.pardon', ['id' => $user->id]) }}" class="btn btn-sm btn-outline-warning"> Mở khóa</a>
+                                    @endcan
+
+                                    @else
+
+                                    @can('manager.customer.ban')
+                                        <a href="{{ route('manager.customer.ban', ['id' => $user->id]) }}" class="btn btn-sm btn-outline-danger"> Khóa tài khoản</a>
+                                    @endcan
+                                @endif
+                            </h4>
                         </div>
                     </div>
                 </div>

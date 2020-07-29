@@ -88,6 +88,9 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
     Route::get('/{id}/verify/phone', 'CustomerController@verifyPhone')->name('manager.customer.verify.phone');
     Route::get('/{id}/unverified/phone', 'CustomerController@unverifiedPhone')->name('manager.customer.unverified.phone');
 
+    Route::get('/{id}/ban', 'CustomerController@ban')->name('manager.customer.ban');
+    Route::get('/{id}/pardon', 'CustomerController@pardon')->name('manager.customer.pardon');
+
     Route::group(['prefix' => '{id}/order'], function () {
         Route::get('/', 'OrderController@index')->name('manager.customer.order');
         Route::post('/store', 'CustomerController@storeOrder')->name('manager.customer.order.store');

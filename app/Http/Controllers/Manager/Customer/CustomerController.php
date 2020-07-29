@@ -79,6 +79,24 @@ class CustomerController extends Controller
         # code...
     }
 
+    public function ban(string $id, User $user)
+    {
+        $this->authorize('manager.customer.ban');
+
+        $user->findOrFail($id)->ban();
+
+        return back()->with('success', 'Đã khóa tài khoản khách hàng');
+    }
+
+    public function pardon(string $id, User $user)
+    {
+        $this->authorize('manager.customer.pardon');
+
+        $user->findOrFail($id)->pardon();
+
+        return back()->with('success', 'Đã mở khóa tài khoản khách hàng');
+    }
+
     public function verifyPhone(string $id, User $user)
     {
         $this->authorize('manager.user.verify.phone');

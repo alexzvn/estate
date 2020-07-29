@@ -120,6 +120,8 @@ return [
             'manager.customer.assign.role'  => 'Gán quyền cho khách',
             'manager.customer.create'       => 'Tạo tài khoản mới',
             'manager.customer.verify.phone' => 'Xác thực SĐT',
+            'manager.customer.ban'          => 'Khóa tài khoản',
+            'manager.customer.pardon'       => 'Mở khóa tài khoản',
             'manager.subscription.delete'   => 'Xóa gói đăng ký',
 
             'manager.order.view'   => 'Xem',
@@ -186,6 +188,8 @@ return [
                     'manager.customer.modify',
                     'manager.customer.create',
                     'manager.customer.verify.phone',
+                    'manager.customer.ban',
+                    'manager.customer.pardon',
                     'manager.subscription.delete',
                 ]
             ],[
