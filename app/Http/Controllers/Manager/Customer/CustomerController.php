@@ -118,6 +118,8 @@ class CustomerController extends Controller
 
     public function deleteSubscription(string $id)
     {
+        $this->authorize('manager.subscription.delete');
+
         Subscription::findOrFail($id)->delete();
 
         return back()->with('success', 'Xóa thành công');

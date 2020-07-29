@@ -114,12 +114,13 @@ return [
             'manager.user.modify' => 'Chỉnh sửa',
             'manager.user.delete' => 'Xóa',
 
-            'manager.customer.view'        => 'Xem thông tin',
-            'manager.customer.view.all'    => 'Xem khách từ bất kỳ thành phố',
-            'manager.customer.modify'      => 'Cập nhật thông tin',
-            'manager.customer.assign.role' => 'Gán quyền cho khách',
-            'manager.customer.create'      => 'Tạo tài khoản mới',
+            'manager.customer.view'         => 'Xem thông tin',
+            'manager.customer.view.all'     => 'Xem khách từ bất kỳ thành phố',
+            'manager.customer.modify'       => 'Cập nhật thông tin',
+            'manager.customer.assign.role'  => 'Gán quyền cho khách',
+            'manager.customer.create'       => 'Tạo tài khoản mới',
             'manager.customer.verify.phone' => 'Xác thực SĐT',
+            'manager.subscription.delete'   => 'Xóa gói đăng ký',
 
             'manager.order.view'   => 'Xem',
             'manager.order.create' => 'Tạo mới',
@@ -185,6 +186,7 @@ return [
                     'manager.customer.modify',
                     'manager.customer.create',
                     'manager.customer.verify.phone',
+                    'manager.subscription.delete',
                 ]
             ],[
                 'name' => 'Gói đăng ký', 

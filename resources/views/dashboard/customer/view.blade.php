@@ -89,7 +89,7 @@
                                     <th class="">Tên gói</th>
                                     <th class="">Hết hạn</th>
                                     <th class="text-center">Trạng thái</th>
-                                    <th class="text-center">Icons</th>
+                                    <th class="text-center"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -116,6 +116,7 @@
                                         @endif
                                     </td>
 
+                                    @can('manager.subscription.delete')
                                     <td class="text-center">
                                         <ul class="table-controls">
                                             <li>
@@ -125,6 +126,7 @@
                                             </li>
                                         </ul>
                                     </td>
+                                    @endcan
                                 </tr>
                                 @endforeach
                             </tbody>
