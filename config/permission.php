@@ -115,7 +115,7 @@ return [
             'manager.user.delete' => 'Xóa',
 
             'manager.customer.view'         => 'Xem thông tin',
-            'manager.customer.view.all'     => 'Xem khách từ bất kỳ thành phố',
+            'manager.customer.view.all'     => 'Xem thông tin khách bất kỳ',
             'manager.customer.modify'       => 'Cập nhật thông tin',
             'manager.customer.assign.role'  => 'Gán quyền cho khách',
             'manager.customer.create'       => 'Tạo tài khoản mới',
