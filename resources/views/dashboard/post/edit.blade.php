@@ -99,9 +99,9 @@
                                 <select class="form-control" name="province" id="province">
                                     <option value="" selected>Trống</option>
                                     @foreach ($provinces as $province)
-                                    <option value="{{ $province->id }}" {{ $meta->province->value == $province->id ? 'selected' :'' }}>{{ $province->name }}</option>
+                                    <option value="{{ $province->id }}" {{ $meta->province && $meta->province->value == $province->id ? 'selected' :'' }}>{{ $province->name }}</option>
                                     @php
-                                        if ($meta->province->value == $province->id) {
+                                        if ($meta->province && $meta->province->value == $province->id) {
                                             $activeProvince = $province;
                                         }
                                     @endphp
@@ -117,7 +117,7 @@
                                     <option value="" selected>Trống</option>
                                     @isset($activeProvince)
                                     @foreach ($activeProvince->districts as $district)
-                                    <option value="{{ $district->id }}" {{ $meta->district->value == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
+                                    <option value="{{ $district->id }}" {{ $meta->district && $meta->district->value == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
                                     @endforeach
                                     @endisset
                                 </select>

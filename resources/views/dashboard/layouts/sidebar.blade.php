@@ -27,8 +27,11 @@
                     @endcan
 
                     @can('manager.post.view')
+                    @php
+                        $active = request()->is('manager/post/*') && ! request()->is('manager/post/pending');
+                    @endphp
                     <li class="menu">
-                        <a href="#submenu" data-toggle="collapse" @active(request()->is('manager/post/*'), 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                        <a href="#submenu" data-toggle="collapse" @active($active, 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="file-text"></i>
                                 <span>Tin BĐS</span>
@@ -37,7 +40,7 @@
                                 <i data-feather="chevron-right"></i>
                             </div>
                         </a>
-                        <ul class="collapse submenu list-unstyled @active(request()->routeIs('manager.post*'), 'show')" id="submenu" data-parent="#accordionExample">
+                        <ul class="collapse submenu list-unstyled @active($active, 'show')" id="submenu" data-parent="#accordionExample">
                             @can('manager.post.create')
                             <li>
                                 <a href="{{ route('manager.post.create') }}" style="color: red">Tạo tin mới</a>
@@ -65,6 +68,25 @@
                             </li>
                             <li>
                                 <a href="{{ route('manager.post.trashed') }}">Tin đã xóa </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endcan
+
+                    @can('manager.post.view')
+                    <li class="menu">
+                        <a href="#menu-post-pending" @active('manager.post.pending', 'data-active="true"') data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="file-text"></i>
+                                <span> Tin chờ duyệt</span>
+                            </div>
+                            <div>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled @active('manager.post.pending', 'show')" id="menu-post-pending" data-parent="#accordionExample">
+                            <li>
+                                <a href="{{ route('manager.post.pending') }}"> Tất cả </a>
                             </li>
                         </ul>
                     </li>

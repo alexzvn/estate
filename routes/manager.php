@@ -39,6 +39,8 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::post('/{id}/update', 'PostController@update')->name('manager.post.update');
     Route::post('/{id}/delete', 'PostController@delete')->name('manager.post.delete');
     Route::post('/{id}/delete/force', 'PostController@forceDelete')->name('manager.post.delete.force');
+
+    Route::get('/pending', 'PostPending@index')->name('manager.post.pending');
 });
 
 /**

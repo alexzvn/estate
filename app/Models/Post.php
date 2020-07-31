@@ -85,6 +85,11 @@ class Post extends Model
             ->where('status', (string) PostStatus::Published);
     }
 
+    public function scopePending(Builder $builder)
+    {
+        $builder->where('status', (string)  PostStatus::Pending());
+    }
+
     public function filterType(Builder $builder, $type)
     {
         return $builder->where('type', $type);
