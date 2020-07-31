@@ -44,13 +44,14 @@ class RoleController extends Controller
 
     public function update(string $id, UpdateRole $request)
     {
-        $role = Role::findOrFail($id)->fill($request->only('name'));
+        $role = Role::findOrFail($id);
 
-        if ($request->permissions) {
-            $role->syncPermissions($this->permissionIdToName($request->permissions));
-        }
+        $role->forceFill([
+            'name'     => $request->name,
+            'customer' => (bool) $request->for_customer
+        ])->save();
 
-        $role->forceFill(['customer' => (bool) $request->for_customer])->save();
+        $role->permissions()->sync($request->permissions ?? []);
 
         return back()->with('success', 'Cập nhật thành công');
     }
