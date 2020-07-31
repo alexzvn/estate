@@ -33,7 +33,19 @@
                         <textarea class="form-control" name="post_content" id="post_content" rows="3">{!! $post->content !!}</textarea>
                     </div>
                     <div>
-                        <p class="text-muted m-0">Ngày cập nhật cuối cùng là <span class="text-info">{{ $post->updated_at->format('H:i:s d/m/Y ') }}</span></p>
+                        <p class="text-muted m-0">Ngày cập nhật cuối cùng là <span class="text-info">{{ $post->updated_at->format('H:i:s d/m/Y ') }}</span>, đăng bởi
+                        @if ($user = $post->user)
+                            
+                            @can('manager.customer.view')
+                                <a class="text-info" target="_blank" href="{{ route('manager.customer.view', ['id' => $user->id]) }}"> {{ $user->name }} <i data-feather="arrow-up-right"></i></a>
+                            @endcan
+                            @cannot('manager.customer.view')
+                                <span class="text-info">{{ "$user->name - $user->phone" }}</span>
+                            @endcannot
+                        </p>
+                        @else
+                            <span class="text-primary">Hệ thống</span>
+                        @endif
                     </div>
                 </div>
             </div>

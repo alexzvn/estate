@@ -45,7 +45,7 @@ class PostController extends Controller
     {
         $this->authorize('manager.post.view');
 
-        $post = $post->with(['categories', 'metas'])->findOrFail($id)->loadMeta();
+        $post = $post->with(['categories', 'metas', 'user'])->findOrFail($id)->loadMeta();
         $provinces = Province::with('districts')->active()->get();
 
         return view('dashboard.post.edit', [
