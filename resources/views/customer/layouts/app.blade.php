@@ -32,13 +32,13 @@
 </head>
 <body>
     <div id="app">
-        @include('layouts.header')
+        @include('customer.layouts.header')
 
         <main class="py-4">
             @yield('content')
         </main>
 
-        @include('layouts.footer')
+        @include('customer.layouts.footer')
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     @stack('script')

@@ -41,7 +41,7 @@
                     @endif
                 @else
                     <li class="nav-item d-none d-sm-block mr-md-3">
-                        <a class="nav-link btn btn-warning" style="color: black;" href="{{ route('register') }}">
+                        <a class="nav-link btn btn-warning" style="color: black;" data-toggle="modal" data-target="#create-post-modal">
                             <i class="far fa-edit"></i> Đăng Tin
                         </a>
                     </li>
