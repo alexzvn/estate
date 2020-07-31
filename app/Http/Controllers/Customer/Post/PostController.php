@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Customer\Post;
 
+use App\Enums\PostMeta;
+use App\Enums\PostStatus;
 use App\Enums\PostType;
 use App\Repository\Post;
 use App\Repository\Category;
 use App\Http\Controllers\Customer\Post\BaseController;
+use App\Http\Requests\Customer\Post\StorePost;
+use App\Repository\Meta;
 
 class PostController extends BaseController
 {
@@ -27,6 +31,32 @@ class PostController extends BaseController
     {
         return view('customer.post.online', [
             'posts' => $this->defaultPost()->where('type', PostType::Online)->paginate(20)
+        ]);
+    }
+
+    public function store(StorePost $request, Post $post)
+    {
+        $post = $post->fill($request->all())
+            ->fill([
+                'content' => clean($post->content),
+                'status'  => PostStatus::Pending
+            ]);
+
+        $post = $this->customer->posts()->save($post);
+
+        $post->metas()->saveMany(Meta::fromMany([
+            PostMeta::Price => (int) $request->price,
+            PostMeta::Phone => $request->phone,
+        ]));
+
+        if ($cat = Category::find($request->category)) {
+            $post->categories()->attach($cat);
+        }
+
+        return response([
+            'code' => 200,
+            'success' => true,
+            'data' => 'Đăng tin thành công',
         ]);
     }
 

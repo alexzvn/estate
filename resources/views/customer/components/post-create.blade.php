@@ -22,6 +22,7 @@
             </div>
             <div class="modal-body">
                 <form id="create-post-form" class="custom-form">
+                    @csrf
                     <div class="form-group">
                       <label for="title">Tiêu đề tin <span>*</span></label>
                       <input type="text" class="form-control" name="title" id="title" required>
@@ -77,27 +78,52 @@
 <script>
 (function (window) {
 
-    let form = $('#create-post-form');
-
     $(document).ready(function () {
+        ckeditor();
         $('#create-post-submit').click(function () {
             save().then(res => {
                 return res.json();
             }).then(body => {
-                console.log(body);
-                // form.trigger('reset');
+
+                if (body.code === 200) {
+
+                    $('#create-post-modal').modal('hide');
+                    $('#create-post-form').trigger('reset');
+                    $('#content').html('');
+                    $('.ck').remove();
+
+                    ckeditor();
+
+                    alert(body.data); return;
+                }
+
+                if (body.errors) {
+
+                    let message = '';
+
+                    for (const key in body.errors) {
+                        if (body.errors.hasOwnProperty(key)) {
+                            const element = body.errors[key];
+                            message += element[0] + "\n";
+                        }
+                    }
+
+                    alert(message); return;
+                }
+
+                alert('Có lỗi xảy ra, xin hãy thử lại sau vài phút');
             });
         });
 
-        ClassicEditor
-        .create(document.querySelector('#content'))
-        .catch( err => {
-            console.error( err.stack );
+        $('#create-post-form').keypress(function () {
+            $('#content').html($('.ck-content').html());
         });
     });
 
     async function save() {
-        return fetch('/create/url', {
+        let form = $('#create-post-form');
+
+        return fetch('{{ route("post.store") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -105,6 +131,14 @@
             },
             body: form.serialize()
         });
+    }
+
+    function ckeditor() {
+        ClassicEditor
+            .create(document.querySelector('#content'))
+            .catch( err => {
+                console.error( err.stack );
+            });
     }
 
 }(window));
