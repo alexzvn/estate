@@ -75,7 +75,13 @@ $(document).ready(function () {
         let body = $('#post-body');
         let id = $(this).data('post-id');
 
-        body.html('');
+        body.html(`
+            <div class="text-center">
+                <i style="font-size: 100px" class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+                <p class="text-muted mt-3" style="font-size: 30px">Xin chờ chút...</p>
+            </div>
+        `);
+
         $('#post-modal').modal();
 
         fetch(`/post/${id}/view`)
