@@ -26,7 +26,7 @@ class StoreCustomer extends FormRequest
         return [
             'name' => 'required|string',
             'password' => 'nullable',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'nullable|email|unique:users,email',
             'phone' => 'required|regex:/^[0-9.]+$/|unique:users,phone',
             'password' => 'required|string',
             'password_confirm' => 'required_with:password|same:password'

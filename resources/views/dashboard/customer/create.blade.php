@@ -26,7 +26,7 @@
 
                     <div class="form-group input-group-sm">
                       <label for="email">Email</label>
-                      <input type="email" name="email" id="email" class="form-control" placeholder="Email" required>
+                      <input type="email" name="email" id="email" class="form-control" placeholder="Email">
                     </div>
 
                     <div class="mt-3" id="change-password-input">

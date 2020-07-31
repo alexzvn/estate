@@ -74,7 +74,13 @@ class CustomerController extends Controller
         $user->fill($request->all())->fill([
             'phone' => $phone,
             'password' => Hash::make($request->password)
-        ])->save();
+        ]);
+
+        if (empty($user->email)) {
+            $user->email = $user->phone . '@' . parse_url(config('app.url'), PHP_URL_HOST);
+        }
+
+        $user->save();
 
         if ($request->user()->cannot('*')) {
             $this->assignCustomerToUser($user, Auth::id());
