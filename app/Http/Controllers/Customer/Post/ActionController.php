@@ -12,7 +12,7 @@ class ActionController extends BaseController
             return response('Không tìm thấy tin này', 404);
         }
 
-        if ($this->shouldBlacklist($post)) {
+        if ($this->shouldNotBlacklist($post)) {
             $this->customer->blacklistPosts()->detach($post->id);
 
             return response('Đã khôi phục tin này');
@@ -29,7 +29,7 @@ class ActionController extends BaseController
             return response('Không tìm thấy tin này', 404);
         }
 
-        if ($this->shouldSave($post)) {
+        if ($this->shouldNotSave($post)) {
             $this->customer->savePosts()->detach($post->id);
 
             return response('Đã bỏ lưu tin này');
@@ -47,12 +47,12 @@ class ActionController extends BaseController
         }
     }
 
-    private function shouldSave($post)
+    private function shouldNotSave($post)
     {
         return $this->customer->savePosts()->where('_id', $post->id)->exists();
     }
 
-    private function shouldBlacklist($post)
+    private function shouldNotBlacklist($post)
     {
         return $this->customer->blacklistPosts()->where('_id', $post->id)->exists();
     }
