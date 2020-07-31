@@ -12,9 +12,11 @@ use App\Http\Requests\Manager\Customer\StoreCustomer;
 use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Order;
+use App\Models\User as ModelsUser;
 use App\Repository\Role;
 use App\Repository\Subscription;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -63,12 +65,20 @@ class CustomerController extends Controller
 
     public function store(StoreCustomer $request, User $user)
     {
-        $user->fill($request->all());
+        $phone = str_replace('.', '', $request->phone);
 
-        $user->fill([
-            'phone' => str_replace('.', '', $request->phone),
+        if (User::where('phone', $phone)->exists()) {
+            return back()->withErrors(['phone' => 'Số điện thoại đã tồn tại trong hệ thống']);
+        }
+
+        $user->fill($request->all())->fill([
+            'phone' => $phone,
             'password' => Hash::make($request->password)
         ])->save();
+
+        if ($request->user()->cannot('*')) {
+            $this->assignCustomerToUser($user, Auth::id());
+        }
 
         return redirect(route('manager.customer.view', ['id' => $user->id]))
             ->with('success', 'Tạo mới thành công');
@@ -105,9 +115,7 @@ class CustomerController extends Controller
             $q->where('customer', true);
         })->findOrFail($customerId);
 
-        $customer->forceFill([
-            'supporter_id' => empty($request->supporter_id) ? null : $request->supporter_id,
-        ])->save();
+        $this->assignCustomerToUser($customer, empty($request->supporter_id) ? null : $request->supporter_id);
 
         return back()->with('success', 'Cập nhật thành công');
     }
@@ -179,5 +187,12 @@ class CustomerController extends Controller
         Subscription::findOrFail($id)->delete();
 
         return back()->with('success', 'Xóa thành công');
+    }
+
+    private function assignCustomerToUser($customer, $userId = null)
+    {
+        $customer->forceFill([
+            'supporter_id' => $userId
+        ])->save();
     }
 }

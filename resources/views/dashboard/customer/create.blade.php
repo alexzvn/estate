@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                    @can('manager.user.modify')
+                    @can('manager.customer.create')
                     <button type="submit" class="btn btn-success">Tạo mới</button>
                     @endcan
                 </div>
