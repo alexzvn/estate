@@ -71,7 +71,7 @@ class LoginController extends Controller
             $this->storeSessionId($request, $user);
         }
 
-        Auth::login($user, $user->can('login.multiple.devices'));
+        Auth::login($user, true);
 
         return $user->can('manager.dashboard.access') ?
             redirect(RouteServiceProvider::MANAGER) :
