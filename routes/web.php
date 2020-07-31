@@ -30,6 +30,12 @@ Route::group(['middleware' => ['verified', 'auth', 'notbanned'], 'namespace' => 
     Route::get('/post/{id}/action/blacklist', 'Post\ActionController@blacklist')->name('post.action.blacklist');
     Route::get('/post/{id}/action/save', 'Post\ActionController@save')->name('post.action.save');
     Route::get('/post/{id}/action/report', 'Post\ActionController@report')->name('post.action.report');
+
+    Route::group(['prefix' => 'me'], function () {
+        Route::get('post/saved', 'Post\CustomerPost@saved')->name('customer.post.saved');
+        Route::get('post/posted', 'Post\CustomerPost@posted')->name('customer.post.posted');
+        Route::get('post/blacklist', 'Post\CustomerPost@blacklist')->name('customer.post.blacklist');
+    });
 });
 
 
