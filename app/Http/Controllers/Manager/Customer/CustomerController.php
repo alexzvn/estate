@@ -179,6 +179,7 @@ class CustomerController extends Controller
     {
         $order = User::findOrFail($id)->orders()->create([
             'status' => Order::PENDING,
+            'manual' => true,
         ]);
 
         $order->plans()->sync($request->plans ?? []);
