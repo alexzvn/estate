@@ -50,6 +50,8 @@ trait SubscriptionManager
             $sub->expires_at = now()->addMonths($order->month);
         }
 
+        $sub->expires_at = $sub->expires_at->endOfDay();
+
         return $sub;
     }
 
