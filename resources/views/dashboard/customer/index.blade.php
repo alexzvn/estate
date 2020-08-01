@@ -1,5 +1,17 @@
 @extends('dashboard.app')
 
+@push('style')
+<style>
+    .user-active td {
+        color: #1b55e2 !important;
+    }
+
+    .user-less-3-days td {
+        color: #f72c38 !important;
+    }
+</style>
+@endpush
+
 @section('content')
 <div id="tableLight" class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
@@ -34,17 +46,38 @@
                     <tbody>
                         @foreach ($users as $user)
                         @php
-                            $orderFirst = $user->orders->first();
-                            $order = $user->orders->last();
+                            // khách hoạt động: xanh nhẹ
+                            // Còn 3 ngày: cam
+                            // hết hạn: xan
+
+                            $subs = $user->subscriptions->sort(function ($a, $b)
+                            {
+                                return $a <=> $b;
+                            });
+
+                            $sub  = $subs->first();
+
+                            if ($sub) {
+                                if (now()->addDays(3)->lessThan($sub->expires_at)) {
+                                    $class = 'user-active';
+                                } elseif (now()->lessThan($sub->expires_at) && now()->addDays(3)->greaterThan($sub->expires_at)) {
+                                    $class = 'user-less-3-days';
+                                } else {
+                                    $class = '';
+                                }
+                            } else {
+                                $class = '';
+                            }
+
                         @endphp
-                        <tr>
+                        <tr class="{{ $class }}">
                             <td class="text-center" >{{ $loop->index }}</td>
                             <td style="font-weight: bold">{{ $user->name }} @if($user->hasVerifiedPhone()) <i class="text-success" width="15" height="15" data-feather="check-circle"></i> @endif</td>
                             <td>{{ $user->phone }}</td>
                             <td>{{ number_format($user->orders->sum('after_discount_price')) }} đ</td>
-                            <td>{{ $orderFirst && $orderFirst->activate_at ? $orderFirst->activate_at->format('d/m/Y') : 'N/a' }}</td>
-                            <td>{{ $order && $order->expires_at ? $order->expires_at->format('d/m/Y') : 'N/a' }}</td>
-                            <td>{{ $order && $order->created_at ? $order->created_at->format('d/m/Y') : 'N/a'  }}</td>
+                            <td>{{ $sub && $sub->activate_at ? $sub->activate_at->format('d/m/Y') : 'N/a' }}</td>
+                            <td>{{ $sub && $sub->expires_at ? $sub->expires_at->format('d/m/Y') : 'N/a' }}</td>
+                            <td>{{ $sub && $sub->created_at ? $sub->created_at->format('d/m/Y') : 'N/a'  }}</td>
                             <td>
                                 @if ($supporter = $user->supporter)
                                     <span class="text-info">{{ $supporter->id == Auth::id() ? 'Bạn' : "$supporter->name" }}</span>

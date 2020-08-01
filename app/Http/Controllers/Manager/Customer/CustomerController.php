@@ -24,7 +24,7 @@ class CustomerController extends Controller
     {
         $this->authorize('manager.customer.view');
 
-        $users = User::with(['orders', 'supporter'])
+        $users = User::with(['subscriptions', 'supporter'])
             ->filterRequest($request)
             ->onlyCustomer()
             ->latest()->paginate(20);
