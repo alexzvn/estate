@@ -52,7 +52,7 @@
 
                             $subs = $user->subscriptions->sort(function ($a, $b)
                             {
-                                return $a <=> $b;
+                                return $b->created_at <=> $a->created_at;
                             });
 
                             $sub  = $subs->first();
