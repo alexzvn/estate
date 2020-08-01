@@ -64,6 +64,7 @@ $manual  = $order->manual !== null && $order->manual;
                                 <div class="form-group">
                                   <label for="expires_month">Kích hoạt / Gia hạn</label>
                                   <select class="form-control" name="expires_month" id="expires_month" {{ $manual ? 'disabled' : '' }}>
+                                        <option value="">Trống</option>
                                     @foreach (range(1, 24) as $i)
                                         <option {{ $order->month === $i ? 'selected' : '' }} value="{{ $i }}" >{{ $i }} Tháng</option>
                                     @endforeach
