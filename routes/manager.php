@@ -99,7 +99,8 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
         Route::post('/store', 'CustomerController@storeOrder')->name('manager.customer.order.store');
     });
 
-    Route::post('subscription/{id}/delete', 'CustomerController@deleteSubscription')->name('manager.customer.subscription.delete');
+    Route::post('subscription/{id}/delete', 'SubscriptionController@deleteSubscription')->name('manager.customer.subscription.delete');
+    Route::get('subscription/{id}/lock/toggle', 'SubscriptionController@lockToggle')->name('manager.customer.subscription.lock.toggle');
 });
 
 /**

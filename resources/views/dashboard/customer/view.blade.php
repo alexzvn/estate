@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{{ asset('dashboard/plugins/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard/assets/css/elements/tooltip.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard/assets/css/forms/switches.css') }}">
 @endpush
 @push('meta')
     <meta name="user_id" content="{{ $user->id }}">
@@ -104,16 +105,15 @@
                         <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                             <thead>
                                 <tr>
-                                    <th class="checkbox-column">
-                                        {{-- <div class="custom-control custom-checkbox checkbox-primary">
-                                        <input type="checkbox" class="custom-control-input todochkbox" id="todoAll">
-                                        <label class="custom-control-label" for="todoAll"></label>
-                                        </div> --}}
+                                    <th class="checkbox-column text-center">
+                                        <a class="delete-sub" href="javascript:void(0)">
+                                            <i class="text-danger" data-feather="trash-2"></i>
+                                        </a>
                                     </th>
                                     <th class="">Tên gói</th>
                                     <th class="">Hết hạn</th>
                                     <th class="text-center">Trạng thái</th>
-                                    <th class="text-center"></th>
+                                    <th class="text-center">Khóa</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -132,21 +132,18 @@
                                     <td>{{ $item->expires_at ? $item->expires_at->format('d/m/Y') : 'N/a' }}</td>
                                     <td class="text-center">
                                         @if ($item->isActivated())
-                                            <span class="badge badge-success">Đang hoạt động</span>
+                                            <span id="badge-{{ $item->id }}" class="badge badge-success">Đang hoạt động</span>
                                         @else
-                                            <span class="badge badge-warning">Ngừng hoạt động</span>
+                                            <span id="badge-{{ $item->id }}" class="badge badge-warning">Ngừng hoạt động</span>
                                         @endif
                                     </td>
 
                                     @can('manager.subscription.delete')
                                     <td class="text-center">
-                                        <ul class="table-controls">
-                                            <li>
-                                                <a class="delete-sub" href="javascript:void(0)" data-id="{{ $item->id }}">
-                                                    <i class="text-danger" data-feather="trash-2"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                        <label class="switch s-outline s-outline-info">
+                                            <input class="lock" type="checkbox" data-id="{{ $item->id }}" {{ $item->lock ? 'checked' : '' }}>
+                                            <span class="slider round"></span>
+                                        </label>
                                     </td>
                                     @endcan
                                 </tr>
@@ -242,6 +239,14 @@
                 form.attr('action', `/manager/customer/subscription/${id}/delete`);
                 form.submit();
             }
+        });
+
+        $('.lock').on('click', function () {
+            let id = $(this).data('id');
+            fetch(`/manager/customer/subscription/${id}/lock/toggle`)
+                .then(function () {
+                    $('#badge-' + id).html()
+                });
         });
     });
 }(window));

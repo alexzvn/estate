@@ -187,15 +187,6 @@ class CustomerController extends Controller
         return redirect(route('manager.order.view', ['id' => $order->id]));
     }
 
-    public function deleteSubscription(string $id)
-    {
-        $this->authorize('manager.subscription.delete');
-
-        Subscription::findOrFail($id)->delete();
-
-        return back()->with('success', 'Xóa thành công');
-    }
-
     private function assignCustomerToUser($customer, $userId = null)
     {
         $customer->forceFill([

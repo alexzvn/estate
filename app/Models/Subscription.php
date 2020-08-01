@@ -23,12 +23,15 @@ class Subscription extends Model
 
     public function isActivated()
     {
-        return $this->expires_at !== null && $this->expires_at->greaterThan(now());
+        return  $this->expires_at !== null &&
+                $this->expires_at->greaterThan(now()) &&
+                ! $this->lock;
     }
 
     public function scopeActive(Builder $builder)
     {
-        return $builder->where('expires_at', '>=', now());
+        return $builder->where('expires_at', '>=', now())
+            ->where('lock', '<>', true);
     }
 
     public function scopeLimited(Builder $builder)

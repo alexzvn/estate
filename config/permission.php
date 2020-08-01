@@ -123,7 +123,9 @@ return [
             'manager.customer.verify.phone' => 'Xác thực SĐT',
             'manager.customer.ban'          => 'Khóa tài khoản',
             'manager.customer.pardon'       => 'Mở khóa tài khoản',
+
             'manager.subscription.delete'   => 'Xóa gói đăng ký',
+            'manager.subscription.lock'     => 'Khóa gói đăng ký',
 
             'manager.order.view'   => 'Xem',
             'manager.order.create' => 'Tạo mới',
@@ -193,6 +195,7 @@ return [
                     'manager.customer.ban',
                     'manager.customer.pardon',
                     'manager.subscription.delete',
+                    'manager.subscription.lock',
                 ]
             ],[
                 'name' => 'Gói đăng ký', 
