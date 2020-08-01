@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Post;
+use App\Models\PostMeta;
 
 class PostObserver
 {
@@ -61,13 +62,50 @@ class PostObserver
         $this->removeIndex($post);
     }
 
-    public function index(Post $post)
+    protected function index(Post $post)
     {
+        $this->indexMeta($post);
         $post->addToIndex();
     }
 
-    public function removeIndex(Post $post)
+    protected function removeIndex(Post $post)
     {
         $post->removeFromIndex();
+    }
+
+    public function indexMeta(Post $post)
+    {
+        $metas = $post->metas()->with([
+            'province',
+            'district'
+        ])->get();
+
+        $indexs = $metas->reduce(function ($carry, $meta)
+        {
+            if ($meta->province) {
+                $carry[] = $meta->province->name;
+            } elseif ($meta->district) {
+                $carry[] = $meta->district->name;
+            } else {
+                $carry[]   = $meta->value;
+            }
+
+            return $carry;
+        }, $carry = []);
+
+        $indexs = $post->categories()->get()->reduce(function ($carry, $category)
+        {
+            $carry[] = $category->name;
+            return $carry;
+        }, $indexs);
+
+        $dispatcher = Post::getEventDispatcher();
+        Post::unsetEventDispatcher();
+
+        $post->forceFill([
+            'index_meta' => implode(' ', $indexs) . '.'
+        ])->save();
+
+        Post::setEventDispatcher($dispatcher);
     }
 }
