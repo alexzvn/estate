@@ -30,6 +30,7 @@
                                 </div>
                             </th>
                             <th>Tiêu đề</th>
+                            <th>Giá</th>
                             <th>Số điện thoại</th>
                             <th>Ngày đăng</th>
                             <th>Đăng bởi</th>
@@ -57,7 +58,13 @@
                                     </span>
                                 </p>
                             </td>
-                            <td>{!! implode('<br>', explode(',', $meta->phone->value)) ?? 'N/a' !!}</td>
+                            <td>{{ $meta->price ? format_web_price($meta->price->value) : '' }}</td>
+                            <td>
+                                <div class="d-flex">
+                                    {!! implode('<br>', explode(',', $meta->phone->value)) ?? 'N/a' !!}
+                                    <i class="lookup-phone t-icon t-hover-icon" data-feather="search" data-phone="{{ $meta->phone->value ?? '' }}"></i>
+                                </div>
+                            </td>
                             <td>{{ $post->publish_at ? $post->publish_at->format('d/m/Y H:i:s') : $post->updated_at->format('d/m/Y H:i:s')  }}</td>
                             <td>{{ $post->user ? $post->user->name . ' - ' . $post->user->phone : 'Hệ thống' }}</td>
                             <td>
@@ -105,6 +112,13 @@
         $('#delete-many').click(function () {
             form.attr('action', "{{ route('manager.post.delete.many') }}");
             form.submit();
+        });
+
+        $('.lookup-phone').on('click', function () {
+            let phone = $(this).data('phone');
+            let uri   = window.location.pathname + '?query=' + phone;
+
+            window.location.href = uri;
         });
     });
 }(window))
