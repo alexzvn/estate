@@ -58,7 +58,7 @@
                                     </span>
                                 </p>
                             </td>
-                            <td>{{ $meta->price ? format_web_price($meta->price->value) : '' }}</td>
+                            <td>{{ $meta->price ? format_web_price($meta->price->value) : 'N/a' }}</td>
                             <td>
                                 <div class="d-flex">
                                     {!! implode('<br>', explode(',', $meta->phone->value)) ?? 'N/a' !!}
