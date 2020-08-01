@@ -55,7 +55,7 @@ function planToString($plans) {
                             <td>{{ $order->activate_at ? $order->activate_at->format('d/m/Y H:i:s') : 'N/a' }}</td>
                             <td>{{ $order->expires_at ? $order->expires_at->format('d/m/Y H:i:s') : $order->month . ' tháng' }}</td>
                             <td>
-                                <span class="badge badge-{{ $order->status === $order::PAID ? 'success' : 'warning' }}">
+                                <span class="badge badge-{{ $order->status === $order::PAID ? 'success' : 'primary' }}">
                                     {{ $order->status === $order::PAID ? 'Đã thanh toán' : 'Chưa thanh toán' }}
                                 </span>
                             </td>
