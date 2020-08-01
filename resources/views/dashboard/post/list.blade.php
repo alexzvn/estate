@@ -18,6 +18,8 @@
             @include('dashboard.post.components.search')
 
             <div class="table-responsive">
+                <form action="" method="post" id="form-table">
+                @csrf
                 <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head">
                     <thead>
                         <tr>
@@ -42,7 +44,7 @@
                         <tr>
                             <td class="checkbox-column">
                                 <div class="custom-control custom-checkbox checkbox-primary">
-                                  <input type="checkbox" id="todo-{{ $post->id }}" class="custom-control-input todochkbox" name="post[]" value="{{ $post->id }}">
+                                  <input type="checkbox" id="todo-{{ $post->id }}" class="custom-control-input todochkbox" name="ids[]" value="{{ $post->id }}">
                                   <label class="custom-control-label" for="todo-{{ $post->id }}"></label>
                                 </div>
                             </td>
@@ -74,13 +76,14 @@
                         <i data-feather="chevron-down"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="btndefault">
-                        <a href="javascript:void(0);" class="dropdown-item text-danger"><i class="flaticon-home-fill-1 mr-1"></i>Xóa</a>
+                        <a href="javascript:void(0);" id="delete-many" class="dropdown-item text-danger"><i class="flaticon-home-fill-1 mr-1"></i>Xóa</a>
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-center">
                     {!! $posts->appends($_GET)->render() !!}
                 </div>
+                </form>
             </div>
 
         </div>
@@ -91,9 +94,18 @@
 @push('script')
 <script>
 (function (window) {
+    let form = $('#form-table');
+
     $('#todoAll').click(function () {
         let checked = $('#todoAll').prop('checked');
         $('.todochkbox').prop('checked', checked);
+    });
+
+    $(document).ready(function () {
+        $('#delete-many').click(function () {
+            form.attr('action', "{{ route('manager.post.delete.many') }}");
+            form.submit();
+        });
     });
 }(window))
 </script>
