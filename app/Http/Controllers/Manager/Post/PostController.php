@@ -40,6 +40,8 @@ class PostController extends Controller
             ->filterRequest($request)
             ->paginate(20);
 
+        $this->shareCategoriesProvinces();
+
         return view('dashboard.post.list', compact('posts'));
     }
 

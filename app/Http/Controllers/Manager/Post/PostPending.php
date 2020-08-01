@@ -22,6 +22,8 @@ class PostPending extends PostController
                 });
             });
 
+        $this->shareCategoriesProvinces();
+
         return view('dashboard.post.list', [
             'posts' => $post->paginate(30)
         ]);
