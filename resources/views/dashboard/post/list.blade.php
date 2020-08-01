@@ -18,13 +18,16 @@
             @include('dashboard.post.components.search')
 
             <div class="table-responsive">
-                <table class="table table-hover table-light mb-4">
+                <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head">
                     <thead>
                         <tr>
-                            <th class="text-center">#</th>
+                            <th class="checkbox-column">
+                                <div class="custom-control custom-checkbox checkbox-primary">
+                                  <input type="checkbox" class="custom-control-input" id="todoAll">
+                                  <label class="custom-control-label" for="todoAll"></label>
+                                </div>
+                            </th>
                             <th>Tiêu đề</th>
-                            <th>Thành phố</th>
-                            <th>Danh mục</th>
                             <th>Số điện thoại</th>
                             <th>Ngày đăng</th>
                             <th>Đăng bởi</th>
@@ -37,11 +40,22 @@
                             $meta = $post->loadMeta()->meta;
                         @endphp
                         <tr>
-                            <td>{{ $loop->index }}</td>
-                            <td style="font-weight: bold">{{ Str::limit($post->title, 70, '...') }}</td>
-                            <td>{{ $meta->province->province->name ?? 'N/a' }}</td>
-                            <td>{{ $post->categories[0]->name ?? 'N/a' }}</td>
-                            <td>{{ $meta->phone->value ?? 'N/a' }}</td>
+                            <td class="checkbox-column">
+                                <div class="custom-control custom-checkbox checkbox-primary">
+                                  <input type="checkbox" id="todo-{{ $post->id }}" class="custom-control-input todochkbox" name="post[]" value="{{ $post->id }}">
+                                  <label class="custom-control-label" for="todo-{{ $post->id }}"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ Str::ucfirst(Str::of($post->title)->limit(73)) }}</strong> <br>
+
+                                    <span class="mb-0" style="font-size: 12px;">
+                                        <strong> </strong> <i class="text-info">{{ $post->categories[0]->name ?? '' }}</i> <span class="text-muted">|</span>
+                                        <strong>Quận/huyện: </strong> <i class="text-info">{{ $meta->district->district->name ?? 'N/a' }}</i> <span class="text-muted"></span>
+                                    </span>
+                                </p>
+                            </td>
+                            <td>{!! implode('<br>', explode(',', $meta->phone->value)) ?? 'N/a' !!}</td>
                             <td>{{ $post->publish_at ? $post->publish_at->format('d/m/Y H:i:s') : $post->updated_at->format('d/m/Y H:i:s')  }}</td>
                             <td>{{ $post->user ? $post->user->name . ' - ' . $post->user->phone : 'Hệ thống' }}</td>
                             <td>
@@ -54,6 +68,16 @@
                     </tbody>
                 </table>
 
+                <div class="btn-group mb-4 mr-2" role="group">
+                    <button id="btndefault" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Hành động 
+                        <i data-feather="chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="btndefault">
+                        <a href="javascript:void(0);" class="dropdown-item text-danger"><i class="flaticon-home-fill-1 mr-1"></i>Xóa</a>
+                    </div>
+                </div>
+
                 <div class="d-flex justify-content-center">
                     {!! $posts->appends($_GET)->render() !!}
                 </div>
@@ -63,3 +87,14 @@
     </div>
 </div>
 @endsection
+
+@push('script')
+<script>
+(function (window) {
+    $('#todoAll').click(function () {
+        let checked = $('#todoAll').prop('checked');
+        $('.todochkbox').prop('checked', checked);
+    });
+}(window))
+</script>
+@endpush
