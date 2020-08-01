@@ -25,6 +25,8 @@ class PostController extends Controller
             ->latest()
             ->paginate(30);
 
+        $this->shareCategoriesProvinces();
+
         return view('dashboard.post.list', compact('posts'));
     }
 
@@ -114,5 +116,11 @@ class PostController extends Controller
 
         return redirect(route('manager.post.view', ['id' => $post->id]))
             ->with('success', 'Tạo mới thành công');
+    }
+
+    protected function shareCategoriesProvinces()
+    {
+        view()->share('categories', Category::parentOnly()->with('children')->get());
+        view()->share('provinces', Province::active()->with('districts')->get());
     }
 }
