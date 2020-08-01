@@ -20,6 +20,7 @@ class Order extends Model implements CanNote
     public const PAID = 2;
 
     protected $fillable = [
+        'manual',
         'month',
         'price',
         'status',
