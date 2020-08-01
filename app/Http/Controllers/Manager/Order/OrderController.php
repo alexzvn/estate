@@ -45,7 +45,7 @@ class OrderController extends Controller
 
     public function update(string $id, UpdateOrder $request)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::findOrFail($id)->forceFill(['manual' => (bool) $request->manual]);
 
         $hasNotOrdered = $order->status !== ModelsOrder::PAID && is_null($order->verifier);
 
@@ -55,8 +55,11 @@ class OrderController extends Controller
                 $this->updateAuto($order, $request)->save();
         }
 
+        $order->writeNote($request->note ?? '');
+
         if ($hasNotOrdered && $request->verified ) { //activate order in first time
             (new Customer($order->customer))->renewSubscription($order);
+            $order->activate_at = $request->activeAt();
             $order->verifier_id = $request->user()->id;
             $order->save();
         }
@@ -71,7 +74,6 @@ class OrderController extends Controller
             'price' => $order->plans->sum('price') ?? 0,
             'status'=> $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
             'verified' => (bool) $request->verified,
-            'activate_at' => $request->activeAt(),
             'expires_at' => $request->expiresAt(),
         ]);
 
@@ -87,7 +89,6 @@ class OrderController extends Controller
             'price' => $price,
             'status'=> $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
             'verified' => (bool) $request->verified,
-            'activate_at' => $request->activeAt(),
             'expires_at' => $request->expiresAt(),
         ]);
 

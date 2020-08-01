@@ -28,6 +28,7 @@ class UpdateOrder extends FormRequest
     {
         return [
             'manual'        => 'nullable|boolean',
+            'note'          => 'nullable|string',
             'verified'      => 'nullable|boolean',
             'activated_at'  => 'nullable|date',
             'expires_at'    => 'required_with:manual|date',

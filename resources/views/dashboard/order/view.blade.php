@@ -8,7 +8,8 @@
 @endpush
 
 @php
-    $planIds = $order->plans->map(function ($e) { return $e->id; });
+$planIds = $order->plans->map(function ($e) { return $e->id; });
+$manual  = $order->manual !== null && $order->manual;
 @endphp
 
 @section('content')
@@ -31,32 +32,75 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
+                    <h4 class="mb-3">Khách hàng <span class="text-info">{{ $customer->name }}</span>, số điện thoại: {{ $customer->phone }}</h4>
+
                     <form id="update-form" action="{{ route('manager.order.update', ['id' => $order->id]) }}" method="post">
                         @csrf
                         <div class="form-group">
                             <div class="d-flex">
                                 <label class="switch s-primary mr-2" style="margin-top: .20rem;">
-                                    <input type="checkbox" id="manual" name="manual" value="1">
+                                    <input type="checkbox" id="manual" name="manual" value="1" {{ $manual ? 'checked' : '' }}>
                                     <span class="slider round"></span>
                                 </label>
                                 <label>Tự chọn ngày hết hạn</label>
                             </div>
-                            
+
                         </div>
                         <div class="form-row">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                   <label for="activated_at">Ngày kích hoạt</label>
                                   <input type="text" class="form-control" value="{{ $order->activate_at }}" name="activated_at" id="activated_at" placeholder="Ngày hôm nay">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                   <label for="expires_at">Ngày hết hạn</label>
-                                  <input type="text" class="form-control" value="{{ $order->expires_at }}" name="expires_at" id="expires_at" placeholder="Tự tính toán" disabled>
+                                  <input type="text" class="form-control" value="{{ $order->expires_at }}" name="expires_at" id="expires_at" placeholder="Tự tính toán" {{ $manual ? '' : 'disabled' }}>
                                 </div>
                             </div>
 
+                            <div class="col-md-4" id="select-month">
+                                <div class="form-group">
+                                  <label for="expires_month">Kích hoạt / Gia hạn</label>
+                                  <select class="form-control" name="expires_month" id="expires_month" {{ $manual ? 'disabled' : '' }}>
+                                    @foreach (range(1, 24) as $i)
+                                        <option {{ $order->month === $i ? 'selected' : '' }} value="{{ $i }}" >{{ $i }} Tháng</option>
+                                    @endforeach
+                                  </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+
+                            <div class="col-md-4">
+                                <div class="form-group input-group-sm">
+                                    <label for="price">Giá tiền các gói</label>
+                                    <input type="text" name="price" id="price" class="form-control price" value="{{ $order->price ?? $plans->sum('price') }}" data-value="{{ $plans->sum('price') }}" {{ $manual ? '' : 'disabled' }}>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group input-group-sm">
+                                  <label for="discount_type">Loại giảm giá</label>
+                                  <select class="form-control" name="discount_type" id="discount_type">
+                                      <option value="{{ $order::DISCOUNT_NORMAL }}">Thông thường</option>
+                                    <option value="{{ $order::DISCOUNT_PERCENT  }}">Theo phần trăm</option>
+                                  </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group input-group-sm">
+                                    <label for="discount">Giảm giá</label>
+                                    <input type="number" min="0" class="form-control" name="discount" id="discount" value="{{ $order->discount ?? 0 }}">
+                                  </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-group input-group-sm">
                                     <label for="plans">Các gói đã chọn</label>
@@ -67,45 +111,11 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-
-                        
-
-                        <div class="form-row">
-
-                            <div class="col-md-3">
-                                <div class="form-group input-group-sm">
-                                    <label for="price">Giá tiền các gói</label>
-                                    <input type="text" name="price" id="price" class="form-control price" value="{{ $order->price ?? $plans->sum('price') }}" data-value="{{ $plans->sum('price') }}" disabled>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label for="note">Ghi chú</label>
+                                  <textarea class="form-control" name="note" id="note" rows="2">{{ $order->readNote() ?? '' }}</textarea>
                                 </div>
-                            </div>
-
-                            <div class="col-md-3" id="select-month">
-                                <div class="form-group input-group-sm">
-                                  <label for="expires_month">Kích hoạt / Gia hạn</label>
-                                  <select class="form-control" name="expires_month" id="expires_month">
-                                    @foreach (range(1, 24) as $i)
-                                        <option {{ $order->month === $i ? 'selected' : '' }} value="{{ $i }}" >{{ $i }} Tháng</option>
-                                    @endforeach
-                                  </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group input-group-sm">
-                                  <label for="discount_type">Loại giảm giá</label>
-                                  <select class="form-control" name="discount_type" id="discount_type">
-                                      <option value="{{ $order::DISCOUNT_NORMAL }}">Thông thường</option>
-                                    <option value="{{ $order::DISCOUNT_PERCENT  }}">Theo phần trăm</option>
-                                  </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group input-group-sm">
-                                    <label for="discount">Giảm giá</label>
-                                    <input type="number" min="0" class="form-control" name="discount" id="discount" value="{{ $order->discount ?? 0 }}">
-                                  </div>
                             </div>
                         </div>
 
@@ -118,10 +128,9 @@
                         </div>
                         @endif
 
-                        <hr>
-                        <h6>Khách hàng <span class="text-info">{{ $customer->name }}</span>, số điện thoại: {{ $customer->phone }}</h6>
+                        <hr class="mt-0">
 
-                        <h5 class="my-3">Tổng tiền: <span id="total-value" class="text-danger">{{ $order->after_discount_price !== null ? number_format($order->after_discount_price) : number_format($plans->sum('price')) }}đ</span></h5>
+                        <h5 class="mb-3">Tổng tiền: <span id="total-value" class="text-danger">{{ $order->after_discount_price !== null ? number_format($order->after_discount_price) : number_format($plans->sum('price')) }}đ</span></h5>
 
                         @if ($order->verified)
                             @can('manager.category.modify.force')
@@ -211,16 +220,16 @@
 
     $('#manual').change(function () {
         let isManual = $('#manual').prop('checked'),
-            month = $('#select-month'),
+            month = $('#expires_month'),
             price = $('#price'),
             expires = $('#expires_at');
 
         if (isManual) {
-            month.hide();
+            month.prop('disabled', true);
             expires.prop('disabled', false);
             price.prop('disabled', false);
         } else {
-            month.show();
+            month.prop('disabled', false);
             expires.prop('disabled', true);
             price.prop('disabled', true);
             expires.val('');
