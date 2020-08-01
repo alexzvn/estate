@@ -26,8 +26,8 @@ class VerifyPhone
 
         app(LoginController::class)->logout($request);
 
-        $request->session()->flash('reject.title', 'Tài khoản của bạn chưa xác thực');
-        $request->session()->flash('reject.message', 'Tài khoản của bạn cần xác thực và cấp quyền xem tin. Vui lòng liên hệ hotline để được hướng dẫn.');
+        $request->session()->flash('reject.title', 'Tài khoản của bạn chưa xác thực danh tính');
+        $request->session()->flash('reject.message', 'Vui lòng liên hệ CSKH 096.55.33.958 để xác thực và đăng ký gói xem tin chính chủ. xin cảm ơn!');
 
         return redirect(route('login'));
     }
