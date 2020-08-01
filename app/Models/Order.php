@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Contracts\Models\CanNote;
+use App\Models\Traits\HasNote;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
-class Order extends Model
+class Order extends Model implements CanNote
 {
-    use SoftDeletes;
+    use SoftDeletes, HasNote;
 
     public const DISCOUNT_PERCENT = 1;
 
