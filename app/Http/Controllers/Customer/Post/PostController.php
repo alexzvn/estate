@@ -10,6 +10,7 @@ use App\Repository\Category;
 use App\Http\Controllers\Customer\Post\BaseController;
 use App\Http\Requests\Customer\Post\StorePost;
 use App\Repository\Meta;
+use Illuminate\Http\Request;
 
 class PostController extends BaseController
 {
@@ -53,6 +54,11 @@ class PostController extends BaseController
             $post->categories()->attach($cat);
         }
 
+        $this->customer->createLog([
+            'content' => "Đã đăng tin: $post->title",
+            'link'    => route('manager.post.view', ['id' => $post->id])
+        ]);
+
         return response([
             'code' => 200,
             'success' => true,
@@ -65,9 +71,14 @@ class PostController extends BaseController
         
     }
 
-    public function view(string $id)
+    public function view(string $id, Request $request)
     {
         $post = $this->defaultPost()->where('_id', $id)->firstOrFail();
+
+        $this->customer->createLog([
+            'content' => "Đã xem tin: $post->title",
+            'link'    => $request->fullUrl()
+        ]);
 
         return view('customer.components.post-content', [
             'post' => $post,
