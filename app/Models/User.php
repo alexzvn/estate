@@ -60,6 +60,13 @@ class User extends Authenticatable implements MustVerifyPhone
         'banned_at',
     ];
 
+    protected $mappingProperties = [
+        'name' => [
+          'type' => 'text',
+          "analyzer" => "standard",
+        ]
+    ];
+
     public function orders()
     {
         return $this->hasMany(Order::class, 'customer_id');
@@ -167,9 +174,13 @@ class User extends Authenticatable implements MustVerifyPhone
 
     public function getIndexDocumentData()
     {
-        $this->getKey();
         $data = $this->toArray();
-        unset($data['_id']);
+
+        foreach ($data as $key => $value) {
+            if (in_array($key, ['_id', 'created_at', 'updated_at'])) {
+                unset($data[$key]);
+            }
+        }
 
         return $data;
     }
