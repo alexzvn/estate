@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Repository\Role;
+use App\Repository\Setting;
 
 class UserObserver
 {
