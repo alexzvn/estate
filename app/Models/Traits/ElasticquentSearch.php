@@ -35,7 +35,7 @@ trait ElasticquentSearch
 
         $body = $response->json();
 
-        if (empty($body['hits']['total']['value'])) {
+        if (empty($body['hits']['total'])) {
             return new ElasticquentResultCollection([], $body);
         }
 
