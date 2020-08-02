@@ -28,14 +28,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
-
-        $schedule->call(function ()
-        {
-            if (now()->today()->addHours(8)->greaterThan(now())) {
-                Artisan::call('post:reverser --item=3');
-            }
-        })->everyTenMinutes();
+        $schedule->command('post:reverser --item=3')
+            ->everyTenMinutes()
+            ->between('7:00', '22:00')
+            ->appendOutputTo(storage_path('logs/schedule.log'));
     }
 
     /**
