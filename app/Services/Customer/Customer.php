@@ -27,6 +27,17 @@ class Customer
         return new AccessManager($this->customer);
     }
 
+    /**
+     * Create logs for customer
+     *
+     * @param array $attr
+     * @return \App\Models\Log
+     */
+    public function createLog(array $attr = [])
+    {
+        return $this->customer->logs()->create($attr);
+    }
+
     public function __call(string $method, array $args = [])
     {
         return $this->forwardCallTo($this->customer, $method, $args);
