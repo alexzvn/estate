@@ -139,6 +139,11 @@ class User extends Authenticatable implements MustVerifyPhone
         });
     }
 
+    protected function filterQuery(Builder $builder, $value)
+    {
+        return $this->scopeFilterSearch($builder, $value);
+    }
+
     protected function filterRoles(Builder $builder, $roles)
     {
         $roles = is_string($roles) ? explode(',', $roles) : $roles;
