@@ -28,6 +28,8 @@
             </div>
         </div>
         <div class="widget-content widget-content-area">
+            @include('dashboard.customer.components.search')
+
             <div class="table-responsive">
                 <table class="table table-hover table-light mb-4">
                     <thead>
