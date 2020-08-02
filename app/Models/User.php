@@ -160,15 +160,12 @@ class User extends Authenticatable implements MustVerifyPhone
         return $builder->where('phone', $phone);
     }
 
-    public static function booted()
+    public function getIndexDocumentData()
     {
-        static::created(function (User $user)
-        {
-            $role = app(Setting::class)->config('user.role.default');
+        $this->getKey();
+        $data = $this->toArray();
+        unset($data['_id']);
 
-            if ($role = Role::find($role)) {
-                $user->assignRole($role->name);
-            }
-        });
+        return $data;
     }
 }
