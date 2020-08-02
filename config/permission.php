@@ -116,6 +116,7 @@ return [
             'manager.user.assign.customer' => 'Gán người CSKH',
 
             'manager.customer.view'         => 'Xem thông tin',
+            'manager.customer.log.view'     => 'Xem lịch sử hoạt động',
             'manager.customer.view.all'     => 'Xem thông tin khách bất kỳ',
             'manager.customer.modify'       => 'Cập nhật thông tin',
             'manager.customer.assign.role'  => 'Gán quyền cho khách',
@@ -196,6 +197,7 @@ return [
                     'manager.customer.pardon',
                     'manager.subscription.delete',
                     'manager.subscription.lock',
+                    'manager.customer.log.view'
                 ]
             ],[
                 'name' => 'Gói đăng ký', 

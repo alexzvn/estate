@@ -23,7 +23,7 @@ class Log extends Model
     {
         return $builder->whereHas('user', function (Builder $builder) use ($phone)
         {
-            $builder->where('phone', $phone);
+            $builder->where('phone', 'like', "%$phone%");
         });
     }
 }

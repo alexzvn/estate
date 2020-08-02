@@ -115,6 +115,10 @@ Route::group(['prefix' => 'order', 'namespace' => 'Order'], function () {
     Route::post('/{id}/delete', 'OrderController@delete')->name('manager.order.delete');
 });
 
+Route::group(['prefix' => 'activity', 'namespace' => 'Activity'], function () {
+    Route::get('/', 'ActivityController@index')->name('manager.log');
+});
+
 /**
  * SETTINGS
  */

@@ -151,6 +151,16 @@
                     </li>
                     @endcan
 
+                    @can('manager.customer.log.view')
+                    <li class="menu">
+                        <a href="{{ route('manager.log') }}" @active('manager.log', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div>
+                                <i data-feather="activity"></i> <span>Hoạt động khách hàng</span>
+                            </div>
+                        </a>
+                    </li>
+                    @endcan
+
                     @can('manager.order.view')
                     <li class="menu">
                         <a href="{{ route('manager.order') }}" @active('manager.order', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
