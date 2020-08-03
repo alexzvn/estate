@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                             <h4>
-                                <a href="{{ route('manager.category') }}" class="btn btn-outline-secondary btn-sm rounded-circle"><i class="t-icon" data-feather="arrow-left"></i></a>
+                                @include('dashboard.layouts.back-button', ['link' => route('manager.category')])
                                 Sửa danh mục
                             </h4>
                         </div>
@@ -52,12 +52,17 @@
                          <label for="description">Mô tả</label>
                          <textarea class="form-control" name="description" id="description" rows="3" placeholder="Mô tả về danh mục này?"></textarea>
                        </div>
-        
+
+                       
                        <div>
+                            @can('manager.category.modify')
                             <button id="delete" type="button" class="btn btn-danger float-left">Xóa</button>
+                            @endcan
+                            @can('manager.category.delete')
                             <button type="submit" class="btn btn-primary float-right">Cập nhật</button>
+                            @endcan
                        </div>
-        
+
                    </form>
                 </div>
             </div>

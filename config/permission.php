@@ -98,21 +98,40 @@ return [
              */
             'manager.dashboard.access' => 'Truy cập trang quản trị',
 
+            'manager.plan.view' => 'Xem',
+            'manager.plan.create' => 'Tạo mới',
+            'manager.plan.modify' => 'Chỉnh sửa',
+            'manager.plan.delete' => 'Xóa',
+
             'manager.category.view'   => 'Xem',
             'manager.category.create' => 'Tạo mới',
             'manager.category.modify' => 'Chỉnh sửa',
+            'manager.category.modify.force' => 'Chỉnh sửa khi đã xác thực',
             'manager.category.delete' => 'Xóa',
 
             'manager.user.view'   => 'Xem',
             'manager.user.create' => 'Tạo mới',
             'manager.user.modify' => 'Chỉnh sửa',
             'manager.user.delete' => 'Xóa',
+            'manager.user.assign.customer' => 'Gán người CSKH',
 
-            'manager.customer.view'        => 'Xem thông tin',
-            'manager.customer.view.all'    => 'Xem khách từ bất kỳ thành phố',
-            'manager.customer.update'      => 'Cập nhật thông tin',
-            'manager.customer.assign.role' => 'Gán quyền cho khách',
-            'manager.customer.create'      => 'Tạo tài khoản mới',
+            'manager.customer.view'         => 'Xem thông tin',
+            'manager.customer.log.view'     => 'Xem lịch sử hoạt động',
+            'manager.customer.view.all'     => 'Xem thông tin khách bất kỳ',
+            'manager.customer.modify'       => 'Cập nhật thông tin',
+            'manager.customer.assign.role'  => 'Gán quyền cho khách',
+            'manager.customer.create'       => 'Tạo tài khoản mới',
+            'manager.customer.verify.phone' => 'Xác thực SĐT',
+            'manager.customer.ban'          => 'Khóa tài khoản',
+            'manager.customer.pardon'       => 'Mở khóa tài khoản',
+
+            'manager.subscription.delete'   => 'Xóa gói đăng ký',
+            'manager.subscription.lock'     => 'Khóa gói đăng ký',
+
+            'manager.order.view'   => 'Xem',
+            'manager.order.create' => 'Tạo mới',
+            'manager.order.modify' => 'Chỉnh sửa',
+            'manager.order.delete' => 'Xóa',
 
             'manager.role.view'   => 'Xem',
             'manager.role.create' => 'Tạo mới',
@@ -123,11 +142,6 @@ return [
             'manager.post.create' => 'Tạo mới',
             'manager.post.modify' => 'Chỉnh sửa',
             'manager.post.delete' => 'Xóa',
-
-            'manager.staff.view'   => 'Xem',
-            'manager.staff.create' => 'Tạo mới',
-            'manager.staff.modify' => 'Chỉnh sửa',
-            'manager.staff.delete' => 'Xóa',
 
             'manager.site.setting' => 'Cẫu hình trang web',
 
@@ -160,6 +174,7 @@ return [
                     'manager.user.create',
                     'manager.user.modify',
                     'manager.user.delete',
+                    'manager.user.assign.customer',
                 ]
             ],[
                 'name' => 'Quản lý vai Trò',
@@ -170,21 +185,36 @@ return [
                     'manager.role.delete',
                 ]
             ],[
-                'name' => 'Quản lý nhân viên',
-                'permissions' => [
-                    'manager.staff.view',
-                    'manager.staff.create',
-                    'manager.staff.modify',
-                    'manager.staff.delete',
-                ]
-            ],[
                 'name' => 'Quản lý khách hàng',
                 'permissions' => [
                     'manager.customer.view',
                     'manager.customer.view.all',
-                    'manager.customer.update',
                     'manager.customer.assign.role',
+                    'manager.customer.modify',
                     'manager.customer.create',
+                    'manager.customer.verify.phone',
+                    'manager.customer.ban',
+                    'manager.customer.pardon',
+                    'manager.subscription.delete',
+                    'manager.subscription.lock',
+                    'manager.customer.log.view'
+                ]
+            ],[
+                'name' => 'Gói đăng ký', 
+                'permissions' => [
+                    'manager.plan.view',
+                    'manager.plan.create',
+                    'manager.plan.modify',
+                    'manager.plan.delete',
+                ]
+            ],[
+                'name' => 'Quản lý đơn hàng',
+                'permissions' => [
+                    'manager.order.view',
+                    'manager.order.create',
+                    'manager.order.modify',
+                    'manager.order.modify.force',
+                    'manager.order.delete',
                 ]
             ],[
                 'name' => 'Khác',

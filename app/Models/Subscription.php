@@ -2,22 +2,40 @@
 
 namespace App\Models;
 
-use App\Models\Location\Province;
 use Jenssegers\Mongodb\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Builder;
 
 class Subscription extends Model
 {
-    protected $fillable = [
-        'name', 'price'
-    ];
+    protected $fillable = ['expires_at', 'activate_at'];
 
-    public function provinces()
+    protected $dates = ['expires_at', 'activate_at'];
+
+    public function plan()
     {
-        return $this->belongsToMany(Province::class);
+        return $this->belongsTo(Plan::class);
     }
 
-    public function categories()
+    public function user()
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function isActivated()
+    {
+        return  $this->expires_at !== null &&
+                $this->expires_at->greaterThan(now()) &&
+                ! $this->lock;
+    }
+
+    public function scopeActive(Builder $builder)
+    {
+        return $builder->where('expires_at', '>=', now())
+            ->where('lock', '<>', true);
+    }
+
+    public function scopeLimited(Builder $builder)
+    {
+        return $builder->whereNotNull('expires_at');
     }
 }

@@ -8,6 +8,7 @@ use App\Enums\PostMeta as Meta;
 use App\Enums\PostStatus;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\ElasticquentSearch;
+use Carbon\Carbon;
 use Elasticquent\ElasticquentTrait;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
@@ -78,7 +79,38 @@ class Post extends Model
 
     public function scopePublished(Builder $builder)
     {
-        return $builder->where('status', (string) PostStatus::Published)->whereNotNull('publish_at');
+        return $builder
+            ->whereNotNull('publish_at')
+            ->orderBy('publish_at', 'desc')
+            ->where('status', (string) PostStatus::Published);
+    }
+
+    public function scopePending(Builder $builder)
+    {
+        $builder->where('status', (string)  PostStatus::Pending());
+    }
+
+    public function filterType(Builder $builder, $type)
+    {
+        return $builder->where('type', $type);
+    }
+
+    public function filterFrom(Builder $builder, $date)
+    {
+        if ($date = strtotime($date)) {
+            $builder->where('publish_at', '>=', Carbon::createFromTimestamp($date)->subDay());
+        }
+
+        return $builder;
+    }
+
+    public function filterTo(Builder $builder, $date)
+    {
+        if ($date = strtotime($date)) {
+            $builder->where('publish_at', '<=', Carbon::createFromTimestamp($date)->addDay());
+        }
+
+        return $builder;
     }
 
     public function filterCategories(Builder $builder, $values)
@@ -98,15 +130,23 @@ class Post extends Model
 
     public function filterProvince(Builder $builder, $value)
     {
-        return $builder->whereHas(PostMeta::class, function (Builder $q) use ($value)
+        return $builder->whereHas('metas', function (Builder $q) use ($value)
         {
             $q->where('name', Meta::Province)->where('value', $value);
         });
     }
 
+    public function filterProvinces(Builder $builder, $value)
+    {
+        return $builder->whereHas('metas', function (Builder $q) use ($value)
+        {
+            $q->where('name', Meta::Province)->whereIn('value', $value);
+        });
+    }
+
     public function filterCity(Builder $builder, $value)
     {
-        return $builder->whereHas(PostMeta::class, function (Builder $q) use ($value)
+        return $builder->whereHas('metas', function (Builder $q) use ($value)
         {
             $q->where('name', Meta::City)->where('value', $value);
         });
@@ -114,7 +154,7 @@ class Post extends Model
 
     public function filterDistrict(Builder $builder, $value)
     {
-        return $builder->whereHas(PostMeta::class, function (Builder $q) use ($value)
+        return $builder->whereHas('metas', function (Builder $q) use ($value)
         {
             $q->where('name', Meta::District)->where('value', $value);
         });
@@ -122,7 +162,7 @@ class Post extends Model
 
     public function filterStreet(Builder $builder, $value)
     {
-        return $builder->whereHas(PostMeta::class, function (Builder $q) use ($value)
+        return $builder->whereHas('metas', function (Builder $q) use ($value)
         {
             $q->where('name', Meta::Street)->where('value', $value);
         });
@@ -131,5 +171,42 @@ class Post extends Model
     public function filterStatus(Builder $builder, $value)
     {
         return $builder->where('status', $value);
+    }
+
+    public function filterPrice(Builder $builder, $price)
+    {
+        if (! is_string($price)) {
+            return $builder;
+        }
+
+        $price = explode('-', $price);
+        $min = (int) $price[0] ?? 0;
+        $max = (int) $price[1] ?? 0;
+
+        if ($min) {
+            $builder = $this->filterMinPrice($builder, $min);
+        }
+
+        if ($max) {
+            $builder = $this->filterMaxPrice($builder, $max);
+        }
+
+        return $builder;
+    }
+
+    public function filterMinPrice(Builder $builder, int $price)
+    {
+        return $builder->whereHas('metas', function (Builder $q) use ($price)
+        {
+            $q->where('name', Meta::Price)->where('value', '>=', $price);
+        });
+    }
+
+    public function filterMaxPrice(Builder $builder, int $price)
+    {
+        return $builder->whereHas('metas', function (Builder $q) use ($price)
+        {
+            $q->where('name', Meta::Price)->where('value', '<=', $price);
+        });
     }
 }

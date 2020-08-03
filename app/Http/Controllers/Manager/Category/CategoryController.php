@@ -12,6 +12,8 @@ class CategoryController extends Controller
 {
     public function index()
     {
+        $this->authorize('manager.category.view');
+
         return view('dashboard.category.index', [
             'categories' => Category::parentOnly()->with('children.children.children')->get()
         ]);
@@ -19,8 +21,6 @@ class CategoryController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $this->authorize('manager.category.create');
-
         $category = Category::create($request->all());
 
         if ($parent = Category::find($request->parent)) {
@@ -32,6 +32,7 @@ class CategoryController extends Controller
 
     public function view(string $id, Category $category)
     {
+        $this->authorize('manager.category.view');
 
         return view('dashboard.category.view', [
             'category'   => $category->findOrFail($id),
@@ -62,6 +63,8 @@ class CategoryController extends Controller
 
     public function delete(string $id, Category $category)
     {
+        $this->authorize('manager.category.delete');
+
         $cat = $category->findOrFail($id);
 
         $cat->removeChildren();

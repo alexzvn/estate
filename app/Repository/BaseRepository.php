@@ -6,6 +6,13 @@ use App\Contracts\RepositoryInterface;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Jenssegers\Mongodb\Eloquent\Model;
 
+/**
+ * @method \Jenssegers\Mongodb\Eloquent\Model fill(array $attr = [])
+ * @method \Jenssegers\Mongodb\Eloquent\Model forceFill(array $attr = [])
+ * @method static \Jenssegers\Mongodb\Eloquent\Model findOrFail(string $id)
+ * @method static \Jenssegers\Mongodb\Eloquent\Model where(string $column, $operation, $value)
+ * @method static \Jenssegers\Mongodb\Eloquent\Model find(string $id)
+ */
 abstract class BaseRepository implements RepositoryInterface
 {
     use ForwardsCalls;
@@ -25,6 +32,16 @@ abstract class BaseRepository implements RepositoryInterface
     public function model()
     {
         return $this->model;
+    }
+
+    public function __get(string $key)
+    {
+        return $this->model->$key;
+    }
+
+    public function __set(string $key, $value)
+    {
+        $this->model->$key = $value;
     }
 
     public function __call(string $method, array $args = [])

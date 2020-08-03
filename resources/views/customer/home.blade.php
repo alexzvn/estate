@@ -1,71 +1,45 @@
-@extends('layouts.app')
+@extends('customer.layouts.app')
 
 @section('content')
 <div class="container">
 
     <div class="row bg-white p-2 shadow rounded">
-        <div class="col-md-12 px-0">
-            <div class="border rounded-top">
-                <ul class="nav nav-tabs nav-custom-tabs mx-3" id="myTab" role="tablist">
-                    <li class="nav-item">
-                      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#section-1" role="tab">Mua Bán</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#section-2" role="tab">Cần Thuê</a>
-                    </li>
-                    <li class="nav-item d-none">
-                      <a class="nav-link" id="contact-tab" data-toggle="tab" href="#section-3" role="tab">Thị Trường</a>
-                    </li>
-                </ul>
-                <div class="border-top p-3" style="background-color: #f7f7f7;">
-                    <form action="" method="GET" class="form-row justify-content-center">
+        
+        @include('customer.components.tabs')
 
-                        <div class="col-md-11">
-                            <div class="input-group">
-                                <input type="text" name="query" value="{{ request('query') }}" style="border: solid #3490dc;" class="form-control form-control-lg border-right-0" placeholder="Tìm kiếm thông tin trên website">
-                                <div class="input-group-append">
-                                    <button class="btn btn-lg btn-primary" type="submit">Tìm kiếm</button>
-                                </div>
-                            </div>
-                            {{-- <a href="javascript:void(0)">Tìm kiếm nâng cao<i class="fa fa-filter"></i></a> --}}
+        <div class="col-md-12 mt-2">
+            <div class="row">
+                <div class="col-md-{{ $setting->notification ? '9' : '12' }} px-0" id="myTabContent">
+                        @if (request()->user()->subscriptions->isEmpty())
+                        <div class="text-center">
+                            <img class="m-3" src="{{ asset('assets/img/empty-state.jpg') }}?ver=1" alt="" style="height: 100%; max-width: 100%;">
+                            <h3 style="color: cadetblue;">Có vẻ bạn chưa đăng ký gói tin nào. <br> Hãy liên hệ hotline để đăng ký và bắt đầu xem tin nhé!</h3>
                         </div>
-
-                    </form>
-
+                        @else
+                            @include('customer.components.posts-table', ['posts' => $posts])
+                            <div class="d-flex justify-content-center">
+                                {{ $posts->withQueryString()->onEachSide(1)->links() }}
+                            </div>
+                        @endif
                 </div>
-            </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-md-9" id="myTabContent">
-                <div class="tab-content" >
-                    <div class="tab-pane fade show active" id="section-1" role="tabpanel">
-                        @include('customer.components.posts-table', ['posts' => $sellPosts])
-                        {{ $sellPosts->appends($_GET)->render() }}
-                    </div>
-                    <div class="tab-pane fade" id="section-2" role="tabpanel">
-                        @include('customer.components.posts-table', ['posts' => $rentPosts])
-                        {{ $rentPosts->appends($_GET)->render() }}
-                    </div>
-                    {{-- <div class="tab-pane fade" id="section-3" role="tabpanel">
-                        @include('customer.components.posts-table', compact('posts'))
-                        {{ $posts->appends($_GET)->render() }}
-                    </div> --}}
-                </div>
-            </div>
 
-            <div class="col-md-3">
-                @if ($setting->notification)
-                <div class="p-2 text-justify" style="background-color: aliceblue; font-size: 17px; font-family; border-top: 4px solid #9ce8d9 !important;">
-                    <h5 class="text-center text-uppercase">Thông Báo</h5>
-                    <p style="font-size: 16px;">{{ $setting->notification }}</p>
+                @if (empty($setting->notification))
+                <div class="col-md-3 pr-0">
+                    @if ($setting->notification)
+                    <div class="p-2 text-justify" style="background-color: aliceblue; font-size: 17px; font-family; border-top: 4px solid #9ce8d9 !important;">
+                        <h5 class="text-center text-uppercase">Thông Báo</h5>
+                        <p style="font-size: 16px;">{{ $setting->notification }}</p>
+                    </div>
+                    @endif
                 </div>
                 @endif
+
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
+<!-- View post modal -->
 <div class="modal fade modal-" id="post-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -85,16 +59,27 @@
         </div>
     </div>
 </div>
+
+@include('customer.components.post-create')
+
 @endsection
 
 @push('script')
 <script>
+(function (window) {
+
 $(document).ready(function () {
     $('tr[data-post-id]').on('click', function () {
         let body = $('#post-body');
         let id = $(this).data('post-id');
 
-        body.html('');
+        body.html(`
+            <div class="text-center">
+                <i style="font-size: 100px" class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+                <p class="text-muted mt-3" style="font-size: 30px">Xin chờ chút...</p>
+            </div>
+        `);
+
         $('#post-modal').modal();
 
         fetch(`/post/${id}/view`)
@@ -104,30 +89,43 @@ $(document).ready(function () {
             }
         }).then(response => {
             body.html(response);
+            registerAction();
         });
     });
 });
+
+function registerAction() {
+    let id = $('#modal-post-data').data('post-id');
+
+    $('#post-save').click(function () {
+        fetchAction(`/post/${id}/action/save`);
+    });
+
+    $('#post-report').click(function () {
+        if (confirm('Bạn có thực sự muốn báo môi giới tin này?')) {
+            fetchAction(`/post/${id}/action/report`);
+        }
+    });
+
+    $('#post-blacklist').click(function () {
+        if (confirm('Bạn có muốn xóa tin này không?')) {
+            fetchAction(`/post/${id}/action/blacklist`);
+        }
+    });
+}
+
+function fetchAction(url) {
+    fetch(url)
+    .then(res => {
+        if (res.ok || res.status === 404) {
+            return res.text();
+        } else {
+            alert('Có lỗi trong quá trình thực hiện, \n xin hãy thử làm mới lại trang');
+        }
+    }).then(text => {
+        alert(text);
+    })
+}
+}(window));
 </script>
-@endpush
-
-@push('style')
-<style>
-.nav-custom-tabs {
-    border: 0;
-}
-
-.nav-custom-tabs .nav-item .nav-link {
-    text-transform: uppercase;
-    background: none;
-    color: gray;
-    border: 0;
-}
-
-.nav-custom-tabs .nav-item .nav-link.active {
-    color: black;
-    font-weight: bolder;
-    border-bottom: solid 3px #3e92cc;
-}
-
-</style>
 @endpush

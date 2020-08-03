@@ -1,7 +1,7 @@
 <div class="row" id="modal-post-data" data-post-id="{{ $post->id }}">
     <div class="col-md-8" style="font-size: medium;">
 
-        <p><strong><i class="fa fa-hand-o-right"></i> Tiêu đề: {{ $post->title }}</strong></p>
+        <p><strong><i class="fa fa-hand-o-right"></i> Tiêu đề: {{ Str::ucfirst($post->title) }}</strong></p>
 
 
         <strong><i class="fa fa-hand-o-right"></i> Nội dung:</strong>
@@ -10,7 +10,7 @@
         <hr class="d-block d-md-none">
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 pl-0">
         <p>
             <strong>Số điện thoại: </strong>
             @isset($meta->phone->value)
@@ -33,9 +33,19 @@
         <hr class="d-block d-md-none">
 
         <div class="d-flex justify-content-center">
-            <button type="button" class="btn btn-sm btn-primary mr-2">Lưu tin</button>
-            <button type="button" class="btn btn-sm btn-warning mr-2" data-dismiss="modal">Báo môi giới</button>
-            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Xóa tin</button>
+            @if (in_array($post->id, $customer->post_save_ids ??[]))
+            <button id="post-save" type="button" class="btn btn-sm btn-primary mr-2">Bỏ lưu</button>
+            @else
+            <button id="post-save" type="button" class="btn btn-sm btn-outline-primary mr-2">Lưu tin</button>
+            @endif
+
+            <button id="post-report" type="button" class="btn btn-sm btn-warning mr-2">Báo môi giới</button>
+
+            @if (in_array($post->id, $customer->post_blacklist_ids ??[]))
+            <button id="post-blacklist" type="button" class="btn btn-sm btn-danger">Khôi phục</button>
+            @else
+            <button id="post-blacklist" type="button" class="btn btn-sm btn-outline-danger">Xóa tin</button>
+            @endif
         </div>
     </div>
 </div>

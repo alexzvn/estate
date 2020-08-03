@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Jenssegers\Mongodb\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserSubscriptionsTable extends Migration
+class CreateOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateUserSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_subscriptions', function (Blueprint $collection) {
-            $collection->index(['user_id', 'subscription_id']);
-            $collection->dateTime('expires_at');
+        Schema::create('orders', function (Blueprint $collection) {
+            $collection->index(['verifier_id', 'customer_id']);
+            $collection->integer('status');
+            $collection->timestamp(['activate_at', 'expires_at']);
         });
     }
 
@@ -26,6 +27,6 @@ class CreateUserSubscriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_subscriptions');
+        Schema::dropIfExists('orders');
     }
 }

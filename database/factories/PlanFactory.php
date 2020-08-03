@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\UserSubscription;
+use App\Models\Plan;
 use Faker\Generator as Faker;
 
-$factory->define(UserSubscription::class, function (Faker $faker) {
+$factory->define(Subscription::class, function (Faker $faker) {
     return [
         //
     ];

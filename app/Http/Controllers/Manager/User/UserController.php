@@ -14,6 +14,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('manager.user.view');
+        
         return view('dashboard.user.index', [
             'users' => User::filterRequest($request)->latest()->paginate(20)
         ]);
@@ -21,11 +23,15 @@ class UserController extends Controller
 
     public function create()
     {
+        $this->authorize('manager.user.create');
+
         return view('dashboard.user.create');
     }
 
     public function edit(string $id, User $user)
     {
+        $this->authorize('manager.user.view');
+
         return view('dashboard.user.view', [
             'user' => $user->with(['roles', 'permissions'])->findOrFail($id),
             'roles' => Role::all(),
@@ -39,18 +45,16 @@ class UserController extends Controller
     
     public function update(UpdateUser $request)
     {
+        $attr = $request->all();
+        unset($attr['password']);
+
         $user = $request->updateUser;
 
-        $user->fill($request->all());
-        $user->fill([
+        $user->fill($attr)->fill([
             'phone' => str_replace('.', '', $request->phone)
         ])->save();
 
-        if ($request->roles) {
-            $user->syncRoles(Role::findMany($request->roles));
-        } else {
-            $user->syncRoles([]);
-        }
+        $user->roles()->sync($request->roles ?? []);
 
         if (! empty($request->password)) {
             $user->forceFill([
@@ -64,33 +68,5 @@ class UserController extends Controller
     public function delete()
     {
         # code...
-    }
-
-    public function verifyPhone(string $id, User $user)
-    {
-        /**
-         * @var \App\Models\User
-         */
-        $user = $user->findOrFail($id);
-
-        if (! $user->hasVerifiedPhone()) {
-            $user->markPhoneAsVerified();
-        }
-
-        return back()->with('success', 'Xác thực số điện thoại thành công');
-    }
-
-    public function unverifiedPhone(string $id, User $user)
-    {
-        /**
-         * @var \App\Models\User
-         */
-        $user = $user->findOrFail($id);
-
-        if ($user->hasVerifiedPhone()) {
-            $user->markPhoneAsNotVerified();
-        }
-
-        return back()->with('success', 'Bỏ xác thực thành công');
     }
 }

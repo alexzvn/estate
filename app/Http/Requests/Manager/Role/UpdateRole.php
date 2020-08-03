@@ -13,7 +13,7 @@ class UpdateRole extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user() && $this->user()->can('manager.role.modify');
     }
 
     /**

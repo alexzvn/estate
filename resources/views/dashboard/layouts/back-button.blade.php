@@ -1,0 +1,1 @@
+<a href="{{ $link }}" class="btn btn-outline-secondary btn-sm rounded-circle"><i class="t-icon" data-feather="arrow-left"></i></a>

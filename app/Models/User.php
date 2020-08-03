@@ -7,8 +7,10 @@ use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanVerifyPhone;
 use Maklad\Permission\Traits\HasRoles;
 use App\Contracts\Auth\MustVerifyPhone;
+use App\Models\Traits\ElasticquentSearch;
 use App\Repository\Role;
 use App\Repository\Setting;
+use Elasticquent\ElasticquentTrait;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
@@ -17,6 +19,7 @@ use Jenssegers\Mongodb\Auth\User as Authenticatable;
 class User extends Authenticatable implements MustVerifyPhone
 {
     use HasRoles, CanVerifyPhone, CanFilter;
+    use ElasticquentTrait, ElasticquentSearch;
 
     /**
      * Define timeout for recent session in minutes
@@ -53,8 +56,31 @@ class User extends Authenticatable implements MustVerifyPhone
     ];
 
     protected $dates = [
-        'last_seen'
+        'last_seen',
+        'banned_at',
     ];
+
+    protected $mappingProperties = [
+        'name' => [
+          'type' => 'text',
+          "analyzer" => "standard",
+        ]
+    ];
+
+    public function logs()
+    {
+        return $this->hasMany(Log::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'customer_id');
+    }
+
+    public function supporter()
+    {
+        return $this->belongsTo(User::class, 'supporter_id');
+    }
 
     public function posts()
     {
@@ -63,12 +89,37 @@ class User extends Authenticatable implements MustVerifyPhone
 
     public function subscriptions()
     {
-        return $this->hasMany(UserSubscription::class);
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function isBanned()
+    {
+        return ! empty($this->banned_at);
+    }
+
+    public function ban()
+    {
+        return $this->forceFill(['banned_at' => now()])->save();
+    }
+
+    public function pardon()
+    {
+        return $this->forceFill(['banned_at' => null])->save();
     }
 
     public function isAdmin()
     {
         return $this->hasRole(Type::SuperAdmin);
+    }
+
+    public function blacklistPosts()
+    {
+        return $this->belongsToMany(Post::class, null, 'user_blacklist_ids', 'post_blacklist_ids');
+    }
+
+    public function savePosts()
+    {
+        return $this->belongsToMany(Post::class, null, 'user_save_ids', 'post_save_ids');
     }
 
     public function markPhoneAsNotVerified()
@@ -78,6 +129,11 @@ class User extends Authenticatable implements MustVerifyPhone
         ])->save();
     }
 
+    public function emptySession()
+    {
+        $this->forceFill(['session_id' => null])->save();
+    }
+
     public function hasDifferenceOnline()
     {
         return (
@@ -85,6 +141,19 @@ class User extends Authenticatable implements MustVerifyPhone
             $this->session_id !== request()->session()->getId() &&
             now()->lessThan($this->last_seen->addMinutes(self::SESSION_TIMEOUT))
         );
+    }
+
+    public function scopeOnlyCustomer(Builder $builder)
+    {
+        return $builder->whereHas('roles', function (Builder $builder)
+        {
+            $builder->where('customer', true);
+        });
+    }
+
+    protected function filterQuery(Builder $builder, $value)
+    {
+        return $this->scopeFilterSearch($builder, $value);
     }
 
     protected function filterRoles(Builder $builder, $roles)
@@ -108,15 +177,16 @@ class User extends Authenticatable implements MustVerifyPhone
         return $builder->where('phone', $phone);
     }
 
-    public static function booted()
+    public function getIndexDocumentData()
     {
-        static::created(function (User $user)
-        {
-            $role = app(Setting::class)->config('user.role.default');
+        $data = $this->toArray();
 
-            if ($role = Role::find($role)) {
-                $user->assignRole($role->name);
+        foreach ($data as $key => $value) {
+            if (in_array($key, ['_id', 'created_at', 'updated_at'])) {
+                unset($data[$key]);
             }
-        });
+        }
+
+        return $data;
     }
 }

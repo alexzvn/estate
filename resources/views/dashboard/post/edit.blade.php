@@ -1,3 +1,5 @@
+<?php use App\Enums\PostType; ?>
+
 @extends('dashboard.app')
 @push('style')
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
@@ -29,6 +31,21 @@
                     <div class="form-group">
                         <label for="post_content">Nội dung</label>
                         <textarea class="form-control" name="post_content" id="post_content" rows="3">{!! $post->content !!}</textarea>
+                    </div>
+                    <div>
+                        <p class="text-muted m-0">Ngày cập nhật cuối cùng là <span class="text-info">{{ $post->updated_at->format('H:i:s d/m/Y ') }}</span>, đăng bởi
+                        @if ($user = $post->user)
+                            
+                            @can('manager.customer.view')
+                                <a class="text-info" target="_blank" href="{{ route('manager.customer.view', ['id' => $user->id]) }}"> {{ $user->name }} <i data-feather="arrow-up-right"></i></a>
+                            @endcan
+                            @cannot('manager.customer.view')
+                                <span class="text-info">{{ "$user->name - $user->phone" }}</span>
+                            @endcannot
+                        </p>
+                        @else
+                            <span class="text-primary">Hệ thống</span>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -70,6 +87,7 @@
                             <div class="form-group input-group-sm">
                                 <label for="category">Danh mục</label>
                                 <select class="form-control" name="category" id="category">
+                                <option value="">Chọn danh mục</option>
                                 @php
                                     $catId = $category->id ?? null;
                                 @endphp
@@ -93,9 +111,9 @@
                                 <select class="form-control" name="province" id="province">
                                     <option value="" selected>Trống</option>
                                     @foreach ($provinces as $province)
-                                    <option value="{{ $province->id }}" {{ $meta->province->value == $province->id ? 'selected' :'' }}>{{ $province->name }}</option>
+                                    <option value="{{ $province->id }}" {{ $meta->province && $meta->province->value == $province->id ? 'selected' :'' }}>{{ $province->name }}</option>
                                     @php
-                                        if ($meta->province->value == $province->id) {
+                                        if ($meta->province && $meta->province->value == $province->id) {
                                             $activeProvince = $province;
                                         }
                                     @endphp
@@ -111,7 +129,7 @@
                                     <option value="" selected>Trống</option>
                                     @isset($activeProvince)
                                     @foreach ($activeProvince->districts as $district)
-                                    <option value="{{ $district->id }}" {{ $meta->district->value == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
+                                    <option value="{{ $district->id }}" {{ $meta->district && $meta->district->value == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
                                     @endforeach
                                     @endisset
                                 </select>
@@ -153,15 +171,27 @@
                 </div>
                 <div class="widget-content widget-content-area">
                     <div class="form-group input-group-sm">
+                        <label for="type">Loại Tin</label>
+                        <select class="form-control" name="type" id="type">
+                          <option value="">Trống</option>
+                          @foreach (PostType::getValues() as $name)
+                          <option value="{{ $name }}" {{ $post->type === $name ? 'selected' : '' }}>{{ $name }}</option>
+                          @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group input-group-sm">
                       <label for="status">Trạng thái</label>
                       <select class="form-control" name="status" id="status">
-                        <option value="0">Bản nháp</option>
-                        <option value="1">Chờ duyệt</option>
-                        <option value="2">Xuất bản</option>
+                        <option value="0" {{ $post->status == 0 ? 'selected' :'' }}>Bản nháp</option>
+                        <option value="1" {{ $post->status == 1 ? 'selected' :'' }}>Chờ duyệt</option>
+                        <option value="2" {{ $post->status == 2 ? 'selected' :'' }}>Xuất bản</option>
                       </select>
                     </div>
 
+                    @can('manager.post.modify')
                     <button type="submit" class="btn btn-primary float-right">Cập nhật</button>
+                    @endcan
                 </div>
             </div>
         </div>

@@ -35,7 +35,7 @@ trait ElasticquentSearch
 
         $body = $response->json();
 
-        if (empty($body['hits']['total']['value'])) {
+        if (empty($body['hits']['total'])) {
             return new ElasticquentResultCollection([], $body);
         }
 
@@ -51,7 +51,8 @@ trait ElasticquentSearch
     private static function fetchSearch(string $query, $instance)
     {
         return Http::get(self::getSearchUrl($instance), [
-            'q' => $query
+            'q' => $query,
+            'size' => 1000
         ]);
     }
 
