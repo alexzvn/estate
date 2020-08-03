@@ -18,6 +18,8 @@ Route::get('/', 'PublicController@index');
 
 Auth::routes();
 
+Route::get('/test1', 'Manager\Controller@test1');
+
 Route::group(['middleware' => ['verified', 'auth', 'notbanned'], 'namespace' => 'Customer'], function ()
 {
     Route::get('/home', 'HomeController@index')->name('home');
