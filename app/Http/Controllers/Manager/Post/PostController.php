@@ -23,7 +23,7 @@ class PostController extends Controller
 
         $posts = Post::with(['metas.province', 'categories', 'user'])
             ->filterRequest($request)
-            ->latest()
+            ->orderBy('publish_at', 'desc')
             ->paginate(30);
 
         $this->shareCategoriesProvinces();
@@ -39,6 +39,7 @@ class PostController extends Controller
             ->with(['metas.province', 'categories'])
             ->select(['name', 'title'])
             ->filterRequest($request)
+            ->orderBy('publish_at', 'desc')
             ->paginate(20);
 
         $this->shareCategoriesProvinces();
