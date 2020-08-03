@@ -106,7 +106,7 @@
                             <thead>
                                 <tr>
                                     <th class="checkbox-column text-center">
-                                        @can('manager.subscription.lock')
+                                        @can('manager.subscription.delete')
                                         <a class="delete-sub" href="javascript:void(0)">
                                             <i class="text-danger" data-feather="trash-2"></i>
                                         </a>
