@@ -6,6 +6,7 @@ use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Repository\User;
 use App\Providers\RouteServiceProvider;
+use App\Services\Customer\Customer;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,7 +64,14 @@ class LoginController extends Controller
             return $this->sendFailedLoginResponse($request);
         }
 
+        $customer = new Customer($user);
+
         if ($user->cannot('login.multiple.devices') && $user->hasDifferenceOnline()) {
+
+            $customer->createLog([
+                'content' => 'Đã cố truy cập tài khoản trên nhiều thiết bị'
+            ]);
+
             return $this->sendHasSessionLoginResponse($request);
         }
 
@@ -72,6 +80,10 @@ class LoginController extends Controller
         }
 
         Auth::login($user, true);
+
+        $customer->createLog([
+            'content' => 'Đã đăng nhập vào tài khoản'
+        ]);
 
         return $user->can('manager.dashboard.access') ?
             redirect(RouteServiceProvider::MANAGER) :
@@ -82,6 +94,10 @@ class LoginController extends Controller
     {
         if ($user = $request->user()) {
             $user->emptySession();
+
+            (new Customer($user))->createLog([
+                'content' => 'Đã đăng xuất khỏi tài khoản'
+            ]);
         }
 
         return $this->traitLogout($request);

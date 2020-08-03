@@ -15,6 +15,10 @@ class CustomerPost extends BaseController
             'categories'
         ])->paginate(20);
 
+        $this->customer->createLog([
+            'content' => 'Truy cập trang tin đã lưu'
+        ]);
+
         return view('customer.post.owner', [
             'posts' => $post
         ]);
@@ -29,6 +33,10 @@ class CustomerPost extends BaseController
             'categories'
         ])->paginate(20);
 
+        $this->customer->createLog([
+            'content' => 'Truy cập trang tin đã đăng',
+        ]);
+
         return view('customer.post.owner', [
             'posts' => $post
         ]);
@@ -42,6 +50,10 @@ class CustomerPost extends BaseController
             'metas.district',
             'categories'
         ])->paginate(20);
+
+        $this->customer->createLog([
+            'content' => 'Truy cập trang tin đã xóa',
+        ]);
 
         return view('customer.post.owner', [
             'posts' => $post

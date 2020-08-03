@@ -21,15 +21,25 @@ class PostController extends BaseController
         ]);
     }
 
-    public function fee()
+    public function fee(Request $request)
     {
+        $this->customer->createLog([
+            'content' => 'Đã truy cập '. PostType::PostFee,
+            'link'    => $request->fullUrl()
+        ]);
+
         return view('customer.post.fee', [
             'posts' => $this->defaultPost()->where('type', PostType::PostFee)->paginate(20)
         ]);
     }
 
-    public function online()
+    public function online(Request $request)
     {
+        $this->customer->createLog([
+            'content' => 'Đã truy cập '. PostType::Online,
+            'link'    => $request->fullUrl()
+        ]);
+
         return view('customer.post.online', [
             'posts' => $this->defaultPost()->where('type', PostType::Online)->paginate(20)
         ]);
