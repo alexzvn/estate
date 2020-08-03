@@ -54,7 +54,8 @@
 
                                     <span class="mb-0" style="font-size: 12px;">
                                         <strong> </strong> <i class="text-info">{{ $post->categories[0]->name ?? '' }}</i> <span class="text-muted">|</span>
-                                        <strong>Quận/huyện: </strong> <i class="text-info">{{ $meta->district->district->name ?? 'N/a' }}</i> <span class="text-muted"></span>
+                                        <strong>Quận/huyện: </strong> <i class="text-info">{{ $meta->district->district->name ?? 'N/a' }}</i>
+                                        @if ($post->reverser) <span class="text-muted">|</span> <span class="text-danger">Đã đảo</span> @endif
                                     </span>
                                 </p>
                             </td>
