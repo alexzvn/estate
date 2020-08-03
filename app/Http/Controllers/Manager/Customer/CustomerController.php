@@ -151,7 +151,7 @@ class CustomerController extends Controller
 
     public function verifyPhone(string $id, User $user)
     {
-        $this->authorize('manager.user.verify.phone');
+        $this->authorize('manager.customer.verify.phone');
 
         $user = $user->findOrFail($id);
 
@@ -164,7 +164,7 @@ class CustomerController extends Controller
 
     public function unverifiedPhone(string $id, User $user)
     {
-        $this->authorize('manager.user.verify.phone');
+        $this->authorize('manager.customer.verify.phone');
 
         $user = $user->findOrFail($id);
 

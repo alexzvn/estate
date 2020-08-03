@@ -49,6 +49,11 @@
                       </select>
                     </div>
 
+                    <div class="form-group input-group-sm">
+                      <label for="google_analytics">Mã tracking google Analytics</label>
+                      <input type="text" name="google_analytics" id="google_analytics" class="form-control" placeholder="UA-17429...." value="{{ $setting->config('google.analytics') }}">
+                    </div>
+
                 </div>
             </div>
         </div>

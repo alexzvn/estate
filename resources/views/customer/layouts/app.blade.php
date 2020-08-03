@@ -41,6 +41,19 @@
         @include('customer.layouts.footer')
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    @if ($tracking = $setting->config('google.analytics', false))
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $tracking }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '{{ $tracking }}');
+    </script>
+    @endif
+
     @stack('script')
 </body>
 </html>
