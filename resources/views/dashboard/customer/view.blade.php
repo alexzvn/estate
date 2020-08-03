@@ -111,6 +111,7 @@
                                         </a>
                                     </th>
                                     <th class="">Tên gói</th>
+                                    <th class="">Bắt đầu</th>
                                     <th class="">Hết hạn</th>
                                     <th class="text-center">Trạng thái</th>
                                     <th class="text-center">Khóa</th>
@@ -129,6 +130,7 @@
                                     <td>
                                         <p class="mb-0">{{ $plan->name }}</p>
                                     </td>
+                                    <td>{{ $item->activate_at ? $item->activate_at->format('d/m/Y') : 'N/a' }}</td>
                                     <td>{{ $item->expires_at ? $item->expires_at->format('d/m/Y') : 'N/a' }}</td>
                                     <td class="text-center">
                                         @if ($item->isActivated())
