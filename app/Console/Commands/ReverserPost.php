@@ -35,7 +35,7 @@ class ReverserPost extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
     public function handle()
     {
@@ -47,7 +47,10 @@ class ReverserPost extends Command
 
         $updated = $posts->get()->each(function ($post)
         {
-            $post->forceFill(['publish_at' => now()])->save();
+            $post->forceFill([
+                'publish_at' => now(),
+                'reverser'   => true
+            ])->save();
         });
 
         $this->info('Updated '. $updated->count() . ' posts. Post reserver left is ' . $posts->count());
