@@ -87,7 +87,7 @@ class PostController extends BaseController
 
         $this->customer->createLog([
             'content' => "Đã xem tin: $post->title",
-            'link'    => $request->fullUrl()
+            'link'    => route('manager.post.view', ['id' => $id])
         ]);
 
         return view('customer.components.post-content', [
