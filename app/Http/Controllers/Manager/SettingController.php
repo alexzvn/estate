@@ -26,7 +26,8 @@ class SettingController extends Controller
         $setting->setConfigs([
             'title' => $request->title,
             'user.role.default' => $request->role,
-            'notification' => $request->notification
+            'notification' => $request->notification,
+            'google.analytics' => $request->google_analytics
         ]);
 
         $setting->saveConfig();
