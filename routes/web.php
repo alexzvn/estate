@@ -18,7 +18,7 @@ Route::get('/', 'PublicController@index');
 
 Auth::routes();
 
-Route::get('/test1', 'Manager\Controller@test1');
+Route::get('/test1', 'Manager\Controller@InfoPost');
 
 Route::group(['middleware' => ['verified', 'auth', 'notbanned'], 'namespace' => 'Customer'], function ()
 {
