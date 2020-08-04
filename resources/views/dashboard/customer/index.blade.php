@@ -1,6 +1,7 @@
 @extends('dashboard.app')
 
 @push('style')
+<link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
 <style>
     .user-active td {
         color: #1b55e2 !important;
@@ -87,12 +88,26 @@
                                 N/a
                                 @endif
                             </td>
-                            <td>
-                                @if (($supporter && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer'))
-                                <a href="{{ route('manager.customer.view', ['id' => $user->id]) }}">
-                                    <i class="role-edit t-icon t-hover-icon" data-feather="edit"></i>
-                                </a>
-                                @endif
+                            <td class="text-center">
+                                <ul class="table-controls">
+                                    @if (($supporter && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer'))
+                                        <li>
+                                            <a href="{{ route('manager.customer.view', ['id' => $user->id]) }}">
+                                                <i class="role-edit text-success" data-feather="edit"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if (Auth::user()->can('manager.customer.logout'))
+                                        @php
+                                            $isOnline = $user->isOnline();
+                                        @endphp
+                                        <li>
+                                            <a href="{{ $isOnline ? route('manager.customer.logout', ['id' => $user->id]) : 'javascript:void(0)' }}">
+                                                <i class="{{ $isOnline ? 'text-danger' : '' }}" data-feather="log-out"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
                             </td>
                         </tr>
                         @endforeach

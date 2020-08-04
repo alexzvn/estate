@@ -123,6 +123,7 @@ return [
             'manager.customer.verify.phone' => 'Xác thực SĐT',
             'manager.customer.ban'          => 'Khóa tài khoản',
             'manager.customer.pardon'       => 'Mở khóa tài khoản',
+            'manager.customer.logout'       => 'Thoát đăng nhập',
 
             'manager.subscription.delete'   => 'Xóa gói đăng ký',
             'manager.subscription.lock'     => 'Khóa gói đăng ký',
@@ -197,7 +198,8 @@ return [
                     'manager.customer.pardon',
                     'manager.subscription.delete',
                     'manager.subscription.lock',
-                    'manager.customer.log.view'
+                    'manager.customer.log.view',
+                    'manager.customer.logout'
                 ]
             ],[
                 'name' => 'Gói đăng ký', 
