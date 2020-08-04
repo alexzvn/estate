@@ -17,9 +17,11 @@ class EnsureCustomerSameSession
     public function handle($request, Closure $next)
     {
         if (($user = $request->user()) && $user->cannot('login.multiple.devices')) {
-            $user->session_id !== $request->session()->getId();
 
-            app(LoginController::class)->quietLogout($request);
+            if ($user->session_id !== $request->session()->getId()) {
+                app(LoginController::class)->quietLogout($request);
+                return redirect('/');
+            }
         }
 
         return $next($request);
