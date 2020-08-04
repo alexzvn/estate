@@ -31,7 +31,7 @@
         <p><strong>Ngày đăng: </strong> {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'N/a' }}</p>
 
         @isset($post->report)
-        <p style="color: red"><strong>Đã báo môi giới bởi: </strong> {{ $post->report->user->name ?? '' }}</p>
+        <p style="color: red"><strong>Đã báo môi giới bởi: </strong> {{ Auth::id() == $post->report->user_id ? 'Bạn' : $post->report->user->name }}</p>
         @endisset
 
         <hr class="d-block d-md-none">

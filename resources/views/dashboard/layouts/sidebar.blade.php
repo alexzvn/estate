@@ -92,6 +92,17 @@
                     </li>
                     @endcan
 
+                    @can('manager.post.report.view')
+                    <li class="menu">
+                        <a href="{{ route('manager.report.view') }}" @active('manager.report.view', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="alert-octagon"></i>
+                                <span>Tin báo môi giới</span>
+                            </div>
+                        </a>
+                    </li>
+                    @endcan
+
                     @can('manager.role.view')
                     <li class="menu">
                         <a href="{{ route('manager.role') }}" @active('manager.role', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
