@@ -143,6 +143,14 @@ class User extends Authenticatable implements MustVerifyPhone
         );
     }
 
+    public function isOnline()
+    {
+        return (
+            isset($this->session_id) &&
+            now()->lessThan($this->last_seen->addMinutes(self::SESSION_TIMEOUT))
+        );
+    }
+
     public function scopeOnlyCustomer(Builder $builder)
     {
         return $builder->whereHas('roles', function (Builder $builder)
