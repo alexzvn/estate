@@ -103,6 +103,13 @@ class LoginController extends Controller
         return $this->traitLogout($request);
     }
 
+    public function quietLogout(Request $request)
+    {
+        if ($user = $request->user()) {
+            $user->emptySession();
+        }
+    }
+
     protected function authenticated()
     {
         if (Auth::user()->cannot('login.multiple.devices')) {
