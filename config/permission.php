@@ -144,6 +144,9 @@ return [
             'manager.post.modify' => 'Chỉnh sửa',
             'manager.post.delete' => 'Xóa',
 
+            'manager.post.report.view' => 'Xem thông tin báo MG',
+            'manager.post.report.delete' => 'Xóa thông ti báo MG',
+
             'manager.site.setting' => 'Cẫu hình trang web',
 
         ],
