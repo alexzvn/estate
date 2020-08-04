@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Repository\User;
 use App\Providers\RouteServiceProvider;
@@ -11,6 +10,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Response;
 
 class LoginController extends Controller
 {
@@ -75,11 +75,13 @@ class LoginController extends Controller
             return $this->sendHasSessionLoginResponse($request);
         }
 
+        Auth::login($user, true);
+
+        $request->session()->regenerate();
+
         if ($user->cannot('login.multiple.devices')) {
             $this->storeSessionId($request, $user);
         }
-
-        Auth::login($user, true);
 
         $customer->createLog([
             'content' => 'Đã đăng nhập vào tài khoản'
@@ -108,6 +110,8 @@ class LoginController extends Controller
         if ($user = $request->user()) {
             $user->emptySession();
         }
+
+        return $this->traitLogout($request);
     }
 
     protected function authenticated()
@@ -133,5 +137,24 @@ class LoginController extends Controller
     protected function username()
     {
         return 'phone';
+    }
+
+    /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendLoginResponse(Request $request)
+    {
+        $this->clearLoginAttempts($request);
+
+        if ($response = $this->authenticated($request, $this->guard()->user())) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+                    ? new Response('', 204)
+                    : redirect()->intended($this->redirectPath());
     }
 }
