@@ -24,7 +24,7 @@ class VerifyPhone
             return $next($request);
         }
 
-        app(LoginController::class)->logout($request);
+        app(LoginController::class)->quietLogout($request);
 
         $request->session()->flash('reject.title', 'Tài khoản của bạn chưa xác thực danh tính');
         $request->session()->flash('reject.message', 'Vui lòng liên hệ CSKH 096.55.33.958 để xác thực và đăng ký gói xem nguồn chính chủ. xin cảm ơn!');
