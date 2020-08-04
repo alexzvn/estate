@@ -105,6 +105,8 @@ class CustomerController extends Controller
             $user->forceFill([
                 'password' => Hash::make($request->password)
             ])->save();
+
+            $user->emptySession();
         }
 
         if ($request->user()->can('manager.user.assign.customer')) {
@@ -129,6 +131,15 @@ class CustomerController extends Controller
     public function delete()
     {
         # code...
+    }
+
+    public function logout(string $id)
+    {
+        $this->authorize('manager.customer.logout');
+
+        User::findOrFail($id)->emptySession();
+
+        return back()->with('success', 'Đã đăng xuất người dùng này');
     }
 
     public function ban(string $id, User $user)
