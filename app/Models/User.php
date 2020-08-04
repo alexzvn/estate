@@ -92,6 +92,11 @@ class User extends Authenticatable implements MustVerifyPhone
         return $this->hasMany(Subscription::class);
     }
 
+    public function report()
+    {
+        return $this->hasMany(Report::class);
+    }
+
     public function isBanned()
     {
         return ! empty($this->banned_at);
