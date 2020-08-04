@@ -62,6 +62,11 @@ class Post extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    public function report()
+    {
+        return $this->hasOne(Report::class);
+    }
+
     public function loadMeta()
     {
         $metaEnum   = collect(Meta::toArray())->flip();

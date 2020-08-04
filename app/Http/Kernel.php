@@ -40,6 +40,12 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\AuthUpdateLastSeen::class,
         ],
 
+        'customer' => [
+            \App\Http\Middleware\VerifyPhone::class,
+            \App\Http\Middleware\EnsureUserNotBanned::class,
+            \App\Http\Middleware\EnsureCustomerSameSession::class
+        ],
+
         'api' => [
             'throttle:60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -64,7 +70,5 @@ class Kernel extends HttpKernel
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'verified' => \App\Http\Middleware\VerifyPhone::class,
-        'notbanned' => \App\Http\Middleware\EnsureUserNotBanned::class,
     ];
 }

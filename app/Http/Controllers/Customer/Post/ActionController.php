@@ -45,6 +45,20 @@ class ActionController extends BaseController
         if (! ($post = $post->find($id))) {
             return response('Không tìm thấy tin này', 404);
         }
+
+        if ($post->report) {
+            if ($post->report->user_id == request()->user()->id) {
+                return response('Bạn đã báo môi giới tin này');
+            }
+
+            return response('Đã có người báo môi giới tin này');
+        }
+
+        request()->user()->report()->save(
+            $post->report()->create([])
+        );
+
+        return response('Đã báo môi giới tin này');
     }
 
     private function shouldNotSave($post)

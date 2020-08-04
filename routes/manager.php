@@ -45,6 +45,14 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
 });
 
 /**
+ * REPORTS
+ */
+Route::group(['prefix' => 'report', 'namespace' => 'Report'], function () {
+    Route::get('/', 'ReportController@index')->name('manager.report.view');
+    Route::get('/{id}/delete', 'ReportController@delete')->name('manager.report.delete');
+});
+
+/**
  * PLANS
  */
 Route::group(['prefix' => 'plan', 'namespace' => 'Plan'], function () {
@@ -93,6 +101,7 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
 
     Route::get('/{id}/ban', 'CustomerController@ban')->name('manager.customer.ban');
     Route::get('/{id}/pardon', 'CustomerController@pardon')->name('manager.customer.pardon');
+    Route::get('/{id}/logout', 'CustomerController@logout')->name('manager.customer.logout');
 
     Route::group(['prefix' => '{id}/order'], function () {
         Route::get('/', 'OrderController@index')->name('manager.customer.order');
@@ -115,6 +124,9 @@ Route::group(['prefix' => 'order', 'namespace' => 'Order'], function () {
     Route::post('/{id}/delete', 'OrderController@delete')->name('manager.order.delete');
 });
 
+/**
+ * ACTIVITY
+ */
 Route::group(['prefix' => 'activity', 'namespace' => 'Activity'], function () {
     Route::get('/', 'ActivityController@index')->name('manager.log');
 });

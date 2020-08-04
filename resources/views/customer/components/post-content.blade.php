@@ -30,6 +30,10 @@
         <p><strong>Giá khoảng: </strong> {{ format_web_price($meta->price->value) ?? 'N/a' }}</p>
         <p><strong>Ngày đăng: </strong> {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'N/a' }}</p>
 
+        @isset($post->report)
+        <p style="color: red"><strong>Đã báo môi giới bởi: </strong> {{ Auth::id() == $post->report->user_id ? 'Bạn' : $post->report->user->name }}</p>
+        @endisset
+
         <hr class="d-block d-md-none">
 
         <div class="d-flex justify-content-center">
@@ -39,7 +43,9 @@
             <button id="post-save" type="button" class="btn btn-sm btn-outline-primary mr-2">Lưu tin</button>
             @endif
 
+            @empty($post->report)
             <button id="post-report" type="button" class="btn btn-sm btn-warning mr-2">Báo môi giới</button>
+            @endempty
 
             @if (in_array($post->id, $customer->post_blacklist_ids ??[]))
             <button id="post-blacklist" type="button" class="btn btn-sm btn-danger">Khôi phục</button>

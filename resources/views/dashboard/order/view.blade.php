@@ -133,13 +133,16 @@ $manual  = $order->manual !== null && $order->manual;
 
                         <h5 class="mb-3">Tổng tiền: <span id="total-value" class="text-danger">{{ $order->after_discount_price !== null ? number_format($order->after_discount_price) : number_format($plans->sum('price')) }}đ</span></h5>
 
-                        @if ($order->verified)
-                            @can('manager.category.modify.force')
-                            <button id="submit" class="btn btn-primary">Cập nhật</button>
-                            @endcan
-                        @else
-                            <button id="submit" class="btn btn-success">Cập nhật</button>
-                        @endif
+                        @can('manager.order.modify')
+                            @if ($order->verified)
+                                @can('manager.category.modify.force')
+                                <button id="submit" class="btn btn-primary">Cập nhật</button>
+                                @endcan
+                            @else
+                                <button id="submit" class="btn btn-success">Cập nhật</button>
+                            @endif
+                        @endcan
+                        
 
                         @can('manager.order.delete')
                         <a id="delete-btn" href="javascript:void(0)" class="btn btn-danger btn-sm float-right">Xóa đơn hàng</a>

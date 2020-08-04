@@ -92,6 +92,11 @@ class User extends Authenticatable implements MustVerifyPhone
         return $this->hasMany(Subscription::class);
     }
 
+    public function report()
+    {
+        return $this->hasMany(Report::class);
+    }
+
     public function isBanned()
     {
         return ! empty($this->banned_at);
@@ -139,6 +144,14 @@ class User extends Authenticatable implements MustVerifyPhone
         return (
             ! empty($this->session_id) &&
             $this->session_id !== request()->session()->getId() &&
+            now()->lessThan($this->last_seen->addMinutes(self::SESSION_TIMEOUT))
+        );
+    }
+
+    public function isOnline()
+    {
+        return (
+            isset($this->session_id) &&
             now()->lessThan($this->last_seen->addMinutes(self::SESSION_TIMEOUT))
         );
     }

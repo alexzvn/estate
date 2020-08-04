@@ -16,7 +16,7 @@ class AuthUpdateLastSeen
      */
     public function handle($request, Closure $next)
     {
-        if ($user = Auth::user()) {
+        if (($user = Auth::user()) && $user->cannot('login.multiple.devices')) {
             $user->forceFill([
                 'last_seen' => now()
             ])->save();
