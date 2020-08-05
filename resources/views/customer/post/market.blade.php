@@ -26,43 +26,42 @@
 <div class="container mt-5">
     <div class="row">
 
-        @foreach (range(1,20) as $item)
+        @foreach ($posts as $post)
+        @php
+            $meta        = $post->loadMeta()->meta;
+            $firstImages = $post->files->first();
+        @endphp
+
         <div class="col-xl-3 col-lg-4 col-sm-6 col-12 px-2">
             <div class="item-post">
                 <div class="product-thumb">
-                    <a class="show-list-img"
-                        href="https://kientrucn8.com/wp-content/uploads/2018/07/khu-can-ho-vinhomes-times-city-4-640x400.jpg"
-                        data-lightbox="{{ $loop->index }}" data-title="amee 0">
-                        <img src="https://kientrucn8.com/wp-content/uploads/2018/07/khu-can-ho-vinhomes-times-city-4-640x400.jpg">
+                    <a class="show-list-img" href="{{ asset('storage/' . $firstImages->path) }}"
+                        data-lightbox="{{ $post->id }}" data-title="amee 0">
+                        <img src="{{ asset('storage/' . $firstImages->path) }}">
                     </a>
 
                 </div>
                 <div class="home-product-bound">
                     <ul class="wrap-list-detai-img">
+                        @foreach ($post->files as $image)
                         <li>
-                            <a href="https://i1-ione.vnecdn.net/2019/02/16/Amme2-1550288093.jpg?w=1200&h=0&q=100&dpr=2&fit=crop&s=dG3-_olDdskJQx6JroWdRg"
-                                data-lightbox="{{ $loop->index }}" data-title="amee 1">123</a>
+                            <a href="{{ asset('storage/' . $image->path) }}"
+                                data-lightbox="{{ $post->id }}" data-title="">123</a>
                         <li>
-                            <a href="https://i1-ione.vnecdn.net/2019/02/16/Amme10-1550288079.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=yFllgV7WPij5ChK8NZr6mw"
-                                data-lightbox="{{ $loop->index }}" data-title="Amee 2">123</a>
-
-                        </li>
-                        <li> <a href="https://i1-ione.vnecdn.net/2019/02/16/Amme8-1550288094.jpg?w=1200&h=0&q=100&dpr=2&fit=crop&s=4rwm1RDu-30va3u2zIBP2Q"
-                                data-lightbox="{{ $loop->index }}" data-title="Amee 3">123</a></li>
+                        @endforeach
                     </ul>
                     <div class="p-title">
-                        <a class="show-list-img" href="https://kientrucn8.com/wp-content/uploads/2018/07/khu-can-ho-vinhomes-times-city-4-640x400.jpg"
-                        data-lightbox="{{ $loop->index }}" data-title="amee 0">Bán gấp nhà đất mặt
-                            tiền đường nhựa 763, thuận tiện buôn bán
+                        <a class="show-list-img" href="{{ asset('storage/' . $firstImages->path) }}"
+                        data-lightbox="{{ $post->id }}" data-title="amee 0"> {{ $post->title }}
                         </a>
                     </div>
                     <div class="product-info mt-3">
-                        <img src="/assets/img/selection.png" width="16"> <strong>889.2 m²</strong>
+                        <img src="{{ asset('/assets/img/selection.png') }}" width="16"> <strong>{{ $meta->phone->value ?? '' }}</strong>
                     </div>
                     <div class="product-info">
-                        <img src="/assets/img/location.png" width="18">
-                        <a href="/ban-nha-mat-pho-dinh-quan-dna" title="Bán nhà mặt phố tại Định Quán">Định Quán</a>,
-                        <a href="/ban-nha-mat-pho-dong-nai" title="Bán nhà mặt phố tại Đồng Nai">Đồng Nai</a>
+                        <img src="{{ asset('/assets/img/location.png') }}" width="18">
+                        <a href="javascript:void(0)">{{ $meta->district->district->name }}</a>,
+                        <a href="javascript:void(0)">{{ $meta->province->province->name }}</a>
                     </div>
                 </div>
             </div>
