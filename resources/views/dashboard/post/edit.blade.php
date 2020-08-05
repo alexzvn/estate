@@ -7,6 +7,12 @@
 
 @php
     $category = $post->categories[0] ?? null;
+
+    $pathFiles = $post->files->map(function ($file)
+    {
+        return asset($file->path) . "?fid=$file->id";
+    });
+
 @endphp
 
 @section('content')
@@ -237,11 +243,7 @@
                 browse: 'Tìm',
                 selectedCount: 'ảnh đã chọn',
             },
-            presetFiles: [
-                'https://images.unsplash.com/photo-1557090495-fc9312e77b28?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80&fid=5f11c1010027172c6e7c0a3b',
-                'https://images.unsplash.com/photo-1557090495-fc9312e77b28?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80',
-                'https://images.unsplash.com/photo-1557090495-fc9312e77b28?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80'
-            ],
+            presetFiles: @json($pathFiles),
         });
     });
 
