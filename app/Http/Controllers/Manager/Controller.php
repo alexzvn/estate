@@ -16,9 +16,4 @@ class Controller extends BaseController
             return $role->customer;
         }));
     }
-
-    public function InfoPost(){
-
-        return view("dashboard.test");
-    }
 }
