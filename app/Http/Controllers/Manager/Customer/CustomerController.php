@@ -195,7 +195,7 @@ class CustomerController extends Controller
 
         $order->plans()->sync($request->plans ?? []);
 
-        return redirect(route('manager.customer.view', ['id' => $order->id]));
+        return redirect(route('manager.order.view', ['id' => $order->id]));
     }
 
     private function assignCustomerToUser($customer, $userId = null)
