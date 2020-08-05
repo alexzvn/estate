@@ -10,14 +10,13 @@
 
     $pathFiles = $post->files->map(function ($file)
     {
-        return asset($file->path) . "?fid=$file->id";
+        return asset('storage/'.$file->path) . "?fid=$file->id";
     });
-
 @endphp
 
 @section('content')
 <div class="col-md-12">
-    <form class="row" action="{{ route('manager.post.update', ['id' => $post->id]) }}" method="post">
+    <form class="row" action="{{ route('manager.post.update', ['id' => $post->id]) }}" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="statbox widget box box-shadow">
                 <div class="widget-header">
@@ -160,7 +159,7 @@
                     <div class="custom-file-container" data-upload-id="mySecondImage">
                         <label>Chọn ảnh đại diện <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image">x</a></label>
                         <label class="custom-file-container__custom-file" >
-                            <input type="file" name="images[]" class="custom-file-container__custom-file__custom-file-input" multiple>
+                            <input type="file" name="images[]" accept="image/*" class="custom-file-container__custom-file__custom-file-input" multiple>
                             <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
                             <span class="custom-file-container__custom-file__custom-file-control"></span>
                         </label>
@@ -210,7 +209,7 @@
 </div>
 
 <input class="d-none" type="hidden" id="data-province" value="">
-
+@dump($pathFiles)
 @endsection
 
 @push('script')
@@ -243,7 +242,7 @@
                 browse: 'Tìm',
                 selectedCount: 'ảnh đã chọn',
             },
-            presetFiles: @json($pathFiles),
+            presetFiles: JSON.parse('@json($pathFiles)'),
         });
     });
 
