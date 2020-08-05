@@ -209,7 +209,6 @@
 </div>
 
 <input class="d-none" type="hidden" id="data-province" value="">
-@dump($pathFiles)
 @endsection
 
 @push('script')
@@ -270,8 +269,6 @@
     $(window).on('fileUploadWithPreview:imagesAdded', syncInput);
     $(window).on('fileUploadWithPreview:imageDeleted', syncInput);
 }(window))
-
-
 </script>
 @endpush
 
