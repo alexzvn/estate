@@ -7,7 +7,7 @@
 
 @section('content')
 <div class="col-md-12">
-    <form class="row" action="{{ route('manager.post.store') }}" method="post">
+    <form class="row" action="{{ route('manager.post.store') }}" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="statbox widget box box-shadow">
                 <div class="widget-header">
@@ -21,12 +21,12 @@
                     @csrf
                     <div class="form-group input-group-sm">
                         <label for="title">Tiêu đề</label>
-                        <input type="text"
+                        <input type="text" value="{{ old('title') }}"
                         class="form-control" name="title" id="title" aria-describedby="title" placeholder="Tiêu đề tin" required>
                     </div>
                     <div class="form-group">
                         <label for="post_content">Nội dung</label>
-                        <textarea class="form-control" name="post_content" id="post_content" rows="3"></textarea>
+                        <textarea class="form-control" name="post_content" id="post_content" rows="3">{{ old('post_content') }}</textarea>
                     </div>
                 </div>
             </div>
@@ -43,21 +43,21 @@
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                               <label for="price">Giá tiền</label>
-                              <input type="text"
+                              <input type="text" value="{{ old('price') }}"
                                 class="form-control" name="price" id="price" placeholder="Giá tin" required>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                               <label for="commission">Hoa Hồng</label>
-                              <input type="text"
+                              <input type="text" value="{{ old('commission') }}"
                                 class="form-control" name="commission" id="commission" placeholder="" step="1" value="" min="0" max="100">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                                 <label for="phone">Số điện thoại</label>
-                                <input type="text"
+                                <input type="text" value="{{ old('phone') }}"
                                   class="form-control" name="phone" id="phone" placeholder="0355...." required>
                               </div>
                         </div>
@@ -115,10 +115,10 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                    <div class="custom-file-container" data-upload-id="myFirstImage">
+                    <div class="custom-file-container" data-upload-id="mySecondImage">
                         <label>Chọn ảnh đại diện <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image">x</a></label>
                         <label class="custom-file-container__custom-file" >
-                            <input type="file" name="avatar" class="custom-file-container__custom-file__custom-file-input" accept="image/*">
+                            <input type="file" name="images[]" accept="image/*" class="custom-file-container__custom-file__custom-file-input" multiple>
                             <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
                             <span class="custom-file-container__custom-file__custom-file-control"></span>
                         </label>
@@ -173,23 +173,58 @@
 <script src="{{ asset('dashboard/plugins/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
 <script src="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.js') }}"></script>
 <script>
+(function (window) {
+    $(document).ready(function () {
+        $('#price').inputmask({
+            alias: 'currency',
+            prefix: '',
+            digits: 0,
+            rightAlign: false
+        });
 
-    $('#price').inputmask({
-        alias: 'currency',
-        prefix: '',
-        digits: 0,
-        rightAlign: false
+        $('#phone').inputmask("9999.999.999")
+
+        ClassicEditor
+        .create(document.querySelector('#post_content'))
+        .catch( err => {
+            console.error( err.stack );
+        });
     });
 
-    $('#phone').inputmask("9999.999.999")
-
-    ClassicEditor
-    .create(document.querySelector('#post_content'))
-    .catch( err => {
-        console.error( err.stack );
+    $(document).ready(() => {
+        let firstUpload = new FileUploadWithPreview('mySecondImage', {
+            text: {
+                chooseFile: 'Chọn ảnh',
+                browse: 'Tìm',
+                selectedCount: 'ảnh đã chọn',
+            }
+        });
     });
 
-    var firstUpload = new FileUploadWithPreview('myFirstImage')
+    let syncInput = function (e) {
+        let ids   = [];
+        let files = e.detail.cachedFileArray;
+
+        files.forEach(e => {
+            let pos = e.name.search('fid=');
+
+            if (pos !== -1) {
+                ids.push(e.name.substr(pos+4, 24));
+            }
+        });
+
+        let inputFid = $('#sync-file-ids');
+
+        inputFid.html('');
+
+        ids.forEach(id => {
+            inputFid.append(`<input type="hidden" name="image_ids[]" value="${id}">`);
+        });
+    }
+
+    $(window).on('fileUploadWithPreview:imagesAdded', syncInput);
+    $(window).on('fileUploadWithPreview:imageDeleted', syncInput);
+}(window))
 </script>
 @endpush
 
