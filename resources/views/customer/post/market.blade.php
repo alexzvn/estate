@@ -29,17 +29,18 @@
         @foreach ($posts as $post)
         @php
             $meta        = $post->loadMeta()->meta;
-            $firstImages = $post->files->first();
+            $firstImages = $post->files->shift();
         @endphp
 
         <div class="col-xl-3 col-lg-4 col-sm-6 col-12 px-2">
             <div class="item-post">
                 <div class="product-thumb">
-                    <a class="show-list-img" href="{{ asset('storage/' . $firstImages->path) }}"
-                        data-lightbox="{{ $post->id }}" data-title="amee 0">
+                    @isset ($firstImages)
+                    <a class="show-list-img" id="{{ $post->id }}" href="{{ asset('storage/' . $firstImages->path) }}"
+                        data-lightbox="{{ $post->id }}" data-title="">
                         <img src="{{ asset('storage/' . $firstImages->path) }}">
                     </a>
-
+                    @endisset
                 </div>
                 <div class="home-product-bound">
                     <ul class="wrap-list-detai-img">
@@ -51,8 +52,7 @@
                         @endforeach
                     </ul>
                     <div class="p-title">
-                        <a class="show-list-img" href="{{ asset('storage/' . $firstImages->path) }}"
-                        data-lightbox="{{ $post->id }}" data-title="amee 0"> {{ $post->title }}
+                        <a class="trigger-show-list-img" data-id="{{ $post->id }}" href="javascript:void(0)"> {{ $post->title }}
                         </a>
                     </div>
                     <div class="product-info mt-3">
@@ -78,6 +78,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 <script>
     (function (window) {
+        function eventFire(el, etype){
+            if (el.fireEvent) {
+                el.fireEvent('on' + etype);
+            } else {
+                var evObj = document.createEvent('Events');
+                evObj.initEvent(etype, true, false);
+                el.dispatchEvent(evObj);
+            }
+        }
+
         $(document).ready(function () {
             lightbox.option({
                 'resizeDuration': 200,
@@ -86,7 +96,14 @@
                 'disableScrolling': true,
                 'fitImagesInViewport': true,
                 'fadeDuration': 200,
+                'positionFromTop': 10,
                 'albumLabel': 'Ảnh %1 trong số %2 ảnh',
+            });
+
+            $('.trigger-show-list-img').on('click', function () {
+                let id = $(this).data('id');
+
+                eventFire(document.getElementById(id), 'click');
             });
         });
     }(window))
