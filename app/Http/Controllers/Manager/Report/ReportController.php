@@ -11,8 +11,20 @@ class ReportController extends Controller
     {
         $this->authorize('manager.post.report.view');
 
+        $report = Report::with(['user', 'post.metas'])->latest()->paginate(40);
+
+        $report = $report->reduce(function ($carry, $report)
+        {
+            if (! $report->post) {
+                $report->delete();
+                return $carry;
+            }
+
+            return $carry->push($report);
+        }, collect());
+
         return view('dashboard.report.list', [
-            'reports' => Report::with(['user', 'post.metas'])->latest()->paginate(40)
+            'reports' => $report
         ]);
     }
 
