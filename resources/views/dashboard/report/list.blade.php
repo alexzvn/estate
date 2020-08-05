@@ -52,20 +52,31 @@
                     </thead>
                     <tbody>
                         @foreach ($reports as $report)
+                        @if ($report->post === null)
+                            @php
+                                $report->delete();
+                            @endphp
+                            @continue
+                        @endif
                         @php
                             $meta = $report->post->loadMeta()->meta;
                         @endphp
                         <tr>
                             <td class="text-center" >{{ $loop->index }}</td>
                             <td style="font-weight: bold">{{ $report->user->name }} <br> {{ $report->user->phone }}</td>
-                            <td>{{ $report->post->title }}</td>
-                            <td>{{ $meta->phone->value ?? 'N/a' }}</td>
+                            <td>{{ $report->post->title }} <a class="text-info" target="_blank" href="{{ route('manager.post.view', ['id' => $report->post->id]) }}"><i data-feather="external-link"></i></a></td>
+                            <td>
+                                {{ $meta->phone->value ?? 'N/a' }}
+                                @isset($meta->phone->value)
+                                    <a class="text-info" target="_blank" href="{{ route('manager.post') }}?query={{ $meta->phone->value }}"><i data-feather="external-link"></i></a>
+                                @endisset
+                            </td>
                             <td>{{ $report->created_at->format('d/m/Y H:i:s') }}</td>
                             <td class="text-center">
                                 <ul class="table-controls">
                                     @can('manager.post.report.delete')
                                     <li>
-                                        <a href="{{ route('manager.report.delete', ['id' => $report->id]) }}">
+                                        <a  href="{{ route('manager.report.delete', ['id' => $report->id]) }}">
                                             <i class="text-danger" data-feather="trash-2"></i>
                                         </a>
                                     </li>
