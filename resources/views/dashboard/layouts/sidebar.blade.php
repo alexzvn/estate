@@ -58,8 +58,8 @@
                                 <a href="javascript:void(0)">Cần thuê - cần mua </a>
                                 {{-- Tin crawl từ trang khác xử lý sau --}}
                             </li>
-                            <li class="d-none">
-                                <a href="javascript:void(0)">Tin thị trường</a> 
+                            <li>
+                                <a href="{{ route('manager.post') }}?type={{ PostType::PostMarket }}">Tin thị trường</a> 
                                 {{-- Tin ảnh collection --}}
                             </li>
                             <li>

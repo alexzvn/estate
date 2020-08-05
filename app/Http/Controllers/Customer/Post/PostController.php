@@ -45,6 +45,19 @@ class PostController extends BaseController
         ]);
     }
 
+    public function market(Request $request)
+    {
+        $this->customer->createLog([
+            'content' => 'Đã truy cập '. PostType::PostMarket,
+            'link'    => $request->fullUrl()
+        ]);
+
+        return view('customer.post.market', [
+            'posts' => $this->defaultPost()->with('files')->where('type', PostType::PostMarket)->paginate(40)
+        ]);
+    }
+
+
     public function store(StorePost $request, Post $post)
     {
         $post = $post->fill($request->all())
@@ -74,11 +87,6 @@ class PostController extends BaseController
             'success' => true,
             'data' => 'Đăng tin thành công',
         ]);
-    }
-
-    public function market()
-    {
-        
     }
 
     public function view(string $id, Request $request)

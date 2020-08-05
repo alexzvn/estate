@@ -8,6 +8,9 @@
                 <li class="nav-item">
                     <a class="nav-link @active('post.fee')" href="{{ route('post.fee') }}">Tin Xin Phí</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link @active('post.market')" href="{{ route('post.market') }}">Tin Thị Trường</a>
+                </li>
                 @if (true)
                 <li class="nav-item">
                     <a href="{{ route('customer.post.saved') }}" class="nav-link @active('customer.post.saved')"> Tin đã lưu</a>

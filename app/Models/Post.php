@@ -8,6 +8,7 @@ use App\Enums\PostMeta as Meta;
 use App\Enums\PostStatus;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\ElasticquentSearch;
+use App\Models\Traits\HasFiles;
 use Carbon\Carbon;
 use Elasticquent\ElasticquentTrait;
 use Jenssegers\Mongodb\Eloquent\Model;
@@ -16,8 +17,8 @@ use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use SoftDeletes, CanFilter, ElasticquentTrait;
-    use ElasticquentSearch;
+    use SoftDeletes, CanFilter, HasFiles;
+    use ElasticquentSearch, ElasticquentTrait;
 
     protected $fillable = [
         'content', 'title', 'type', 'status'

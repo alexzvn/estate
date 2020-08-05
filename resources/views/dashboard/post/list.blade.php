@@ -59,10 +59,10 @@
                                     </span>
                                 </p>
                             </td>
-                            <td>{{ $meta->price ? format_web_price($meta->price->value) : 'N/a' }}</td>
+                            <td>{{ $meta->price ? format_web_price($meta->price->value ?? 0) : 'N/a' }}</td>
                             <td>
                                 <div class="d-flex">
-                                    {!! implode('<br>', explode(',', $meta->phone->value)) ?? 'N/a' !!}
+                                    {!! implode('<br>', explode(',', $meta->phone->value ?? '')) ?? 'N/a' !!}
                                     <i class="lookup-phone t-icon t-hover-icon" data-feather="search" data-phone="{{ $meta->phone->value ?? '' }}"></i>
                                 </div>
                             </td>
