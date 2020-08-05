@@ -10,6 +10,7 @@ use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Post\DeleteManyPost;
 use App\Http\Requests\Manager\Post\StoreRequest;
 use App\Http\Requests\Manager\Post\UpdatePost;
+use App\Repository\File;
 use App\Repository\Location\District;
 use App\Repository\Meta;
 use App\Repository\Post;
@@ -94,13 +95,8 @@ class PostController extends Controller
 
         $post->categories()->save(Category::find($request->category));
 
-        $post->metas()->saveMany(Meta::fromMany([
-            PostMeta::Phone      => str_replace('.', '', $request->phone),
-            PostMeta::Price      => (int) str_replace(',', '', $request->price),
-            PostMeta::Province   => $request->province,
-            PostMeta::District   => $request->district,
-            PostMeta::Commission => $request->commission
-        ]));
+        $this->makeSaveMeta($post, $request);
+        $this->syncUploadFiles($post, $request);
 
         return back()->with('success', 'Cập nhật thành công');
     }
@@ -115,13 +111,8 @@ class PostController extends Controller
 
         $post->categories()->save(Category::find($request->category));
 
-        $post->metas()->saveMany(Meta::fromMany([
-            PostMeta::Phone      => str_replace('.', '', $request->phone),
-            PostMeta::Price      => (int) str_replace(',', '', $request->price),
-            PostMeta::Province   => $request->province,
-            PostMeta::District   => $request->district,
-            PostMeta::Commission => $request->commission
-        ]));
+        $this->makeSaveMeta($post, $request);
+        $this->syncUploadFiles($post, $request);
 
         $request->user()->posts()->save($post);
 
@@ -133,5 +124,34 @@ class PostController extends Controller
     {
         view()->share('categories', Category::parentOnly()->with('children')->get());
         view()->share('provinces', Province::active()->with('districts')->get());
+    }
+
+    private function makeSaveMeta($post, Request $request)
+    {
+        return $post->metas()->saveMany(Meta::fromMany([
+            PostMeta::Phone      => str_replace('.', '', $request->phone),
+            PostMeta::Price      => (int) str_replace(',', '', $request->price),
+            PostMeta::Province   => $request->province,
+            PostMeta::District   => $request->district,
+            PostMeta::Commission => $request->commission
+        ]));
+    }
+
+    private function syncUploadFiles($post, Request $request)
+    {
+        $ids = collect($request->image_ids ?? []);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $uploaded = File::create([
+                    'name' => $file->getFilename(),
+                    'path' => $file->store('media/images', 'public')
+                ]);
+
+                $ids->push($uploaded->id);
+            }
+        }
+
+        $post->files()->sync($ids->toArray());
     }
 }
