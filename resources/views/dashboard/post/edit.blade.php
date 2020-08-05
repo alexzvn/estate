@@ -136,7 +136,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -146,17 +145,23 @@
                         <h4>Thêm ảnh cho tin</h4>
                     </div>
                 </div>
+
+                <div id="sync-file-ids">
+
+                </div>
+
                 <div class="widget-content widget-content-area">
-                    <div class="custom-file-container" data-upload-id="myFirstImage">
+                    <div class="custom-file-container" data-upload-id="mySecondImage">
                         <label>Chọn ảnh đại diện <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image">x</a></label>
                         <label class="custom-file-container__custom-file" >
-                            <input type="file" name="avatar" class="custom-file-container__custom-file__custom-file-input" accept="image/*">
+                            <input type="file" class="custom-file-container__custom-file__custom-file-input" multiple>
                             <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
                             <span class="custom-file-container__custom-file__custom-file-control"></span>
                         </label>
                         <div class="custom-file-container__image-preview"></div>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -207,23 +212,65 @@
 <script src="{{ asset('dashboard/plugins/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
 <script src="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.js') }}"></script>
 <script>
+(function (window) {
+    $(document).ready(function () {
+        $('#price').inputmask({
+            alias: 'currency',
+            prefix: '',
+            digits: 0,
+            rightAlign: false
+        });
 
-    $('#price').inputmask({
-        alias: 'currency',
-        prefix: '',
-        digits: 0,
-        rightAlign: false
+        $('#phone').inputmask("9999.999.999")
+
+        ClassicEditor
+        .create(document.querySelector('#post_content'))
+        .catch( err => {
+            console.error( err.stack );
+        });
     });
 
-    $('#phone').inputmask("9999.999.999")
-
-    ClassicEditor
-    .create(document.querySelector('#post_content'))
-    .catch( err => {
-        console.error( err.stack );
+    $(document).ready(() => {
+        let firstUpload = new FileUploadWithPreview('mySecondImage', {
+            text: {
+                chooseFile: 'Chọn ảnh',
+                browse: 'Tìm',
+                selectedCount: 'ảnh đã chọn',
+            },
+            presetFiles: [
+                'https://images.unsplash.com/photo-1557090495-fc9312e77b28?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80&fid=5f11c1010027172c6e7c0a3b',
+                'https://images.unsplash.com/photo-1557090495-fc9312e77b28?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80',
+                'https://images.unsplash.com/photo-1557090495-fc9312e77b28?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80'
+            ],
+        });
     });
 
-    var firstUpload = new FileUploadWithPreview('myFirstImage')
+    let syncInput = function (e) {
+        let ids   = [];
+        let files = e.detail.cachedFileArray;
+
+        files.forEach(e => {
+            let pos = e.name.search('fid=');
+
+            if (pos !== -1) {
+                ids.push(e.name.substr(pos+4, 24));
+            }
+        });
+
+        let inputFid = $('#sync-file-ids');
+
+        inputFid.html('');
+
+        ids.forEach(id => {
+            inputFid.append(`<input type="hidden" name="image_ids[]" value="${id}">`);
+        });
+    }
+
+    $(window).on('fileUploadWithPreview:imagesAdded', syncInput);
+    $(window).on('fileUploadWithPreview:imageDeleted', syncInput);
+}(window))
+
+
 </script>
 @endpush
 
