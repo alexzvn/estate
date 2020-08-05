@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manager\Post;
 
 use App\Enums\PostMeta;
+use App\Enums\PostStatus;
 use App\Repository\Category;
 use Illuminate\Http\Request;
 use App\Repository\Location\Province;
@@ -95,6 +96,10 @@ class PostController extends Controller
 
         $post->categories()->save(Category::find($request->category));
 
+        if ($request->status == PostStatus::Published && empty($post->publish_at)) {
+            $post->publish_at = now(); $post->save();
+        }
+
         $this->makeSaveMeta($post, $request);
         $this->syncUploadFiles($post, $request);
 
@@ -115,6 +120,10 @@ class PostController extends Controller
         $this->syncUploadFiles($post, $request);
 
         $request->user()->posts()->save($post);
+
+        if ($request->status == PostStatus::Published && empty($post->publish_at)) {
+            $post->publish_at = now(); $post->save();
+        }
 
         return redirect(route('manager.post.view', ['id' => $post->id]))
             ->with('success', 'Tạo mới thành công');
