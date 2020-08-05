@@ -106,9 +106,11 @@
                             <thead>
                                 <tr>
                                     <th class="checkbox-column text-center">
+                                        @can('manager.subscription.delete')
                                         <a class="delete-sub" href="javascript:void(0)">
                                             <i class="text-danger" data-feather="trash-2"></i>
                                         </a>
+                                        @endcan
                                     </th>
                                     <th class="">Tên gói</th>
                                     <th class="">Bắt đầu</th>
@@ -140,7 +142,7 @@
                                         @endif
                                     </td>
 
-                                    @can('manager.subscription.delete')
+                                    @can('manager.subscription.lock')
                                     <td class="text-center">
                                         <label class="switch s-outline s-outline-info">
                                             <input class="lock" type="checkbox" data-id="{{ $item->id }}" {{ $item->lock ? 'checked' : '' }}>

@@ -21,7 +21,7 @@ class EnsureUserNotBanned
         }
 
         if ($request->user() && $request->user()->isBanned()) {
-            app(LoginController::class)->logout($request);
+            app(LoginController::class)->quietLogout($request);
 
             $request->session()->flash('reject.title', 'Tài khoản của bạn đã bị khóa');
             $request->session()->flash('reject.message', 'Tài khoản của bạn đã bị khóa vì một số lý do. Vui lòng liên hệ hotline để được giải đáp thắc mắc.');

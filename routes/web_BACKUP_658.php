@@ -18,10 +18,13 @@ Route::get('/', 'PublicController@index');
 
 Auth::routes();
 
-Route::get('/infopost', 'Manager\Controller@InfoPost');
+<<<<<<< HEAD
+Route::get('/test1', 'Manager\Controller@InfoPost');
 
-
+Route::group(['middleware' => ['verified', 'auth', 'notbanned'], 'namespace' => 'Customer'], function ()
+=======
 Route::group(['middleware' => ['auth', 'customer'], 'namespace' => 'Customer'], function ()
+>>>>>>> master
 {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/online', 'Post\PostController@online')->name('post.online');

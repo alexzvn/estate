@@ -36,12 +36,6 @@
                         Đăng Tin
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('customer.post.saved') }}" class="nav-link"> Tin đã lưu</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('customer.post.blacklist') }}" class="nav-link"> Tin đã xóa</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Xin chào, {{ Auth::user()->name }} <span class="caret"></span>

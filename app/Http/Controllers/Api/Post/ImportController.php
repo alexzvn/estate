@@ -29,7 +29,10 @@ class ImportController extends Controller
 
         $posts->map(function ($post) {
             $post->hash  = sha1($post->url);
-            $post->price = round($this->stringPriceToNumber($post->price));
+
+            $price = $this->stringPriceToNumber($post->price);
+
+            $post->price = $price ? round($price) : null;
 
             ImportPost::dispatch($post)->afterResponse();
 
@@ -41,6 +44,10 @@ class ImportController extends Controller
 
     protected function stringPriceToNumber(string $price)
     {
+        if (count(explode(' ', $price)) < 2) {
+            return null;
+        }
+
         [$price, $priceString] = explode(' ', $price);
 
         $priceString = (int) str_replace(
