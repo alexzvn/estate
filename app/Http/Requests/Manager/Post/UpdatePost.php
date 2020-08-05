@@ -28,17 +28,19 @@ class UpdatePost extends FormRequest
     {
         return [
             'post_content' => 'required',
-            'title'    => 'required',
-            'phone'    => 'required|regex:/^[0-9_.]+$/',
-            'price'    => 'required|regex:/^[0-9,.]+$/',
-            'category' => 'required|exists:categories,_id',
-            'province' => 'nullable|exists:provinces,_id',
-            'district' => 'nullable|exists:districts,_id',
-            'type'     => [
+            'title'     => 'required',
+            'phone'     => 'required|regex:/^[0-9_.]+$/',
+            'price'     => 'required|regex:/^[0-9,.]+$/',
+            'category'  => 'required|exists:categories,_id',
+            'province'  => 'nullable|exists:provinces,_id',
+            'district'  => 'nullable|exists:districts,_id',
+            'images'    => 'nullable|array|image',
+            'image_ids' => 'nullable|array|exists:files,_id',
+            'type'      => [
                 'nullable',
                 Rule::in(PostType::getValues())
             ],
-            'status'   => [
+            'status'    => [
                 'required',
                 Rule::in(PostStatus::getValues())
             ]
