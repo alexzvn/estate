@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers\Customer\Post;
 
+use App\Repository\Category;
+use App\Repository\Location\Province;
 use App\Repository\Post;
 
 class CustomerPost extends BaseController
 {
+    public function __construct() {
+        view()->share('categories', Category::parentOnly()->with('children')->get());
+        view()->share('provinces', Province::active()->with('districts')->get());
+
+        parent::__construct();
+    }
+
     public function saved()
     {
         $post = $this->customer->savePosts()->with([
