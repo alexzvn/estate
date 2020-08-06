@@ -7,7 +7,7 @@ use App\Repository\Category;
 use App\Repository\Location\Province;
 use App\Services\Customer\Customer;
 
-class BaseController extends Controller
+abstract class BaseController extends Controller
 {
     /**
      * Customer service
@@ -19,7 +19,7 @@ class BaseController extends Controller
     /**
      * Customer access
      *
-     * @var \App\Services\Customer\Access\AccessManager
+     * @var \App\Services\Customer\Access\AccessPost
      */
     protected $access;
 
@@ -28,24 +28,27 @@ class BaseController extends Controller
         $this->middleware(function ($request, $next)
         {
             $this->customer = new Customer($request->user());
-            $this->access   = $this->customer->access();
-
-            view()->share('categories', $this->accessCategories());
-            view()->share('provinces',  $this->accessProvinces());
+            $this->access   = $this->customer->access()->post();
 
             return $next($request);
         });
     }
 
-    public function accessProvinces()
+    protected function shareView(string $type)
     {
-        return Province::with('districts')
-            ->findMany($this->access->getProvinces());
+        view()->share('categories', $this->accessCategories($type));
+        view()->share('provinces',  $this->accessProvinces($type));
     }
 
-    public function accessCategories()
+    protected function accessProvinces(string $type = null)
+    {
+        return Province::with('districts')
+            ->findMany($this->access->provinces($type));
+    }
+
+    protected function accessCategories(string $type = null)
     {
         return Category::with('children')
-            ->findMany($this->access->getCategories());
+            ->findMany($this->access->categories($type));
     }
 }

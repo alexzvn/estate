@@ -19,65 +19,8 @@ class AccessManager
             ->with(['plan', 'plan.categories', 'plan.provinces'])->get();
     }
 
-    public function getPostTypes()
+    public function post(string $type = null)
     {
-        return $this->plans()->reduce(function ($carry, Plan $item)
-        {
-            if (! empty($item->types)) {
-                return $carry->concat($item->types);
-            }
-
-            return $carry;
-        }, collect())->unique();
-    }
-
-    public function getCategories()
-    {
-        return $this->plans()->reduce(function (Collection $carry, $item)
-        {
-            if ($item && $item->categories) {
-                return $carry->concat($item->categories->map(function ($cat)
-                {
-                    return $cat->id;
-                }));
-            }
-
-            return $carry;
-        }, collect())->unique();
-    }
-
-    public function getProvinces()
-    {
-        return $this->plans()->reduce(function (Collection $carry, $item)
-        {
-            if ($item && $item->provinces) {
-                return $carry->concat($item->provinces->map(function ($province)
-                {
-                    return $province->id;
-                }));
-            }
-            return $carry;
-        }, collect())->unique();
-    }
-
-    /**
-     * Get all plan customer have
-     *
-     * @return App\Models\Plan[]|\Illuminate\Support\Collection
-     */
-    public function plans()
-    {
-        return $this->subscriptions
-            ->filter(function ($sub)
-            {
-                if (empty($sub->plan)) {
-                    $sub->delete();
-                }
-
-                return $sub->plan;
-            })->map(function ($sub)
-            {
-                return $sub->plan;
-            });
+        return new AccessPost($this->subscriptions, $type);
     }
 }

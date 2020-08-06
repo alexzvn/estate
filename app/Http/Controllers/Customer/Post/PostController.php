@@ -14,46 +14,54 @@ use Illuminate\Http\Request;
 
 class PostController extends BaseController
 {
-    public function index()
-    {
-        return view('customer.home',[
-            'posts' => $this->defaultPost()->paginate(20),
-        ]);
-    }
-
     public function fee(Request $request)
     {
+        $type = PostType::PostFee;
+
         $this->customer->createLog([
-            'content' => 'Đã truy cập '. PostType::PostFee,
+            'content' => 'Đã truy cập '. $type,
             'link'    => $request->fullUrl()
         ]);
 
+        $this->shareView($type);
+
         return view('customer.post.fee', [
-            'posts' => $this->defaultPost()->where('type', PostType::PostFee)->paginate(20)
+            'canAccess' => $this->access->canAccess($type),
+            'posts' => $this->defaultPost($type)->where('type', $type)->paginate(20)
         ]);
     }
 
     public function online(Request $request)
     {
+        $type = PostType::Online;
+
         $this->customer->createLog([
-            'content' => 'Đã truy cập '. PostType::Online,
+            'content' => 'Đã truy cập '. $type,
             'link'    => $request->fullUrl()
         ]);
 
+        $this->shareView($type);
+
         return view('customer.post.online', [
-            'posts' => $this->defaultPost()->where('type', PostType::Online)->paginate(20)
+            'canAccess' => $this->access->canAccess($type),
+            'posts' => $this->defaultPost($type)->where('type', $type)->paginate(20)
         ]);
     }
 
     public function market(Request $request)
     {
+        $type = PostType::PostMarket;
+
         $this->customer->createLog([
-            'content' => 'Đã truy cập '. PostType::PostMarket,
+            'content' => 'Đã truy cập '. $type,
             'link'    => $request->fullUrl()
         ]);
 
+        $this->shareView($type);
+
         return view('customer.post.market', [
-            'posts' => $this->defaultPost()->with('files')->where('type', PostType::PostMarket)->paginate(40)
+            'canAccess' => $this->access->canAccess($type),
+            'posts' => $this->defaultPost($type)->with('files')->where('type', $type)->paginate(40)
         ]);
     }
 
@@ -91,7 +99,7 @@ class PostController extends BaseController
 
     public function view(string $id, Request $request)
     {
-        $post = $this->defaultPost()->where('_id', $id)->firstOrFail();
+        $post = Post::withRelation()->where('_id', $id)->firstOrFail();
 
         $this->customer->createLog([
             'content' => "Đã xem tin: $post->title",
@@ -110,11 +118,9 @@ class PostController extends BaseController
      *
      * @return \Jenssegers\Mongodb\Eloquent\Builder
      */
-    private function defaultPost()
+    private function defaultPost(string $type)
     {
-        $access = $this->access;
-
-        $categories = Category::flat($this->accessCategories())
+        $categories = Category::flat($this->accessCategories($type))
             ->map(function ($cat) {
                 return $cat->id;
             });
@@ -122,11 +128,11 @@ class PostController extends BaseController
         return Post::withRelation()
             ->filterRequest(request())
             ->published()
-            ->whereIn('type', $access->getPostTypes())
+            ->where('type', $type)
             ->whereNotIn('_id', $this->customer->post_blacklist_ids ?? [])
             ->filterRequest([
                 'categories' => $categories,
-                'provinces'  => $access->getProvinces()
+                'provinces'  => $this->access->provinces($type)
             ]);
     }
 }
