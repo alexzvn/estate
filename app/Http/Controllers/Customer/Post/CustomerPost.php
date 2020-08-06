@@ -22,7 +22,7 @@ class CustomerPost extends BaseController
             'metas.province',
             'metas.district',
             'categories'
-        ])->paginate(20);
+        ])->filterRequest(request())->paginate(20);
 
         $this->customer->createLog([
             'content' => 'Truy cập trang tin đã lưu'
@@ -40,7 +40,7 @@ class CustomerPost extends BaseController
             'metas.province',
             'metas.district',
             'categories'
-        ])->paginate(20);
+        ])->filterRequest(request())->paginate(20);
 
         $this->customer->createLog([
             'content' => 'Truy cập trang tin đã đăng',
@@ -58,7 +58,7 @@ class CustomerPost extends BaseController
             'metas.province',
             'metas.district',
             'categories'
-        ])->paginate(20);
+        ])->filterRequest(request())->paginate(20);
 
         $this->customer->createLog([
             'content' => 'Truy cập trang tin đã xóa',
