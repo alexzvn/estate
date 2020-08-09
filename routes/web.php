@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Customer\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -32,10 +33,13 @@ Route::group(['middleware' => ['auth', 'customer'], 'namespace' => 'Customer'], 
     Route::get('/post/{id}/action/report', 'Post\ActionController@report')->name('post.action.report');
 
     Route::group(['prefix' => 'me'], function () {
+        Route::get('/account', 'Customer@me')->name('customer.self.account');
+        Route::post('/account/update', 'Customer@update')->name('customer.self.account.update');
+        // Route::get('/update/avatar', 'Customer@me')->name('customer.self.account');
+
+
         Route::get('post/saved', 'Post\CustomerPost@saved')->name('customer.post.saved');
         Route::get('post/posted', 'Post\CustomerPost@posted')->name('customer.post.posted');
         Route::get('post/blacklist', 'Post\CustomerPost@blacklist')->name('customer.post.blacklist');
     });
 });
-
-
