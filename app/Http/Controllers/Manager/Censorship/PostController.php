@@ -16,6 +16,7 @@ class PostController extends Controller
         $this->authorize('manager.post.view');
 
         $meta = Meta::with(['post.categories', 'post.metas.province','province', 'district'])
+                ->latest()
                 ->where('name', PostMeta::Phone)
                 ->limit(2000)
                 ->get()->groupBy('value');
@@ -23,7 +24,7 @@ class PostController extends Controller
         $meta = $meta->filter(function ($value)
         {
             return count($value) > 1;
-        })->reverse();
+        });
 
         $meta = new CensorshipCollection($meta);
         $meta = new LengthAwarePaginator($meta, $meta->count(), 10);
