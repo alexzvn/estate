@@ -79,7 +79,7 @@ class PostController extends Controller
     {
         Post::whereIn('_id', $request->ids ?? [])->get()->each(function ($post)
         {
-            $post->delete()
+            $post->delete();
         });
 
         return back()->with('success', 'Đã xóa các mục yêu cầu');
