@@ -45,6 +45,15 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
 });
 
 /**
+ * Censorship
+ */
+Route::group(['prefix' => 'censorship', 'namespace' => 'Censorship'], function () {
+    Route::get('/', 'PostController@index')->name('manager.censorship');
+
+    Route::get('/pending', 'PostPending@index')->name('manager.post.pending');
+});
+
+/**
  * REPORTS
  */
 Route::group(['prefix' => 'report', 'namespace' => 'Report'], function () {
