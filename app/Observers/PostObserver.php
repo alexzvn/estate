@@ -38,6 +38,7 @@ class PostObserver
     public function deleted(Post $post)
     {
         $this->removeIndex($post);
+        $post->metas()->delete();
     }
 
     /**
@@ -60,6 +61,7 @@ class PostObserver
     public function forceDeleted(Post $post)
     {
         $this->removeIndex($post);
+        $post->metas()->forceDelete();
     }
 
     protected function index(Post $post)

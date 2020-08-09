@@ -11,7 +11,6 @@ use App\Repository\Meta;
 use App\Repository\Post;
 use App\Enums\PostStatus;
 use App\Enums\PostType;
-use App\Models\Category as ModelsCategory;
 use Illuminate\Support\Str;
 
 use App\Repository\Category;
@@ -20,6 +19,7 @@ use Illuminate\Bus\Queueable;
 use Mews\Purifier\Facades\Purifier;
 use App\Repository\Location\District;
 use App\Repository\Location\Province;
+use App\Repository\Setting;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -46,7 +46,7 @@ class ImportPostJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle(Post $post)
+    public function handle(Post $post, Setting $setting)
     {
         if ($post->where('hash', $this->post->hash)->exists()) {
             return;
@@ -69,6 +69,12 @@ class ImportPostJob implements ShouldQueue
 
         if ($category = $this->getCategory()) {
             $post->categories()->save($category);
+        }
+
+        $blacklist = $setting->config('post.blacklist.phone', []);
+
+        if (in_array($this->post->phone, $blacklist) && $this->post->phone != '') {
+            $post->fill(['status' => PostStatus::Draft])->save();
         }
     }
 

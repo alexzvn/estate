@@ -92,6 +92,17 @@
                     </li>
                     @endcan
 
+                    @can('manager.post.view')
+                    <li class="menu">
+                        <a href="{{ route('manager.censorship') }}" @active('manager.censorship', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="file-text"></i>
+                                <span>Kiểm duyệt tin</span>
+                            </div>
+                        </a>
+                    </li>
+                    @endcan
+
                     @can('manager.post.report.view')
                     <li class="menu">
                         <a href="{{ route('manager.report.view') }}" @active('manager.report.view', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">

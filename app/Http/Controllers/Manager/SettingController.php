@@ -23,11 +23,16 @@ class SettingController extends Controller
         Province::whereIn('_id', $request->provinces)->update(['active' => true]);
         Province::whereNotIn('_id', $request->provinces)->update(['active' => false]);
 
+        $blacklist = array_map(function ($phone) {
+            return trim($phone);
+        }, explode("\n", $request->phone_blacklist ?? ''));
+
         $setting->setConfigs([
             'title' => $request->title,
             'user.role.default' => $request->role,
             'notification' => $request->notification,
-            'google.analytics' => $request->google_analytics
+            'google.analytics' => $request->google_analytics,
+            'post.blacklist.phone' => $blacklist
         ]);
 
         $setting->saveConfig();
