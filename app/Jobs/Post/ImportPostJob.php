@@ -71,10 +71,9 @@ class ImportPostJob implements ShouldQueue
             $post->categories()->save($category);
         }
 
-        $blacklist = $setting->config('post.blacklist.phone', '');
-        $blacklist = explode("\n", $blacklist);
+        $blacklist = $setting->config('post.blacklist.phone', []);
 
-        if (in_array($post->phone, $blacklist) && $post->phone != '') {
+        if (in_array($this->post->phone, $blacklist) && $this->post->phone != '') {
             $post->fill(['status' => PostStatus::Draft])->save();
         }
     }
