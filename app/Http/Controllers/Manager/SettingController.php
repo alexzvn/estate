@@ -27,7 +27,8 @@ class SettingController extends Controller
             'title' => $request->title,
             'user.role.default' => $request->role,
             'notification' => $request->notification,
-            'google.analytics' => $request->google_analytics
+            'google.analytics' => $request->google_analytics,
+            'post.blacklist.phone' => $request->phone_blacklist
         ]);
 
         $setting->saveConfig();
