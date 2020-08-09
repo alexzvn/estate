@@ -47,8 +47,11 @@
                             @endphp
 
                             @foreach ($items as $item)
+                            @if (! ($post = $item->post))
+                                @continue
+                            @endif
+
                             @php
-                                $post = $item->post;
                                 $meta = $post->loadMeta()->meta;
                             @endphp
                             <tr {!! $shouldWarning ? 'class="table-secondary"' : '' !!}>
