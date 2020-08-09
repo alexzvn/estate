@@ -58,6 +58,7 @@ class User extends Authenticatable implements MustVerifyPhone
     protected $dates = [
         'last_seen',
         'banned_at',
+        'birthday'
     ];
 
     protected $mappingProperties = [
