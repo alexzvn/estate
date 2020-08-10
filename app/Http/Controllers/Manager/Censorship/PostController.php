@@ -15,7 +15,7 @@ class PostController extends Controller
     {
         $this->authorize('manager.post.view');
 
-        $meta = Meta::with(['post.categories', 'post.metas.province','province', 'district'])
+        $meta = Meta::with(['post.categories', 'post.metas.province','post.metas.district'])
                 ->latest()
                 ->where('name', PostMeta::Phone)
                 ->limit(2000)
