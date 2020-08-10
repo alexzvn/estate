@@ -28,7 +28,9 @@ trait CanSearch
     public function index()
     {
         foreach ($this->getIndexDocumentData() as $key => $value) {
-            $index[] = $value;
+            if (is_string($value)) {
+                $index[] = $value;
+            }
         }
 
         $index = trim(implode('. ', $index));
