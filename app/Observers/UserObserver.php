@@ -71,6 +71,11 @@ class UserObserver
 
     protected function index(User $user)
     {
+        $dispatcher = User::getEventDispatcher();
+        User::unsetEventDispatcher();
+
         $user->index();
+
+        User::setEventDispatcher($dispatcher);
     }
 }

@@ -27,16 +27,20 @@ trait CanSearch
 
     public function index()
     {
-        foreach ($this->getIndexDocumentData() as $key => $value) {
+        $attr = $this->getIndexDocumentData();
+
+        unset($attr[$this->indexField]);
+
+        foreach ($attr as $key => $value) {
             if (is_string($value)) {
                 $index[] = $value;
             }
         }
 
-        $index = trim(implode('. ', $index));
-        $index = $index . Str::ascii($index) .'.';
+        $index = implode('. ', $index);
+        $index .= '. ' . Str::ascii($index) .'.';
 
-        $this->forceFill([$this->indexField => $index])->save();
+        return $this->forceFill([$this->indexField => $index])->save();
     }
 
     public function getIndexDocumentData()
