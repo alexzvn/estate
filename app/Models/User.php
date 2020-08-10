@@ -189,14 +189,11 @@ class User extends Authenticatable implements MustVerifyPhone
 
     public function getIndexDocumentData()
     {
-        $data = $this->toArray();
-
-        foreach ($data as $key => $value) {
-            if (in_array($key, ['_id', 'created_at', 'updated_at'])) {
-                unset($data[$key]);
-            }
-        }
-
-        return $data;
+        return [
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'address' => $this->address,
+        ];
     }
 }
