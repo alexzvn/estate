@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Post;
 use App\Models\PostMeta;
+use Illuminate\Support\Str;
 
 class PostObserver
 {
@@ -60,14 +61,12 @@ class PostObserver
      */
     public function forceDeleted(Post $post)
     {
-        $this->removeIndex($post);
         $post->metas()->forceDelete();
     }
 
     protected function index(Post $post)
     {
         $this->indexMeta($post);
-        $post->addToIndex();
     }
 
     protected function removeIndex(Post $post)
@@ -77,36 +76,11 @@ class PostObserver
 
     public function indexMeta(Post $post)
     {
-        $metas = $post->metas()->with([
-            'province',
-            'district'
-        ])->get();
-
-        $indexs = $metas->reduce(function ($carry, $meta)
-        {
-            if ($meta->province) {
-                $carry[] = $meta->province->name;
-            } elseif ($meta->district) {
-                $carry[] = $meta->district->name;
-            } else {
-                $carry[]   = $meta->value;
-            }
-
-            return $carry;
-        }, $carry = []);
-
-        $indexs = $post->categories()->get()->reduce(function ($carry, $category)
-        {
-            $carry[] = $category->name;
-            return $carry;
-        }, $indexs);
 
         $dispatcher = Post::getEventDispatcher();
         Post::unsetEventDispatcher();
 
-        $post->forceFill([
-            'index_meta' => implode(' ', $indexs) . '.'
-        ])->save();
+        $post->index();
 
         Post::setEventDispatcher($dispatcher);
     }

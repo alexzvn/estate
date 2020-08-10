@@ -7,46 +7,23 @@ use Illuminate\Support\Str;
 use App\Enums\PostMeta as Meta;
 use App\Enums\PostStatus;
 use App\Models\Traits\CanFilter;
-use App\Models\Traits\ElasticquentSearch;
+use App\Models\Traits\CanSearch;
 use App\Models\Traits\HasFiles;
 use Carbon\Carbon;
-use Elasticquent\ElasticquentTrait;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use SoftDeletes, CanFilter, HasFiles;
-    use ElasticquentSearch, ElasticquentTrait;
+    use SoftDeletes, CanFilter, CanSearch, HasFiles;
 
     protected $fillable = [
         'content', 'title', 'type', 'status'
     ];
-
-    protected $mappingProperties = [
-        'title' => [
-          'type' => 'text',
-          "analyzer" => "standard",
-        ],
-        'content' => [
-          'type' => 'text',
-          "analyzer" => "standard",
-        ]
-    ];
-
     protected $dates = [
         'publish_at'
     ];
-
-    public function getIndexDocumentData()
-    {
-        $this->getKey();
-        $data = $this->toArray();
-        unset($data['_id']);
-
-        return $data;
-    }
 
     public function user()
     {
@@ -214,5 +191,20 @@ class Post extends Model
         {
             $q->where('name', Meta::Price)->where('value', '<=', $price);
         });
+    }
+
+    public function getIndexDocumentData()
+    {
+        $meta = $this->loadMeta()->meta;
+        unset($this->meta);
+
+        return [
+            'title' => $this->title,
+            'content' => $this->content,
+            'type'  => $this->type,
+            'province' => $meta->province->province->name ?? '',
+            'district' => $meta->district->district->name ?? '',
+            'categories' => $this->categories[0]->name ?? '',
+        ];
     }
 }

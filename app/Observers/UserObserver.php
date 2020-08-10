@@ -71,11 +71,7 @@ class UserObserver
 
     protected function index(User $user)
     {
-        try {
-            $user->addToIndex();
-        } catch (\Throwable $th) {
-            //ignore created_at date index
-        }
+        $user->index();
     }
 
     protected function removeIndex(User $user)

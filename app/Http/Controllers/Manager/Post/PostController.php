@@ -23,7 +23,7 @@ class PostController extends Controller
     {
         $this->authorize('manager.post.view');
 
-        $posts = Post::with(['metas.province', 'categories', 'user'])
+        $posts = Post::with(['metas.province', 'metas.district','categories', 'user'])
             ->filterRequest($request)
             ->orderBy('publish_at', 'desc')
             ->paginate(30);

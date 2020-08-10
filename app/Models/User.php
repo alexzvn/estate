@@ -7,10 +7,7 @@ use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanVerifyPhone;
 use Maklad\Permission\Traits\HasRoles;
 use App\Contracts\Auth\MustVerifyPhone;
-use App\Models\Traits\ElasticquentSearch;
-use App\Repository\Role;
-use App\Repository\Setting;
-use Elasticquent\ElasticquentTrait;
+use App\Models\Traits\CanSearch;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
@@ -18,8 +15,7 @@ use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyPhone
 {
-    use HasRoles, CanVerifyPhone, CanFilter;
-    use ElasticquentTrait, ElasticquentSearch;
+    use HasRoles, CanVerifyPhone, CanFilter, CanSearch;
 
     /**
      * Define timeout for recent session in minutes
