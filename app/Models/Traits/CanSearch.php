@@ -37,10 +37,10 @@ trait CanSearch
             }
         }
 
-        $index = trim(implode('. ', $index));
-        $index = $index . Str::ascii($index) .'.';
+        $index = implode('. ', $index);
+        $index .= '. ' . Str::ascii($index) .'.';
 
-        $this->forceFill([$this->indexField => $index])->save();
+        return $this->forceFill([$this->indexField => $index])->save();
     }
 
     public function getIndexDocumentData()
