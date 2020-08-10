@@ -44,7 +44,7 @@ class UserObserver
      */
     public function deleted(User $user)
     {
-        $this->removeIndex($user);
+
     }
 
     /**
@@ -66,16 +66,11 @@ class UserObserver
      */
     public function forceDeleted(User $user)
     {
-        $this->removeIndex($user);
+
     }
 
     protected function index(User $user)
     {
         $user->index();
-    }
-
-    protected function removeIndex(User $user)
-    {
-        $user->removeFromIndex();
     }
 }
