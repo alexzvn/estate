@@ -14,18 +14,23 @@ trait CanSearch
 
     public function scopeFilterSearch(Builder $builder, $value = '')
     {
-        $builder->where(function ($builder) use ($value)
-        {
-            foreach (levenshtein_level_one($value, '%') as $keyword) {
-                $builder->orWhere($this->indexField, 'like', "%$keyword%");
-            }
-        });
+        $search = '';
+
+        foreach (levenshtein_level_one($value, '%') as $keyword) {
+            $search .= str_replace('%', '\w',preg_quote($keyword)) . '|';
+        }
+
+        $search = trim($search, '|');
+
+        $builder->where($this->indexField, 'regexp', "/$search/");
     }
 
     public function index()
     {
         foreach ($this->getIndexDocumentData() as $key => $value) {
-            $index[] = $value;
+            if (is_string($value)) {
+                $index[] = $value;
+            }
         }
 
         $index = trim(implode('. ', $index));
