@@ -54,11 +54,6 @@
                       <input type="text" name="google_analytics" id="google_analytics" class="form-control" placeholder="UA-17429...." value="{{ $setting->config('google.analytics') }}">
                     </div>
 
-                    <div class="form-group">
-                      <label for="phone_blacklist">Chặn số điện thoại</label>
-                      <textarea class="form-control" name="phone_blacklist" id="phone_blacklist" rows="3" placeholder="Mỗi số một dòng">{!! implode("\n\r", $setting->config('post.blacklist.phone', [])) !!}</textarea>
-                    </div>
-
                 </div>
             </div>
         </div>
