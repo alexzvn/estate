@@ -132,6 +132,18 @@ Route::group(['prefix' => 'order', 'namespace' => 'Order'], function () {
 });
 
 /**
+ * BLACKLIST
+ */
+Route::group(['prefix' => 'blacklist'], function () {
+    Route::group(['prefix' => 'phone', 'namespace' => 'Blacklist'], function () {
+        Route::get('/', 'BlacklistController@index')->name('manager.blacklist.phone');
+        Route::post('/store', 'BlacklistController@store')->name('manager.blacklist.phone.store');
+        Route::post('/{id}/update', 'BlacklistController@update')->name('manager.blacklist.phone.update');
+        Route::post('/{id}/delete', 'BlacklistController@delete')->name('manager.blacklist.phone.delete');
+    });
+});
+
+/**
  * ACTIVITY
  */
 Route::group(['prefix' => 'activity', 'namespace' => 'Activity'], function () {

@@ -9,4 +9,9 @@ class Blacklist extends BaseRepository
     public function __construct(Model $blacklist) {
         $this->setModel($blacklist);
     }
+
+    public static function findByPhone(string $phone)
+    {
+        return self::where('phone', $phone)->first();
+    }
 }
