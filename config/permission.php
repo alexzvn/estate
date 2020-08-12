@@ -147,6 +147,11 @@ return [
             'manager.post.report.view' => 'Xem thông tin báo MG',
             'manager.post.report.delete' => 'Xóa thông ti báo MG',
 
+            'blacklist.phone.view' => 'Xem',
+            'blacklist.phone.create' => 'Thêm SĐT',
+            'blacklist.phone.modify' => 'Chỉnh sửa',
+            'blacklist.phone.delete' => 'Bỏ chặn',
+
             'manager.site.setting' => 'Cẫu hình trang web',
 
         ],
@@ -220,6 +225,14 @@ return [
                     'manager.order.modify',
                     'manager.order.modify.force',
                     'manager.order.delete',
+                ]
+            ],[
+                'name' => 'Chặn số điện thoại',
+                'permissions' => [
+                    'blacklist.phone.view',
+                    'blacklist.phone.create',
+                    'blacklist.phone.modify',
+                    'blacklist.phone.delete',
                 ]
             ],[
                 'name' => 'Khác',
