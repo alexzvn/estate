@@ -14,7 +14,7 @@ class BlacklistController extends Controller
         $this->authorize('blacklist.phone.view');
 
         return view('dashboard.blacklist.index', [
-            'blacklist' => Blacklist::where(1)->paginate(40)
+            'blacklist' => Blacklist::latest()->paginate(40)
         ]);
     }
 
