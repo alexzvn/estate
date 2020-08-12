@@ -6,15 +6,16 @@ use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Blacklist\Phone\StorePhone;
 use App\Http\Requests\Manager\Blacklist\Phone\UpdatePhone;
 use App\Repository\Blacklist;
+use Illuminate\Http\Request;
 
 class BlacklistController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('blacklist.phone.view');
 
         return view('dashboard.blacklist.index', [
-            'blacklist' => Blacklist::latest()->paginate(40)
+            'blacklist' => Blacklist::latest()->filterRequest($request)->paginate(40)
         ]);
     }
 
