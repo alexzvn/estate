@@ -3,34 +3,38 @@
 namespace App\Http\Controllers\Manager\Censorship;
 
 use App\Enums\PostMeta;
-use App\Http\Controllers\Manager\Censorship\Support\CensorshipCollection;
+use App\Repository\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
-use App\Repository\Meta;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Repository\Location\Province;
 
 class PostController extends Controller
 {
-    public function index(Meta $meta)
+    public function index(Post $post, Request $request)
     {
         $this->authorize('manager.post.view');
 
-        $meta = Meta::with(['post.categories', 'post.metas.province','post.metas.district'])
-                ->latest()
-                ->where('name', PostMeta::Phone)
-                ->limit(2000)
-                ->get()->groupBy('value');
+        $post = $post->with(['metas.province', 'metas.district', 'categories'])->filterRequest($request);
 
-        $meta = $meta->filter(function ($value)
+        $post->whereHas('metas', function ($builder) use ($request)
         {
-            return count($value) > 1;
+            $builder->whereHas('trackingPost', function ($builder) use ($request)
+            {
+                $builder->where('seen', '>=', 2);
+
+                if ($request->phone_more_than_categories_3) {
+                    $builder->where('categories_unique', '>=', 3);
+                }
+
+                if ($request->phone_more_than_district_3) {
+                    $builder->where('district_unique', '>=', 3);
+                }
+            });
         });
 
-        $meta = new CensorshipCollection($meta);
-        $meta = new LengthAwarePaginator($meta, $meta->count(), 10);
-
         return view('dashboard.censorship.index', [
-            'metas' => $meta
+            'posts' => $post->paginate(40),
+            'provinces' => Province::with('districts')->active()->get()
         ]);
     }
 }
