@@ -11,6 +11,7 @@ use App\Repository\Meta;
 use App\Repository\Post;
 use App\Enums\PostStatus;
 use App\Enums\PostType;
+use App\Repository\Blacklist;
 use Illuminate\Support\Str;
 
 use App\Repository\Category;
@@ -24,6 +25,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Cache;
 
 class ImportPostJob implements ShouldQueue
 {
@@ -71,10 +73,8 @@ class ImportPostJob implements ShouldQueue
             $post->categories()->save($category);
         }
 
-        $blacklist = $setting->config('post.blacklist.phone', []);
-
-        if (in_array($this->post->phone, $blacklist) && $this->post->phone != '') {
-            $post->fill(['status' => PostStatus::Draft])->save();
+        if ($this->getBlacklist()->where('phone', $this->post->phone)->isNotEmpty()) {
+            $post->fill(['status' => PostStatus::Locked])->save();
         }
     }
 
@@ -97,5 +97,13 @@ class ImportPostJob implements ShouldQueue
         $category = Category::where('name', 'like', "%$category%")->first();
 
         return $category;
+    }
+
+    protected function getBlacklist()
+    {
+        return Cache::remember('blacklist.phone', now()->addMinute(), function ()
+        {
+            return Blacklist::all();
+        });
     }
 }

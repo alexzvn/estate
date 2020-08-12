@@ -203,6 +203,17 @@
                     </li>
                     @endcan
 
+                    @can('blacklist.phone.view')
+                    <li class="menu">
+                        <a href="{{ route('manager.blacklist.phone') }}" @active('manager.blacklist.phone', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="phone"></i>
+                                <span>Chặn số điện thoại</span>
+                            </div>
+                        </a>
+                    </li>
+                    @endcan
+
                     @can('manager.site.setting')
                     <li class="menu">
                         <a href="{{ route('manager.setting') }}" @active('manager.setting*', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
