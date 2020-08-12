@@ -27,4 +27,9 @@ class PostMeta extends Model
     {
         return $this->belongsTo(District::class, 'value');
     }
+
+    public function trackingPost()
+    {
+        return $this->hasOne(TrackingPost::class, 'phone', 'value');
+    }
 }
