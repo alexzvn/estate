@@ -27,7 +27,7 @@ class CustomerController extends Controller
         $users = User::with(['subscriptions', 'supporter'])
             ->filterRequest($request)
             ->onlyCustomer()
-            ->latest()->paginate(20);
+            ->latest()->paginate(40);
 
         return view('dashboard.customer.index', compact('users'));
     }

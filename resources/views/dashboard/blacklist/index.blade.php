@@ -20,6 +20,27 @@
         </div>
         <div class="widget-content widget-content-area shadow-none">
 
+            <form id="search-form" action="" method="GET">
+                <div class="row">
+                    <div class="col-md-5 pl-md-0 order-first">
+                        <div class="form-row">
+                            <label for="phone" class="col-md-3 col-form-label text-md-right d-none d-md-block"><strong>Tìm kiếm: </strong></label>
+            
+                            <div class="col-md-9">
+                                <div class="form-group input-group-sm">
+                                <input id="phone" type="text" class="form-control" name="phone" value="{{ request('phone') }}" placeholder="tìm theo SĐT">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 pl-md-0 order-md-first order-last">
+                        <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                        </a>
+                    </div>
+            
+                </div>
+            </form>
+
             <table id="example" class="table table-hover">
                 <thead>
                     <tr>
