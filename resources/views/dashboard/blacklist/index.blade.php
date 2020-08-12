@@ -11,7 +11,9 @@
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                     <h4>Danh sách đen SĐT
+                        @can('blacklist.phone.create')
                         <a href="javascript:void(0)" data-toggle="modal" data-target="#create" class="btn btn-success rounded-circle"><i data-feather="plus"></i></a>
+                        @endcan
                     </h4>
                 </div>
             </div>
@@ -33,8 +35,12 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td><span class="text-secondary font-weight-bold">{{ $blackphone->phone }}</span></td>
-                        <td><input type="text" class="form-control note" value="{{ $blackphone->readNote() }}" placeholder="" data-id="{{ $blackphone->id }}"></td>
-                        <td><button type="button" class="btn btn-danger delete" data-id="{{ $blackphone->id }}">Xóa</button></td>
+                        <td><input type="text" class="form-control note" value="{{ $blackphone->readNote() }}" placeholder="" data-id="{{ $blackphone->id }}" @cannot('blacklist.phone.modify') disabled @endcannot ></td>
+                        <td>
+                            @can('blacklist.phone.delete')
+                            <button type="button" class="btn btn-danger delete" data-id="{{ $blackphone->id }}">Xóa</button>
+                            @endcan
+                        </td>
                     </tr>
                     @endforeach
 
