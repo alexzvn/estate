@@ -13,6 +13,8 @@ final class PostStatus extends Enum
 {
     const Draft     = '0';
 
+    const Locked    = '3';
+
     /**
      * Waiting post need action from admin
      */

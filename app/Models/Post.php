@@ -151,6 +151,14 @@ class Post extends Model
         });
     }
 
+    public function filterPhone(Builder $builder, $value)
+    {
+        return $builder->whereHas('metas', function (Builder $q) use ($value)
+        {
+            $q->where('name', Meta::Phone)->where('value', $value);
+        });
+    }
+
     public function filterStatus(Builder $builder, $value)
     {
         return $builder->where('status', $value);
