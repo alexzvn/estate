@@ -65,7 +65,7 @@ class MetaObserver
 
     protected function trackingPost(PostMeta $postMeta)
     {
-        if ($postMeta->name !== EnumsPostMeta::Phone && ! empty($postMeta->value)) {
+        if ($postMeta->name !== EnumsPostMeta::Phone || ! empty($postMeta->value)) {
             return;
         }
 
