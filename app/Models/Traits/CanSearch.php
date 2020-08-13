@@ -20,7 +20,7 @@ trait CanSearch
             $search .= str_replace('%', '\w',preg_quote($keyword)) . '|';
         }
 
-        $search = trim($search, '|');
+        $search = Str::lower(trim($search, '|'));
 
         $builder->where($this->indexField, 'regexp', "/$search/");
     }
@@ -39,6 +39,7 @@ trait CanSearch
 
         $index = implode('. ', $index);
         $index .= '. ' . Str::ascii($index) .'.';
+        $index = Str::lower($index);
 
         return $this->forceFill([$this->indexField => $index])->save();
     }
