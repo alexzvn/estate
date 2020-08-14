@@ -23,15 +23,15 @@ class PostController extends Controller
             $builder->whereHas('trackingPost', function ($builder) use ($request)
             {
                 if ($request->categories) {
-                    $builder->where('categories_unique', '>', (int) $request->categories);
+                    $builder->where('categories_unique', '>', (int) $request->categories_unique);
                 }
 
                 if ($request->district) {
-                    $builder->where('district_unique', '>', (int) $request->district);
+                    $builder->where('district_unique', '>', (int) $request->district_unique);
                 }
 
                 if ($request->seen) {
-                    $builder->where('seen', '>', $request->seen ? (int) $request->seen : 2);
+                    $builder->where('seen', '>', $request->seen ? (int) $request->seen : 1);
                 }
             });
         })->published();

@@ -72,6 +72,8 @@
                                 <div class="{{ $meta->phone->value ? 'add-blacklist' : '' }}" data-phone="{{ $meta->phone->value ?? '' }}">
                                     <span class="badge badge-secondary cursor-pointer ">Chặn SĐT</span>
                                 </div>
+
+                                <span class="badge outline-badge-info cursor-pointer mt-1">Chính chủ</span>
                             </td>
                         </tr>
                         @endforeach
