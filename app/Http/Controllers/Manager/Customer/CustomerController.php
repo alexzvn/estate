@@ -160,7 +160,7 @@ class CustomerController extends Controller
 
     public function take(string $id, User $user)
     {
-        $this->authorize('manager.subscription.take');
+        $this->authorize('manager.customer.take');
 
         $user = $user->findOrFail($id);
 
