@@ -42,11 +42,11 @@ class PostController extends Controller
         {
             $builder->whereHas('trackingPost', function ($builder) use ($request)
             {
-                if ($request->categories) {
+                if ($request->categories_unique) {
                     $builder->where('categories_unique', '>', (int) $request->categories_unique);
                 }
 
-                if ($request->district) {
+                if ($request->district_unique) {
                     $builder->where('district_unique', '>', (int) $request->district_unique);
                 }
 
