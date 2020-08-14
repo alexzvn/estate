@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Enums\PostStatus;
 use App\Models\Blacklist;
 use App\Models\Post;
+use App\Models\Whitelist;
 
 class BlacklistObserver
 {
@@ -19,6 +20,8 @@ class BlacklistObserver
         Post::filterRequest(['phone' => $blacklist->phone])->update([
             'status' => PostStatus::Locked
         ]);
+
+        Whitelist::where('phone', $blacklist->phone)->delete();
     }
 
     /**
