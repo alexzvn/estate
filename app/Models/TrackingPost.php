@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Enums\PostMeta;
-use App\Repository\Meta;
 use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Builder;
 
 /**
  * class dùng trong việc theo dõi tin môi giới
@@ -60,6 +60,12 @@ class TrackingPost extends Model
         ])->save();
     }
 
+    public function scopeWithoutWhitelist(Builder $builder)
+    {
+        $whitelist = Whitelist::all()->map(function ($w) { return $w->phone; });
+
+        return $builder->whereNotIn('phone', $whitelist->toArray());
+    }
 
     private function trackingCategoriesUnique(Collection $categories)
     {

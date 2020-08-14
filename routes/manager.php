@@ -50,6 +50,7 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
 Route::group(['prefix' => 'censorship', 'namespace' => 'Censorship'], function () {
     Route::get('/', 'PostController@index')->name('manager.censorship');
     Route::post('/blacklist/add', 'PostController@addToBlacklist')->name('manager.censorship.blacklist.add');
+    Route::post('/Whitelist/add', 'PostController@addToWhitelist')->name('manager.censorship.whitelist.add');
 });
 
 /**

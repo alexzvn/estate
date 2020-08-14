@@ -20,7 +20,7 @@
             <div class="form-group input-group-sm">
               <select class="form-control" name="seen" id="seen">
                 <option value="">Trùng lặp SĐT</option>
-                @foreach (range(1, 4) as $i)
+                @foreach (range(1, 10) as $i)
                 <option value="{{ $i }}" {{ request('seen') == $i ? 'selected' : '' }}>> {{ $i }} lần</option>
                 @endforeach
               </select>
@@ -29,10 +29,10 @@
 
         <div class="col-md-2 pl-md-0 order-first">
             <div class="form-group input-group-sm">
-              <select class="form-control" name="categories" id="categories">
+              <select class="form-control" name="categories_unique" id="categories_unique">
                 <option value="">Trùng danh mục</option>
                 @foreach (range(1, 4) as $i)
-                <option value="{{ $i }}" {{ request('categories') == $i ? 'selected' : '' }}>> {{ $i }} lần</option>
+                <option value="{{ $i }}" {{ request('categories_unique') == $i ? 'selected' : '' }}>> {{ $i }} lần</option>
                 @endforeach
               </select>
             </div>
@@ -40,10 +40,10 @@
 
         <div class="col-md-2 pl-md-0 order-first">
             <div class="form-group input-group-sm">
-              <select class="form-control" name="district" id="district">
+              <select class="form-control" name="district_unique" id="district_unique">
                 <option value="">Trùng quận huyện</option>
-                @foreach (range(1, 7) as $i)
-                <option value="{{ $i }}" {{ request('district') == $i ? 'selected' : '' }}>> {{ $i }} lần</option>
+                @foreach (range(1, 4) as $i)
+                <option value="{{ $i }}" {{ request('district_unique') == $i ? 'selected' : '' }}>> {{ $i }} lần</option>
                 @endforeach
               </select>
             </div>
