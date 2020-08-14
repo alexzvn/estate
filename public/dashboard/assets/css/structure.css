@@ -52,6 +52,10 @@ strong {
 code {
   color: #e7515a; }
 
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
 /*Page title*/
 .page-header {
   border: 0;
