@@ -177,6 +177,7 @@
             </div>
 
             @can('manager.order.create')
+            @if ($user->hasVerifiedPhone())
             <div class="statbox widget box box-shadow mt-3">
                 <div class="widget-header">
                     <div class="row">
@@ -203,6 +204,7 @@
                     </form>
                 </div>
             </div>
+            @endif
             @endcan
 
         </div>

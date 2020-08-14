@@ -1,5 +1,9 @@
 @extends('dashboard.app')
 
+@push('style')
+<link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
+@endpush
+
 @section('content')
 <div id="tableLight" class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
@@ -50,7 +54,7 @@
                         @foreach ($logs as $log)
                         <tr>
                             <td class="text-center" >{{ $loop->index }}</td>
-                            <td style="font-weight: bold">{{ $log->user->name }}</td>
+                            <td><a class="text-primary font-weight-bolder" href="{{ route('manager.customer.view', ['id' => $log->user->id]) }}">{{ $log->user->name }}</a></td>
                             <td>{{ $log->user->phone }}</td>
                             <td>{{ $log->content }}</td>
                             <td>{{ $log->created_at->format('d/m/Y H:i:s') }}</td>

@@ -32,7 +32,7 @@
             @include('dashboard.customer.components.search')
 
             <div class="table-responsive">
-                <table class="table table-hover table-light mb-4">
+                <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
@@ -43,7 +43,7 @@
                             <th>Hết hạn</th>
                             <th>Hđ gần nhất</th>
                             <th>CSKH</th>
-                            <th></th>
+                            <th style="min-width: 12%;"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,12 +75,12 @@
                         @endphp
                         <tr class="{{ $class }}">
                             <td class="text-center" >{{ $loop->index }}</td>
-                            <td style="font-weight: bold">{{ $user->name }} @if($user->hasVerifiedPhone()) <i class="text-success" width="15" height="15" data-feather="check-circle"></i> @endif</td>
+                            <td class="cursor-pointer open-user" data-id="{{ $user->id }}" style="font-weight: bold">{{ $user->name }} @if($user->hasVerifiedPhone()) <i class="text-success" width="15" height="15" data-feather="check-circle"></i> @endif</td>
                             <td>{{ $user->phone }}</td>
                             <td>{{ number_format($user->orders->sum('after_discount_price')) }} đ</td>
                             <td>{{ $sub && $sub->activate_at ? $sub->activate_at->format('d/m/Y') : 'N/a' }}</td>
                             <td>{{ $sub && $sub->expires_at ? $sub->expires_at->format('d/m/Y') : 'N/a' }}</td>
-                            <td>{{ $sub && $sub->created_at ? $sub->created_at->format('d/m/Y') : 'N/a'  }}</td>
+                            <td><a class="text-primary" href="{{ route('manager.log') }}?phone={{ $user->phone }}">Xem</a></td>
                             <td>
                                 @if ($supporter = $user->supporter)
                                     <span class="text-info">{{ $supporter->id == Auth::id() ? 'Bạn' : "$supporter->name" }}</span>
@@ -90,13 +90,25 @@
                             </td>
                             <td class="text-center">
                                 <ul class="table-controls">
-                                    @if (($supporter && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer'))
+                                    @can('manager.customer.take')
+                                        @php
+                                            $canTake = empty($supporter) || Auth::user()->can('manager.user.assign.customer');
+                                        @endphp
+
                                         <li>
-                                            <a href="{{ route('manager.customer.view', ['id' => $user->id]) }}">
-                                                <i class="role-edit text-success" data-feather="edit"></i>
-                                            </a>
+                                            <a @if($canTake) href="{{ route('manager.customer.take', ['id' => $user->id]) }}" @endIf><i @if($canTake) class="text-success" @endIf data-feather="target"></i></a>
                                         </li>
-                                    @endif
+                                    @endcan
+
+                                    @can('manager.subscription.lock')
+                                        <li>
+                                            @if ($user->isBanned())
+                                                <a href="{{ route('manager.customer.pardon', ['id' => $user->id]) }}"><i class="text-danger" data-feather="lock"></i></a>
+                                            @else
+                                                <a href="{{ route('manager.customer.ban', ['id' => $user->id]) }}"><i data-feather="unlock"></i></a>
+                                            @endif
+                                        </li>
+                                    @endcan
                                     @if (Auth::user()->can('manager.customer.logout'))
                                         @php
                                             $isOnline = $user->isOnline();
@@ -123,3 +135,17 @@
     </div>
 </div>
 @endsection
+
+@push('script')
+@if (($supporter && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer'))
+<script>
+    $(document).ready(function () {
+        $('.open-user').on('click', function () {
+            let id = $(this).data('id');
+
+            window.location.href = `/manager/customer/${id}/view`;
+        });
+    });
+</script>
+@endif
+@endpush
