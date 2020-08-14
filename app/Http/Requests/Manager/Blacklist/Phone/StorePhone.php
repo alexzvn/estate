@@ -24,7 +24,7 @@ class StorePhone extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|string|min:10|max:10|alpha_num',
+            'phone' => 'required|string|min:10|max:10|alpha_num|unique:blacklists,phone',
             'note' => 'nullable|string|max:200'
         ];
     }
