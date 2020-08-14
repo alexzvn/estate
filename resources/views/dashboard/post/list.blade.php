@@ -49,8 +49,14 @@
                                 </div>
                             </td>
                             <td class="cursor-pointer open-post" data-id="{{ $post->id }}">
-                                <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ Str::ucfirst(Str::of($post->title)->limit(73)) }}</strong> <br>
-
+                                <p class="mb-0">
+                                    <strong>
+                                        @if (isset($meta->phone->value) && $whitelist->whereIn('phone', $meta->phone->value)->isNotEmpty())
+                                        [<span class="text-success font-weight-bolder">Chính chủ</span>]
+                                        @endif
+                                        {{ Str::ucfirst(Str::of($post->title)->limit(73)) }}
+                                    </strong>
+                                    <br>
                                     <span class="mb-0" style="font-size: 12px;">
                                         <strong> </strong> <i class="text-info">{{ $post->categories[0]->name ?? '' }}</i> <span class="text-muted">|</span>
                                         <strong>Quận/huyện: </strong> <i class="text-info">{{ $meta->district->district->name ?? 'N/a' }}</i>

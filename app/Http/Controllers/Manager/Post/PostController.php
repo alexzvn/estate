@@ -11,6 +11,7 @@ use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Post\DeleteManyPost;
 use App\Http\Requests\Manager\Post\StoreRequest;
 use App\Http\Requests\Manager\Post\UpdatePost;
+use App\Models\Whitelist;
 use App\Repository\File;
 use App\Repository\Location\District;
 use App\Repository\Meta;
@@ -136,6 +137,7 @@ class PostController extends Controller
     {
         view()->share('categories', Category::parentOnly()->with('children')->get());
         view()->share('provinces', Province::active()->with('districts')->get());
+        view()->share('whitelist', Whitelist::all());
     }
 
     private function makeSaveMeta($post, Request $request)
