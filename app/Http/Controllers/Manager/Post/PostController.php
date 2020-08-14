@@ -89,7 +89,7 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        $post->metas()->delete();
+        $post->metas()->forceDelete();
 
         $post->fill(
             array_merge($request->all(), [

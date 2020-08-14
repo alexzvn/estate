@@ -63,12 +63,12 @@ class MetaObserver
         $this->trackingPost($postMeta);
     }
 
-    protected function trackingPost(PostMeta $postMeta)
+    protected function trackingPost(PostMeta $meta)
     {
-        if ($postMeta->name !== EnumsPostMeta::Phone || ! empty($postMeta->value)) {
+        if ($meta->name != EnumsPostMeta::Phone || empty($meta->value)) {
             return;
         }
 
-        TrackingPost::findByPhoneOrCreate($postMeta->value)->tracking();
+        TrackingPost::findByPhoneOrCreate($meta->value)->tracking();
     }
 }

@@ -36,7 +36,10 @@ class PostObserver
      */
     public function deleted(Post $post)
     {
-        $post->metas()->delete();
+        $post->metas()->get()->each(function ($meta)
+        {
+            $meta->delete();
+        });
     }
 
     /**
@@ -48,6 +51,7 @@ class PostObserver
     public function restored(Post $post)
     {
         $this->index($post);
+        $post->metas()->restore();
     }
 
     /**
@@ -68,12 +72,9 @@ class PostObserver
 
     public function indexMeta(Post $post)
     {
-
-        $dispatcher = Post::getEventDispatcher();
-        Post::unsetEventDispatcher();
-
-        $post->index();
-
-        Post::setEventDispatcher($dispatcher);
+        Post::withoutEvents(function () use ($post)
+        {
+            $post->index();
+        });
     }
 }
