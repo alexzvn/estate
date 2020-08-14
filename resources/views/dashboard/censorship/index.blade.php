@@ -35,7 +35,6 @@
                             </th>
                             <th>Tiêu đề</th>
                             <th>Số điện thoại</th>
-                            <th>Đăng bởi</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -52,9 +51,8 @@
                                 <label class="custom-control-label" for="todo-{{ $post->id }}"></label>
                                 </div>
                             </td>
-                            <td>
+                            <td class="open-post cursor-pointer" data-id="{{ $post->id }}">
                                 <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ Str::ucfirst(Str::of($post->title)->limit(73)) }}</strong> <br>
-
                                     <span class="mb-0" style="font-size: 12px;">
                                         <strong> </strong> <i class="text-info">{{ $post->categories[0]->name ?? '' }}</i> <span class="text-muted">|</span>
                                         <strong>Quận/huyện: </strong> <i class="text-info">{{ $meta->district->district->name ?? 'N/a' }}</i> <span class="text-muted">|</span>
@@ -69,12 +67,11 @@
                                     <i class="lookup-phone t-icon t-hover-icon" data-feather="search" data-phone="{{ $meta->phone->value ?? '' }}"></i>
                                 </div>
                             </td>
-                            <td>{{ $post->user ? $post->user->name . ' - ' . $post->user->phone : 'Hệ thống' }}</td>
                             <td> @include('dashboard.post.components.status', ['status' => $post->status]) </td>
                             <td>
-                                <a href="{{ route('manager.post.view', ['id' => $post->id]) }}">
-                                    <i class="role-edit t-icon t-hover-icon" data-feather="edit"></i>
-                                </a>
+                                <div class="{{ $meta->phone->value ? 'add-blacklist' : '' }}" data-phone="{{ $meta->phone->value ?? '' }}">
+                                    <span class="badge badge-secondary cursor-pointer ">Chặn SĐT</span>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
@@ -100,6 +97,10 @@
         </div>
     </div>
 </div>
+<form id="form-add-blacklist" action="{{ route('manager.censorship.blacklist.add') }}" method="post">
+    @csrf
+    <input id="add-blacklist" type="hidden" name="phone" value="">
+</form>
 @endsection
 
 @push('script')
@@ -115,6 +116,22 @@
     $(document).ready(function () {
         $('#delete-many').click(function () {
             form.attr('action', "{{ route('manager.post.delete.many') }}");
+            form.submit();
+        });
+
+        $('.open-post').on('click', function () {
+            let id = $(this).data('id');
+
+            window.location.href = `/manager/post/${id}/view`;
+        });
+
+        $('.add-blacklist').on('click', function () {
+            let phone = $(this).data('phone');
+
+            let form = $('#form-add-blacklist');
+
+            $('#add-blacklist').val(phone);
+
             form.submit();
         });
 

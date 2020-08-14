@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Manager\Blacklist\Phone;
+namespace App\Http\Requests\Manager\Censorship\Blacklist;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePhone extends FormRequest
+class AddBlacklist extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class StorePhone extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|string|min:10|max:10|alpha_num|unique:blacklists,phone',
-            'note' => 'nullable|string|max:200'
+            'phone' => 'required|string|min:10|max:10|alpha_num|unique:blacklists,phone'
         ];
     }
 }

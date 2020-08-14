@@ -6,6 +6,8 @@ use App\Enums\PostMeta;
 use App\Repository\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
+use App\Http\Requests\Manager\Censorship\Blacklist\AddBlacklist;
+use App\Repository\Blacklist;
 use App\Repository\Location\Province;
 
 class PostController extends Controller
@@ -20,21 +22,32 @@ class PostController extends Controller
         {
             $builder->whereHas('trackingPost', function ($builder) use ($request)
             {
-                $builder->where('seen', '>=', 2);
-
-                if ($request->phone_more_than_categories_3) {
-                    $builder->where('categories_unique', '>=', 3);
+                if ($request->categories) {
+                    $builder->where('categories_unique', '>', (int) $request->categories);
                 }
 
-                if ($request->phone_more_than_district_3) {
-                    $builder->where('district_unique', '>=', 3);
+                if ($request->district) {
+                    $builder->where('district_unique', '>', (int) $request->district);
+                }
+
+                if ($request->seen) {
+                    $builder->where('seen', '>', $request->seen ? (int) $request->seen : 2);
                 }
             });
-        });
+        })->published();
 
         return view('dashboard.censorship.index', [
             'posts' => $post->paginate(40),
             'provinces' => Province::with('districts')->active()->get()
         ]);
+    }
+
+    public function addToBlacklist(Blacklist $blacklist, AddBlacklist $request)
+    {
+        $this->authorize('blacklist.phone.create');
+
+        $blacklist->findByPhoneOrCreate($request->phone);
+
+        return back()->with('success', "Đã chặn số $request->phone");
     }
 }

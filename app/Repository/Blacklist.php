@@ -14,4 +14,9 @@ class Blacklist extends BaseRepository
     {
         return self::where('phone', $phone)->first();
     }
+
+    public function findByPhoneOrCreate(string $phone)
+    {
+        return $phone = self::findByPhone($phone) ? $phone : self::create(['phone' => $phone]);
+    }
 }

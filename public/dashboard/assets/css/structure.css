@@ -30,11 +30,11 @@ h1, h2, h3, h4, h5, h6 {
 ::-moz-selection {
   /* Code for Firefox */
   color: #1b55e2;
-  background: transparent; }
+  background: #b3d4fd; }
 
 ::selection {
   color: #1b55e2;
-  background: transparent; }
+  background: #b3d4fd; }
 
 p {
   margin-top: 0;
@@ -51,6 +51,10 @@ strong {
 
 code {
   color: #e7515a; }
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
 
 /*Page title*/
 .page-header {
