@@ -32,7 +32,7 @@ class PostController extends Controller
                     $builder->where('seen', '>', $request->seen ? (int) $request->seen : 2);
                 }
             });
-        });
+        })->published();
 
         return view('dashboard.censorship.index', [
             'posts' => $post->paginate(40),
