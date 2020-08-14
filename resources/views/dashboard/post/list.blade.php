@@ -145,7 +145,9 @@
 
             $('#add-blacklist').val(phone);
 
-            form.submit();
+            if (confirm(`Bạn có muốn thêm số ${phone} vào danh sách đen`)) {
+                form.submit();
+            }
         });
 
     });
