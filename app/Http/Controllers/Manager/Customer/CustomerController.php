@@ -158,6 +158,23 @@ class CustomerController extends Controller
         return back()->with('success', 'Đã mở khóa tài khoản khách hàng');
     }
 
+    public function take(string $id, User $user)
+    {
+        $this->authorize('manager.subscription.take');
+
+        $user = $user->findOrFail($id);
+
+        if ( ! (empty($user->supporter) || Auth::user()->can('*'))) {
+            return back()->withErrors(['error' => 'Đã có người nhận quản lý khách hàng này rồi']);
+        }
+
+        $user->supporter_id = Auth::id();
+
+        $user->save();
+
+        return back()->with('success', 'Đã nhận quản lý khách hàng này');
+    }
+
     public function verifyPhone(string $id, User $user)
     {
         $this->authorize('manager.customer.verify.phone');

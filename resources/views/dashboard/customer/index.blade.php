@@ -43,7 +43,7 @@
                             <th>Hết hạn</th>
                             <th>Hđ gần nhất</th>
                             <th>CSKH</th>
-                            <th></th>
+                            <th style="min-width: 12%;"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,6 +90,16 @@
                             </td>
                             <td class="text-center">
                                 <ul class="table-controls">
+                                    @can('manager.customer.take')
+                                        @php
+                                            $canTake = empty($supporter) || Auth::user()->can('manager.user.assign.customer');
+                                        @endphp
+
+                                        <li>
+                                            <a @if($canTake) href="{{ route('manager.customer.take', ['id' => $user->id]) }}" @endIf><i @if($canTake) class="text-success" @endIf data-feather="target"></i></a>
+                                        </li>
+                                    @endcan
+
                                     @can('manager.subscription.lock')
                                         <li>
                                             @if ($user->isBanned())
