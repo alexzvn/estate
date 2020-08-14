@@ -12,9 +12,7 @@ use App\Http\Requests\Manager\Customer\StoreCustomer;
 use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Order;
-use App\Models\User as ModelsUser;
 use App\Repository\Role;
-use App\Repository\Subscription;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
