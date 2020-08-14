@@ -20,14 +20,16 @@ class PostController extends Controller
         {
             $builder->whereHas('trackingPost', function ($builder) use ($request)
             {
-                $builder->where('seen', '>=', 2);
-
-                if ($request->phone_more_than_categories_3) {
-                    $builder->where('categories_unique', '>=', 3);
+                if ($request->categories) {
+                    $builder->where('categories_unique', '>', (int) $request->categories);
                 }
 
-                if ($request->phone_more_than_district_3) {
-                    $builder->where('district_unique', '>=', 3);
+                if ($request->district) {
+                    $builder->where('district_unique', '>', (int) $request->district);
+                }
+
+                if ($request->seen) {
+                    $builder->where('seen', '>', $request->seen ? (int) $request->seen : 2);
                 }
             });
         });

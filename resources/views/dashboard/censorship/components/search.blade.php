@@ -16,26 +16,41 @@
             </div>
         </div>
 
-        <div class="col-md-3 pl-md-0 order-first">
-            <div class="form-check">
-              <label class="form-check-label">
-                <input type="checkbox" class="form-check-input" name="phone_more_than_categories_3" id="phone_more_than_categories_3" value="true" {{ request('phone_more_than_categories_3') ? 'checked' : '' }}>
-                SĐT có trên 3 danh mục
-              </label>
+        <div class="col-md-2 pl-md-0 order-first">
+            <div class="form-group input-group-sm">
+              <select class="form-control" name="seen" id="seen">
+                <option value="">Trùng lặp SĐT</option>
+                @foreach (range(1, 4) as $i)
+                <option value="{{ $i }}" {{ request('seen') == $i ? 'selected' : '' }}>> {{ $i }} lần</option>
+                @endforeach
+              </select>
             </div>
         </div>
 
-        <div class="col-md-3 pl-md-0 order-first">
-            <div class="form-check">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" name="phone_more_than_district_3" id="phone_more_than_district_3" value="true" {{ request('phone_more_than_district_3') ? 'checked' : '' }}>
-                  SĐT có trên 3 quận
-                </label>
-              </div>
+        <div class="col-md-2 pl-md-0 order-first">
+            <div class="form-group input-group-sm">
+              <select class="form-control" name="categories" id="categories">
+                <option value="">Trùng danh mục</option>
+                @foreach (range(1, 4) as $i)
+                <option value="{{ $i }}" {{ request('categories') == $i ? 'selected' : '' }}>> {{ $i }} lần</option>
+                @endforeach
+              </select>
+            </div>
+        </div>
+
+        <div class="col-md-2 pl-md-0 order-first">
+            <div class="form-group input-group-sm">
+              <select class="form-control" name="district" id="district">
+                <option value="">Trùng quận huyện</option>
+                @foreach (range(1, 7) as $i)
+                <option value="{{ $i }}" {{ request('district') == $i ? 'selected' : '' }}>> {{ $i }} lần</option>
+                @endforeach
+              </select>
+            </div>
         </div>
 
         <div class="col-md-2 pl-md-0 order-md-first order-last">
-            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
         </div>
     </div>
 
