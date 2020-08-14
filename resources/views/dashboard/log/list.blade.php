@@ -54,7 +54,7 @@
                         @foreach ($logs as $log)
                         <tr>
                             <td class="text-center" >{{ $loop->index }}</td>
-                            <td><a class="text-info" href="{{ route('manager.customer.view', ['id' => $log->user->id]) }}">{{ $log->user->name }}</a></td>
+                            <td><a class="text-primary font-weight-bolder" href="{{ route('manager.customer.view', ['id' => $log->user->id]) }}">{{ $log->user->name }}</a></td>
                             <td>{{ $log->user->phone }}</td>
                             <td>{{ $log->content }}</td>
                             <td>{{ $log->created_at->format('d/m/Y H:i:s') }}</td>

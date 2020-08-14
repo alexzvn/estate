@@ -33,7 +33,7 @@ function planToString($plans) {
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
-                            <th>Khách hàng</th>
+                            <th width="20%">Khách hàng</th>
                             <th>Số điện thoại</th>
                             <th>Các gói đăng ký</th>
                             <th>Giá tiền</th>
@@ -48,7 +48,7 @@ function planToString($plans) {
                         @foreach ($orders as $order)
                         <tr>
                             <td class="text-center" >{{ $loop->index + 1 }}</td>
-                            <td style="font-weight: bold">{{ $order->customer->name }}</td>
+                            <td><a class="text-primary font-weight-bolder d-block" href="{{ route('manager.customer.view', ['id' => $order->customer->id]) }}">{{ $order->customer->name }}</a></td>
                             <td>{{ $order->customer->phone }}</td>
                             <td>{{ planToString($order->plans) }}</td>
                             <td>{{ $order->after_discount_price ? number_format($order->after_discount_price) : number_format($order->price) }}đ</td>
