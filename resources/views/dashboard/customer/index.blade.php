@@ -77,7 +77,7 @@
                         @endphp
                         <tr class="{{ $class }}">
                             <td class="text-center" >{{ $loop->index }}</td>
-                            <td class="cursor-pointer @if(($supporter && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer')) open-user @endIf" data-id="{{ $user->id }}" style="font-weight: bold">{{ $user->name }} @if($user->hasVerifiedPhone()) <i class="text-success" width="15" height="15" data-feather="check-circle"></i> @endif</td>
+                            <td @if(($supporter && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer')) class="cursor-pointer open-user" data-id="{{ $user->id }}" @endIf style="font-weight: bold">{{ $user->name }} @if($user->hasVerifiedPhone()) <i class="text-success" width="15" height="15" data-feather="check-circle"></i> @endif</td>
                             <td>{{ $user->phone }}</td>
                             <td>{{ number_format($user->orders->sum('after_discount_price')) }} đ</td>
                             <td>{{ $sub && $sub->activate_at ? $sub->activate_at->format('d/m/Y') : 'N/a' }}</td>
