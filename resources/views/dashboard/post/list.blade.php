@@ -78,7 +78,10 @@
                             <td>
                                 @isset($meta->phone->value)
                                 <div class="{{ $meta->phone->value ? 'add-blacklist' : '' }}" data-phone="{{ $meta->phone->value ?? '' }}">
-                                    <span class="badge badge-secondary cursor-pointer ">Chặn SĐT</span>
+                                    <span class="badge badge-secondary cursor-pointer">Chặn SĐT</span>
+                                </div>
+                                <div class="{{ $meta->phone->value ? 'add-whitelist' : '' }}" data-phone="{{ $meta->phone->value ?? '' }}">
+                                    <span class="badge outline-badge-info cursor-pointer mt-1">Chính chủ</span>
                                 </div>
                                 @endisset
 
@@ -111,6 +114,10 @@
 <form id="form-add-blacklist" action="{{ route('manager.censorship.blacklist.add') }}" method="post">
     @csrf
     <input id="add-blacklist" type="hidden" name="phone" value="">
+</form>
+<form id="form-add-whitelist" action="{{ route('manager.censorship.whitelist.add') }}" method="post">
+    @csrf
+    <input id="add-whitelist" type="hidden" name="phone" value="">
 </form>
 @endsection
 
@@ -156,6 +163,17 @@
             }
         });
 
+        $('.add-whitelist').on('click', function () {
+            let phone = $(this).data('phone');
+
+            let form = $('#form-add-whitelist');
+
+            $('#add-whitelist').val(phone);
+
+            if (confirm(`Bạn có muốn thêm số ${phone} vào danh sách trắng`)) {
+                form.submit();
+            }
+        });
     });
 }(window))
 </script>
