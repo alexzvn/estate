@@ -7,3 +7,6 @@
 @if ($status == 2)
     <span class="badge badge-success">Đã đăng</span>
 @endif
+@if ($status == 3)
+    <span class="badge badge-primary">Bị khóa</span>
+@endif
