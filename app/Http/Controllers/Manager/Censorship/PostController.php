@@ -7,6 +7,7 @@ use App\Repository\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Censorship\Blacklist\AddBlacklist;
+use App\Http\Requests\Manager\Censorship\Blacklist\AddWhitelist;
 use App\Models\Whitelist;
 use App\Repository\Blacklist;
 use App\Repository\Location\Province;
@@ -65,7 +66,7 @@ class PostController extends Controller
         return back()->with('success', "Đã chặn số $request->phone");
     }
 
-    public function addToWhitelist(Whitelist $whitelist, AddBlacklist $request)
+    public function addToWhitelist(Whitelist $whitelist, AddWhitelist $request)
     {
         $this->authorize('blacklist.phone.create');
 
