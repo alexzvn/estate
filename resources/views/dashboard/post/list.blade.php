@@ -32,8 +32,7 @@
                             <th>Tiêu đề</th>
                             <th>Giá</th>
                             <th>Số điện thoại</th>
-                            <th>Ngày đăng</th>
-                            <th>Đăng bởi</th>
+                            <th>Trạng thái</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -49,29 +48,34 @@
                                   <label class="custom-control-label" for="todo-{{ $post->id }}"></label>
                                 </div>
                             </td>
-                            <td>
+                            <td class="cursor-pointer open-post" data-id="{{ $post->id }}">
                                 <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ Str::ucfirst(Str::of($post->title)->limit(73)) }}</strong> <br>
 
                                     <span class="mb-0" style="font-size: 12px;">
                                         <strong> </strong> <i class="text-info">{{ $post->categories[0]->name ?? '' }}</i> <span class="text-muted">|</span>
                                         <strong>Quận/huyện: </strong> <i class="text-info">{{ $meta->district->district->name ?? 'N/a' }}</i>
+                                        <strong>Ngày đăng: </strong> <i class="text-info">{{ $post->publish_at ? $post->publish_at->format('d/m/Y') : $post->updated_at->format('d/m/Y')  }}</i>
                                         @if ($post->reverser) <span class="text-muted">|</span> <span class="text-danger">Đã đảo</span> @endif
                                     </span>
                                 </p>
                             </td>
                             <td>{{ $meta->price ? format_web_price($meta->price->value ?? 0) : 'N/a' }}</td>
                             <td>
+                                @isset($meta->phone->value)
                                 <div class="d-flex">
                                     {!! implode('<br>', explode(',', $meta->phone->value ?? '')) ?? 'N/a' !!}
                                     <i class="lookup-phone t-icon t-hover-icon" data-feather="search" data-phone="{{ $meta->phone->value ?? '' }}"></i>
                                 </div>
+                                @endisset
                             </td>
-                            <td>{{ $post->publish_at ? $post->publish_at->format('d/m/Y H:i:s') : $post->updated_at->format('d/m/Y H:i:s')  }}</td>
-                            <td>{{ $post->user ? $post->user->name . ' - ' . $post->user->phone : 'Hệ thống' }}</td>
+                            <td> @include('dashboard.post.components.status', ['status' => $post->status]) </td>
                             <td>
-                                <a href="{{ route('manager.post.view', ['id' => $post->id]) }}">
-                                    <i class="role-edit t-icon t-hover-icon" data-feather="edit"></i>
-                                </a>
+                                @isset($meta->phone->value)
+                                <div class="{{ $meta->phone->value ? 'add-blacklist' : '' }}" data-phone="{{ $meta->phone->value ?? '' }}">
+                                    <span class="badge badge-secondary cursor-pointer ">Chặn SĐT</span>
+                                </div>
+                                @endisset
+
                             </td>
                         </tr>
                         @endforeach
@@ -97,6 +101,11 @@
         </div>
     </div>
 </div>
+
+<form id="form-add-blacklist" action="{{ route('manager.censorship.blacklist.add') }}" method="post">
+    @csrf
+    <input id="add-blacklist" type="hidden" name="phone" value="">
+</form>
 @endsection
 
 @push('script')
@@ -115,12 +124,30 @@
             form.submit();
         });
 
+        
+        $('.open-post').on('click', function () {
+            let id = $(this).data('id');
+
+            window.location.href = `/manager/post/${id}/view`;
+        });
+
         $('.lookup-phone').on('click', function () {
             let phone = $(this).data('phone');
             let uri   = window.location.pathname + '?query=' + phone;
 
             window.location.href = uri;
         });
+
+        $('.add-blacklist').on('click', function () {
+            let phone = $(this).data('phone');
+
+            let form = $('#form-add-blacklist');
+
+            $('#add-blacklist').val(phone);
+
+            form.submit();
+        });
+
     });
 }(window))
 </script>
