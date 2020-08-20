@@ -105,59 +105,62 @@
                 </div>
                 <div class="widget-content widget-content-area">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
-                            <thead>
-                                <tr>
-                                    <th class="checkbox-column text-center">
-                                        @can('manager.subscription.delete')
-                                        <a class="delete-sub" href="javascript:void(0)">
-                                            <i class="text-danger" data-feather="trash-2"></i>
-                                        </a>
+                        <form id="delete-many-sub-form" action="{{ route('manager.customer.subscription.delete.many') }}" method="post">
+                            @csrf
+                            <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
+                                <thead>
+                                    <tr>
+                                        <th class="checkbox-column text-center">
+                                            @can('manager.subscription.delete')
+                                            <a class="delete-sub" href="javascript:void(0)">
+                                                <i class="text-danger" data-feather="trash-2"></i>
+                                            </a>
+                                            @endcan
+                                        </th>
+                                        <th class="">Tên gói</th>
+                                        <th class="">Bắt đầu</th>
+                                        <th class="">Hết hạn</th>
+                                        <th class="text-center">Trạng thái</th>
+                                        <th class="text-center">Khóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($user->subscriptions as $item)
+                                    @if ($plan = $item->plan)
+                                    <tr>
+                                        <td class="checkbox-column">
+                                            <div class="custom-control custom-checkbox checkbox-primary">
+                                            <input type="checkbox" class="custom-control-input todochkbox" id="check-{{ $loop->index }}" name="subscriptions[]" value="{{ $item->id }}">
+                                            <label class="custom-control-label" for="check-{{ $loop->index }}"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0">{{ $plan->name }}</p>
+                                        </td>
+                                        <td>{{ $item->activate_at ? $item->activate_at->format('d/m/Y') : 'N/a' }}</td>
+                                        <td>{{ $item->expires_at ? $item->expires_at->format('d/m/Y') : 'N/a' }}</td>
+                                        <td class="text-center">
+                                            @if ($item->isActivated())
+                                                <span id="badge-{{ $item->id }}" class="badge badge-success">Đang hoạt động</span>
+                                            @else
+                                                <span id="badge-{{ $item->id }}" class="badge badge-warning">Ngừng hoạt động</span>
+                                            @endif
+                                        </td>
+    
+                                        @can('manager.subscription.lock')
+                                        <td class="text-center">
+                                            <label class="switch s-outline s-outline-info">
+                                                <input class="lock" type="checkbox" data-id="{{ $item->id }}" {{ $item->lock ? 'checked' : '' }}>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </td>
                                         @endcan
-                                    </th>
-                                    <th class="">Tên gói</th>
-                                    <th class="">Bắt đầu</th>
-                                    <th class="">Hết hạn</th>
-                                    <th class="text-center">Trạng thái</th>
-                                    <th class="text-center">Khóa</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($user->subscriptions as $item)
-                                @if ($plan = $item->plan)
-                                <tr>
-                                    <td class="checkbox-column">
-                                        <div class="custom-control custom-checkbox checkbox-primary">
-                                        <input type="checkbox" class="custom-control-input todochkbox" id="check-{{ $loop->index }}" name="subscriptions[]" value="{{ $item->id }}">
-                                        <label class="custom-control-label" for="check-{{ $loop->index }}"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0">{{ $plan->name }}</p>
-                                    </td>
-                                    <td>{{ $item->activate_at ? $item->activate_at->format('d/m/Y') : 'N/a' }}</td>
-                                    <td>{{ $item->expires_at ? $item->expires_at->format('d/m/Y') : 'N/a' }}</td>
-                                    <td class="text-center">
-                                        @if ($item->isActivated())
-                                            <span id="badge-{{ $item->id }}" class="badge badge-success">Đang hoạt động</span>
-                                        @else
-                                            <span id="badge-{{ $item->id }}" class="badge badge-warning">Ngừng hoạt động</span>
-                                        @endif
-                                    </td>
-
-                                    @can('manager.subscription.lock')
-                                    <td class="text-center">
-                                        <label class="switch s-outline s-outline-info">
-                                            <input class="lock" type="checkbox" data-id="{{ $item->id }}" {{ $item->lock ? 'checked' : '' }}>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </td>
-                                    @endcan
-                                </tr>
-                                @endif
-                                @endforeach
-                            </tbody>
-                        </table>
+                                    </tr>
+                                    @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -213,8 +216,6 @@
         </div>
     </div>
 </div>
-
-<form id="delete-sub-form" action="#" method="post">@csrf</form>
 @endsection
 
 @push('script')
@@ -242,10 +243,9 @@
     $(document).ready(function () {
         $('.delete-sub').on('click', function () {
             let id = $(this).data('id');
-            let form = $('#delete-sub-form');
+            let form = $('#delete-many-sub-form');
 
             if (confirm('Bạn có thật sự muốn xóa gói đăng ký này?')) {
-                form.attr('action', `/manager/customer/subscription/${id}/delete`);
                 form.submit();
             }
         });
