@@ -48,6 +48,11 @@ class Order extends Model implements CanNote
         return $this->belongsToMany(Plan::class);
     }
 
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
+
     public function verifier()
     {
         return $this->belongsTo(User::class, 'verifier_id');

@@ -213,6 +213,7 @@ class CustomerController extends Controller
         ]);
 
         $order->plans()->sync($request->plans ?? []);
+        $order->forceFill(['creator_id' => $request->user()->id])->save();
 
         return redirect(route('manager.order.view', ['id' => $order->id]));
     }
