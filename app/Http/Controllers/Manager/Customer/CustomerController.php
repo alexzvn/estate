@@ -126,9 +126,13 @@ class CustomerController extends Controller
         return back()->with('success', 'Cập nhật thành công');
     }
 
-    public function delete()
+    public function delete(string $id)
     {
-        # code...
+        $this->authorize('manager.customer.delete');
+
+        User::findOrFail($id)->forceDelete();
+
+        return redirect(route('manager.customer'))->with('success', 'Đã xóa tài khoản này');
     }
 
     public function logout(string $id)

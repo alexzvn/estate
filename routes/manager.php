@@ -40,6 +40,7 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::post('/{id}/delete', 'PostController@delete')->name('manager.post.delete');
     Route::post('/{id}/delete/force', 'PostController@forceDelete')->name('manager.post.delete.force');
     Route::post('/delete/many', 'PostController@deleteMany')->name('manager.post.delete.many');
+    Route::post('/reverse/many', 'PostController@reverseMany')->name('manager.post.reverse.many');
 
     Route::get('/pending', 'PostPending@index')->name('manager.post.pending');
 });
@@ -112,6 +113,7 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
     Route::get('/{id}/pardon', 'CustomerController@pardon')->name('manager.customer.pardon');
     Route::get('/{id}/logout', 'CustomerController@logout')->name('manager.customer.logout');
     Route::get('/{id}/take', 'CustomerController@take')->name('manager.customer.take');
+    Route::get('/{id}/delete', 'CustomerController@delete')->name('manager.customer.delete');
 
     Route::group(['prefix' => '{id}/order'], function () {
         Route::get('/', 'OrderController@index')->name('manager.customer.order');

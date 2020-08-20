@@ -120,6 +120,7 @@ return [
             'manager.customer.modify'       => 'Cập nhật thông tin',
             'manager.customer.assign.role'  => 'Gán quyền cho khách',
             'manager.customer.create'       => 'Tạo tài khoản mới',
+            'manager.customer.delete'       => 'Xóa tài khoản',
             'manager.customer.verify.phone' => 'Xác thực SĐT',
             'manager.customer.ban'          => 'Khóa tài khoản',
             'manager.customer.pardon'       => 'Mở khóa tài khoản',

@@ -86,6 +86,16 @@ class PostController extends Controller
         return back()->with('success', 'Đã xóa các mục yêu cầu');
     }
 
+    public function reverseMany(Request $request)
+    {
+        Post::whereIn('_id', $request->ids ?? [])->get()->each(function ($post)
+        {
+            $post->forceFill(['publish_at' => now(), 'reverser' => true])->save();
+        });
+
+        return back()->with('success', 'Đã đảo các tin đã chọn');
+    }
+
     public function update(string $id, UpdatePost $request)
     {
         $post = Post::findOrFail($id);

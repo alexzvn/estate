@@ -97,6 +97,7 @@
                         <i data-feather="chevron-down"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="btndefault">
+                        <a href="javascript:void(0);" id="reverse-many" class="dropdown-item text-info"><i class="flaticon-home-fill-1 mr-1"></i>Đảo tin</a>
                         <a href="javascript:void(0);" id="delete-many" class="dropdown-item text-danger"><i class="flaticon-home-fill-1 mr-1"></i>Xóa</a>
                     </div>
                 </div>
@@ -133,11 +134,19 @@
 
     $(document).ready(function () {
         $('#delete-many').click(function () {
+            if (! confirm('Xóa tất cả các mục đã chọn?')) {
+                return;
+            }
+
             form.attr('action', "{{ route('manager.post.delete.many') }}");
             form.submit();
         });
 
-        
+        $('#reverse-many').click(function () {
+            form.attr('action', "{{ route('manager.post.reverse.many') }}");
+            form.submit();
+        });
+
         $('.open-post').on('click', function () {
             let id = $(this).data('id');
 
