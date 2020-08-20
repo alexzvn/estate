@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Manager\Customer;
 
 use App\Repository\Subscription;
 use App\Http\Controllers\Manager\Controller;
+use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
 {
-    public function delete(string $id)
+    public function deleteMany(Request $request)
     {
         $this->authorize('manager.subscription.delete');
 
-        Subscription::findOrFail($id)->delete();
+        Subscription::whereIn('_id', $request->subscriptions ?? [])->delete();
 
         return back()->with('success', 'Xóa thành công');
     }

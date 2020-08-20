@@ -1,3 +1,7 @@
+@push('style')
+<link rel="stylesheet" href="{{ asset('dashboard/plugins/flatpickr/flatpickr.css') }}">
+@endpush
+
 <form id="search-form" action="" method="GET">
     <div class="row">
         <div class="col-md-5 pl-md-0 order-first">
@@ -12,30 +16,23 @@
             </div>
         </div>
 
-        {{-- <div class="col-md-2 pl-md-0 order-first">
+        <div class="col-md-2 pl-md-0 order-first">
             <div class="form-group input-group-sm">
-              <select class="form-control" name="categories" id="categories">
-                <option value="">Chọn chuyên mục</option>
-                @foreach ($categories as $item)
-                <option style="color: black; font-weight: bold;" disabled>{{ $item->name }}</option>
-                    @foreach ($item->children ?? [] as $item)
-                    <option value="{{ $item->id }}" {{ $item->id === request('categories') ? 'selected' : ''}}>{{ $item->name }}</option>
-                    @endforeach
-                @endforeach
-              </select>
+              <input type="text"
+                class="form-control" name="expires_date" id="expires_date" value="{{ request('expires_date') }}" placeholder="Ngày hết hạn">
             </div>
         </div>
 
         <div class="col-md-2 pl-md-0 order-first">
             <div class="form-group input-group-sm">
-                <select class="form-control" name="district" id="district">
-                  <option value="">Chọn Quận/Huyện</option>
-                  @foreach ($districts ?? $provinces->first()->districts ?? [] as $item)
-                      <option value="{{ $item->id }}" {{ $item->id === request('district') ? 'selected' : ''}}>{{ $item->name }}</option>
-                  @endforeach
-                </select>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" name="me" id="me" value="true" {{ request('me') ? 'checked' : '' }}>
+                  Đang quản lý
+                </label>
               </div>
-        </div> --}}
+            </div>
+        </div>
 
         <div class="col-md-3 pl-md-0 order-md-first order-last">
             <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
@@ -45,3 +42,19 @@
 
     </div>
 </form>
+
+@push('script')
+<script src="{{ asset('dashboard/plugins/flatpickr/flatpickr.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        let f1 = flatpickr(document.getElementById('expires_date'), {
+            enableTime: false,
+            dateFormat: "d/m/Y",
+        });
+
+        $('#search-form').on('change', function () {
+            $(this).submit();
+        });
+    });
+</script>
+@endpush

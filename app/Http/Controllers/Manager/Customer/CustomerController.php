@@ -13,6 +13,7 @@ use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Order;
 use App\Repository\Role;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,8 +25,22 @@ class CustomerController extends Controller
 
         $users = User::with(['subscriptions', 'supporter'])
             ->filterRequest($request)
-            ->onlyCustomer()
-            ->latest()->paginate(40);
+            ->onlyCustomer();
+
+        if ($request->me) {
+            $users->where('supporter_id', $request->user()->id);
+        }
+
+        if ($date = $request->expires_date) {
+            $date = Carbon::createFromFormat('d/m/Y', $date);
+
+            $users->whereHas('subscriptions', function ($q) use ($date)
+            {
+                $q->whereBetween('expires_at', [$date->startOfDay(), $date->endOfDay()]);
+            });
+        }
+
+        $users = $users->latest()->paginate(40);
 
         return view('dashboard.customer.index', compact('users'));
     }
