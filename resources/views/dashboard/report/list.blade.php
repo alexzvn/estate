@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="widget-content widget-content-area">
-            {{-- <form id="search-form" action="" method="GET">
+            <form id="search-form" action="" method="GET">
                 <div class="row">
                     <div class="col-md-5 pl-md-0 order-first">
                         <div class="form-row">
@@ -25,7 +25,7 @@
             
                             <div class="col-md-9">
                                 <div class="form-group input-group-sm">
-                                <input id="phone" type="text" class="form-control" name="phone" value="{{ request('query') }}" placeholder="Tìm theo sđt">
+                                <input id="phone" type="text" class="form-control" name="phone" value="{{ request('phone') }}" placeholder="Tìm theo sđt">
                                 </div>
                             </div>
                         </div>
@@ -36,10 +36,11 @@
                     </div>
             
                 </div>
-            </form> --}}
+            </form>
 
             <div class="table-responsive">
-                <table class="table table-hover table-light mb-4">
+
+                <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
@@ -47,6 +48,7 @@
                             <th>Tiêu đề tin</th>
                             <th>SĐT tin</th>
                             <th>Thời gian</th>
+                            <th>Trạng thái</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -71,7 +73,8 @@
                                     <a class="text-info" target="_blank" href="{{ route('manager.post') }}?query={{ $meta->phone->value }}"><i data-feather="external-link"></i></a>
                                 @endisset
                             </td>
-                            <td>{{ $report->created_at->format('d/m/Y H:i:s') }}</td>
+                            <td>{{ $report->created_at->diffForHumans() }}</td>
+                            <td> @include('dashboard.post.components.status', ['status' => $report->post->status]) </td>
                             <td class="text-center">
                                 <ul class="table-controls">
                                     @can('manager.post.report.delete')

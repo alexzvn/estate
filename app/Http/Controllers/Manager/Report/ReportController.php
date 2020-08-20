@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Manager\Report;
 
-use App\Http\Controllers\Manager\Controller;
 use App\Repository\Report;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Manager\Controller;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('manager.post.report.view');
 
         return view('dashboard.report.list', [
-            'reports' => Report::with(['user', 'post.metas'])->latest()->paginate(40)
+            'reports' => Report::with(['user', 'post.metas'])
+                ->filterRequest($request)->latest()->paginate(40)
         ]);
     }
 
