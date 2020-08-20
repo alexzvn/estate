@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Post;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Jobs\Post\ImportPostJob as ImportPost;
@@ -27,7 +26,7 @@ class ImportController extends Controller
     {
         $posts = collect(json_decode($request->getContent()));
 
-        $posts->map(function ($post) {
+        $posts->each(function ($post) {
             $post->hash  = sha1($post->url);
 
             $price = $this->stringPriceToNumber($post->price ?? '');
@@ -35,8 +34,6 @@ class ImportController extends Controller
             $post->price = $price || $price == 0 ? round($price) : null;
 
             ImportPost::dispatch($post);
-
-            return $post;
         });
 
         return ['message', 'okey'];
@@ -44,6 +41,10 @@ class ImportController extends Controller
 
     protected function stringPriceToNumber(string $price)
     {
+        if (preg_match('/^[0-9]+$/', $price)) {
+            return (float) $price;
+        }
+
         if (count(explode(' ', $price)) < 2) {
             return null;
         }
