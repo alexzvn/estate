@@ -42,7 +42,8 @@
 .nav-custom-tabs .nav-item .nav-link {
     text-transform: uppercase;
     background: none;
-    color: gray;
+    color: #0b48ff;
+    font-weight: bold;
     border: 0;
 }
 
@@ -50,6 +51,7 @@
     color: black;
     font-weight: bolder;
     border-bottom: solid 3px #3e92cc;
+    color: #f74646;
 }
 
 </style>
