@@ -19,3 +19,13 @@ services:
       - ./.docker/data/redis:/data
     ports:
       - ${REDIS_PORT}:6379
+
+  php-queue:
+    restart: always
+    build: 
+      context: .
+      dockerfile: ./.docker/php.dockerfile
+    volumes:
+      - ".:/app"
+    command: "php artisan queue:work"
+    network_mode: host
