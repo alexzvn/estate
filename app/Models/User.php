@@ -79,6 +79,11 @@ class User extends Authenticatable implements MustVerifyPhone
         return $this->belongsTo(User::class, 'supporter_id');
     }
 
+    public function canSupport(User $customer)
+    {
+        return $this->id === $customer->supporter_id || $this->can('manager.customer.view.all');
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class);
