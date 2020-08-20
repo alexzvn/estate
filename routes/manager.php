@@ -113,7 +113,6 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
     Route::get('/{id}/pardon', 'CustomerController@pardon')->name('manager.customer.pardon');
     Route::get('/{id}/logout', 'CustomerController@logout')->name('manager.customer.logout');
     Route::get('/{id}/take', 'CustomerController@take')->name('manager.customer.take');
-    Route::get('/{id}/delete', 'CustomerController@delete')->name('manager.customer.delete');
 
     Route::group(['prefix' => '{id}/order'], function () {
         Route::get('/', 'OrderController@index')->name('manager.customer.order');
