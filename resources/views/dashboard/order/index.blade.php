@@ -64,7 +64,7 @@ function planToString($plans) {
                                     {{ $order->status === $order::PAID ? 'Đã thanh toán' : 'Chưa thanh toán' }}
                                 </span>
                             </td>
-                            <td>{{ $customer->creator->id ?? 'N/a' }}</td>
+                            <td>{{ $order->creator->name ?? 'N/a' }}</td>
                             <td>
                                 <a href="{{ route('manager.order.view', ['id' => $order->id]) }}">
                                     <i class="role-edit t-icon t-hover-icon" data-feather="edit"></i>
