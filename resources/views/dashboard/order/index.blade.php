@@ -29,6 +29,9 @@ function planToString($plans) {
         </div>
         <div class="widget-content widget-content-area">
             <div class="table-responsive">
+
+                @include('dashboard.customer.components.search')
+
                 <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
                         <tr>
