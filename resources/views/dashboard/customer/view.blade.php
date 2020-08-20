@@ -74,7 +74,10 @@
 
                     <hr>
 
-                    <a href="javascript:void(0)" id="change-password" class="text-info">Đặt lại mật khẩu?</a>
+                    <div>
+                        <a href="javascript:void(0)" id="change-password" class="text-info">Đặt lại mật khẩu?</a>
+                        <a href="javascript:void(0)" id="delete-account" data-id="{{ $user->id }}" class="text-danger float-right">Xóa tài khoản này?</a>
+                    </div>
 
                     <div class="mt-3" id="change-password-input" style="display: none;">
                         <div class="form-group input-group-sm">
@@ -243,6 +246,16 @@
 
             if (confirm('Bạn có thật sự muốn xóa gói đăng ký này?')) {
                 form.attr('action', `/manager/customer/subscription/${id}/delete`);
+                form.submit();
+            }
+        });
+
+        $('#delete-account').on('click', function () {
+            let id = $(this).data('id');
+
+            if (confirm('Bạn có muốn xóa tài khoản này không?')) {
+                let form = $('#delete-sub-form');
+                form.attr('action', `/manager/customer/${id}/delete`);
                 form.submit();
             }
         });

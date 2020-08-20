@@ -66,7 +66,10 @@ class UserObserver
      */
     public function forceDeleted(User $user)
     {
-
+        $user->subscriptions()->delete();
+        $user->logs()->delete();
+        $user->posts()->update(['user_id' => null]);
+        $user->report()->update(['user_id' => null]);
     }
 
     protected function index(User $user)
