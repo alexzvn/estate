@@ -76,7 +76,9 @@
 
                     <div>
                         <a href="javascript:void(0)" id="change-password" class="text-info">Đặt lại mật khẩu?</a>
+                        @can('manager.customer.delete')
                         <a href="javascript:void(0)" id="delete-account" data-id="{{ $user->id }}" class="text-danger float-right">Xóa tài khoản này?</a>
+                        @endcan
                     </div>
 
                     <div class="mt-3" id="change-password-input" style="display: none;">
