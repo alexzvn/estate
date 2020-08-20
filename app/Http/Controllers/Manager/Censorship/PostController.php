@@ -72,6 +72,6 @@ class PostController extends Controller
 
         $whitelist->findByPhoneOrCreate($request->phone);
 
-        return back()->with('success', "Đã chặn số $request->phone");
+        return back()->with('success', "Đã thêm số $request->phone vào danh sách trắng");
     }
 }
