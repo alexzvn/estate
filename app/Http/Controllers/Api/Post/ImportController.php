@@ -30,16 +30,16 @@ class ImportController extends Controller
         $posts->map(function ($post) {
             $post->hash  = sha1($post->url);
 
-            $price = $this->stringPriceToNumber($post->price);
+            $price = $this->stringPriceToNumber($post->price ?? '');
 
-            $post->price = $price ? round($price) : null;
+            $post->price = $price || $price == 0 ? round($price) : null;
 
-            ImportPost::dispatch($post)->afterResponse();
+            ImportPost::dispatch($post);
 
             return $post;
         });
 
-        return $posts;
+        return ['message', 'okey'];
     }
 
     protected function stringPriceToNumber(string $price)
