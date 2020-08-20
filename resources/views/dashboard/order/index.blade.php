@@ -29,6 +29,9 @@ function planToString($plans) {
         </div>
         <div class="widget-content widget-content-area">
             <div class="table-responsive">
+
+                @include('dashboard.customer.components.search')
+
                 <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
                         <tr>
@@ -51,7 +54,7 @@ function planToString($plans) {
                         <tr>
                             <td class="text-center" >{{ $loop->index + 1 }}</td>
                             <td>
-                                <a class="text-primary font-weight-bolder d-block" href="{{ $customer ? route('manager.customer.view', ['id' => $customer->id]) : 'javascript:void(0)' }}">
+                                <a class="{{ $customer && Auth::user()->canSupport($customer) ? 'text-primary' : '' }} font-weight-bolder d-block" href="{{ $customer && Auth::user()->canSupport($customer) ? route('manager.customer.view', ['id' => $customer->id]) : 'javascript:void(0)' }}">
                                     {{ $customer->name ?? 'N/a' }} <br> {{ $customer->phone ?? '' }}
                                 </a>
                             </td>

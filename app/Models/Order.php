@@ -6,10 +6,12 @@ use App\Contracts\Models\CanNote;
 use App\Models\Traits\HasNote;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use App\Models\Traits\CanFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class Order extends Model implements CanNote
 {
-    use SoftDeletes, HasNote;
+    use SoftDeletes, HasNote, CanFilter;
 
     public const DISCOUNT_PERCENT = 1;
 
@@ -61,5 +63,30 @@ class Order extends Model implements CanNote
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id');
+    }
+
+    public function filterSearch(Builder $builder, $query)
+    {
+        $builder->where(function ($builder) use ($query)
+        {
+            $this->filterSearchUser($builder, $query);
+            $this->filterSearchCustomer($builder, $query);
+        });
+    }
+
+    public function filterSearchUser(Builder $builder, $query)
+    {
+        $builder->orWhereHas('creator', function ($q) use ($query)
+        {
+            $q->where('index_meta', 'like', "%$query%");
+        });
+    }
+
+    public function filterSearchCustomer(Builder $builder, $query)
+    {
+        $builder->orWhereHas('customer', function ($q) use ($query)
+        {
+            $q->where('index_meta', 'like', "%$query%");
+        });
     }
 }

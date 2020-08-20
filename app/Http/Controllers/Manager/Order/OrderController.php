@@ -12,12 +12,27 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('manager.order.view');
 
+        $order = Order::with(['plans', 'customer', 'creator'])->filterRequest(['search' => $request->get('query')])->latest();
+
+        $order->whereHas('customer', function ($q) use ($request)
+        {
+            if ($request->me) {
+                $q->where('supporter_id', $request->user()->id);
+            }
+        });
+
+        if ($date = $request->expires_date) {
+            $date = Carbon::createFromFormat('d/m/Y', $date);
+
+            $order->whereBetween('expires_at', [$date->startOfDay(), $date->endOfDay()]);
+        }
+
         return view('dashboard.order.index', [
-            'orders' => Order::with(['plans', 'customer', 'creator'])->latest()->paginate(40)
+            'orders' => $order->paginate(40)
         ]);
     }
 
