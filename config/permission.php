@@ -210,7 +210,8 @@ return [
                     'manager.subscription.lock',
                     'manager.customer.take',
                     'manager.customer.log.view',
-                    'manager.customer.logout'
+                    'manager.customer.logout',
+                    'manager.customer.delete'
                 ]
             ],[
                 'name' => 'Gói đăng ký', 
