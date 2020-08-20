@@ -40,6 +40,7 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::post('/{id}/delete', 'PostController@delete')->name('manager.post.delete');
     Route::post('/{id}/delete/force', 'PostController@forceDelete')->name('manager.post.delete.force');
     Route::post('/delete/many', 'PostController@deleteMany')->name('manager.post.delete.many');
+    Route::post('/reverse/many', 'PostController@reverseMany')->name('manager.post.reverse.many');
 
     Route::get('/pending', 'PostPending@index')->name('manager.post.pending');
 });
