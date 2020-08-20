@@ -28,6 +28,7 @@ class SettingController extends Controller
             'user.role.default' => $request->role,
             'notification' => $request->notification,
             'google.analytics' => $request->google_analytics,
+            'post.reverse' => (bool) $request->reverse
         ]);
 
         $setting->saveConfig();

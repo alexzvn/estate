@@ -54,6 +54,15 @@
                       <input type="text" name="google_analytics" id="google_analytics" class="form-control" placeholder="UA-17429...." value="{{ $setting->config('google.analytics') }}">
                     </div>
 
+                    <div class="form-group">
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="reverse" id="reverse" value="true" @if($setting->config('post.reverse', false)) checked @endif>
+                            Đảo tin
+                          </label>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
