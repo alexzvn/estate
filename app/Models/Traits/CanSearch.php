@@ -12,17 +12,11 @@ trait CanSearch
 {
     protected $indexField = 'index_meta';
 
-    public function scopeFilterSearch(Builder $builder, $value = '')
+    public function scopeFilterSearch(Builder $builder, $search = '')
     {
-        $search = '';
+        $search = Str::lower($search);
 
-        foreach (levenshtein_level_one($value, '%') as $keyword) {
-            $search .= str_replace('%', '\w',preg_quote($keyword)) . '|';
-        }
-
-        $search = Str::lower(trim($search, '|'));
-
-        $builder->where($this->indexField, 'regexp', "/$search/");
+        $builder->where($this->indexField, 'like', "%$search%");
     }
 
     public function index()
