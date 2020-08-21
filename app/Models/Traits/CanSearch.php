@@ -10,13 +10,11 @@ use Jenssegers\Mongodb\Eloquent\Builder;
  */
 trait CanSearch
 {
-    protected $indexField = 'index_meta';
+    protected static $indexField = 'index_meta';
 
     public function scopeFilterSearch(Builder $builder, $search = '')
     {
-        $search = Str::lower($search);
-
-        $builder->where($this->indexField, 'like', "%$search%");
+        $builder->whereRaw(['$text' => ['$search' => Str::lower($search)]]);
     }
 
     public function index()
@@ -31,8 +29,7 @@ trait CanSearch
             }
         }
 
-        $index = implode('. ', $index);
-        $index .= '. ' . Str::ascii($index) .'.';
+        $index .= Str::ascii(implode('. ', $index)) .'.';
         $index = Str::lower($index);
 
         return $this->forceFill([$this->indexField => $index])->save();
