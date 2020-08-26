@@ -68,21 +68,21 @@
                             <div class="form-group input-group-sm">
                               <label for="price">Giá tiền</label>
                               <input type="text"
-                                class="form-control" value="{{ $meta->price->value ?? '' }}" name="price" id="price" placeholder="Giá tin" required>
+                                class="form-control" value="" name="price" id="price" placeholder="Giá tin" required>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                               <label for="commission">Hoa Hồng</label>
                               <input type="text"
-                                class="form-control" value="{{ $meta->commission->value ?? '' }}" name="commission" id="commission" placeholder="" step="1" value="" min="0" max="100">
+                                class="form-control" value="" name="commission" id="commission" placeholder="" step="1" value="" min="0" max="100">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                                 <label for="phone">Số điện thoại</label>
                                 <input type="text"
-                                  class="form-control" value="{{ $meta->phone->value ?? '' }}" name="phone" id="phone" placeholder="0355...." required>
+                                  class="form-control" value="" name="phone" id="phone" placeholder="0355...." required>
                               </div>
                         </div>
                     </div>
