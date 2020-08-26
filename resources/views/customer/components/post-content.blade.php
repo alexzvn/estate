@@ -40,22 +40,24 @@
 
         <hr class="d-block d-md-none">
 
-        <div class="d-flex justify-content-center">
-            @if (in_array($post->id, $customer->post_save_ids ??[]))
-            <button id="post-save" type="button" class="btn btn-sm btn-primary mr-2">Bỏ lưu</button>
-            @else
-            <button id="post-save" type="button" class="btn btn-sm btn-outline-primary mr-2">Lưu tin</button>
-            @endif
-
-            @empty($post->report)
-            <button id="post-report" type="button" class="btn btn-sm btn-warning mr-2">Báo môi giới</button>
-            @endempty
-
-            @if (in_array($post->id, $customer->post_blacklist_ids ??[]))
-            <button id="post-blacklist" type="button" class="btn btn-sm btn-danger">Khôi phục</button>
-            @else
-            <button id="post-blacklist" type="button" class="btn btn-sm btn-outline-danger">Xóa tin</button>
-            @endif
+        <div class="d-block d-lg-none">
+            <div class="d-flex justify-content-center">
+                @if (in_array($post->id, $customer->post_save_ids ??[]))
+                <button id="post-save" type="button" class="btn btn-sm btn-primary mr-2">Bỏ lưu</button>
+                @else
+                <button id="post-save" type="button" class="btn btn-sm btn-outline-primary mr-2">Lưu tin</button>
+                @endif
+    
+                @empty($post->report)
+                <button id="post-report" type="button" class="btn btn-sm btn-warning mr-2">Báo môi giới</button>
+                @endempty
+    
+                @if (in_array($post->id, $customer->post_blacklist_ids ??[]))
+                <button id="post-blacklist" type="button" class="btn btn-sm btn-danger">Khôi phục</button>
+                @else
+                <button id="post-blacklist" type="button" class="btn btn-sm btn-outline-danger">Xóa tin</button>
+                @endif
+            </div>
         </div>
     </div>
 </div>
