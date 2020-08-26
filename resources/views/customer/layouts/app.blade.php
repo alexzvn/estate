@@ -22,6 +22,7 @@
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{ asset('assets/snackbar/snackbar.min.css') }}">
     @stack('style')
 
     <style>
@@ -54,6 +55,7 @@
     </script>
     @endif
 
+    <script src="{{ asset('assets/snackbar/snackbar.min.js') }}"></script>
     @stack('script')
 </body>
 </html>
