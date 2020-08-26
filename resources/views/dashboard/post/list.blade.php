@@ -1,4 +1,9 @@
+<?php use App\Enums\PostType; ?>
+
 @extends('dashboard.app')
+@push('style')
+<link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
+@endpush
 
 @section('content')
 <div id="tableLight" class="col-lg-12 col-12 layout-spacing">
@@ -112,6 +117,125 @@
     </div>
 </div>
 
+<!-- post edit modal -->
+<div class="modal fade" id="post-edit" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chỉnh sửa bài viết</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <form id="post-form">
+                    @csrf
+
+                    <div class="form-group input-group-sm">
+                        <label for="post-title">Tiêu đề</label>
+                        <input type="text"
+                        class="form-control" value="" name="title" id="post-title" aria-describedby="title" placeholder="Tiêu đề tin" required>
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="col-md-4">
+                            <div class="form-group input-group-sm">
+                              <label for="post-price">Giá tiền</label>
+                              <input type="text"
+                                class="form-control" value="" name="price" id="post-price" placeholder="Giá tin" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group input-group-sm">
+                              <label for="post-commission">Hoa Hồng</label>
+                              <input type="text"
+                                class="form-control" value="" name="commission" id="post-commission" placeholder="" step="1" value="" min="0" max="100">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group input-group-sm">
+                                <label for="post-phone">Số điện thoại</label>
+                                <input type="text"
+                                  class="form-control" value="" name="phone" id="post-phone" placeholder="0355...." required>
+                              </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <div class="form-group input-group-sm">
+                                <label for="post-category">Danh mục</label>
+                                <select class="form-control" name="category" id="post-category">
+                                <option value="">Chọn danh mục</option>
+                                @php
+                                    $catId = $category->id ?? null;
+                                @endphp
+                                  @foreach ($categories as $item)
+                                    @if (!$item->children || count($item->children) < 1)
+                                        <option value="{{ $item->id }}" {{ $item->id == $catId ? 'selected' : '' }}>{{ $item->name }}</option>
+                                    @else
+                                        <option value="{{ $item->id }}" disabled style="font-weight: bold; color: #0e1726;"><strong> {{ $item->name }} </strong></option>
+                                        @foreach ($item->children as $item)
+                                        <option value="{{ $item->id }}" {{ $item->id == $catId ? 'selected' : '' }}>{{ $item->name }}</option>
+                                        @endforeach
+                                    @endUnless
+                                  @endforeach
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-4">
+                            <div class="form-group input-group-sm">
+                                <label for="post-province">Tỉnh, thành phố</label>
+                                <select class="form-control" name="province" id="post-province">
+                                    <option value="" selected>Trống</option>
+                                    @foreach ($provinces as $province)
+                                    <option value="{{ $province->id }}" {{ $meta->province && $meta->province->value == $province->id ? 'selected' :'' }}>{{ $province->name }}</option>
+                                    @php
+                                        if ($meta->province && $meta->province->value == $province->id) {
+                                            $activeProvince = $province;
+                                        }
+                                    @endphp
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-4">
+                            <div class="form-group input-group-sm">
+                                <label for="post-district">Quận/huyện</label>
+                                <select class="form-control" name="district" id="post-district">
+                                    <option value="" selected>Trống</option>
+                                    @isset($activeProvince)
+                                    @foreach ($activeProvince->districts as $district)
+                                    <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                    @endforeach
+                                    @endisset
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="post-content">Nội dung</label>
+                        <textarea class="form-control" name="post_content" id="post-content" rows="3"></textarea>
+                    </div>
+                    <div>
+                        <p class="text-muted m-0">Ngày cập nhật cuối cùng là <span class="text-info"></span>, đăng bởi
+                        
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info float-left">Duyệt lưu gốc</button>
+                <button type="button" class="btn btn-primary">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <form id="form-add-blacklist" action="{{ route('manager.censorship.blacklist.add') }}" method="post">
     @csrf
     <input id="add-blacklist" type="hidden" name="phone" value="">
@@ -133,6 +257,74 @@
     });
 
     $(document).ready(function () {
+        $('.open-post').on('click', function () {
+            let id = $(this).data('id');
+            let modal = $('#post-edit');
+            let form = $('#post-form');
+            const ckeditor = () => {
+                return ClassicEditor
+                .create(document.querySelector('#post-content'))
+                .catch( err => {
+                    console.error( err.stack );
+                });
+            };
+
+
+            $('#form-content').html('');
+            $('.ck').remove();
+            form.trigger('reset');
+            modal.modal();
+
+            fetch(`/manager/post/${id}/fetch`).then(res => {
+
+                if (! res.ok) {
+                    Snackbar.show({
+                        text: 'Danger',
+                        actionTextColor: '#fff',
+                        backgroundColor: '#e7515a',
+                        text: 'có lỗi trong quá trình lấy tin',
+                        pos: 'bottom-right',
+                        duration: 5000,
+                        showAction: false
+                    });
+
+                    modal.modal('toggle');
+                }
+
+                return res.json();
+            }).then(post => {
+                let map = {
+                    phone: post.meta.phone,
+                    commission: post.meta.commission,
+                    price: post.meta.price,
+                    title: {value: post.title},
+                    content: {value: post.content}
+                };
+
+                for (const key in map) {
+                    if (map.hasOwnProperty(key)) {
+                        const meta = map[key];
+                        $(`#post-${key}`).val(meta ? meta.value + '' : '');
+                    }
+                }
+
+                ckeditor();
+
+                let options = {
+                    category: post.categories[0] ? post.categories[0]._id : null,
+                    province: post.meta.province ? post.meta.province.value : null,
+                    district: post.meta.district ? post.meta.district.value : null,
+                };
+
+                for (const key in options) {
+                    if (options.hasOwnProperty(key) && options[key]) {
+                        const option = options[key];
+                        $(`#post-${key}`).val(option);
+                    }
+                }
+            });
+        });
+
         $('#delete-many').click(function () {
             if (! confirm('Xóa tất cả các mục đã chọn?')) {
                 return;
@@ -145,12 +337,6 @@
         $('#reverse-many').click(function () {
             form.attr('action', "{{ route('manager.post.reverse.many') }}");
             form.submit();
-        });
-
-        $('.open-post').on('click', function () {
-            let id = $(this).data('id');
-
-            window.location.href = `/manager/post/${id}/view`;
         });
 
         $('.lookup-phone').on('click', function () {
@@ -183,6 +369,26 @@
                 form.submit();
             }
         });
+    });
+}(window))
+</script>
+@endpush
+
+@push('script')
+<script src="https://cdn.ckeditor.com/ckeditor5/20.0.0/classic/ckeditor.js"></script>
+<script src="{{ asset('dashboard/plugins/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
+<script src="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.js') }}"></script>
+<script>
+(function (window) {
+    $(document).ready(function () {
+        $('#post-price').inputmask({
+            alias: 'currency',
+            prefix: '',
+            digits: 0,
+            rightAlign: false
+        });
+
+        $('#post-phone').inputmask("9999.999.999");
     });
 }(window))
 </script>

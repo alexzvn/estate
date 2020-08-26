@@ -36,6 +36,7 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::post('/store', 'PostController@store')->name('manager.post.store');
     Route::get('/trashed', 'PostController@trashed')->name('manager.post.trashed');
     Route::get('/{id}/view', 'PostController@view')->name('manager.post.view');
+    Route::get('/{id}/fetch', 'PostOnlineController@view')->name('manager.post.fetch');
     Route::post('/{id}/update', 'PostController@update')->name('manager.post.update');
     Route::post('/{id}/delete', 'PostController@delete')->name('manager.post.delete');
     Route::post('/{id}/delete/force', 'PostController@forceDelete')->name('manager.post.delete.force');

@@ -22,12 +22,16 @@
             @endisset
             
         </p>
-        <p><strong>Tỉnh/Thành phố: </strong> {{ $meta->province->province->name ?? 'N/a' }}</p>
-        <p><strong>Quận/huyện: </strong> {{ $meta->district->district->name ?? 'N/a' }}</p>
+        <p><strong>Giá khoảng: </strong> {{ format_web_price($meta->price->value) ?? 'N/a' }}</p>
         @if ($meta->commition)
         <p><strong>Hoa Hồng: </strong> {{ $meta->commition->value }}</p>
         @endif
-        <p><strong>Giá khoảng: </strong> {{ format_web_price($meta->price->value) ?? 'N/a' }}</p>
+        <p><strong>Quận/huyện: </strong> {{ $meta->district->district->name ?? 'N/a' }}</p>
+        <p><strong>Tỉnh/Thành phố: </strong> {{ $meta->province->province->name ?? 'N/a' }}</p>
+        @isset($post->categories[0])
+        <p><strong>Danh mục: </strong> {{ $post->categories[0]->name }}</p>
+        @endisset
+        
         <p><strong>Ngày đăng: </strong> {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'N/a' }}</p>
 
         @isset($post->report)
@@ -36,22 +40,24 @@
 
         <hr class="d-block d-md-none">
 
-        <div class="d-flex justify-content-center">
-            @if (in_array($post->id, $customer->post_save_ids ??[]))
-            <button id="post-save" type="button" class="btn btn-sm btn-primary mr-2">Bỏ lưu</button>
-            @else
-            <button id="post-save" type="button" class="btn btn-sm btn-outline-primary mr-2">Lưu tin</button>
-            @endif
-
-            @empty($post->report)
-            <button id="post-report" type="button" class="btn btn-sm btn-warning mr-2">Báo môi giới</button>
-            @endempty
-
-            @if (in_array($post->id, $customer->post_blacklist_ids ??[]))
-            <button id="post-blacklist" type="button" class="btn btn-sm btn-danger">Khôi phục</button>
-            @else
-            <button id="post-blacklist" type="button" class="btn btn-sm btn-outline-danger">Xóa tin</button>
-            @endif
+        <div class="d-block d-lg-none">
+            <div class="d-flex justify-content-center">
+                @if (in_array($post->id, $customer->post_save_ids ??[]))
+                <button id="post-save" type="button" class="btn btn-sm btn-primary mr-2">Bỏ lưu</button>
+                @else
+                <button id="post-save" type="button" class="btn btn-sm btn-outline-primary mr-2">Lưu tin</button>
+                @endif
+    
+                @empty($post->report)
+                <button id="post-report" type="button" class="btn btn-sm btn-warning mr-2">Báo môi giới</button>
+                @endempty
+    
+                @if (in_array($post->id, $customer->post_blacklist_ids ??[]))
+                <button id="post-blacklist" type="button" class="btn btn-sm btn-danger">Khôi phục</button>
+                @else
+                <button id="post-blacklist" type="button" class="btn btn-sm btn-outline-danger">Xóa tin</button>
+                @endif
+            </div>
         </div>
     </div>
 </div>

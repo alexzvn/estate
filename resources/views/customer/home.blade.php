@@ -9,7 +9,7 @@
 
         <div class="col-md-12 mt-2">
             <div class="row">
-                <div class="col-md-{{ $setting->notification ? '9' : '12' }} px-0" id="myTabContent">
+                <div class="col-md-12 px-0" id="myTabContent">
                         @if (request()->user()->subscriptions->isEmpty() || (isset($canAccess) && $canAccess === false))
                         <div class="text-center">
                             <h3 class="my-3" style="color: cadetblue;">Có vẻ bạn chưa đăng ký gói tin nào. <br> Hãy liên hệ hotline để đăng ký và bắt đầu xem tin nhé!</h3>
@@ -23,18 +23,6 @@
                         @endif
 
                 </div>
-
-                @if (empty($setting->notification))
-                <div class="col-md-3 pr-0">
-                    @if ($setting->notification)
-                    <div class="p-2 text-justify" style="background-color: aliceblue; font-size: 17px; font-family; border-top: 4px solid #9ce8d9 !important;">
-                        <h5 class="text-center text-uppercase">Thông Báo</h5>
-                        <p style="font-size: 16px;">{{ $setting->notification }}</p>
-                    </div>
-                    @endif
-                </div>
-                @endif
-
             </div>
         </div>
     </div>
@@ -70,7 +58,7 @@
 (function (window) {
 
 $(document).ready(function () {
-    $('tr[data-post-id]').on('click', function () {
+    $('td[data-post-id]').on('click', function () {
         let body = $('#post-body');
         let id = $(this).data('post-id');
 
