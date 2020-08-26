@@ -22,12 +22,16 @@
             @endisset
             
         </p>
-        <p><strong>Tỉnh/Thành phố: </strong> {{ $meta->province->province->name ?? 'N/a' }}</p>
-        <p><strong>Quận/huyện: </strong> {{ $meta->district->district->name ?? 'N/a' }}</p>
+        <p><strong>Giá khoảng: </strong> {{ format_web_price($meta->price->value) ?? 'N/a' }}</p>
         @if ($meta->commition)
         <p><strong>Hoa Hồng: </strong> {{ $meta->commition->value }}</p>
         @endif
-        <p><strong>Giá khoảng: </strong> {{ format_web_price($meta->price->value) ?? 'N/a' }}</p>
+        <p><strong>Quận/huyện: </strong> {{ $meta->district->district->name ?? 'N/a' }}</p>
+        <p><strong>Tỉnh/Thành phố: </strong> {{ $meta->province->province->name ?? 'N/a' }}</p>
+        @isset($post->categories[0])
+        <p><strong>Danh mục: </strong> {{ $post->categories[0]->name }}</p>
+        @endisset
+        
         <p><strong>Ngày đăng: </strong> {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'N/a' }}</p>
 
         @isset($post->report)
