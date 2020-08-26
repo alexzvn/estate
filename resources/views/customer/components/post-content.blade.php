@@ -10,7 +10,7 @@
         <hr class="d-block d-md-none">
     </div>
 
-    <div class="col-md-4 pl-0">
+    <div class="col-md-4 pl-lg-0">
         <p>
             <strong>Số điện thoại: </strong>
             @isset($meta->phone->value)
@@ -20,7 +20,6 @@
             @else
             N/a
             @endisset
-            
         </p>
         <p><strong>Giá khoảng: </strong> {{ format_web_price($meta->price->value) ?? 'N/a' }}</p>
         @if ($meta->commition)

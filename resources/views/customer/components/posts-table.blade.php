@@ -3,9 +3,9 @@
       <tr>
         <th scope="col">TT</th>
         <th scope="col">Tiêu đề</th>
-        <th scope="col"><span class="d-none d-lg-block">Giá</span></th>
-        <th scope="col"><span class="d-none d-lg-block">Số điện thoại</span></th>
-        <th scope="col"><span class="d-none d-lg-block">Thao tác</span></th>
+        <th scope="col" class="d-none d-lg-table-cell">Giá</th>
+        <th scope="col" class="d-none d-lg-table-cell">Số điện thoại</th>
+        <th scope="col" class="d-none d-lg-table-cell">Thao tác</th>
       </tr>
     </thead>
     <tbody>
@@ -26,28 +26,24 @@
             </p>
             <p class="d-block d-lg-none" style="color: red"><strong> Giá khoảng {{ format_web_price($meta->price->value) ?? 'N/a' }}</strong></p>
         </td>
-        <td><strong class="d-none d-lg-block">{{ format_web_price($meta->price->value) ?? 'N/a' }}</strong></td>
-        <td>
-          <div class="d-none d-lg-block">
-            @isset($meta->phone->value)
-            <span onclick="$(this).html($(this).data('phone'))" data-phone="{{ $meta->phone->value }}">
-                <button class="btn btn-sm btn-success">Xem SĐT</button>
-            </span>
-            @else
-            N/a
-            @endisset
-          </div>
+        <td class="d-none d-lg-table-cell"><strong>{{ format_web_price($meta->price->value) ?? 'N/a' }}</strong></td>
+        <td class="d-none d-lg-table-cell">
+          @isset($meta->phone->value)
+          <span onclick="$(this).html($(this).data('phone'))" data-phone="{{ $meta->phone->value }}">
+              <button class="btn btn-sm btn-success">Xem SĐT</button>
+          </span>
+          @else
+          N/a
+          @endisset
         </td>
-        <td class="">
-          <div class="d-none d-lg-block">
-            <div class="d-flex">
-              @php
-                  $saved = in_array($item->id, auth()->user()->post_save_ids ?? []);
-                  $deleted = in_array($item->id, auth()->user()->post_blacklist_ids ?? []);
-              @endphp
-              <button class="save-element btn btn-sm btn-primary mr-1" data-active="{{ $saved ? 'true' : 'false' }}" data-id="{{ $item->id }}" type="button">{{ $saved ? 'Bỏ lưu' : 'Lưu' }}</button>
-              <button class="delete-element btn btn-sm btn-warning" data-active="{{ $deleted ? 'true' : 'false' }}" data-id="{{ $item->id }}" type="button">{{ $deleted ? 'Bỏ xóa' : 'Xóa' }}</button>
-            </div>
+        <td class="d-none d-lg-table-cell">
+          <div class="d-flex">
+            @php
+                $saved = in_array($item->id, auth()->user()->post_save_ids ?? []);
+                $deleted = in_array($item->id, auth()->user()->post_blacklist_ids ?? []);
+            @endphp
+            <button class="save-element btn btn-sm btn-primary mr-1" data-active="{{ $saved ? 'true' : 'false' }}" data-id="{{ $item->id }}" type="button">{{ $saved ? 'Bỏ lưu' : 'Lưu' }}</button>
+            <button class="delete-element btn btn-sm btn-danger" data-active="{{ $deleted ? 'true' : 'false' }}" data-id="{{ $item->id }}" type="button">{{ $deleted ? 'Bỏ xóa' : 'Xóa' }}</button>
           </div>
         </td>
       </tr>
