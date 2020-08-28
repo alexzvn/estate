@@ -150,14 +150,14 @@ class PostController extends Controller
         view()->share('whitelist', Whitelist::all());
     }
 
-    private function makeSaveMeta($post, Request $request)
+    protected function makeSaveMeta($post, Request $request)
     {
         return $post->metas()->saveMany(Meta::fromMany([
             PostMeta::Phone      => str_replace('.', '', $request->phone),
             PostMeta::Price      => (int) str_replace(',', '', $request->price),
-            PostMeta::Province   => $request->province,
-            PostMeta::District   => $request->district,
-            PostMeta::Commission => $request->commission
+            PostMeta::Province   => $request->province ?? '',
+            PostMeta::District   => $request->district ?? '',
+            PostMeta::Commission => $request->commission ?? ''
         ]));
     }
 
