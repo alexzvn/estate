@@ -46,7 +46,7 @@
                     <tr>
                         <th>#</th>
                         <th>Số điện thoại</th>
-                        <th>Ghi chú</th>
+                        <th>Ngày thêm</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -56,7 +56,8 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td><span class="text-secondary font-weight-bold">{{ $blackphone->phone }}</span></td>
-                        <td><input type="text" class="form-control note" value="{{ $blackphone->readNote() }}" placeholder="" data-id="{{ $blackphone->id }}" @cannot('blacklist.phone.modify') disabled @endcannot ></td>
+                        {{-- <td><input type="text" class="form-control note" value="{{ $blackphone->readNote() }}" placeholder="" data-id="{{ $blackphone->id }}" @cannot('blacklist.phone.modify') disabled @endcannot ></td> --}}
+                        <td>{{ $blackphone->created_at->format('d/m/Y H:i:s') }}</td>
                         <td>
                             @can('blacklist.phone.delete')
                             <button type="button" class="btn btn-danger delete" data-id="{{ $blackphone->id }}">Xóa</button>
@@ -70,14 +71,14 @@
                     <tr>
                         <th>#</th>
                         <th>Số điện thoại</th>
-                        <th>Ghi chú</th>
+                        <th>Ngày thêm</th>
                         <th>Actions</th>
                     </tr>
                 </tfoot>
             </table>
 
 
-            {{ $blacklist->withQueryString()->render() }}
+            {{ $blacklist->onEachSide(0)->withQueryString()->render() }}
 
         </div>
     </div>
@@ -100,10 +101,10 @@
                       <input type="text"
                         class="form-control" name="phone" id="phone" placeholder="Số điện thoại">
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                       <label for="note">Ghi chú</label>
                       <textarea class="form-control" name="note" id="note" rows="3" placeholder="Ghi chú gì đó..."></textarea>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
