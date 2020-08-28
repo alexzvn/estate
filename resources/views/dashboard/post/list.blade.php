@@ -196,6 +196,8 @@ ClassicEditor
                     status: post.status,
                 };
 
+                address.setDistricts(options.province);
+
                 for (const key in options) {
                     if (options.hasOwnProperty(key) && options[key]) {
                         const option = options[key];
