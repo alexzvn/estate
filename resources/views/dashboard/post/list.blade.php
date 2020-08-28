@@ -131,24 +131,26 @@
 
 @push('script')
 <script>
+
+ClassicEditor
+    .create(document.querySelector('#post-content'))
+    .then(editor => {
+        window.editor = editor;
+    })
+    .catch( err => {
+        console.error( err.stack );
+    });
+
 (function (window) {
     $(document).ready(function () {
         $('.open-post').on('click', function () {
             let id = $(this).data('id');
             let modal = $('#post-edit');
             let form = $('#post-form');
-            const ckeditor = () => {
-                return ClassicEditor
-                .create(document.querySelector('#post-content'))
-                .catch( err => {
-                    console.error( err.stack );
-                });
-            };
 
-
-            $('#form-content').html('');
-            $('.ck').remove();
+            $('#post-content').html('');
             form.trigger('reset');
+            editor.setData('');
             modal.modal();
 
             fetch(`/manager/post/${id}/fetch`).then(res => {
@@ -174,9 +176,10 @@
                     commission: post.meta.commission,
                     price: post.meta.price,
                     title: {value: post.title},
-                    content: {value: post.content},
                     id: {value: post._id},
                 };
+
+                editor.setData(post.content);
 
                 for (const key in map) {
                     if (map.hasOwnProperty(key)) {
@@ -184,8 +187,6 @@
                         $(`#post-${key}`).val(meta ? meta.value + '' : '');
                     }
                 }
-
-                ckeditor();
 
                 let options = {
                     category: post.categories[0] ? post.categories[0]._id : null,

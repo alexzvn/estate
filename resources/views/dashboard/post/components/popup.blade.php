@@ -176,7 +176,7 @@ use App\Enums\PostType;
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
-                body: $('#post-form').serialize()
+                body: serializeBody()
             }).then(res => {
                 return res.json();
             }).then(notify);
@@ -191,7 +191,7 @@ use App\Enums\PostType;
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
-                body: $('#post-form').serialize()
+                body: serializeBody()
             }).then(res => {
                 return res.json();
             }).then(notify);
@@ -207,7 +207,7 @@ use App\Enums\PostType;
                 },
                 redirect: 'manual',
                 method: 'POST',
-                body: $('#post-form').serialize()
+                body: serializeBody()
             }).then(res => {
                 if (res.status !== 0) {
                     return res.json()
@@ -218,6 +218,22 @@ use App\Enums\PostType;
             }).then(notify);
         });
     });
+
+    function serializeBody() {
+        let form = new FormData(document.getElementById('post-form'));
+
+        form.append('post_content', editor.getData());
+
+        let data = [];
+        for (const pair of form.entries()) {
+            const key = pair[0];
+            const val = pair[1];
+
+            data.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
+        }
+
+        return data.join('&');
+    }
 
     function notify(data) {
         if (data.success) {
