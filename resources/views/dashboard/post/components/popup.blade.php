@@ -102,12 +102,7 @@ use App\Enums\PostType;
                                 <select class="form-control" name="province" id="post-province">
                                     <option value="" selected>Trống</option>
                                     @foreach ($provinces as $province)
-                                    <option value="{{ $province->id }}" {{ $meta->province && $meta->province->value == $province->id ? 'selected' :'' }}>{{ $province->name }}</option>
-                                    @php
-                                        if ($meta->province && $meta->province->value == $province->id) {
-                                            $activeProvince = $province;
-                                        }
-                                    @endphp
+                                    <option value="{{ $province->id }}">{{ $province->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -264,5 +259,33 @@ use App\Enums\PostType;
         });
     }
 }(window))
+</script>
+@endpush
+
+@push('script')
+<script>
+$(document).ready(() => {
+    let data = JSON.parse('@json($provinces)');
+
+    window.address = {
+        setDistricts(provinceId) {
+            let province = data.filter((e) => {return e._id === provinceId})[0];
+            let district = $('#post-district');
+
+            district.html('');
+            district.append('<option value="" selected>Chọn</option');
+
+            if (province === undefined) return;
+
+            province.districts.map((e) => {
+                district.append(`<option value="${e._id}">${e.name}</option`);
+            });
+        }
+    };
+
+    $('#post-province').on('change', () => {
+        address.setDistricts($('#post-province').val());
+    });
+});
 </script>
 @endpush
