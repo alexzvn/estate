@@ -21,11 +21,21 @@ class BlacklistController extends Controller
 
     public function store(StorePhone $request, Blacklist $blacklist)
     {
-        $blacklist->fill($request->all())->save();
+        $phones = collect(explode(',', $request->phone));
 
-        if ($request->note) {
-            $blacklist->writeNote($request->note);
-        }
+        $phones = $phones->map(function (string $phone)
+        {
+            return trim($phone);
+        });
+
+        $phones->each(function ($phone) use ($blacklist, $request)
+        {
+            $blacklist = $blacklist->create(['phone' => $phone]);
+
+            if ($request->note) {
+                $blacklist->writeNote($request->note);
+            }
+        });
 
         return back()->with('success', "Đã chặn số $blacklist->phone");
     }

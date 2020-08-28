@@ -15,6 +15,13 @@
                             </div>
                         </a>
                     </li>
+                    <li class="menu">
+                        <a href="/" target="_blank" aria-expanded="false" class="dropdown-toggle">
+                            <div>
+                                <i data-feather="home"></i> <span>Trang khách hàng</span>
+                            </div>
+                        </a>
+                    </li>
 
                     @can('manager.category.view')
                     <li class="menu">
