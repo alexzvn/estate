@@ -57,4 +57,27 @@ class PostOnlineController extends PostController
             'data' => 'Đã duyệt xóa gốc',
         ]);
     }
+
+    public function update(string $id, Request $request)
+    {
+        $post = Post::findOrFail($id);
+
+        $post->metas()->forceDelete();
+
+        $post->fill(
+            array_merge($request->all(), [
+                'content' => Purifier::clean($request->post_content)
+            ])
+        )->save();
+
+        $post->categories()->save(Category::find($request->category));
+
+        if ($request->status == PostStatus::Published && empty($post->publish_at)) {
+            $post->publish_at = now(); $post->save();
+        }
+
+        $this->makeSaveMeta($post, $request);
+
+        return $post;
+    }
 }
