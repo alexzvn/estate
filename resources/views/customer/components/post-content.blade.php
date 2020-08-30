@@ -22,8 +22,8 @@
             @endisset
         </p>
         <p><strong>Giá khoảng: </strong> {{ format_web_price($meta->price->value) ?? 'N/a' }}</p>
-        @if ($meta->commition)
-        <p><strong>Hoa Hồng: </strong> {{ $meta->commition->value }}</p>
+        @if ($meta->commission)
+        <p><strong>Hoa Hồng: </strong> {{ $meta->commission->value }}</p>
         @endif
         <p><strong>Quận/huyện: </strong> {{ $meta->district->district->name ?? 'N/a' }}</p>
         <p><strong>Tỉnh/Thành phố: </strong> {{ $meta->province->province->name ?? 'N/a' }}</p>
