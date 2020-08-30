@@ -1,8 +1,15 @@
+@php
+  $hasCommition = isset($posts[0]->loadMeta()->meta->commition->value);
+@endphp
+
 <table class="table table-striped table-hover">
     <thead class="thead-light">
       <tr>
         <th scope="col">TT</th>
         <th scope="col">Tiêu đề</th>
+        @isset($hasCommition)
+        <th scope="col" class="d-none d-lg-table-cell">Hoa hồng</th>
+        @endisset
         <th scope="col" class="d-none d-lg-table-cell">Giá</th>
         <th scope="col" class="d-none d-lg-table-cell">Số điện thoại</th>
         <th scope="col" class="d-none d-lg-table-cell">Thao tác</th>
@@ -24,8 +31,16 @@
                 <strong>Ngày đăng: </strong> <i style="color: blue">{{ $item->publish_at ? $item->publish_at->format('d/m/Y') : 'N/a' }}</i>
             </span>
             </p>
-            <p class="d-block d-lg-none" style="color: red"><strong> Giá khoảng {{ format_web_price($meta->price->value) ?? 'N/a' }}</strong></p>
+            <p class="d-block d-lg-none" style="color: red">
+              <strong> Giá khoảng {{ format_web_price($meta->price->value) ?? 'N/a' }}</strong>
+              @isset($meta->commition->value)
+              - <strong> Hoa Hồng {{ $meta->commition->value }}</strong>
+              @endisset
+            </p>
         </td>
+        @if($hasCommition)
+        <td class="d-none d-lg-table-cell"> {{ $meta->commition->value ?? '' }} </td>
+        @endif
         <td class="d-none d-lg-table-cell"><strong>{{ format_web_price($meta->price->value) ?? 'N/a' }}</strong></td>
         <td class="d-none d-lg-table-cell">
           @isset($meta->phone->value)
