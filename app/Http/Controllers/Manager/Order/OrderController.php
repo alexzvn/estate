@@ -64,7 +64,7 @@ class OrderController extends Controller
 
         $hasNotOrdered = $order->status !== ModelsOrder::PAID && is_null($order->verifier);
 
-        if ($order->status == ModelsOrder::PENDING || $request->user->can('manager.order.modify.force')) {
+        if ($order->status == ModelsOrder::PENDING || $request->user()->can('manager.order.modify.force')) {
             $request->manual ?
                 $this->updateManual($order, $request)->save():
                 $this->updateAuto($order, $request)->save();
