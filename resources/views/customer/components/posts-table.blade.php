@@ -1,5 +1,5 @@
 @php
-  $hasCommission = ! empty($posts[0]->loadMeta()->meta->commission->value);
+  $hasCommission = !empty($posts[0]) && $posts[0]->loadMeta()->meta->commission->value;
 @endphp
 
 <table class="table table-striped table-hover">
