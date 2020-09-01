@@ -5,6 +5,10 @@
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
 @endpush
 
+@php
+    $hasCommission = isset($posts[0]) && isset($posts[0]->loadMeta()->meta->commission->value);
+@endphp
+
 @section('content')
 <div id="tableLight" class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
@@ -35,6 +39,9 @@
                                 </div>
                             </th>
                             <th>Tiêu đề</th>
+                            @if ($hasCommission)
+                            <th>Hoa Hồng</th>
+                            @endif
                             <th>Giá</th>
                             <th>Số điện thoại</th>
                             <th>Trạng thái</th>
@@ -70,6 +77,9 @@
                                     </span>
                                 </p>
                             </td>
+                            @if ($hasCommission)
+                            <td>{{ $meta->commission->value ?? '' }}</td>
+                            @endif
                             <td>{{ $meta->price ? format_web_price($meta->price->value ?? 0) : 'N/a' }}</td>
                             <td>
                                 @isset($meta->phone->value)
