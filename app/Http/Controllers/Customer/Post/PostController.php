@@ -125,14 +125,21 @@ class PostController extends BaseController
                 return $cat->id;
             });
 
-        return Post::withRelation()
-            ->filterRequest(request())
+        $post = Post::withRelation()
             ->published()
             ->where('type', $type)
             ->whereNotIn('_id', $this->customer->post_blacklist_ids ?? [])
             ->filterRequest([
                 'categories' => $categories,
                 'provinces'  => $this->access->provinces($type)
-            ]);
+            ])->filterRequest(request());
+
+        if (request('order') === 'newest' || empty(request('query'))) {
+            $post->newest();
+        } elseif(! empty(request('query'))) {
+            $post->OrderByScore();
+        }
+
+        return $post;
     }
 }

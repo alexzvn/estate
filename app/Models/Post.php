@@ -64,8 +64,12 @@ class Post extends Model
     {
         return $builder
             ->whereNotNull('publish_at')
-            ->orderBy('publish_at', 'desc')
             ->where('status', (string) PostStatus::Published);
+    }
+
+    public function scopeNewest(Builder $builder)
+    {
+        return $builder->orderBy('publish_at', 'desc');
     }
 
     public function scopePending(Builder $builder)
