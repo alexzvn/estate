@@ -43,6 +43,8 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::post('/delete/many', 'PostController@deleteMany')->name('manager.post.delete.many');
     Route::post('/reverse/many', 'PostController@reverseMany')->name('manager.post.reverse.many');
 
+    Route::get('/market', 'PostMarket@index');
+
     Route::post('/{id}/online/clone/origin/save', 'PostOnlineController@cloneSaveOrigin')->name('manager.post.clone.origin.save');
     Route::post('/{id}/online/clone/origin/delete', 'PostOnlineController@cloneDeleteOrigin')->name('manager.post.clone.origin.delete');
 
