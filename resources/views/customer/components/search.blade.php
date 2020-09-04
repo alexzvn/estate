@@ -117,6 +117,15 @@ $filterPrices = [
                         </select>
                     </div>
                 </div>
+                <div class="col-md-2 pl-md-0">
+                    <div class="form-group">
+                        <select class="form-control" name="order" id="order">
+                          <option value="">Cách sắp xếp</option>
+                          <option value="newest" {{ request('order') === 'newest' ? 'selected' :'' }}>Mới nhất</option>
+                          <option value="accurate" {{ request('order') === 'accurate' ? 'selected' :'' }}>Chính xác nhất</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
 

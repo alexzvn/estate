@@ -14,8 +14,12 @@ trait CanSearch
 
     public function scopeFilterSearch(Builder $builder, $search = '')
     {
-        $builder->whereRaw(['$text' => ['$search' => Str::lower($search)]])
-            ->project(['score' => ['$meta' => 'textScore']])
+        $builder->whereRaw(['$text' => ['$search' => Str::lower($search)]]);
+    }
+
+    public function scopeOrderByScore(Builder $builder)
+    {
+        $builder->project(['score' => ['$meta' => 'textScore']])
             ->orderBy('score', ['$meta' => 'textScore']);
     }
 

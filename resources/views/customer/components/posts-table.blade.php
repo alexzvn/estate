@@ -32,7 +32,7 @@
             </span>
             </p>
             <p class="d-block d-lg-none" style="color: red">
-              <strong> Giá khoảng {{ format_web_price($meta->price->value) ?? 'N/a' }}</strong>
+              <strong> Giá khoảng {{ isset($meta->price->value) ? format_web_price($meta->price->value) : 'N/a' }} </strong>
               @isset($meta->commission->value)
               - <strong> Hoa Hồng {{ $meta->commission->value }}</strong>
               @endisset
@@ -41,7 +41,7 @@
         @if($hasCommission)
         <td class="d-none d-lg-table-cell"> <strong>{{ $meta->commission->value ?? '' }}</strong> </td>
         @endif
-        <td class="d-none d-lg-table-cell"><strong>{{ format_web_price($meta->price->value) ?? 'N/a' }}</strong></td>
+        <td class="d-none d-lg-table-cell"><strong>{{ isset($meta->price->value) ? format_web_price($meta->price->value) : 'N/a' }}</strong></td>
         <td class="d-none d-lg-table-cell">
           @isset($meta->phone->value)
           <span onclick="$(this).html($(this).data('phone'))" data-phone="{{ $meta->phone->value }}">
