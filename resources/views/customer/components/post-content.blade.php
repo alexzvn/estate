@@ -39,12 +39,12 @@
 
         <hr class="d-block d-md-none">
 
-        <div class="d-block d-lg-none">
+        <div>
             <div class="d-flex justify-content-center">
                 @if (in_array($post->id, $customer->post_save_ids ??[]))
-                <button id="post-save" type="button" class="btn btn-sm btn-primary mr-2">Bỏ lưu</button>
+                <button id="post-save" type="button" class="btn btn-sm btn-primary mr-2 d-block d-lg-none">Bỏ lưu</button>
                 @else
-                <button id="post-save" type="button" class="btn btn-sm btn-outline-primary mr-2">Lưu tin</button>
+                <button id="post-save" type="button" class="btn btn-sm btn-outline-primary mr-2 d-block d-lg-none">Lưu tin</button>
                 @endif
     
                 @empty($post->report)
@@ -52,9 +52,9 @@
                 @endempty
     
                 @if (in_array($post->id, $customer->post_blacklist_ids ??[]))
-                <button id="post-blacklist" type="button" class="btn btn-sm btn-danger">Khôi phục</button>
+                <button id="post-blacklist" type="button" class="btn btn-sm btn-danger d-block d-lg-none">Khôi phục</button>
                 @else
-                <button id="post-blacklist" type="button" class="btn btn-sm btn-outline-danger">Xóa tin</button>
+                <button id="post-blacklist" type="button" class="btn btn-sm btn-outline-danger d-block d-lg-none">Xóa tin</button>
                 @endif
             </div>
         </div>
