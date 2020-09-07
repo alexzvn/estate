@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
     - uses: actions/checkout@v2
 
     # Pull the latest image to build, and avoid caching pull-only images.
@@ -30,7 +33,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
+    
     - name: Get Composer Cache Directory
       id: composer-cache
       run: |
@@ -42,9 +45,6 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-composer-
-
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
     - name: Start Database
       run: docker-compose up -d mongo redis
