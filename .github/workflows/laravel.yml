@@ -11,15 +11,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      
+
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
     - name: Build docker compose
       run: docker-compose build
 
     - name: Start Database
       run: docker-compose up -d mongo redis
-
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
