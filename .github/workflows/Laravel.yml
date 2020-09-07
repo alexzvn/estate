@@ -5,13 +5,12 @@ on:
   pull_request:
 
 jobs:
-  laravel-tests:
-
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
@@ -47,6 +46,11 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
+  laravel-tests:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
     - name: Generate key
       run: php artisan key:generate
 
