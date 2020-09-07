@@ -15,7 +15,6 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
-        "inspector-apm/inspector-laravel": "^4.4",
         "jenssegers/mongodb": "dev-develop",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
