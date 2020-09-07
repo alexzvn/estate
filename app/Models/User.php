@@ -154,6 +154,7 @@ class User extends Authenticatable implements MustVerifyPhone
     {
         return (
             isset($this->session_id) &&
+            isset($this->last_seen) &&
             now()->lessThan($this->last_seen->addMinutes(self::SESSION_TIMEOUT))
         );
     }
