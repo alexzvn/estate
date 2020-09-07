@@ -48,4 +48,4 @@ jobs:
       env:
         DB_CONNECTION: mongodb
         DB_DATABASE: estate
-      run: vendor/bin/phpunit
+      run: php artisan test
