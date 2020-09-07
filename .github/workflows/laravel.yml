@@ -5,6 +5,25 @@ on:
   pull_request:
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Pull the latest image to build, and avoid caching pull-only images.
+    # (docker pull is faster than caching in most cases.)
+    - run: docker-compose pull
+
+    # In this step, this action saves a list of existing images,
+    # the cache is created without them in the post run.
+    # It also restores the cache if it exists.
+    - uses: satackey/action-docker-layer-caching@v0.0.8
+      # Ignore the failure of a step and avoid terminating the job.
+      continue-on-error: true
+
+    - run: docker-compose build
+
   laravel-tests:
 
     runs-on: ubuntu-latest
@@ -26,10 +45,6 @@ jobs:
 
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-
-    - name: Build docker compose
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: docker-compose build
 
     - name: Start Database
       run: docker-compose up -d mongo redis
