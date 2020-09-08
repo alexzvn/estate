@@ -38,11 +38,6 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function metas()
-    {
-        return $this->hasMany(PostMeta::class);
-    }
-
     public function categories()
     {
         return $this->belongsToMany(Category::class);
@@ -130,18 +125,12 @@ class Post extends Model
 
     public function filterDistrict(Builder $builder, $value)
     {
-        return $builder->whereHas('metas', function (Builder $q) use ($value)
-        {
-            $q->where('name', Meta::District)->where('value', $value);
-        });
+        return $builder->where('district_id', $value);
     }
 
     public function filterPhone(Builder $builder, $value)
     {
-        return $builder->whereHas('metas', function (Builder $q) use ($value)
-        {
-            $q->where('name', Meta::Phone)->where('value', $value);
-        });
+        return $builder->where('phone', $value);
     }
 
     public function filterStatus(Builder $builder, $value)
@@ -177,7 +166,7 @@ class Post extends Model
 
     public function filterMaxPrice(Builder $builder, int $price)
     {
-        return $builder->where('price', '<=', $price)
+        return $builder->where('price', '<=', $price);
     }
 
     public function getIndexDocumentData()
