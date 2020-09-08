@@ -82,25 +82,6 @@
 
                     @can('manager.post.view')
                     <li class="menu">
-                        <a href="#menu-post-pending" @active('manager.post.pending', 'data-active="true"') data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                            <div class="">
-                                <i data-feather="file-text"></i>
-                                <span> Tin chờ duyệt</span>
-                            </div>
-                            <div>
-                                <i data-feather="chevron-right"></i>
-                            </div>
-                        </a>
-                        <ul class="collapse submenu list-unstyled @active('manager.post.pending', 'show')" id="menu-post-pending" data-parent="#accordionExample">
-                            <li>
-                                <a href="{{ route('manager.post.pending') }}"> Tất cả </a>
-                            </li>
-                        </ul>
-                    </li>
-                    @endcan
-
-                    @can('manager.post.view')
-                    <li class="menu">
                         <a href="{{ route('manager.censorship') }}" @active('manager.censorship', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="file-text"></i>
