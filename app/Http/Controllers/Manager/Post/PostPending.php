@@ -11,7 +11,7 @@ class PostPending extends PostController
     {
         $this->authorize('manager.post.view');
 
-        $post = Post::with(['metas.province', 'categories', 'user'])
+        $post = Post::with(['province', 'categories', 'user'])
             ->latest()
             ->pending()
             ->filterRequest($request)

@@ -28,7 +28,7 @@ class TrackingPost extends Model
 
     public function tracking()
     {
-        $phone = Post::with('metas', 'categories')->filterRequest(['phone' => $this->phone])->get();
+        $phone = Post::with('categories')->filterRequest(['phone' => $this->phone])->get();
 
         if (empty($phone)) {
             return $this->forceFill([

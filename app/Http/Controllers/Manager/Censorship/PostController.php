@@ -17,7 +17,7 @@ class PostController extends Controller
     {
         $this->authorize('manager.post.view');
 
-        $post = $post->with(['metas.province', 'metas.district', 'categories'])->filterRequest($request);
+        $post = $post->with(['province', 'district', 'categories'])->filterRequest($request);
 
         $post = $this->filterTracking($post, $request)
             ->published()
