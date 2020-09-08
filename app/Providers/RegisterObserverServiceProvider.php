@@ -24,6 +24,5 @@ class RegisterObserverServiceProvider extends ServiceProvider
         Post::observe(PostObserver::class);
         User::observe(UserObserver::class);
         Blacklist::observe(BlacklistObserver::class);
-        PostMeta::observe(MetaObserver::class);
     }
 }
