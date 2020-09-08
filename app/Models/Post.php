@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\EmptyClass;
-use Illuminate\Support\Str;
-use App\Enums\PostMeta as Meta;
 use App\Enums\PostStatus;
 use App\Models\Location\District;
 use App\Models\Location\Province;
