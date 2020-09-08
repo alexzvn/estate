@@ -52,7 +52,7 @@
                                 <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ Str::ucfirst(Str::of($post->title)->limit(73)) }}</strong> <br>
                                     <span class="mb-0" style="font-size: 12px;">
                                         <strong> </strong> <i class="text-info">{{ $post->categories[0]->name ?? '' }}</i> <span class="text-muted">|</span>
-                                        <strong>Quận/huyện: </strong> <i class="text-info">{{ $meta->district->district->name ?? 'N/a' }}</i> <span class="text-muted">|</span>
+                                        <strong>Quận/huyện: </strong> <i class="text-info">{{ $post->district->name ?? 'N/a' }}</i> <span class="text-muted">|</span>
                                         <strong>Ngày đăng: </strong> <i class="text-info">{{ $post->publish_at ? $post->publish_at->format('d/m/Y H:i:s') : $post->updated_at->format('d/m/Y H:i:s')  }}</i>
                                         @if ($post->reverser) <span class="text-muted">|</span> <span class="text-danger">Đã đảo</span> @endif
                                     </span>
@@ -60,16 +60,16 @@
                             </td>
                             <td>
                                 <div class="d-flex">
-                                    {!! implode('<br>', explode(',', $meta->phone->value ?? '')) ?? 'N/a' !!}
-                                    <i class="lookup-phone t-icon t-hover-icon" data-feather="search" data-phone="{{ $meta->phone->value ?? '' }}"></i>
+                                    {!! implode('<br>', explode(',', $post->phone ?? '')) ?? 'N/a' !!}
+                                    <i class="lookup-phone t-icon t-hover-icon" data-feather="search" data-phone="{{ $post->phone ?? '' }}"></i>
                                 </div>
                             </td>
                             <td> @include('dashboard.post.components.status', ['status' => $post->status]) </td>
                             <td>
-                                <div class="{{ $meta->phone->value ? 'add-blacklist' : '' }}" data-phone="{{ $meta->phone->value ?? '' }}">
+                                <div class="{{ $post->phone ? 'add-blacklist' : '' }}" data-phone="{{ $post->phone ?? '' }}">
                                     <span class="badge badge-secondary cursor-pointer">Chặn SĐT</span>
                                 </div>
-                                <div class="{{ $meta->phone->value ? 'add-whitelist' : '' }}" data-phone="{{ $meta->phone->value ?? '' }}">
+                                <div class="{{ $post->phone ? 'add-whitelist' : '' }}" data-phone="{{ $post->phone ?? '' }}">
                                     <span class="badge outline-badge-info cursor-pointer mt-1">Chính chủ</span>
                                 </div>
                             </td>
