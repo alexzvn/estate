@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\PostMeta;
 use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
