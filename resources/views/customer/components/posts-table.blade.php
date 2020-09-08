@@ -1,5 +1,5 @@
 @php
-  $hasCommission = !empty($posts[0]) && isset($posts[0]->loadMeta()->meta->commission->value);
+  $hasCommission = !empty($posts[0]) && isset($posts[0]->commission);
 @endphp
 
 <table class="table table-striped table-hover">
@@ -17,9 +17,6 @@
     </thead>
     <tbody>
       @foreach ($posts as $item)
-      @php
-        $meta = $item->loadMeta()->meta;
-      @endphp
       <tr>
         <th class="text-muted" scope="row">{{ $loop->iteration }}</th>
         <td class="cursor-pointer" data-post-id="{{ $item->id }}">

@@ -35,9 +35,6 @@
 </div>
 
 @foreach ($posts as $post)
-@php
-    $post->loadMeta();
-@endphp
 <div class="col-md-4 col-sm-6 mb-3">
     <div class="card component-card_2">
         <img src="{{ '/storage/' . $post->files[0]->path ?? '' }}" class="card-img-header cursor-pointer" data-images='@json($post->files)'>

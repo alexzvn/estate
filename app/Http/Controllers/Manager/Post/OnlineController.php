@@ -14,9 +14,8 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.view');
 
-        return $post->with(['categories', 'metas', 'user'])
-            ->findOrFail($id)
-            ->loadMeta();
+        return $post->with(['categories', 'user'])
+            ->findOrFail($id);
     }
 
     public function cloneSaveOrigin(string $id, ClonePost $request)

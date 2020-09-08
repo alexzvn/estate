@@ -82,7 +82,6 @@ class PostController extends BaseController
         return view('customer.components.post-content', [
             'post' => $post,
             'customer' => $this->customer,
-            'meta' => $post->loadMeta()->meta
         ]);
     }
 

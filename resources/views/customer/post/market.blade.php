@@ -28,7 +28,6 @@
 
         @foreach ($posts as $post)
         @php
-            $meta        = $post->loadMeta()->meta;
             $firstImages = $post->files->shift();
         @endphp
 
