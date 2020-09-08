@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Customer\Post;
 
-use App\Enums\PostMeta;
 use App\Enums\PostStatus;
 use App\Enums\PostType;
 use App\Repository\Post;
@@ -68,33 +67,7 @@ class PostController extends BaseController
 
     public function store(StorePost $request, Post $post)
     {
-        $post = $post->fill($request->all())
-            ->fill([
-                'content' => clean($post->content),
-                'status'  => PostStatus::Pending
-            ]);
-
-        $post = $this->customer->posts()->save($post);
-
-        $post->metas()->saveMany(Meta::fromMany([
-            PostMeta::Price => (int) $request->price,
-            PostMeta::Phone => $request->phone,
-        ]));
-
-        if ($cat = Category::find($request->category)) {
-            $post->categories()->attach($cat);
-        }
-
-        $this->customer->createLog([
-            'content' => "Đã đăng tin: $post->title",
-            'link'    => route('manager.post.view', ['id' => $post->id])
-        ]);
-
-        return response([
-            'code' => 200,
-            'success' => true,
-            'data' => 'Đăng tin thành công',
-        ]);
+        
     }
 
     public function view(string $id, Request $request)
