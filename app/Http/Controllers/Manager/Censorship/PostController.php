@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Manager\Censorship;
 
-use App\Enums\PostMeta;
 use App\Repository\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
