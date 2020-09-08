@@ -18,9 +18,8 @@ class CustomerPost extends BaseController
     public function saved()
     {
         $post = $this->customer->savePosts()->with([
-            'metas',
-            'metas.province',
-            'metas.district',
+            'province',
+            'district',
             'categories'
         ])->filterRequest(request())->paginate(20);
 
@@ -36,9 +35,8 @@ class CustomerPost extends BaseController
     public function posted()
     {
         $post = $this->customer->posts()->with([
-            'metas',
-            'metas.province',
-            'metas.district',
+            'province',
+            'district',
             'categories'
         ])->filterRequest(request())->paginate(20);
 
@@ -54,9 +52,8 @@ class CustomerPost extends BaseController
     public function blacklist()
     {
         $post = $this->customer->blacklistPosts([
-            'metas',
-            'metas.province',
-            'metas.district',
+            'province',
+            'district',
             'categories'
         ])->filterRequest(request())->paginate(20);
 

@@ -62,8 +62,6 @@ class PostOnlineController extends PostController
     {
         $post = Post::findOrFail($id);
 
-        $post->metas()->forceDelete();
-
         $post->fill(
             array_merge($request->all(), [
                 'content' => Purifier::clean($request->post_content)

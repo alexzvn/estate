@@ -17,9 +17,8 @@ class Post extends BaseRepository
         $self = app()->make(get_called_class());
 
         return $self->with($relation ?? [
-            'metas',
-            'metas.province',
-            'metas.district',
+            'province',
+            'district',
             'categories'
         ]);
     }

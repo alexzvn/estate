@@ -36,10 +36,7 @@ class PostObserver
      */
     public function deleted(Post $post)
     {
-        $post->metas()->get()->each(function ($meta)
-        {
-            $meta->delete();
-        });
+        //
     }
 
     /**
@@ -51,7 +48,6 @@ class PostObserver
     public function restored(Post $post)
     {
         $this->index($post);
-        $post->metas()->restore();
     }
 
     /**
@@ -62,7 +58,7 @@ class PostObserver
      */
     public function forceDeleted(Post $post)
     {
-        $post->metas()->forceDelete();
+        //
     }
 
     protected function index(Post $post)
