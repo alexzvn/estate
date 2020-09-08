@@ -55,6 +55,11 @@ class Post extends Model
         return $this->hasOne(Report::class);
     }
 
+    public function tracking()
+    {
+        return $this->belongsTo(TrackingPost::class, 'phone', 'phone');
+    }
+
     public function scopePublished(Builder $builder)
     {
         return $builder
@@ -70,6 +75,26 @@ class Post extends Model
     public function scopePending(Builder $builder)
     {
         $builder->where('status', (string)  PostStatus::Pending());
+    }
+
+    public function scopeWithoutWhitelist(Builder $builder)
+    {
+        $whitelist = Whitelist::all()->map(function ($whitelist)
+        {
+            return $whitelist->phone;
+        });
+
+        $builder->whereNotIn('phone', $whitelist->toArray());
+    }
+
+    public function scopeWithoutBlacklist(Builder $builder)
+    {
+        $blacklist = Blacklist::all()->map(function ($blacklist)
+        {
+            return $blacklist->phone;
+        });
+
+        $builder->whereNotIn('phone', $blacklist->toArray());
     }
 
     public function filterType(Builder $builder, $type)
