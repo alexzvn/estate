@@ -41,9 +41,6 @@
                     </thead>
                     <tbody>
                         @foreach ($posts as $post)
-                        @php
-                            $meta = $post->loadMeta()->meta;
-                        @endphp
                         <tr>
                             <td class="checkbox-column">
                                 <div class="custom-control custom-checkbox checkbox-primary">

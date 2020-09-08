@@ -10,7 +10,7 @@ class MarketController extends PostController
 {
     public function index(Request $request)
     {
-        $posts = Post::with(['metas.province', 'metas.district'])
+        $posts = Post::with(['province', 'district'])
             ->with(['categories', 'user', 'files'])
             ->where('type', PostType::PostMarket)
             ->filterRequest($request)

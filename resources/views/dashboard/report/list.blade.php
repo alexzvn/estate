@@ -60,9 +60,6 @@
                             @endphp
                             @continue
                         @endif
-                        @php
-                            $meta = $report->post->loadMeta()->meta;
-                        @endphp
                         <tr>
                             <td class="text-center" >{{ $loop->index }}</td>
                             <td style="font-weight: bold">{{ $report->user->name }} <br> {{ $report->user->phone }}</td>
