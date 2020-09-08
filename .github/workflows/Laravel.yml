@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  laravel-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -46,11 +46,7 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-  laravel-tests:
-    needs: build
-    runs-on: ubuntu-latest
 
-    steps:
     - name: Generate key
       run: php artisan key:generate
 
@@ -62,6 +58,9 @@ jobs:
 
     - name: Migrate Database
       run: php artisan migrate --force
+
+    - name: Setup laravel project
+      run: php artisan perm:sync
 
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
