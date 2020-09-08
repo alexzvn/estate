@@ -17,7 +17,7 @@ class BlacklistObserver
      */
     public function created(Blacklist $blacklist)
     {
-        Post::filterRequest(['phone' => $blacklist->phone])->update([
+        Post::where('phone', $blacklist->phone)->update([
             'status' => PostStatus::Locked
         ]);
 
