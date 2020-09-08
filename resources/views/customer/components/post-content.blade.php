@@ -13,20 +13,20 @@
     <div class="col-md-4 pl-lg-0">
         <p>
             <strong>Số điện thoại: </strong>
-            @isset($meta->phone->value)
-            <span onclick="$(this).html($(this).data('phone'))" data-phone="{{ $meta->phone->value }}">
+            @isset($post->phone)
+            <span onclick="$(this).html($(this).data('phone'))" data-phone="{{ $post->phone->value }}">
                 <button class="btn btn-sm btn-primary">Xem SĐT</button>
             </span>
             @else
             N/a
             @endisset
         </p>
-        <p><strong>Giá khoảng: </strong> {{ format_web_price($meta->price->value) ?? 'N/a' }}</p>
-        @if ($meta->commission)
-        <p><strong>Hoa Hồng: </strong> {{ $meta->commission->value }}</p>
+        <p><strong>Giá khoảng: </strong> {{ format_web_price($post->price) ?? 'N/a' }}</p>
+        @if ($post->commission)
+        <p><strong>Hoa Hồng: </strong> {{ $post->commission }}</p>
         @endif
-        <p><strong>Quận/huyện: </strong> {{ $meta->district->district->name ?? 'N/a' }}</p>
-        <p><strong>Tỉnh/Thành phố: </strong> {{ $meta->province->province->name ?? 'N/a' }}</p>
+        <p><strong>Quận/huyện: </strong> {{ $post->district->name ?? 'N/a' }}</p>
+        <p><strong>Tỉnh/Thành phố: </strong> {{ $post->province->name ?? 'N/a' }}</p>
         @isset($post->categories[0])
         <p><strong>Danh mục: </strong> {{ $post->categories[0]->name }}</p>
         @endisset
