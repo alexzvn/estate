@@ -3,7 +3,7 @@
 namespace App\Services\System\Post\Handler;
 
 use App\Contracts\Handler;
-use Illuminate\Support\Collection;
+use App\Models\Category;
 
 class MakeCategories implements Handler
 {
@@ -16,13 +16,13 @@ class MakeCategories implements Handler
      */
     public function handle($attr, \Closure $next)
     {
-        if (! ($attr->categories instanceof Collection)) {
+        if (empty($attr->categories[0])) {
             return $next($attr);
         }
 
-        $attr->category_ids = $attr->categories->map(function ($category) {
-            return $category->id;
-        })->toArray();
+        if ($attr->categories[0] instanceof Category) {
+            $attr->category_ids = [$attr->categories[0]->id];
+        }
 
         return $attr;
     }
