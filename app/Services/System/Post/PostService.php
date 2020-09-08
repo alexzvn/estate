@@ -12,6 +12,12 @@ use Illuminate\Pipeline\Pipeline;
 
 trait PostService
 {
+    /**
+     * Create post
+     *
+     * @param array $attr
+     * @return \App\Models\Post
+     */
     public static function create(array $attr)
     {
         $attr = collect(self::handleRawAttribute($attr));
