@@ -6,8 +6,6 @@ namespace App\Jobs\Post;
 use stdClass;
 use Carbon\Carbon;
 
-use App\Enums\PostMeta;
-use App\Repository\Meta;
 use App\Repository\Post;
 use App\Enums\PostStatus;
 use App\Enums\PostType;
@@ -17,9 +15,9 @@ use Illuminate\Support\Str;
 use App\Repository\Category;
 
 use Illuminate\Bus\Queueable;
-use Mews\Purifier\Facades\Purifier;
 use App\Repository\Location\District;
 use App\Repository\Location\Province;
+use App\Services\System\Post\Online;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -55,40 +53,30 @@ class ImportPostJob implements ShouldQueue
 
         $date = array_reverse(explode('/', $this->post->createDate));
 
-        $post = $post->forceFill([
-            'title'      => $this->post->title ?? '',
-            'content'    => Purifier::clean($this->post->content) ?? '',
-            'hash'       => $this->post->hash,
-            'publish_at' => Carbon::createFromDate(...$date),
-            'status'     => PostStatus::Published,
-            'type'       => PostType::Online,
-        ]);
-
-        $post->content = nl2br($post->content);
-        $post->save();
-        $post->metas()->saveMany($this->makeMetas());
-
-        if ($category = $this->getCategory()) {
-            $post->categories()->save($category);
-        }
-
-        if ($this->getBlacklist()->where('phone', $this->post->phone)->isNotEmpty()) {
-            $post->fill(['status' => PostStatus::Locked])->save();
-        }
-    }
-
-    protected function makeMetas()
-    {
         $province = Province::where('name', 'regexp', "/{$this->post->province}/")->first();
         $district = District::where('name', 'regexp', "/{$this->post->district}/")->first();
 
-        return Meta::fromMany([
-            PostMeta::Province => $province->id ?? null,
-            PostMeta::District => $district->id ?? null,
-            PostMeta::Phone    => $this->post->phone ?? '',
-            PostMeta::Price    => $this->post->price ?? null,
+        $post = Online::create([
+            'title'       => $this->post->title,
+            'content'     => nl2br($this->post->content),
+            'hash'        => $this->post->hash,
+            'publish_at'  => Carbon::createFromDate(...$date),
+            'status'      => PostStatus::Published,
+            'type'        => PostType::Online,
+            'categories'  => $this->getCategory(),
+            'price'       => $this->post->price,
+            'phone'       => $this->post->phone,
+            'province_id' => $province->id ?? null,
+            'district_id' => $district->id ?? null,
         ]);
+
+        if ($this->getBlacklist()->where('phone', $this->post->phone)->isNotEmpty()) {
+            $post->fill(['status' => PostStatus::Locked]);
+        }
+
+        $post->save();
     }
+
 
     protected function getCategory()
     {
@@ -97,7 +85,7 @@ class ImportPostJob implements ShouldQueue
 
         $category = Category::where('name', 'like', "%$category%")->first();
 
-        return $category;
+        return [$category];
     }
 
     protected function getBlacklist()
