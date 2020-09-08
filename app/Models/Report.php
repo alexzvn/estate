@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\PostMeta;
 use App\Models\Traits\CanFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model;
@@ -28,10 +27,9 @@ class Report extends Model
             $builder->where('phone', 'like', "%$phone%");
         });
 
-        $builder->orWhereHas('post.metas', function (Builder $builder) use ($phone)
+        $builder->orWhereHas('post', function (Builder $builder) use ($phone)
         {
-            $builder->where('name', PostMeta::Phone);
-            $builder->where('value', 'like', "%$phone%");
+            $builder->where('phone', $phone);
         });
     }
 }
