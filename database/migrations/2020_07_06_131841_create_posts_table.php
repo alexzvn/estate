@@ -15,9 +15,8 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $collection) {
             $collection->softDeletes();
-            $collection->index('user_id');
+            $collection->index(['user_id', 'price', 'phone', 'status']);
             $collection->string(['content', 'title']);
-            $collection->integer(['type', 'status']);
             $collection->timestamp('publish_at');
             $collection->timestamps();
         });
