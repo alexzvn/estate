@@ -12,6 +12,20 @@ use Illuminate\Pipeline\Pipeline;
 
 trait PostService
 {
+    protected static $fillable = [
+        'content',
+        'title',
+        'type',
+        'status',
+        'phone',
+        'price',
+        'commission',
+        'province_id',
+        'district_id',
+        'category_ids',
+        'publish_at'
+    ];
+
     /**
      * Create post
      *
@@ -22,19 +36,20 @@ trait PostService
     {
         $attr = collect(self::handleRawAttribute($attr));
 
-        return Post::forceCreate($attr->only(
-            'content',
-            'title',
-            'type',
-            'status',
-            'phone',
-            'price',
-            'commission',
-            'province_id',
-            'district_id',
-            'category_ids',
-            'publish_at'
-        ));
+        return Post::forceCreate(
+            $attr->only(static::$fillable)->toArray()
+        );
+    }
+
+    public static function update(Post $post, array $attr)
+    {
+        $attr = collect(self::handleRawAttribute($attr));
+
+        $post->forceUpdate(
+            $attr->only(static::$fillable)->toArray()
+        );
+
+        return $post;
     }
 
     /**

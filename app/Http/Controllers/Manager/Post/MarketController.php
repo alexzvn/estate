@@ -6,7 +6,7 @@ use App\Enums\PostType;
 use App\Repository\Post;
 use Illuminate\Http\Request;
 
-class PostMarket extends PostController
+class MarketController extends PostController
 {
     public function index(Request $request)
     {
