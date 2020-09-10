@@ -13,7 +13,7 @@ class ActivityController extends Controller
         $this->authorize('manager.customer.log.view');
 
         return view('dashboard.log.list', [
-            'logs' => Log::with('user')->filterRequest($request)->latest()->paginate(40)
+            'logs' => Log::with('user')->filter($request)->latest()->paginate(40)
         ]);
     }
 }

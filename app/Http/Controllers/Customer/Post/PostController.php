@@ -101,10 +101,10 @@ class PostController extends BaseController
             ->published()
             ->where('type', $type)
             ->whereNotIn('_id', $this->customer->post_blacklist_ids ?? [])
-            ->filterRequest([
+            ->filter([
                 'categories' => $categories,
                 'provinces'  => $this->access->provinces($type)
-            ])->filterRequest(request());
+            ])->filter(request());
 
         if (request('order') === 'newest' || empty(request('query'))) {
             $post->newest();

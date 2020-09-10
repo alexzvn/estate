@@ -13,7 +13,7 @@ class MarketController extends PostController
         $posts = Post::with(['province', 'district'])
             ->with(['categories', 'user', 'files'])
             ->where('type', PostType::PostMarket)
-            ->filterRequest($request)
+            ->filter($request)
             ->orderBy('publish_at', 'desc')
             ->paginate(30);
 

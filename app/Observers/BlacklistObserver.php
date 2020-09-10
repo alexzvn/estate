@@ -32,7 +32,7 @@ class BlacklistObserver
      */
     public function deleted(Blacklist $blacklist)
     {
-        Post::filterRequest(['phone' => $blacklist->phone])
+        Post::filter(['phone' => $blacklist->phone])
         ->where('status', PostStatus::Locked)
         ->update([
             'status' => PostStatus::Published

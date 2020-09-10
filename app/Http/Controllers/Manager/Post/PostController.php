@@ -21,7 +21,7 @@ class PostController extends Controller
         $this->authorize('manager.post.view');
 
         $posts = Post::with(['province', 'district','categories', 'user'])
-            ->filterRequest($request)
+            ->filter($request)
             ->newest()
             ->paginate(30);
 
@@ -36,7 +36,7 @@ class PostController extends Controller
 
         $posts = Post::onlyTrashed()
             ->with(['categories'])
-            ->filterRequest($request)
+            ->filter($request)
             ->newest()
             ->paginate(20);
 

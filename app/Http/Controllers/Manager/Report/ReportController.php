@@ -14,7 +14,7 @@ class ReportController extends Controller
 
         return view('dashboard.report.list', [
             'reports' => Report::with(['user', 'post'])
-                ->filterRequest($request)->latest()->paginate(40)
+                ->filter($request)->latest()->paginate(40)
         ]);
     }
 
