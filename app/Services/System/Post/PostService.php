@@ -3,6 +3,7 @@
 namespace App\Services\System\Post;
 
 use App\Models\Post;
+use App\Repository\Category;
 use App\Services\System\Post\Handler\CastPriceToInt;
 use App\Services\System\Post\Handler\CleanScript;
 use App\Services\System\Post\Handler\MakeCategories;
@@ -36,9 +37,13 @@ trait PostService
     {
         $attr = collect(self::handleRawAttribute($attr));
 
-        return Post::forceCreate(
+        $post = Post::forceCreate(
             $attr->only(static::$fillable)->toArray()
         );
+
+        $post->categories()->sync($attr['categories']);
+
+        return $post;
     }
 
     public static function update(Post $post, array $attr)
@@ -48,6 +53,8 @@ trait PostService
         $post->forceUpdate(
             $attr->only(static::$fillable)->toArray()
         );
+
+        $post->categories()->sync($attr['categories']);
 
         return $post;
     }

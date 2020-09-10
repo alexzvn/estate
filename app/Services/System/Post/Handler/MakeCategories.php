@@ -16,13 +16,17 @@ class MakeCategories implements Handler
      */
     public function handle($attr, \Closure $next)
     {
-        if (empty($attr->categories[0])) {
-            return $next($attr);
+        $attr->categories ??= [];
+
+        if (isset($attr->categories) && ! is_array($attr->categories)) {
+            throw new \Exception("attr categories must be array of instance " . Category::class, 1);
         }
 
-        if ($attr->categories[0] instanceof Category) {
-            $attr->category_ids = [$attr->categories[0]->id];
+        if (isset($attr->category_ids) && is_array($attr->category_ids) ) {
+            $attr->categories = [...$attr->categories, ...Category::findMany($attr->category_ids)];
         }
+
+        $attr->categories = collect($attr->categories)->unique('_id');
 
         return $attr;
     }
