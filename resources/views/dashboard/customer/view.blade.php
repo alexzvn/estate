@@ -240,8 +240,6 @@
         $('#change-password-input').fadeIn();
     });
 
-    $('#phone').inputmask("9999.999.999");
-
     $(document).ready(function () {
         $('.delete-sub').on('click', function () {
             let id = $(this).data('id');

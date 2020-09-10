@@ -72,7 +72,7 @@ class OrderController extends Controller
 
         $order->writeNote($request->note ?? '');
 
-        if ($hasNotOrdered && $request->verified ) { //activate order in first time
+        if ($hasNotOrdered && $request->verified && $request->user()->can('*') ) { //activate order in first time
             (new Customer($order->customer))->renewSubscription($order);
             $order->activate_at = $request->activeAt();
             $order->verifier_id = $request->user()->id;

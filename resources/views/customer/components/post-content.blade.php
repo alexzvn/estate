@@ -35,6 +35,8 @@
 
         @isset($post->report)
         <p style="color: red"><strong>Đã báo môi giới bởi: </strong> {{ Auth::id() == $post->report->user_id ? 'Bạn' : $post->report->user->name }}</p>
+        @else
+        <p style="color: red" id="reported"></p>
         @endisset
 
         <hr class="d-block d-md-none">

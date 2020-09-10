@@ -66,7 +66,7 @@
                                 {{-- Tin crawl từ trang khác xử lý sau --}}
                             </li>
                             <li>
-                                <a href="{{ route('manager.post') }}?type={{ PostType::PostMarket }}">Tin thị trường</a> 
+                                <a href="{{ route('manager.post.market') }}">Tin thị trường</a> 
                                 {{-- Tin ảnh collection --}}
                             </li>
                             <li>
