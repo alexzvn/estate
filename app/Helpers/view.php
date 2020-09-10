@@ -13,6 +13,11 @@ function echoActiveIf($expression, $active = 'active')
     }
 }
 
+function hide_phone(string $phone)
+{
+    return substr($phone, 0, 7) . 'xxx';
+}
+
 function format_web_price($price)
 {
     static $define;
