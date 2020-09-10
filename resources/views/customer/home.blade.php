@@ -93,6 +93,7 @@ function registerAction() {
     $('#post-report').click(function () {
         if (confirm('Bạn có thực sự muốn báo môi giới tin này?')) {
             fetchAction(`/post/${id}/action/report`);
+            $('#reported').html('Đã báo môi giới bởi: Bạn');
         }
     });
 
