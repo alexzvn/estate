@@ -19,8 +19,8 @@ class CastPriceToInt implements Handler
             return $next($attr);
         }
 
-        $attr->price = (int) str_replace('.', '', $attr->price);
+        $attr->price = (int) str_replace(',', '', $attr->price);
 
-        return $attr;
+        return $next($attr);
     }
 }

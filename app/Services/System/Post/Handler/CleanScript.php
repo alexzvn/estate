@@ -18,6 +18,6 @@ class CleanScript implements Handler
     {
         $attr->content = Purifier::clean($attr->content ?? '');
 
-        return $attr;
+        return $next($attr);
     }
 }

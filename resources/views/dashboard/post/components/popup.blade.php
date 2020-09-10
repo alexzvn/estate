@@ -77,7 +77,7 @@ use App\Enums\PostType;
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                                 <label for="post-category">Danh mục</label>
-                                <select class="form-control" name="category" id="post-category">
+                                <select class="form-control" name="category_ids" id="post-category">
                                 <option value="">Chọn danh mục</option>
                                 @php
                                     $catId = $category->id ?? null;
@@ -217,7 +217,7 @@ use App\Enums\PostType;
     function serializeBody() {
         let form = new FormData(document.getElementById('post-form'));
 
-        form.append('post_content', editor.getData());
+        form.append('content', editor.getData());
 
         let data = [];
         for (const pair of form.entries()) {

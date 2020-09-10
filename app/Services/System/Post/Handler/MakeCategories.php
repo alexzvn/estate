@@ -24,10 +24,16 @@ class MakeCategories implements Handler
 
         if (isset($attr->category_ids) && is_array($attr->category_ids) ) {
             $attr->categories = [...$attr->categories, ...Category::findMany($attr->category_ids)];
+        } else if (is_string($attr->category_ids)) {
+            $attr->categories[] = Category::find($attr->category_ids);
         }
 
-        $attr->categories = collect($attr->categories)->unique('_id');
+        $attr->categories = collect($attr->categories)
+            ->unique('_id')
+            ->map(function ($cat) {
+                return $cat->id;
+            })->toArray();
 
-        return $attr;
+        return $next($attr);
     }
 }

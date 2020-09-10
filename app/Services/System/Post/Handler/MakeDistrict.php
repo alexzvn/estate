@@ -16,12 +16,18 @@ class MakeDistrict implements Handler
      */
     public function handle($attr, \Closure $next)
     {
-        if (empty($attr->district) && !($attr->district instanceof District)) {
+        if (empty($attr->district)) {
             return $next($attr);
         }
 
-        $attr->district_id = $attr->district->id;
+        if ($attr->district instanceof District) {
+            $district = $attr->district->id;
+        } else if ($district = District::find($attr->district)) {
+            $district = $district->id;
+        }
 
-        return $attr;
+        $attr->district_id = $district ?? null;
+
+        return $next($attr);
     }
 }

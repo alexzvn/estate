@@ -23,7 +23,6 @@ trait PostService
         'commission',
         'province_id',
         'district_id',
-        'category_ids',
         'publish_at'
     ];
 
@@ -50,7 +49,7 @@ trait PostService
     {
         $attr = collect(self::handleRawAttribute($attr));
 
-        $post->forceUpdate(
+        $post->update(
             $attr->only(static::$fillable)->toArray()
         );
 
@@ -67,7 +66,7 @@ trait PostService
      */
     private static function handleRawAttribute(array $attr)
     {
-        return (new Pipeline())
+        return (new Pipeline(app()))
             ->send((object) $attr)
             ->through([
                 CleanScript::class,
@@ -76,6 +75,7 @@ trait PostService
                 MakeDistrict::class,
                 MakeProvince::class
             ])
+            ->via('handle')
             ->then(function ($attr) {
                 return (array) $attr;
             });

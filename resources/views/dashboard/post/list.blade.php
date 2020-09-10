@@ -179,26 +179,26 @@ ClassicEditor
                 return res.json();
             }).then(post => {
                 let map = {
-                    phone: post.meta.phone,
-                    commission: post.meta.commission,
-                    price: post.meta.price,
-                    title: {value: post.title},
-                    id: {value: post._id},
+                    phone: post.phone,
+                    commission: post.commission,
+                    price: post.price,
+                    title: post.title,
+                    id: post._id,
                 };
 
                 editor.setData(post.content);
 
                 for (const key in map) {
                     if (map.hasOwnProperty(key)) {
-                        const meta = map[key];
-                        $(`#post-${key}`).val(meta ? meta.value + '' : '');
+                        const attr = map[key];
+                        $(`#post-${key}`).val(attr ? attr + '' : '');
                     }
                 }
 
                 let options = {
                     category: post.categories[0] ? post.categories[0]._id : null,
-                    province: post.meta.province ? post.meta.province.value : null,
-                    district: post.meta.district ? post.meta.district.value : null,
+                    province: post.province_id,
+                    district: post.district_id,
                     type: post.type,
                     status: post.status,
                 };
