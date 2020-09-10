@@ -18,7 +18,7 @@ trait CanFilter
      */
     protected $filterable = [];
 
-    public function scopeFilterRequest(Builder $query, $filters)
+    public function scopeFilter(Builder $query, $filters)
     {
         $filters = $filters instanceof Request ? $filters->all() : $filters;
 
