@@ -171,6 +171,12 @@ return [
                     'manager.post.delete',
                 ]
             ],[
+                'name' => 'Quản lý môi giới',
+                'permissions' => [
+                    'manager.post.report.view',
+                    'manager.post.report.delete',
+                ]
+            ],[
                 'name' => 'Quản lý danh mục',
                 'permissions' => [
                     'manager.category.view',
