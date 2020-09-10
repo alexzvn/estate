@@ -16,12 +16,18 @@ class MakeProvince implements Handler
      */
     public function handle($attr, \Closure $next)
     {
-        if (empty($attr->province) && !($attr->province instanceof Province)) {
+        if (empty($attr->province)) {
             return $next($attr);
         }
 
-        $attr->province_id = $attr->province->id;
+        if ($attr->province instanceof Province) {
+            $province = $attr->province->id;
+        } else if ($province = Province::find($attr->province)) {
+            $province = $province->id;
+        }
 
-        return $attr;
+        $attr->province_id = $province ?? null;
+
+        return $next($attr);
     }
 }
