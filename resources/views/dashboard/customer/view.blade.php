@@ -218,6 +218,7 @@
         </div>
     </div>
 </div>
+<form id="delete-sub-form" method="post">@csrf</form>
 @endsection
 
 @push('script')
