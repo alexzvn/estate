@@ -35,19 +35,16 @@
 </div>
 
 @foreach ($posts as $post)
-@php
-    $post->loadMeta();
-@endphp
 <div class="col-md-4 col-sm-6 mb-3">
     <div class="card component-card_2">
         <img src="{{ '/storage/' . $post->files[0]->path ?? '' }}" class="card-img-header cursor-pointer" data-images='@json($post->files)'>
         <div class="card-body">
             <h5 class="card-title">{{ $post->title }}</h5>
             <p class="card-text">
-                <i class="t-icon" data-feather="phone"></i> {{ $post->meta->phone->value ?? '' }} <br>
+                <i class="t-icon" data-feather="phone"></i> {{ $post->phone ?? '' }} <br>
                 <i class="t-icon" data-feather="bookmark"></i> {{ $post->categories[0]->name ?? '' }} <br>
-                <i class="t-icon" data-feather="map"></i> {{ $post->meta->province->province->name ?? '' }} <br>
-                <i class="t-icon" data-feather="map-pin"></i> {{ $post->meta->district->district->name ?? '' }}
+                <i class="t-icon" data-feather="map"></i> {{ $post->province->name ?? '' }} <br>
+                <i class="t-icon" data-feather="map-pin"></i> {{ $post->district->name ?? '' }}
             </p>
         </div>
         <div class="card-footer">

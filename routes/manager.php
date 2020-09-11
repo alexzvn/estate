@@ -43,14 +43,12 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::post('/delete/many', 'PostController@deleteMany')->name('manager.post.delete.many');
     Route::post('/reverse/many', 'PostController@reverseMany')->name('manager.post.reverse.many');
 
-    Route::get('/market', 'PostMarket@index')->name('manager.post.market');
+    Route::get('/market', 'MarketController@index')->name('manager.post.market');
 
-    Route::post('/{id}/online/clone/origin/save', 'PostOnlineController@cloneSaveOrigin')->name('manager.post.clone.origin.save');
-    Route::post('/{id}/online/clone/origin/delete', 'PostOnlineController@cloneDeleteOrigin')->name('manager.post.clone.origin.delete');
+    Route::post('/{id}/online/clone/origin/save', 'OnlineController@cloneSaveOrigin')->name('manager.post.clone.origin.save');
+    Route::post('/{id}/online/clone/origin/delete', 'OnlineController@cloneDeleteOrigin')->name('manager.post.clone.origin.delete');
 
-    Route::get('/{id}/fetch', 'PostOnlineController@view')->name('manager.post.fetch');
-
-    Route::get('/pending', 'PostPending@index')->name('manager.post.pending');
+    Route::get('/{id}/fetch', 'OnlineController@view')->name('manager.post.fetch');
 });
 
 /**

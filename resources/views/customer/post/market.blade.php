@@ -28,7 +28,6 @@
 
         @foreach ($posts as $post)
         @php
-            $meta        = $post->loadMeta()->meta;
             $firstImages = $post->files->shift();
         @endphp
 
@@ -56,12 +55,12 @@
                         </a>
                     </div>
                     <div class="product-info mt-3">
-                        <img src="{{ asset('/assets/img/selection.png') }}" width="16"> <strong>{{ $meta->phone->value ?? '' }}</strong>
+                        <img src="{{ asset('/assets/img/selection.png') }}" width="16"> <strong>{{ $post->phone ?? '' }}</strong>
                     </div>
                     <div class="product-info">
                         <img src="{{ asset('/assets/img/location.png') }}" width="18">
-                        <a href="javascript:void(0)">{{ $meta->district->district->name }}</a>,
-                        <a href="javascript:void(0)">{{ $meta->province->province->name }}</a>
+                        <a href="javascript:void(0)">{{ $post->district->name }}</a>,
+                        <a href="javascript:void(0)">{{ $post->province->name }}</a>
                     </div>
                 </div>
             </div>

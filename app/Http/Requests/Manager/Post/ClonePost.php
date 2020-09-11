@@ -27,11 +27,11 @@ class ClonePost extends FormRequest
     public function rules()
     {
         return [
-            'post_content' => 'required',
+            'content' => 'required',
             'title'     => 'required',
             'phone'     => 'required|regex:/^[0-9_.]+$/',
             'price'     => 'required|regex:/^[0-9,.]+$/',
-            'category'  => 'required|exists:categories,_id',
+            'category_ids'  => 'required|exists:categories,_id',
             'province'  => 'nullable|exists:provinces,_id',
             'commission'=> 'required|string|max:20',
             'district'  => 'nullable|exists:districts,_id',

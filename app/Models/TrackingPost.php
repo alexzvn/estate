@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\PostMeta;
 use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
@@ -27,53 +26,27 @@ class TrackingPost extends Model
         ]);
     }
 
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'phone', 'phone');
+    }
+
     public function tracking()
     {
-        $phone = Post::with('metas', 'categories')->filterRequest(['phone' => $this->phone])->get();
-
-        if (empty($phone)) {
-            return $this->forceFill([
-                'seen' => 0,
-                'district_unique' => 0,
-                'categories_unique' => 0,
-            ])->save();
-        }
-
-        $categoriesUnique = $this->trackingCategoriesUnique(
-            $phone->reduce(function (Collection $carry, $item)
-            {
-                return $carry->push(...$item->categories);
-            }, collect())
-        );
-
-        $districtUnique = $this->trackingDistrictUnique(
-            $phone->reduce(function (Collection $carry, $item)
-            {
-                return $carry->push(...$item->metas);
-            }, collect())
-        );
-
         return $this->forceFill([
-            'seen' => $phone->count(),
-            'district_unique' => $districtUnique,
-            'categories_unique' => $categoriesUnique,
+            'seen' => $this->posts->count(),
+            'district_unique' => $this->countDistrict(),
+            'categories_unique' => $this->countProvince(),
         ])->save();
     }
 
-    public function scopeWithoutWhitelist(Builder $builder)
+    public function countProvince()
     {
-        $whitelist = Whitelist::all()->map(function ($w) { return $w->phone; });
-
-        return $builder->whereNotIn('phone', $whitelist->toArray());
+        return $this->posts->unique('province_id')->count();
     }
 
-    private function trackingCategoriesUnique(Collection $categories)
+    public function countDistrict()
     {
-        return $categories->unique('_id')->count();
-    }
-
-    private function trackingDistrictUnique(Collection $meta)
-    {
-        return $meta->where('name', PostMeta::District)->unique('value')->count();
+        return $this->posts->unique('district_id')->count();
     }
 }

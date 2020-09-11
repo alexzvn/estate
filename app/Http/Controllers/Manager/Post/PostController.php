@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers\Manager\Post;
 
-use App\Enums\PostMeta;
-use App\Enums\PostStatus;
+use App\Repository\File;
+use App\Repository\Post;
+use App\Models\Whitelist;
 use App\Repository\Category;
 use Illuminate\Http\Request;
-use App\Repository\Location\Province;
-use App\Http\Controllers\Manager\Controller;
-use App\Http\Requests\Manager\Post\DeleteManyPost;
-use App\Http\Requests\Manager\Post\StoreRequest;
-use App\Http\Requests\Manager\Post\UpdatePost;
-use App\Models\Whitelist;
-use App\Repository\File;
 use App\Repository\Location\District;
-use App\Repository\Meta;
-use App\Repository\Post;
-use Mews\Purifier\Facades\Purifier;
+use App\Repository\Location\Province;
+use App\Services\System\Post\PostService;
+use App\Http\Controllers\Manager\Controller;
+use App\Http\Requests\Manager\Post\UpdatePost;
+use App\Http\Requests\Manager\Post\DeleteManyPost;
 
 class PostController extends Controller
 {
@@ -24,9 +20,9 @@ class PostController extends Controller
     {
         $this->authorize('manager.post.view');
 
-        $posts = Post::with(['metas.province', 'metas.district','categories', 'user'])
-            ->filterRequest($request)
-            ->orderBy('publish_at', 'desc')
+        $posts = Post::with(['province', 'district','categories', 'user'])
+            ->filter($request)
+            ->newest()
             ->paginate(30);
 
         $this->shareCategoriesProvinces();
@@ -39,10 +35,9 @@ class PostController extends Controller
         $this->authorize('manager.post.view');
 
         $posts = Post::onlyTrashed()
-            ->with(['metas.province', 'categories'])
-            ->select(['name', 'title'])
-            ->filterRequest($request)
-            ->orderBy('publish_at', 'desc')
+            ->with(['categories'])
+            ->filter($request)
+            ->newest()
             ->paginate(20);
 
         $this->shareCategoriesProvinces();
@@ -54,7 +49,7 @@ class PostController extends Controller
     {
         $this->authorize('manager.post.view');
 
-        $post = $post->with(['categories', 'metas', 'user'])->findOrFail($id)->loadMeta();
+        $post = $post->with(['categories', 'user'])->findOrFail($id);
         $provinces = Province::with('districts')->active()->get();
 
         return view('dashboard.post.edit', [
@@ -100,47 +95,11 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        $post->metas()->forceDelete();
+        $post = PostService::update($post, $request->all());
 
-        $post->fill(
-            array_merge($request->all(), [
-                'content' => Purifier::clean($request->post_content)
-            ])
-        )->save();
-
-        $post->categories()->save(Category::find($request->category));
-
-        if ($request->status == PostStatus::Published && empty($post->publish_at)) {
-            $post->publish_at = now(); $post->save();
-        }
-
-        $this->makeSaveMeta($post, $request);
         $this->syncUploadFiles($post, $request);
 
         return back()->with('success', 'Cập nhật thành công');
-    }
-
-    public function store(StoreRequest $request)
-    {
-        $post = Post::create(
-            array_merge($request->all(), [
-                'content' => Purifier::clean($request->post_content)
-            ])
-        );
-
-        $post->categories()->save(Category::find($request->category));
-
-        $this->makeSaveMeta($post, $request);
-        $this->syncUploadFiles($post, $request);
-
-        $request->user()->posts()->save($post);
-
-        if ($request->status == PostStatus::Published && empty($post->publish_at)) {
-            $post->publish_at = now(); $post->save();
-        }
-
-        return redirect(route('manager.post.view', ['id' => $post->id]))
-            ->with('success', 'Tạo mới thành công');
     }
 
     protected function shareCategoriesProvinces()
@@ -148,17 +107,6 @@ class PostController extends Controller
         view()->share('categories', Category::parentOnly()->with('children')->get());
         view()->share('provinces', Province::active()->with('districts')->get());
         view()->share('whitelist', Whitelist::all());
-    }
-
-    protected function makeSaveMeta($post, Request $request)
-    {
-        return $post->metas()->saveMany(Meta::fromMany([
-            PostMeta::Phone      => str_replace('.', '', $request->phone),
-            PostMeta::Price      => (int) str_replace(',', '', $request->price),
-            PostMeta::Province   => $request->province ?? '',
-            PostMeta::District   => $request->district ?? '',
-            PostMeta::Commission => $request->commission ?? ''
-        ]));
     }
 
     private function syncUploadFiles($post, Request $request)
@@ -176,6 +124,8 @@ class PostController extends Controller
             }
         }
 
-        $post->files()->sync($ids->toArray());
+        if ($ids->count()) {
+            $post->files()->sync($ids->toArray());
+        }
     }
 }

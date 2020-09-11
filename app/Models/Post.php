@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use App\EmptyClass;
-use Illuminate\Support\Str;
-use App\Enums\PostMeta as Meta;
 use App\Enums\PostStatus;
+use App\Models\Location\District;
+use App\Models\Location\Province;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanSearch;
 use App\Models\Traits\HasFiles;
@@ -19,7 +18,13 @@ class Post extends Model
     use SoftDeletes, CanFilter, CanSearch, HasFiles;
 
     protected $fillable = [
-        'content', 'title', 'type', 'status'
+        'content',
+        'title',
+        'type',
+        'status',
+        'phone',
+        'price',
+        'commission',
     ];
     protected $dates = [
         'publish_at'
@@ -30,14 +35,19 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function metas()
-    {
-        return $this->hasMany(PostMeta::class);
-    }
-
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
     }
 
     public function report()
@@ -45,19 +55,9 @@ class Post extends Model
         return $this->hasOne(Report::class);
     }
 
-    public function loadMeta()
+    public function tracking()
     {
-        $metaEnum   = collect(Meta::toArray())->flip();
-        $this->meta = new EmptyClass;
-
-        $this->metas->each(function ($meta) use ($metaEnum)
-        {
-            if (isset($metaEnum[$meta->name])) {
-                $this->meta->{Str::camel($metaEnum[$meta->name])} = $meta;
-            }
-        });
-
-        return $this;
+        return $this->belongsTo(TrackingPost::class, 'phone', 'phone');
     }
 
     public function scopePublished(Builder $builder)
@@ -75,6 +75,26 @@ class Post extends Model
     public function scopePending(Builder $builder)
     {
         $builder->where('status', (string)  PostStatus::Pending());
+    }
+
+    public function scopeWithoutWhitelist(Builder $builder)
+    {
+        $whitelist = Whitelist::all()->map(function ($whitelist)
+        {
+            return $whitelist->phone;
+        });
+
+        $builder->whereNotIn('phone', $whitelist->toArray());
+    }
+
+    public function scopeWithoutBlacklist(Builder $builder)
+    {
+        $blacklist = Blacklist::all()->map(function ($blacklist)
+        {
+            return $blacklist->phone;
+        });
+
+        $builder->whereNotIn('phone', $blacklist->toArray());
     }
 
     public function filterType(Builder $builder, $type)
@@ -117,50 +137,22 @@ class Post extends Model
 
     public function filterProvince(Builder $builder, $value)
     {
-        return $builder->whereHas('metas', function (Builder $q) use ($value)
-        {
-            $q->where('name', Meta::Province)->where('value', $value);
-        });
+        return $builder->where('province_id', $value);
     }
 
     public function filterProvinces(Builder $builder, $value)
     {
-        return $builder->whereHas('metas', function (Builder $q) use ($value)
-        {
-            $q->where('name', Meta::Province)->whereIn('value', $value);
-        });
-    }
-
-    public function filterCity(Builder $builder, $value)
-    {
-        return $builder->whereHas('metas', function (Builder $q) use ($value)
-        {
-            $q->where('name', Meta::City)->where('value', $value);
-        });
+        return $builder->whereIn('province_id', $value);
     }
 
     public function filterDistrict(Builder $builder, $value)
     {
-        return $builder->whereHas('metas', function (Builder $q) use ($value)
-        {
-            $q->where('name', Meta::District)->where('value', $value);
-        });
-    }
-
-    public function filterStreet(Builder $builder, $value)
-    {
-        return $builder->whereHas('metas', function (Builder $q) use ($value)
-        {
-            $q->where('name', Meta::Street)->where('value', $value);
-        });
+        return $builder->where('district_id', $value);
     }
 
     public function filterPhone(Builder $builder, $value)
     {
-        return $builder->whereHas('metas', function (Builder $q) use ($value)
-        {
-            $q->where('name', Meta::Phone)->where('value', $value);
-        });
+        return $builder->where('phone', $value);
     }
 
     public function filterStatus(Builder $builder, $value)
@@ -191,31 +183,21 @@ class Post extends Model
 
     public function filterMinPrice(Builder $builder, int $price)
     {
-        return $builder->whereHas('metas', function (Builder $q) use ($price)
-        {
-            $q->where('name', Meta::Price)->where('value', '>=', $price);
-        });
+        return $builder->where('price', '>=', $price);
     }
 
     public function filterMaxPrice(Builder $builder, int $price)
     {
-        return $builder->whereHas('metas', function (Builder $q) use ($price)
-        {
-            $q->where('name', Meta::Price)->where('value', '<=', $price);
-        });
+        return $builder->where('price', '<=', $price);
     }
 
     public function getIndexDocumentData()
     {
-        $meta = $this->loadMeta()->meta;
-        unset($this->meta);
-
         return [
             'title' => $this->title,
             'content' => $this->content,
-            'type'  => $this->type,
-            'province' => $meta->province->province->name ?? '',
-            'district' => $meta->district->district->name ?? '',
+            'province' => $this->province->name ?? '',
+            'district' => $this->district->name ?? '',
             'categories' => $this->categories[0]->name ?? '',
         ];
     }

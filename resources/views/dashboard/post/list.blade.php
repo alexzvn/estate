@@ -6,7 +6,7 @@
 @endpush
 
 @php
-    $hasCommission = isset($posts[0]) && isset($posts[0]->loadMeta()->meta->commission->value);
+    $hasCommission = isset($posts[0]) && isset($posts[0]->commission);
 @endphp
 
 @section('content')
@@ -50,9 +50,6 @@
                     </thead>
                     <tbody>
                         @foreach ($posts as $post)
-                        @php
-                            $meta = $post->loadMeta()->meta;
-                        @endphp
                         <tr>
                             <td class="checkbox-column">
                                 <div class="custom-control custom-checkbox checkbox-primary">
@@ -63,7 +60,7 @@
                             <td class="cursor-pointer open-post" data-id="{{ $post->id }}">
                                 <p class="mb-0">
                                     <strong>
-                                        @if (isset($meta->phone->value) && $whitelist->whereIn('phone', $meta->phone->value)->isNotEmpty())
+                                        @if (isset($post->phone) && $whitelist->whereIn('phone', $post->phone)->isNotEmpty())
                                         [<span class="text-success font-weight-bolder">Chính chủ</span>]
                                         @endif
                                         {{ Str::ucfirst(Str::of($post->title)->limit(73)) }}
@@ -71,31 +68,31 @@
                                     <br>
                                     <span class="mb-0" style="font-size: 12px;">
                                         <strong> </strong> <i class="text-info">{{ $post->categories[0]->name ?? '' }}</i> <span class="text-muted">|</span>
-                                        <strong>Quận/huyện: </strong> <i class="text-info">{{ $meta->district->district->name ?? 'N/a' }}</i>
+                                        <strong>Quận/huyện: </strong> <i class="text-info">{{ $post->district->name ?? 'N/a' }}</i>
                                         <strong>Ngày đăng: </strong> <i class="text-info">{{ $post->publish_at ? $post->publish_at->format('d/m/Y H:i:s') : $post->updated_at->format('d/m/Y H:i:s') }}</i>
                                         @if ($post->reverser) <span class="text-muted">|</span> <span class="text-danger">Đã đảo</span> @endif
                                     </span>
                                 </p>
                             </td>
                             @if ($hasCommission)
-                            <td>{{ $meta->commission->value ?? '' }}</td>
+                            <td>{{ $post->commission ?? '' }}</td>
                             @endif
-                            <td>{{ $meta->price ? format_web_price($meta->price->value ?? 0) : 'N/a' }}</td>
+                            <td>{{ $post->price ? format_web_price($post->price ?? 0) : 'N/a' }}</td>
                             <td>
-                                @isset($meta->phone->value)
+                                @isset($post->phone)
                                 <div class="d-flex">
-                                    {!! implode('<br>', explode(',', $meta->phone->value ?? '')) ?? 'N/a' !!}
-                                    <i class="lookup-phone t-icon t-hover-icon" data-feather="search" data-phone="{{ $meta->phone->value ?? '' }}"></i>
+                                    {!! implode('<br>', explode(',', $post->phone ?? '')) ?? 'N/a' !!}
+                                    <i class="lookup-phone t-icon t-hover-icon" data-feather="search" data-phone="{{ $post->phone ?? '' }}"></i>
                                 </div>
                                 @endisset
                             </td>
                             <td> @include('dashboard.post.components.status', ['status' => $post->status]) </td>
                             <td>
-                                @isset($meta->phone->value)
-                                <div class="{{ $meta->phone->value ? 'add-blacklist' : '' }}" data-phone="{{ $meta->phone->value ?? '' }}">
+                                @isset($post->phone)
+                                <div class="{{ $post->phone ? 'add-blacklist' : '' }}" data-phone="{{ $post->phone ?? '' }}">
                                     <span class="badge badge-secondary cursor-pointer">Chặn SĐT</span>
                                 </div>
-                                <div class="{{ $meta->phone->value ? 'add-whitelist' : '' }}" data-phone="{{ $meta->phone->value ?? '' }}">
+                                <div class="{{ $post->phone ? 'add-whitelist' : '' }}" data-phone="{{ $post->phone ?? '' }}">
                                     <span class="badge outline-badge-info cursor-pointer mt-1">Chính chủ</span>
                                 </div>
                                 @endisset
@@ -182,26 +179,26 @@ ClassicEditor
                 return res.json();
             }).then(post => {
                 let map = {
-                    phone: post.meta.phone,
-                    commission: post.meta.commission,
-                    price: post.meta.price,
-                    title: {value: post.title},
-                    id: {value: post._id},
+                    phone: post.phone,
+                    commission: post.commission,
+                    price: post.price,
+                    title: post.title,
+                    id: post._id,
                 };
 
                 editor.setData(post.content);
 
                 for (const key in map) {
                     if (map.hasOwnProperty(key)) {
-                        const meta = map[key];
-                        $(`#post-${key}`).val(meta ? meta.value + '' : '');
+                        const attr = map[key];
+                        $(`#post-${key}`).val(attr ? attr + '' : '');
                     }
                 }
 
                 let options = {
                     category: post.categories[0] ? post.categories[0]._id : null,
-                    province: post.meta.province ? post.meta.province.value : null,
-                    district: post.meta.district ? post.meta.district.value : null,
+                    province: post.province_id,
+                    district: post.district_id,
                     type: post.type,
                     status: post.status,
                 };

@@ -14,4 +14,9 @@ class Whitelist extends Model
             'phone' => $phone
         ]);
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'phone', 'phone');
+    }
 }

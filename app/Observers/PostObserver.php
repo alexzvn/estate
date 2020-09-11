@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Post;
+use App\Models\TrackingPost;
 
 class PostObserver
 {
@@ -36,10 +37,7 @@ class PostObserver
      */
     public function deleted(Post $post)
     {
-        $post->metas()->get()->each(function ($meta)
-        {
-            $meta->delete();
-        });
+        $this->tracking($post);
     }
 
     /**
@@ -51,7 +49,6 @@ class PostObserver
     public function restored(Post $post)
     {
         $this->index($post);
-        $post->metas()->restore();
     }
 
     /**
@@ -62,19 +59,25 @@ class PostObserver
      */
     public function forceDeleted(Post $post)
     {
-        $post->metas()->forceDelete();
+        $this->tracking($post);
     }
 
     protected function index(Post $post)
-    {
-        $this->indexMeta($post);
-    }
-
-    public function indexMeta(Post $post)
     {
         Post::withoutEvents(function () use ($post)
         {
             $post->index();
         });
+
+        $this->tracking($post);
+    }
+
+    public function tracking(Post $post)
+    {
+        if (! $post->phone) {
+            return;
+        }
+
+        TrackingPost::findByPhoneOrCreate($post->phone)->tracking();
     }
 }

@@ -13,8 +13,8 @@ class ReportController extends Controller
         $this->authorize('manager.post.report.view');
 
         return view('dashboard.report.list', [
-            'reports' => Report::with(['user', 'post.metas'])
-                ->filterRequest($request)->latest()->paginate(40)
+            'reports' => Report::with(['user', 'post'])
+                ->filter($request)->latest()->paginate(40)
         ]);
     }
 

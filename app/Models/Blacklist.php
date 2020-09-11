@@ -17,4 +17,9 @@ class Blacklist extends Model
     {
         return $builder->where('phone', $value);
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'phone', 'phone');
+    }
 }
