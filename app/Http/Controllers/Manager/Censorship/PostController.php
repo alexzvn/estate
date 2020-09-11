@@ -51,7 +51,11 @@ class PostController extends Controller
     {
         $this->authorize('blacklist.phone.create');
 
-        $blacklist->findByPhoneOrCreate($request->phone);
+        $this->makeListPhone($request->phone)
+            ->each(function ($phone) use ($blacklist)
+            {
+                $blacklist->findByPhoneOrCreate($phone);
+            });
 
         return back()->with('success', "Đã chặn số $request->phone");
     }
@@ -60,8 +64,26 @@ class PostController extends Controller
     {
         $this->authorize('blacklist.phone.create');
 
-        $whitelist->findByPhoneOrCreate($request->phone);
+        $this->makeListPhone($request->phone)
+            ->each(function ($phone) use ($whitelist)
+            {
+                $whitelist->findByPhoneOrCreate($phone);
+            });
 
         return back()->with('success', "Đã thêm số $request->phone vào danh sách trắng");
+    }
+
+    /**
+     * "0123, 0124" -> [0123, 0124]
+     *
+     * @param string $phone
+     * @return \Illuminate\Support\Collection|string[]|array
+     */
+    private function makeListPhone(string $phone)
+    {
+        return collect(explode(',', $phone))
+            ->map(function ($phone) {
+                return trim($phone);
+            });
     }
 }
