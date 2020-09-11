@@ -1,5 +1,26 @@
 <?php
 
+/**
+ * Get logged user
+ *
+ * @return \Illuminate\Contracts\Auth\Authenticatable|\App\Models\User|null
+ */
+function user()
+{
+    return Illuminate\Support\Facades\Auth::user();
+}
+
+/**
+ * Remove all tag contain in html
+ *
+ * @param string $html
+ * @return string
+ */
+function remove_tags(string $html)
+{
+    return preg_replace('/<\/?[\w\s]*>|<.+[\W]>/', '', $html);
+}
+
 function echoActiveIf($expression, $active = 'active')
 {
     // var_dump($expression);
@@ -13,12 +34,24 @@ function echoActiveIf($expression, $active = 'active')
     }
 }
 
+/**
+ * hide last three number of phone
+ *
+ * @param string $phone
+ * @return string
+ */
 function hide_phone(string $phone)
 {
     return substr($phone, 0, 7) . 'xxx';
 }
 
-function format_web_price($price)
+/**
+ * converter price int to humans string
+ *
+ * @param int $price
+ * @return string
+ */
+function format_web_price(int $price)
 {
     static $define;
 
