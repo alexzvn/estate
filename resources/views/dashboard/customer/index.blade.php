@@ -37,7 +37,7 @@
                         <tr>
                             <th class="text-center">#</th>
                             <th>Họ tên</th>
-                            <th>Số điện thoại</th>
+                            <th>Ngày đăng ký</th>
                             <th>Đã chi</th>
                             <th>Đăng ký</th>
                             <th>Hết hạn</th>
@@ -77,13 +77,18 @@
                         @endphp
                         <tr class="{{ $class }}">
                             <td class="text-center" >{{ $loop->index }}</td>
-                            <td @if(($supporter && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer')) class="cursor-pointer open-user" data-id="{{ $user->id }}" @endIf style="font-weight: bold">{{ $user->name }} @if($user->hasVerifiedPhone()) <i class="text-success" width="15" height="15" data-feather="check-circle"></i> @endif</td>
-                            <td>
+                            <td @if(($supporter && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer')) class="cursor-pointer open-user" data-id="{{ $user->id }}" @endIf style="font-weight: bold">
+                                {{ $user->name }} @if($user->hasVerifiedPhone()) <i class="text-success" width="15" height="15" data-feather="check-circle"></i>
+                                @endif
+                                <br>
                                 @if (($supporter && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer'))
                                     {{ $user->phone }}
                                 @else
                                     {{ hide_phone($user->phone) }}
                                 @endif
+                            </td>
+                            <td>
+                                {{ $user->created_at->format('d/m/Y') }}
                             </td>
                             <td>{{ number_format($user->orders->sum('after_discount_price')) }} đ</td>
                             <td>{{ $sub && $sub->activate_at ? $sub->activate_at->format('d/m/Y') : 'N/a' }}</td>
