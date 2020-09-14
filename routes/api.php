@@ -18,4 +18,4 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('import-crawl-post', 'Api\Post\ImportController@store');
+Route::post('import-crawl-post', 'Api\Post\ImportController@store')->name('api.crawl.import.tcc');
