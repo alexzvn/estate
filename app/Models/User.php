@@ -8,6 +8,7 @@ use App\Models\Traits\CanVerifyPhone;
 use Maklad\Permission\Traits\HasRoles;
 use App\Contracts\Auth\MustVerifyPhone;
 use App\Models\Traits\CanSearch;
+use App\Models\Traits\Notifiable;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
@@ -15,6 +16,7 @@ use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyPhone
 {
+    use Notifiable;
     use HasRoles, CanVerifyPhone, CanFilter, CanSearch;
 
     /**
