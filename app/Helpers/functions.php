@@ -51,7 +51,7 @@ function hide_phone(string $phone)
  * @param int $price
  * @return string
  */
-function format_web_price(int $price)
+function format_web_price($price)
 {
     static $define;
 
