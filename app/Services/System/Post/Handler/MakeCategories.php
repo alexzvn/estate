@@ -16,9 +16,11 @@ class MakeCategories implements Handler
      */
     public function handle($attr, \Closure $next)
     {
+        $this->checkCategoriesAttribute($attr);
+
         $attr->categories ??= [];
 
-        $this->checkCategoriesAttribute($attr);
+        $this->removeNullCategories($attr->categories);
 
         $categories = $this->converterCategoryToIds($attr->categories_ids ?? []);
 
@@ -27,6 +29,15 @@ class MakeCategories implements Handler
         );
 
         return $next($attr);
+    }
+
+    protected function removeNullCategories(array &$category)
+    {
+        for ($i=0; $i < count($category); $i++) { 
+            if (is_null($category[$i])) {
+                unset($category[$i]);
+            }
+        }
     }
 
     protected function converterCategoryToIds($categories)
@@ -38,7 +49,7 @@ class MakeCategories implements Handler
     }
 
     /**
-     * Converter vategory to instances
+     * Converter category to instances
      *
      * @param string|array $ids
      * @return array
