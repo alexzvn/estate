@@ -36,8 +36,7 @@ class UpdateCustomer extends FormRequest
             'phone' => [
                 'required',
                 'regex:/^[0-9.]+$/',
-                Rule::unique('users', 'phone')
-                ->ignore('phone', str_replace('.', '', $updateUser->phone))
+                Rule::unique('users', 'phone')->ignoreModel($updateUser)
             ],
             'name' => 'required|string',
             'password' => 'nullable|string',
