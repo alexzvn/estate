@@ -120,7 +120,7 @@ $manual  = $order->manual !== null && $order->manual;
                             </div>
                         </div>
 
-                        @if (! $order->verified && request()->user()->can('*'))
+                        @if (! $order->verified)
                         <div class="form-check">
                             <label class="form-check-label">
                               <input type="checkbox" class="form-check-input" name="verified" id="verified" value="1">
