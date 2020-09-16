@@ -24,6 +24,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/snackbar/snackbar.min.css') }}">
     @stack('style')
+    
 
     <style>
         body {

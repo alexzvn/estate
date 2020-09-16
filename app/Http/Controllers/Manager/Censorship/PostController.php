@@ -21,6 +21,7 @@ class PostController extends Controller
 
         $post = $this->filterTracking($post, $request)
             ->published()
+            ->newest()
             ->withoutWhitelist();
 
         return view('dashboard.censorship.index', [

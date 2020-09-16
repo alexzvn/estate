@@ -23,7 +23,7 @@ class CustomerController extends Controller
     {
         $this->authorize('manager.customer.view');
 
-        $users = User::with(['subscriptions', 'supporter'])
+        $users = User::with(['subscriptions', 'supporter', 'orders'])
             ->filter($request)
             ->onlyCustomer();
 

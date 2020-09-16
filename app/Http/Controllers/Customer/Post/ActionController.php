@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer\Post;
 
+use App\Events\Post\UserReport;
 use App\Repository\Post;
 
 class ActionController extends BaseController
@@ -54,9 +55,11 @@ class ActionController extends BaseController
             return response('Đã có người báo môi giới tin này');
         }
 
-        request()->user()->report()->save(
+        $report = request()->user()->report()->save(
             $post->report()->create([])
         );
+
+        event(new UserReport($report));
 
         return response('Đã báo môi giới tin này');
     }
