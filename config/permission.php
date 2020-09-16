@@ -149,6 +149,8 @@ return [
             'manager.post.report.view' => 'Xem thông tin báo MG',
             'manager.post.report.delete' => 'Xóa thông ti báo MG',
 
+            'manager.notification.post.report' => 'Nhận thông báo tin môi giới',
+
             'blacklist.phone.view' => 'Xem',
             'blacklist.phone.create' => 'Thêm SĐT',
             'blacklist.phone.modify' => 'Chỉnh sửa',
@@ -243,6 +245,11 @@ return [
                     'blacklist.phone.create',
                     'blacklist.phone.modify',
                     'blacklist.phone.delete',
+                ]
+            ],[
+                'name' => 'Nhận thông báo',
+                'permissions' => [
+                    'manager.notification.post.report'
                 ]
             ],[
                 'name' => 'Khác',
