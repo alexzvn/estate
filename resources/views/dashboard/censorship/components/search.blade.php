@@ -51,7 +51,48 @@
 
         <div class="col-md-2 pl-md-0 order-md-first order-last">
             <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
+            <button id="advanced-search" class="btn btn-sm btn-outline-secondary"><i data-feather="filter"></i></button>
+
         </div>
+
+        <div class="col-md-12">
+            <div id="advanced-search-form" class="row" style="display: none;">
+                <div class="col-md-5 pl-md-0">
+                    <div class="form-row">
+                        <div class="offset-md-2 col-md-9">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="form-group input-group-sm">
+                                        <input type="text" class="form-control" name="from" id="from" data-date-orientation="bottom auto"
+                                          data-provide="datepicker" placeholder="Chọn từ ngày..." value="{{ request('from') }}" data-date-format="dd-mm-yyyy">
+                                          <small class="ml-2 form-text text-muted">Chọn tin từ ngày</small>
+                                      </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group input-group-sm">
+                                      <input type="text" class="form-control" name="to" id="to" data-date-orientation="bottom auto"
+                                      data-provide="datepicker" placeholder="Đến ngày" value="{{ request('to') }}" data-date-format="dd-mm-yyyy">
+                                      <small class="ml-2 form-text text-muted">Chọn tin đến ngày</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2 pl-md-0">
+                    <div class="form-group input-group-sm">
+                        <select class="form-control" name="province" id="province">
+                          <option value="">Chọn Tỉnh/TP</option>
+                          @foreach ($provinces ?? [] as $item)
+                              <option value="{{ $item->id }}" {{ $item->id === request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                          @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
