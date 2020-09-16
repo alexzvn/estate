@@ -2,18 +2,15 @@
 
 namespace App\Notifications;
 
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewReport extends Notification
+class NewUserRegister extends Notification
 {
     use Queueable;
-
-    protected $post;
 
     protected $user;
 
@@ -22,9 +19,8 @@ class NewReport extends Notification
      *
      * @return void
      */
-    public function __construct(Post $post, User $user)
+    public function __construct(User $user)
     {
-        $this->post = $post;
         $this->user = $user;
     }
 
@@ -48,11 +44,10 @@ class NewReport extends Notification
     public function toArray($notifiable)
     {
         return [
-            'link' => route('manager.report.view', [], false) . '?phone=' . $this->post->phone,
-            'feather_icon' => 'heart',
-            'message' => $this->user->name . 'đã báo tin môi giới.',
-            'user' => $this->user,
-            'post' => $this->post
+            'link' => route('manager.customer.view', ['id' => $this->user->id], false),
+            'feather_icon' => 'user',
+            'message' => $this->user->name . ' vừa mới đăng ký tài khoản',
+            'user' => $this->user
         ];
     }
 }

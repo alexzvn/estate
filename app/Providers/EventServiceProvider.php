@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Events\Post\UserReport;
+use App\Events\UserRegister;
+use App\Listeners\SendNotifyNewUserRegister;
 use App\Listeners\SendReportNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -23,6 +25,10 @@ class EventServiceProvider extends ServiceProvider
 
         UserReport::class => [
             SendReportNotification::class
+        ],
+
+        UserRegister::class => [
+            SendNotifyNewUserRegister::class
         ],
     ];
 

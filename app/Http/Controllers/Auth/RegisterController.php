@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserRegister;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Repository\User;
@@ -64,11 +65,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['phone'] .'@'. parse_url(config('app.url'), PHP_URL_HOST),
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
         ]);
+
+        return tap($user, function ($user)
+        {
+            event(new UserRegister($user));
+        });
     }
 }

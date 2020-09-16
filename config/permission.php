@@ -149,7 +149,8 @@ return [
             'manager.post.report.view' => 'Xem thông tin báo MG',
             'manager.post.report.delete' => 'Xóa thông ti báo MG',
 
-            'manager.notification.post.report' => 'Nhận thông báo tin môi giới',
+            'manager.notification.post.report' => 'Báo tin môi giới',
+            'manager.notification.user.register' => 'Người dùng đăng ký mới',
 
             'blacklist.phone.view' => 'Xem',
             'blacklist.phone.create' => 'Thêm SĐT',
