@@ -13,7 +13,7 @@ class Category extends Model implements Auditable
 
     protected $fillable = ['name', 'description'];
 
-    protected $modelName = 'danh mục';
+    const NAME = 'danh mục';
 
     public function posts()
     {
