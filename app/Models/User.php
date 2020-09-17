@@ -61,13 +61,6 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         'birthday'
     ];
 
-    protected $mappingProperties = [
-        'name' => [
-          'type' => 'text',
-          "analyzer" => "standard",
-        ]
-    ];
-
     public function logs()
     {
         return $this->hasMany(Log::class);
