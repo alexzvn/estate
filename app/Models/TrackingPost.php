@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\Builder;
 
 /**
  * class dùng trong việc theo dõi tin môi giới
