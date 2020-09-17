@@ -41,7 +41,7 @@ $color = [
             
                             <div class="col-md-9">
                                 <div class="form-group input-group-sm">
-                                <input id="phone" type="text" class="form-control" name="phone" value="{{ request('query') }}" placeholder="Tìm theo sđt">
+                                <input id="phone" type="text" class="form-control" name="phone" value="{{ request('phone') }}" placeholder="Tìm theo sđt">
                                 </div>
                             </div>
                         </div>
