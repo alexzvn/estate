@@ -20,6 +20,8 @@ class Post extends Model implements Auditable
     use TraitsAuditable;
     use SoftDeletes, CanFilter, CanSearch, HasFiles;
 
+    protected $modelName = 'tin';
+
     protected $fillable = [
         'content',
         'title',

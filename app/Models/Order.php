@@ -23,6 +23,8 @@ class Order extends Model implements CanNote, Auditable
 
     public const PAID = 2;
 
+    protected $modelName = 'đơn hàng';
+
     protected $fillable = [
         'manual',
         'month',

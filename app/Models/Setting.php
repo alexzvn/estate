@@ -18,5 +18,7 @@ class Setting extends Model implements Auditable
         'preload' => 'boolean'
     ];
 
+    protected $modelName = 'thiết lập trang web';
+
     public $timestamps = false;
 }

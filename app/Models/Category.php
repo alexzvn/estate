@@ -13,6 +13,8 @@ class Category extends Model implements Auditable
 
     protected $fillable = ['name', 'description'];
 
+    protected $modelName = 'danh mục';
+
     public function posts()
     {
         return $this->belongsToMany(Post::class);
