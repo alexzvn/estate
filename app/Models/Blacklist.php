@@ -15,7 +15,7 @@ class Blacklist extends Model implements Auditable
 
     protected $fillable = ['phone'];
 
-    protected $modelName = 'danh sách đen';
+    const NAME = 'danh sách đen';
 
     public function filterPhone(Builder $builder, $value)
     {

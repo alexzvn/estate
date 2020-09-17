@@ -11,7 +11,7 @@ class Plan extends Model implements Auditable
 {
     use TraitsAuditable;
 
-    protected $modelName = 'gói đăng ký';
+    const NAME = 'gói đăng ký';
 
     protected $fillable = [
         'name', 'price', 'types'

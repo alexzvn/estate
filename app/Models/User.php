@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     use Notifiable, TraitsAuditable;
     use HasRoles, CanVerifyPhone, CanFilter, CanSearch;
 
-    protected $modelName = 'người dùng';
+    const NAME = 'người dùng';
 
     /**
      * Define timeout for recent session in minutes

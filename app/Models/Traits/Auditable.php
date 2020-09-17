@@ -16,9 +16,4 @@ trait Auditable
 
         static::enableAuditing();
     }
-
-    public function getModelName()
-    {
-        return $this->modelName ?? 'model';
-    }
 }

@@ -20,7 +20,7 @@ class Post extends Model implements Auditable
     use TraitsAuditable;
     use SoftDeletes, CanFilter, CanSearch, HasFiles;
 
-    protected $modelName = 'tin';
+    const NAME = 'tin';
 
     protected $fillable = [
         'content',
