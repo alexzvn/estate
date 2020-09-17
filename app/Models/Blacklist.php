@@ -15,6 +15,8 @@ class Blacklist extends Model implements Auditable
 
     protected $fillable = ['phone'];
 
+    protected $modelName = 'danh sách đen';
+
     public function filterPhone(Builder $builder, $value)
     {
         return $builder->where('phone', $value);

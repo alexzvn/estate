@@ -8,12 +8,17 @@ trait Auditable
 {
     use AuditingAuditable;
 
-    public function withoutAudit(\Closure $handle)
+    public static function withoutAudit(\Closure $handle)
     {
         static::disableAuditing();
 
         $handle();
 
         static::enableAuditing();
+    }
+
+    public function getModelName()
+    {
+        return $this->modelName ?? 'model';
     }
 }

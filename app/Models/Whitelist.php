@@ -12,6 +12,8 @@ class Whitelist extends Model implements Auditable
 
     protected $fillable = ['phone'];
 
+    protected $modelName = 'danh sách trắng';
+
     public static function findByPhoneOrCreate(string $phone)
     {
         return self::where('phone', $phone)->firstOrCreate([

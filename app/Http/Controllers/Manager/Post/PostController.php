@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manager\Post;
 
 use App\Repository\File;
 use App\Repository\Post;
+use App\Enums\PostStatus;
 use App\Models\Whitelist;
 use App\Repository\Category;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use App\Repository\Location\Province;
 use App\Services\System\Post\PostService;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Post\UpdatePost;
+use App\Http\Requests\Manager\Post\StoreRequest;
 use App\Http\Requests\Manager\Post\DeleteManyPost;
 
 class PostController extends Controller
@@ -49,8 +51,12 @@ class PostController extends Controller
     {
         $this->authorize('manager.post.view');
 
-        $post = $post->with(['categories', 'user'])->findOrFail($id);
+        $post = $post->with(['categories', 'user', 'files'])->findOrFail($id);
         $provinces = Province::with('districts')->active()->get();
+
+        if (request()->wantsJson()) {
+            return $post;
+        }
 
         return view('dashboard.post.edit', [
             'post' => $post,
@@ -69,6 +75,22 @@ class PostController extends Controller
             'provinces' => Province::with('districts')->active()->get(['name']),
             'categories' => Category::with('children.children.children')->parentOnly()->get(),
         ]);
+    }
+
+    public function store(StoreRequest $request)
+    {
+        $post = Post::create(request()->all());
+
+        $this->syncUploadFiles($post, $request);
+
+        $request->user()->posts()->save($post);
+
+        if ($request->status == PostStatus::Published && empty($post->publish_at)) {
+            $post->publish_at = now(); $post->save();
+        }
+
+        return redirect(route('manager.post.view', ['id' => $post->id]))
+            ->with('success', 'Tạo mới thành công');
     }
 
     public function deleteMany(DeleteManyPost $request)
@@ -109,7 +131,7 @@ class PostController extends Controller
         view()->share('whitelist', Whitelist::all());
     }
 
-    private function syncUploadFiles($post, Request $request)
+    protected function syncUploadFiles($post, Request $request)
     {
         $ids = collect($request->image_ids ?? []);
 

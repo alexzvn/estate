@@ -11,6 +11,8 @@ class Subscription extends Model implements Auditable
 {
     use TraitsAuditable;
 
+    protected $modelName = 'gói khách hàng đang đăng ký';
+
     protected $fillable = ['expires_at', 'activate_at'];
 
     protected $dates = ['expires_at', 'activate_at'];

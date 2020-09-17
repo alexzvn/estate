@@ -43,12 +43,17 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::post('/delete/many', 'PostController@deleteMany')->name('manager.post.delete.many');
     Route::post('/reverse/many', 'PostController@reverseMany')->name('manager.post.reverse.many');
 
-    Route::get('/market', 'MarketController@index')->name('manager.post.market');
-
     Route::post('/{id}/online/clone/origin/save', 'OnlineController@cloneSaveOrigin')->name('manager.post.clone.origin.save');
     Route::post('/{id}/online/clone/origin/delete', 'OnlineController@cloneDeleteOrigin')->name('manager.post.clone.origin.delete');
 
     Route::get('/{id}/fetch', 'OnlineController@view')->name('manager.post.fetch');
+
+    Route::group(['prefix' => 'market'], function ()
+    {
+        Route::get('/', 'MarketController@index')->name('manager.post.market');
+        Route::post('/{id}/update', 'MarketController@updateMarket')->name('manager.post.market.update');
+        Route::post('/store', 'MarketController@storeMarket')->name('manager.post.market.store');
+    });
 });
 
 /**
@@ -158,6 +163,13 @@ Route::group(['prefix' => 'blacklist'], function () {
  */
 Route::group(['prefix' => 'activity', 'namespace' => 'Activity'], function () {
     Route::get('/', 'ActivityController@index')->name('manager.log');
+});
+
+/**
+ * AUDIT LOG
+ */
+Route::group(['prefix' => 'audit', 'namespace' => 'Audit'], function () {
+    Route::get('/', 'AuditController@index')->name('manager.audit');
 });
 
 /**

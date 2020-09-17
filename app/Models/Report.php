@@ -12,6 +12,8 @@ class Report extends Model implements Auditable
 {
     use CanFilter, TraitsAuditable;
 
+    protected $modelName = 'báo tin môi giới';
+
     public function post()
     {
         return $this->belongsTo(Post::class);
