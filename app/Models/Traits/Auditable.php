@@ -8,7 +8,7 @@ trait Auditable
 {
     use AuditingAuditable;
 
-    public function withoutAudit(\Closure $handle)
+    public static function withoutAudit(\Closure $handle)
     {
         static::disableAuditing();
 
