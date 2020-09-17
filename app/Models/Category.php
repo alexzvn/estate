@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Http\Request;
+use App\Models\Traits\Auditable as TraitsAuditable;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Category extends Model
+class Category extends Model implements Auditable
 {
+    use TraitsAuditable;
+
     protected $fillable = ['name', 'description'];
 
     public function posts()
