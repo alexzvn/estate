@@ -166,6 +166,13 @@ Route::group(['prefix' => 'activity', 'namespace' => 'Activity'], function () {
 });
 
 /**
+ * AUDIT LOG
+ */
+Route::group(['prefix' => 'audit', 'namespace' => 'Audit'], function () {
+    Route::get('/', 'AuditController@index')->name('manager.audit');
+});
+
+/**
  * SETTINGS
  */
 Route::group(['prefix' => 'setting'], function () {

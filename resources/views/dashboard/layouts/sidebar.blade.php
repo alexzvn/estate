@@ -171,6 +171,16 @@
                     </li>
                     @endcan
 
+                    @can('manager.audit.view')
+                    <li class="menu">
+                        <a href="{{ route('manager.audit') }}" @active('manager.audit', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div>
+                                <i data-feather="activity"></i> <span>Audit Log</span>
+                            </div>
+                        </a>
+                    </li>
+                    @endcan
+
                     @can('manager.order.view')
                     <li class="menu">
                         <a href="{{ route('manager.order') }}" @active('manager.order', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
