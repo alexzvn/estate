@@ -3,15 +3,17 @@
 namespace App\Models;
 
 use App\Contracts\Models\CanNote;
+use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\HasNote;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use App\Models\Traits\CanFilter;
 use Illuminate\Database\Eloquent\Builder;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Order extends Model implements CanNote
+class Order extends Model implements CanNote, Auditable
 {
-    use SoftDeletes, HasNote, CanFilter;
+    use SoftDeletes, HasNote, CanFilter, TraitsAuditable;
 
     public const DISCOUNT_PERCENT = 1;
 

@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Auditable as TraitsAuditable;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Subscription extends Model
+class Subscription extends Model implements Auditable
 {
+    use TraitsAuditable;
+
     protected $fillable = ['expires_at', 'activate_at'];
 
     protected $dates = ['expires_at', 'activate_at'];

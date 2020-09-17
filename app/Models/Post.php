@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\PostStatus;
 use App\Models\Location\District;
 use App\Models\Location\Province;
+use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanSearch;
 use App\Models\Traits\HasFiles;
@@ -12,9 +13,11 @@ use Carbon\Carbon;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Post extends Model
+class Post extends Model implements Auditable
 {
+    use TraitsAuditable;
     use SoftDeletes, CanFilter, CanSearch, HasFiles;
 
     protected $fillable = [

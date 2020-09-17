@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Auditable as TraitsAuditable;
 use Jenssegers\Mongodb\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Whitelist extends Model
+class Whitelist extends Model implements Auditable
 {
+    use TraitsAuditable;
+
     protected $fillable = ['phone'];
 
     public static function findByPhoneOrCreate(string $phone)
