@@ -158,6 +158,7 @@ return [
             'blacklist.phone.delete' => 'Bỏ chặn',
 
             'manager.site.setting' => 'Cẫu hình trang web',
+            'manager.audit.view' => 'Xem audit',
 
         ],
 
@@ -250,7 +251,8 @@ return [
             ],[
                 'name' => 'Nhận thông báo',
                 'permissions' => [
-                    'manager.notification.post.report'
+                    'manager.notification.post.report',
+                    'manager.notification.user.register'
                 ]
             ],[
                 'name' => 'Khác',
@@ -261,6 +263,7 @@ return [
                     'post.province.access.*',
                     'post.category.access.*',
                     'manager.site.setting',
+                    'manager.audit.view',
                 ]
             ]
         ],
