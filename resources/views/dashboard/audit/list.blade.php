@@ -73,8 +73,8 @@ $color = [
                             <td class="text-center" >{{ $loop->index }}</td>
                             <td><a class="text-primary font-weight-bolder" href="{{ route('manager.user.view', ['id' => $audit->user->id]) }}">{{ $audit->user->name }}</a></td>
                             <td><span class="text-{{ $color[$audit->event] ?? '' }}">{{ Str::ucfirst($type[$audit->event] ?? 'Không rõ') }}</span></td>
-                            <td>{{ $audit->user->name }} đã {{ $type[$audit->event] ?? 'tác động' }} {{ $audit->auditable_type::NAME }}</td>
-                            <td>{{ $audit->created_at->diffForHumans() }}</td>
+                            <td>{{ $audit->user->name }} đã {{ $type[$audit->event] ?? 'tác động' }} {{ $audit->auditable_type::NAME }} vào khoảng {{ $audit->created_at->diffForHumans() }}</td>
+                            <td>{{ $audit->created_at->format('d/m/Y H:i:s') }}</td>
                             <td> {{ $audit->ip_address }} </td>
                             <td>
                                 <a class="text-info" href="{{ $audit->url }}" target="_blank">Xem</a>
