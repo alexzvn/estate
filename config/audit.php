@@ -42,7 +42,7 @@ return [
     */
     'resolver' => [
         'user'       => OwenIt\Auditing\Resolvers\UserResolver::class,
-        'ip_address' => OwenIt\Auditing\Resolvers\IpAddressResolver::class,
+        'ip_address' => App\Http\Resolvers\IpAddressResolver::class,
         'user_agent' => OwenIt\Auditing\Resolvers\UserAgentResolver::class,
         'url'        => OwenIt\Auditing\Resolvers\UrlResolver::class,
     ],
