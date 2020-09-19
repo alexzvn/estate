@@ -31,7 +31,10 @@
                                 <div class="media">
                                     <i data-feather="{{ $payload->feather_icon ?? '' }}"></i>
                                     <div class="media-body">
-                                        <div class="notification-para">{{ $payload->message ?? '' }}</div>
+                                        <div class="notification-para">
+                                            <p>{{ $payload->message ?? '' }}</p>
+                                            <span class="text-muted">{{ $notify->created_at->diffForHumans() }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
