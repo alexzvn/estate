@@ -49,7 +49,7 @@ class NewReport extends Notification
     {
         return [
             'link' => route('manager.report.view', [], false) . '?phone=' . $this->post->phone,
-            'feather_icon' => 'heart',
+            'feather_icon' => 'alert-octagon',
             'message' => $this->user->name . ' đã báo tin môi giới.',
             'user' => $this->user,
             'post' => $this->post

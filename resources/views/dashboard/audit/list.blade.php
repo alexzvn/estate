@@ -2,6 +2,7 @@
 
 @push('style')
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/datepicker/css/bootstrap-datepicker.standalone.min.css') }}">
 @endpush
 
 @php
@@ -35,7 +36,7 @@ $color = [
         <div class="widget-content widget-content-area">
             <form id="search-form" action="" method="GET">
                 <div class="row">
-                    <div class="col-md-5 pl-md-0 order-first">
+                    <div class="col-md-4 pl-md-0 order-first">
                         <div class="form-row">
                             <label for="phone" class="col-md-3 col-form-label text-md-right d-none d-md-block"><strong>Tìm kiếm: </strong></label>
             
@@ -46,7 +47,31 @@ $color = [
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 pl-md-0 order-md-first order-last">
+                    <div class="col-md-2 order-first">
+                        <div class="form-group input-group-sm">
+                          <select class="form-control" name="user" id="user">
+                            <option value="">Nhân viên</option>
+                            @foreach ($users as $user)
+                            <option value="{{ $user->id }}" {{ request('user') === $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 order-first">
+                        <div class="form-group input-group-sm">
+                            <input type="text" class="form-control" name="from" id="from" data-date-orientation="bottom auto"
+                              data-provide="datepicker" placeholder="Chọn từ ngày..." value="{{ request('from') }}" data-date-format="dd-mm-yyyy">
+                              <small class="ml-2 form-text text-muted">Chọn từ ngày</small>
+                          </div>
+                    </div>
+                    <div class="col-md-2 order-first">
+                        <div class="form-group input-group-sm">
+                          <input type="text" class="form-control" name="to" id="to" data-date-orientation="bottom auto"
+                          data-provide="datepicker" placeholder="Đến ngày" value="{{ request('to') }}" data-date-format="dd-mm-yyyy">
+                          <small class="ml-2 form-text text-muted">Chọn đến ngày</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2 pl-md-0 order-md-first order-last">
                         <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
                         </a>
                     </div>
@@ -95,3 +120,65 @@ $color = [
     </div>
 </div>
 @endsection
+
+@push('script')
+<script src="{{ asset('assets/vendor/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/datepicker/locales/bootstrap-datepicker.vi.min.js') }}"></script>
+<script>
+(function (window) {
+
+    let advancedSearch;
+
+    if ((openSearch = getCookie('open_search')) && openSearch !== '') {
+        advancedSearch = openSearch === 'true';
+        if (advancedSearch) {
+            $('#advanced-search-form').show();
+        }
+
+    } else {
+        advancedSearch = false;
+        setCookie('open_search', 'false');
+    }
+
+    $(document).ready(function () {
+        $('#advanced-search').click(function () {
+            if (advancedSearch = !advancedSearch) {
+                $('#advanced-search-form').fadeIn();
+            } else {
+                $('#advanced-search-form').fadeOut();
+            }
+
+            setCookie('open_search', ''+ advancedSearch)
+        });
+
+        $('#search-form').change(function name() {
+            $('#search-form').submit();
+        });
+    });
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function setCookie(cname, cvalue) {
+        var d = new Date();
+        d.setTime(d.getTime() + (2 * 60 * 1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+}(window));
+</script>
+@endpush

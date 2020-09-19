@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
 use App\Repository\Permission;
 use App\Repository\User;
+use Illuminate\Support\Carbon;
 
 class AuditController extends Controller
 {
@@ -14,25 +15,20 @@ class AuditController extends Controller
     {
         $this->authorize('manager.audit.view');
 
-        $user = Permission::findUsersHasPermission('manager.dashboard.access')
-            ->map(function ($user)
-            {
-                return $user->id;
-            });
+        $getId = function ($model) { return $model->id; };
 
-        $user = User::filter($request)->whereIn('_id', $user->toArray())->get();
+        $user = Permission::findUsersHasPermission('manager.dashboard.access');
 
-        $user = $user->map(function ($user)
-        {
-            return $user->id;
-        });
+        $user = User::filter($request)->whereIn('_id', $user->modelKeys())->get();
 
         $audit = Audit::with(['user', 'auditable'])
-            ->whereIn('user_id', $user->toArray())
+            ->whereIn('user_id', $user->modelKeys())
+            ->filter($request)
             ->latest();
 
         return view('dashboard.audit.list', [
-            'audits' => $audit->paginate(30)
+            'audits' => $audit->paginate(30),
+            'users'  => $user
         ]);
     }
 }
