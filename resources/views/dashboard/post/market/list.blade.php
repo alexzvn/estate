@@ -268,7 +268,7 @@
     let resetForm = () => {
         upload.clearPreviewPanel();
         $('#sync-file-ids').html('');
-        $('#form-modal').trigger('');
+        $('#form-modal').trigger('reset');
     }
 
     let syncInput = e => {
