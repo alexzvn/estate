@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca52b2f525a431c7410fb1494eb3eb3a",
+    "content-hash": "5f283da7b4fa03d55dc6463b8197029e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1174,16 +1174,16 @@
         },
         {
             "name": "jenssegers/mongodb",
-            "version": "dev-develop",
+            "version": "v3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jenssegers/laravel-mongodb.git",
-                "reference": "accef42d88c50ac7db581d6d98712e11710098fa"
+                "reference": "dd6f667be86ad9136bd6ea83b0bcadeb872e9850"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jenssegers/laravel-mongodb/zipball/accef42d88c50ac7db581d6d98712e11710098fa",
-                "reference": "accef42d88c50ac7db581d6d98712e11710098fa",
+                "url": "https://api.github.com/repos/jenssegers/laravel-mongodb/zipball/dd6f667be86ad9136bd6ea83b0bcadeb872e9850",
+                "reference": "dd6f667be86ad9136bd6ea83b0bcadeb872e9850",
                 "shasum": ""
             },
             "require": {
@@ -1194,11 +1194,10 @@
                 "mongodb/mongodb": "^1.6"
             },
             "require-dev": {
-                "cedx/coveralls": "^11.2",
                 "doctrine/dbal": "^2.6",
                 "mockery/mockery": "^1.3.1",
                 "orchestra/testbench": "^5.0",
-                "phpunit/phpunit": "^8.4"
+                "phpunit/phpunit": "^8.4|^9.0"
             },
             "suggest": {
                 "jenssegers/mongodb-sentry": "Add Sentry support to Laravel-MongoDB",
@@ -1249,7 +1248,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-12T11:57:39+00:00"
+            "time": "2020-09-14T11:53:37+00:00"
         },
         {
             "name": "laminas/laminas-code",
@@ -8642,9 +8641,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "jenssegers/mongodb": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
