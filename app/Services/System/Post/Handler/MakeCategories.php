@@ -28,6 +28,8 @@ class MakeCategories implements Handler
             array_merge($attr->categories, $categories)
         );
 
+        $attr->categories = [...$attr->categories, ...($attr->category_ids ?? [])];
+
         return $next($attr);
     }
 
