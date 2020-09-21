@@ -13,7 +13,7 @@ use App\Enums\PostType;
                     </button>
             </div>
             <div class="modal-body">
-                <form id="post-form">
+                <form id="post-form" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" id="post-id" name="id" value="">
 
@@ -77,7 +77,7 @@ use App\Enums\PostType;
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                                 <label for="post-category">Danh mục</label>
-                                <select class="form-control" name="category_ids" id="post-category">
+                                <select class="form-control" name="category_ids[]" id="post-category">
                                 <option value="">Chọn danh mục</option>
                                 @php
                                     $catId = $category->id ?? null;
@@ -127,9 +127,23 @@ use App\Enums\PostType;
                         <label for="post-content">Nội dung</label>
                         <textarea class="form-control" name="post_content" id="post-content" rows="3"></textarea>
                     </div>
+                    
                     <div>
                         <p class="text-muted m-0">Ngày cập nhật cuối cùng là <span class="text-info"></span>, đăng bởi
-                        
+                    </div>
+
+                    <div id="sync-file-ids"></div>
+
+                    <div class="widget-content widget-content-area">
+                        <div class="custom-file-container" data-upload-id="mySecondImage">
+                            <label>Chọn ảnh đại diện <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image">x</a></label>
+                            <label class="custom-file-container__custom-file" >
+                                <input type="file" name="images[]" accept="image/*" class="custom-file-container__custom-file__custom-file-input" multiple>
+                                <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+                                <span class="custom-file-container__custom-file__custom-file-control"></span>
+                            </label>
+                            <div class="custom-file-container__image-preview"></div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -198,7 +212,7 @@ use App\Enums\PostType;
             fetch(`/manager/post/${id}/update`,{
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    // 'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 redirect: 'manual',
                 method: 'POST',
@@ -219,15 +233,7 @@ use App\Enums\PostType;
 
         form.append('content', editor.getData());
 
-        let data = [];
-        for (const pair of form.entries()) {
-            const key = pair[0];
-            const val = pair[1];
-
-            data.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
-        }
-
-        return data.join('&');
+        return form;
     }
 
     function notify(data) {

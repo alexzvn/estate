@@ -14,7 +14,7 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.view');
 
-        return $post->with(['categories', 'user'])
+        return $post->with(['user', 'files'])
             ->findOrFail($id);
     }
 
