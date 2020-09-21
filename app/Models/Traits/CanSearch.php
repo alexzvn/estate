@@ -10,7 +10,7 @@ use Jenssegers\Mongodb\Eloquent\Builder;
  */
 trait CanSearch
 {
-    // protected $indexField = 'index_meta';
+    protected $indexField = 'index_meta';
 
     public function scopeFilterSearch(Builder $builder, $search = '')
     {
