@@ -137,6 +137,7 @@
 @endsection
 
 @push('script')
+<script src="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.js') }}"></script>
 <script>
 
 ClassicEditor
@@ -148,6 +149,14 @@ ClassicEditor
         console.error( err.stack );
     });
 
+let upload = new FileUploadWithPreview('mySecondImage', {
+        text: {
+            chooseFile: 'Chọn ảnh',
+            browse: 'Tìm',
+            selectedCount: 'ảnh đã chọn',
+        },
+    });
+
 (function (window) {
     $(document).ready(function () {
         $('.open-post').on('click', function () {
@@ -155,10 +164,7 @@ ClassicEditor
             let modal = $('#post-edit');
             let form = $('#post-form');
 
-            $('#post-content').html('');
-            form.trigger('reset');
-            editor.setData('');
-            modal.modal();
+            resetForm();
 
             fetch(`/manager/post/${id}/fetch`).then(res => {
 
@@ -196,12 +202,14 @@ ClassicEditor
                 }
 
                 let options = {
-                    category: post.categories[0] ? post.categories[0]._id : null,
+                    category: post.category_ids[0],
                     province: post.province_id,
                     district: post.district_id,
                     type: post.type,
                     status: post.status,
                 };
+
+                console.log(options.category);
 
                 address.setDistricts(options.province);
 
@@ -211,11 +219,51 @@ ClassicEditor
                         $(`#post-${key}`).val(option);
                     }
                 }
+
+                let files = post.files.map(file => {
+                    return `/storage/${file.path}?fid=${file._id}`;
+                });
+
+                upload.addImagesFromPath(files);
             });
         });
-
-
     });
+
+    let resetForm = () => {
+        let modal = $('#post-edit');
+        let form = $('#post-form');
+        upload.clearPreviewPanel();
+        $('#sync-file-ids').html('');
+        $('#form-modal').trigger('');
+        $('#post-content').html('');
+        form.trigger('reset');
+        editor.setData('');
+        modal.modal();
+    }
+
+    let syncInput = e => {
+        let ids   = [];
+        let files = e.detail.cachedFileArray;
+
+        files.forEach(e => {
+            let pos = e.name.search('fid=');
+
+            if (pos !== -1) {
+                ids.push(e.name.substr(pos+4, 24));
+            }
+        });
+
+        let inputFid = $('#sync-file-ids');
+
+        inputFid.html('');
+
+        ids.forEach(id => {
+            inputFid.append(`<input type="hidden" name="image_ids[]" value="${id}">`);
+        });
+    }
+
+    $(window).on('fileUploadWithPreview:imagesAdded', syncInput);
+    $(window).on('fileUploadWithPreview:imageDeleted', syncInput);
 }(window))
 </script>
 @endpush
