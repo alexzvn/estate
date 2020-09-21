@@ -200,10 +200,12 @@ class Post extends Model implements Auditable
     {
         return [
             'title' => $this->title,
-            'content' => $this->content,
-            'province' => $this->province->name ?? '',
-            'district' => $this->district->name ?? '',
-            'categories' => $this->categories[0]->name ?? '',
+            'content' => remove_tags($this->content),
+            'commission' => $this->commission,
+            'phone' => $this->phone,
+            'province' => $this->province->name ?? null,
+            'district' => $this->district->name ?? null,
+            'categories' => $this->categories[0]->name ?? null,
         ];
     }
 }
