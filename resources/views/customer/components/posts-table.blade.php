@@ -23,9 +23,9 @@
             <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ Str::ucfirst(Str::of($item->title)->limit(73)) }}</strong> <br>
 
             <span class="mb-0" style="font-size: 12px;">
-                <strong>Danh mục: </strong> <i style="color: blue">{{ $item->categories[0]->name ?? '' }}</i> <span class="text-muted">|</span>
-                <strong>Quận/huyện: </strong> <i style="color: blue">{{ $item->district->name ?? 'N/a' }}</i> <span class="text-muted">|</span>
-                <strong>Ngày đăng: </strong> <i style="color: blue">{{ $item->publish_at ? $item->publish_at->format('d/m/Y') : 'N/a' }}</i>
+                <strong>Danh mục: </strong> <i>{{ $item->categories[0]->name ?? '' }}</i> <span class="text-muted">|</span>
+                <strong>Quận/huyện: </strong> <i>{{ $item->district->name ?? 'N/a' }}</i> <span class="text-muted">|</span>
+                <strong>Ngày đăng: </strong> <i>{{ $item->publish_at ? $item->publish_at->format('d/m/Y') : 'N/a' }}</i>
             </span>
             </p>
             <p class="d-block d-lg-none" style="color: red">
