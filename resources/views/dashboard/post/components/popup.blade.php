@@ -170,8 +170,6 @@ use App\Enums\PostType;
             rightAlign: false
         });
 
-        $('#post-phone').inputmask("9999.999.999");
-
         $('#post-view').click(function () {
             window.location.href = '/manager/post/' + $('#post-id').val() + '/view';
         });
