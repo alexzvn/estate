@@ -50,12 +50,13 @@ function planToString($plans) {
                         @foreach ($orders as $order)
                         @php
                             $customer = $order->customer;
+                            $canSupport = $customer && user()->canSupport($customer);
                         @endphp
                         <tr>
                             <td class="text-center" >{{ $loop->index + 1 }}</td>
                             <td>
-                                <a class="{{ $customer && Auth::user()->canSupport($customer) ? 'text-primary' : '' }} font-weight-bolder d-block" href="{{ $customer && Auth::user()->canSupport($customer) ? route('manager.customer.view', ['id' => $customer->id]) : 'javascript:void(0)' }}">
-                                    {{ $customer->name ?? 'N/a' }} <br> {{ $customer->phone ?? '' }}
+                                <a class="{{ $canSupport ? 'text-primary' : '' }} font-weight-bolder d-block" href="{{ $canSupport  ? route('manager.customer.view', ['id' => $customer->id]) : 'javascript:void(0)' }}">
+                                    {{ $customer->name ?? 'N/a' }} <br> {{ $canSupport ? $customer->phone : hide_phone($customer->phone) }}
                                 </a>
                             </td>
                             <td>{{ planToString($order->plans) }}</td>
