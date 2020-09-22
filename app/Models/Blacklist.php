@@ -26,4 +26,9 @@ class Blacklist extends Model implements Auditable
     {
         return $this->hasMany(Post::class, 'phone', 'phone');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -15,7 +15,7 @@ class BlacklistController extends Controller
         $this->authorize('blacklist.phone.view');
 
         return view('dashboard.blacklist.index', [
-            'blacklist' => Blacklist::latest()->filter($request)->paginate(40)
+            'blacklist' => Blacklist::latest()->with('user')->filter($request)->paginate(40)
         ]);
     }
 
@@ -30,7 +30,12 @@ class BlacklistController extends Controller
 
         $phones->each(function ($phone) use ($blacklist, $request)
         {
-            $blacklist = $blacklist->create(['phone' => $phone]);
+            $blacklist = $blacklist->model();
+
+            $blacklist->forceFill([
+                'phone' => $phone,
+                'user_id' => user()->id,
+            ])->save();
 
             if ($request->note) {
                 $blacklist->writeNote($request->note);
