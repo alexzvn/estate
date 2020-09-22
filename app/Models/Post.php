@@ -208,4 +208,9 @@ class Post extends Model implements Auditable
             'categories' => $this->categories[0]->name ?? null,
         ];
     }
+
+    public function setPhone($phone)
+    {
+        return str_replace('.', '', $phone);
+    }
 }
