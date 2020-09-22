@@ -46,6 +46,7 @@
                     <tr>
                         <th>#</th>
                         <th>Số điện thoại</th>
+                        <th>Người thêm</th>
                         <th>Ngày thêm</th>
                         <th>Actions</th>
                     </tr>
@@ -57,6 +58,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td><span class="text-secondary font-weight-bold">{{ $blackphone->phone }}</span></td>
                         {{-- <td><input type="text" class="form-control note" value="{{ $blackphone->readNote() }}" placeholder="" data-id="{{ $blackphone->id }}" @cannot('blacklist.phone.modify') disabled @endcannot ></td> --}}
+                        <td>{{ $blacklist->user->name ?? '' }}</td>
                         <td>{{ $blackphone->created_at->format('d/m/Y H:i:s') }}</td>
                         <td>
                             @can('blacklist.phone.delete')
