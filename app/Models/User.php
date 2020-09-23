@@ -201,4 +201,9 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             'address' => $this->address,
         ];
     }
+
+    public function setPhone(string $phone)
+    {
+        return str_replace(['.', ' '], '', $phone);
+    }
 }

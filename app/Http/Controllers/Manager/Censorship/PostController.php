@@ -15,7 +15,7 @@ class PostController extends Controller
 {
     public function index(Post $post, Request $request)
     {
-        $this->authorize('manager.post.view');
+        $this->authorize('manager.censorship.view');
 
         $post = $post->with(['province', 'district', 'categories'])->filter($request);
 
@@ -63,7 +63,7 @@ class PostController extends Controller
 
     public function addToWhitelist(Whitelist $whitelist, AddWhitelist $request)
     {
-        $this->authorize('blacklist.phone.create');
+        $this->authorize('whitelist.phone.create');
 
         $this->makeListPhone($request->phone)
             ->each(function ($phone) use ($whitelist)

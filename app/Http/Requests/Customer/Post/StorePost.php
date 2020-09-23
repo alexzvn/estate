@@ -13,7 +13,7 @@ class StorePost extends FormRequest
      */
     public function authorize()
     {
-        return $this->user() && $this->user()->can('manager.post.create');
+        return true;
     }
 
     /**

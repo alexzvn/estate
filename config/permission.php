@@ -141,10 +141,22 @@ return [
             'manager.role.modify' => 'Chỉnh sửa',
             'manager.role.delete' => 'Xóa',
 
-            'manager.post.view'   => 'Xem',
-            'manager.post.create' => 'Tạo mới',
-            'manager.post.modify' => 'Chỉnh sửa',
-            'manager.post.delete' => 'Xóa',
+            'manager.post.online.view'    => 'Xem',
+            'manager.post.online.create'  => 'Tạo mới',
+            'manager.post.online.modify'  => 'Chỉnh sửa',
+            'manager.post.online.delete'  => 'Xóa',
+            'manager.post.online.clone'   => 'Duyệt qua tin xin phí',
+            'manager.post.online.reserve' => 'Đảo tin',
+
+            'manager.post.fee.view'   => 'Xem',
+            'manager.post.fee.create' => 'Tạo mới',
+            'manager.post.fee.modify' => 'Chỉnh sửa',
+            'manager.post.fee.delete' => 'Xóa',
+
+            'manager.post.market.view'   => 'Xem',
+            'manager.post.market.create' => 'Tạo mới',
+            'manager.post.market.modify' => 'Chỉnh sửa',
+            'manager.post.market.delete' => 'Xóa',
 
             'manager.post.report.view' => 'Xem thông tin báo MG',
             'manager.post.report.delete' => 'Xóa thông ti báo MG',
@@ -152,10 +164,12 @@ return [
             'manager.notification.post.report' => 'Báo tin môi giới',
             'manager.notification.user.register' => 'Người dùng đăng ký mới',
 
-            'blacklist.phone.view' => 'Xem',
-            'blacklist.phone.create' => 'Thêm SĐT',
-            'blacklist.phone.modify' => 'Chỉnh sửa',
-            'blacklist.phone.delete' => 'Bỏ chặn',
+            'manager.censorship.view' => 'Xem',
+            'blacklist.phone.view' => 'Xem SĐT đen',
+            'blacklist.phone.create' => 'Thêm SĐT đen',
+            'blacklist.phone.modify' => 'Sửa SĐT đen',
+            'blacklist.phone.delete' => 'Bỏ chặn SĐT đen',
+            'whitelist.phone.create' => 'Thêm SĐT trắng',
 
             'manager.site.setting' => 'Cẫu hình trang web',
             'manager.audit.view' => 'Xem audit',
@@ -167,12 +181,40 @@ return [
          */
         'groups' => [
             [
-                'name' => 'Quản lý bài viết',
+                'name' => 'Kiểm duyệt tin',
                 'permissions' => [
-                    'manager.post.view',
-                    'manager.post.create',
-                    'manager.post.modify',
-                    'manager.post.delete',
+                    'manager.censorship.view',
+                    'blacklist.phone.view',
+                    'blacklist.phone.create',
+                    'blacklist.phone.modify',
+                    'blacklist.phone.delete',
+                    'whitelist.phone.create'
+                ]
+            ],[
+                'name' => 'Quản lý tin online',
+                'permissions' => [
+                    'manager.post.online.view',
+                    'manager.post.online.create',
+                    'manager.post.online.modify',
+                    'manager.post.online.delete',
+                    'manager.post.online.clone',
+                    'manager.post.online.reserve'
+                ]
+            ],[
+                'name' => 'Quản lý tin xin phí',
+                'permissions' => [
+                    'manager.post.fee.view',
+                    'manager.post.fee.create',
+                    'manager.post.fee.modify',
+                    'manager.post.fee.delete',
+                ]
+            ],[
+                'name' => 'Quản lý tin thị trường',
+                'permissions' => [
+                    'manager.post.market.view',
+                    'manager.post.market.create',
+                    'manager.post.market.modify',
+                    'manager.post.market.delete',
                 ]
             ],[
                 'name' => 'Quản lý môi giới',
@@ -239,14 +281,6 @@ return [
                     'manager.order.modify',
                     'manager.order.modify.force',
                     'manager.order.delete',
-                ]
-            ],[
-                'name' => 'Chặn số điện thoại',
-                'permissions' => [
-                    'blacklist.phone.view',
-                    'blacklist.phone.create',
-                    'blacklist.phone.modify',
-                    'blacklist.phone.delete',
                 ]
             ],[
                 'name' => 'Nhận thông báo',

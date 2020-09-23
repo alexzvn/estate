@@ -17,14 +17,14 @@
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                     <h4>
                         Danh sách bài viết
-                        <a href="{{ route('manager.post.create') }}" class="btn btn-success rounded-circle"><i data-feather="plus"></i></a>
+                        <a href="{{ route('manager.post.online.create') }}" class="btn btn-success rounded-circle"><i data-feather="plus"></i></a>
                     </h4>
                 </div>
             </div>
         </div>
         <div class="widget-content widget-content-area">
 
-            @include('dashboard.post.components.search')
+            @include('dashboard.post.online.components.search')
 
             <div class="table-responsive">
                 <form action="" method="post" id="form-table">
@@ -124,7 +124,7 @@
     </div>
 </div>
 
-@include('dashboard.post.components.popup')
+@include('dashboard.post.online.components.popup')
 
 <form id="form-add-blacklist" action="{{ route('manager.censorship.blacklist.add') }}" method="post">
     @csrf
@@ -166,7 +166,7 @@ let upload = new FileUploadWithPreview('mySecondImage', {
 
             resetForm();
 
-            fetch(`/manager/post/${id}/fetch`).then(res => {
+            fetch(`/manager/post/online/${id}/fetch`).then(res => {
 
                 if (! res.ok) {
                     Snackbar.show({
@@ -284,12 +284,12 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                 return;
             }
 
-            form.attr('action', "{{ route('manager.post.delete.many') }}");
+            form.attr('action', "{{ route('manager.post.online.delete.many') }}");
             form.submit();
         });
 
         $('#reverse-many').click(function () {
-            form.attr('action', "{{ route('manager.post.reverse.many') }}");
+            form.attr('action', "{{ route('manager.post.online.reverse.many') }}");
             form.submit();
         });
 

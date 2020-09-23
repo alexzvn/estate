@@ -12,7 +12,7 @@ class Customer extends Controller
 {
     public function me()
     {
-        return view('customer.customer',[
+        return view('customer.me.customer',[
             'customer' => Auth::user()
         ]);
     }
