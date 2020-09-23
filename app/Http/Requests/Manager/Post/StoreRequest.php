@@ -31,7 +31,7 @@ class StoreRequest extends FormRequest
             'title'    => 'required',
             'phone'    => 'required|regex:/^[0-9_.]+$/',
             'price'    => 'required|regex:/^[0-9,.]+$/',
-            'category_id' => 'required|exists:categories,_id',
+            'category_ids' => 'required|exists:categories,_id',
             'province' => 'nullable|exists:provinces,_id',
             'district' => 'nullable|exists:districts,_id',
             'images'    => 'nullable',

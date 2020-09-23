@@ -27,7 +27,7 @@ class ClonePost extends FormRequest
     public function rules()
     {
         return [
-            'content' => 'required',
+            'content'   => 'required',
             'title'     => 'required',
             'phone'     => 'required|regex:/^[0-9_.]+$/',
             'price'     => 'required|regex:/^[0-9,.]+$/',

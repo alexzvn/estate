@@ -125,7 +125,7 @@ use App\Enums\PostType;
 
                     <div class="form-group">
                         <label for="post-content">Nội dung</label>
-                        <textarea class="form-control" name="post_content" id="post-content" rows="3"></textarea>
+                        <textarea class="form-control" name="content" id="post-content" rows="3"></textarea>
                     </div>
                     
                     <div>
@@ -148,7 +148,6 @@ use App\Enums\PostType;
                 </form>
             </div>
             <div class="modal-footer">
-                <button id="post-view" type="button" class="btn btn-primary float-left">Xem đầy đủ</button>
                 <button id="clone-save-origin" type="button" class="btn btn-info float-left">Duyệt lưu gốc</button>
                 <button id="clone-delete-origin" type="button" class="btn btn-info float-left">Duyệt xóa gốc</button>
                 <button id="post-save" type="button" class="btn btn-primary">Lưu</button>
@@ -170,17 +169,12 @@ use App\Enums\PostType;
             rightAlign: false
         });
 
-        $('#post-view').click(function () {
-            window.location.href = '/manager/post/' + $('#post-id').val() + '/view';
-        });
-
         $('#clone-save-origin').click(function () {
             let id = $('#post-id').val();
 
-            fetch(`/manager/post/${id}/online/clone/origin/save`,{
+            fetch(`/manager/post/online/${id}/clone/origin/save`,{
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Accept': 'application/json'
                 },
                 method: 'POST',
                 body: serializeBody()
@@ -192,10 +186,9 @@ use App\Enums\PostType;
         $('#clone-delete-origin').click(function () {
             let id = $('#post-id').val();
 
-            fetch(`/manager/post/${id}/online/clone/origin/delete`,{
+            fetch(`/manager/post/online/${id}/clone/origin/delete`,{
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Accept': 'application/json'
                 },
                 method: 'POST',
                 body: serializeBody()
@@ -207,10 +200,9 @@ use App\Enums\PostType;
         $('#post-save').click(function () {
             let id = $('#post-id').val();
 
-            fetch(`/manager/post/${id}/update`,{
+            fetch(`/manager/post/online/${id}/update`,{
                 headers: {
-                    'Accept': 'application/json',
-                    // 'Content-Type': 'application/x-www-form-urlencoded'
+                    'Accept': 'application/json'
                 },
                 redirect: 'manual',
                 method: 'POST',

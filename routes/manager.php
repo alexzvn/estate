@@ -31,22 +31,23 @@ Route::group(['prefix' => 'role', 'namespace' => 'Role'], function () {
  * POSTS
  */
 Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
-    Route::get('/', 'PostController@index')->name('manager.post');
-    Route::get('/create', 'PostController@create')->name('manager.post.create');
-    Route::post('/store', 'PostController@store')->name('manager.post.store');
-    Route::get('/trashed', 'PostController@trashed')->name('manager.post.trashed');
-    Route::get('/{id}/view', 'PostController@view')->name('manager.post.view');
-    Route::get('/{id}/fetch', 'PostOnlineController@view')->name('manager.post.fetch');
-    Route::post('/{id}/update', 'PostController@update')->name('manager.post.update');
-    Route::post('/{id}/delete', 'PostController@delete')->name('manager.post.delete');
-    Route::post('/{id}/delete/force', 'PostController@forceDelete')->name('manager.post.delete.force');
-    Route::post('/delete/many', 'PostController@deleteMany')->name('manager.post.delete.many');
-    Route::post('/reverse/many', 'PostController@reverseMany')->name('manager.post.reverse.many');
 
-    Route::post('/{id}/online/clone/origin/save', 'OnlineController@cloneSaveOrigin')->name('manager.post.clone.origin.save');
-    Route::post('/{id}/online/clone/origin/delete', 'OnlineController@cloneDeleteOrigin')->name('manager.post.clone.origin.delete');
-
-    Route::get('/{id}/fetch', 'OnlineController@view')->name('manager.post.fetch');
+    Route::group(['prefix' => 'online'], function ()
+    {
+        Route::get('/', 'OnlineController@index')->name('manager.post.online');
+        Route::get('/{id}/view', 'OnlineController@view')->name('manager.post.online.view');
+        Route::get('/{id}/fetch', 'OnlineController@fetch')->name('manager.post.fetch');
+        Route::get('/create', 'OnlineController@create')->name('manager.post.online.create');
+        Route::post('/store', 'OnlineController@store')->name('manager.post.online.store');
+        Route::get('/trashed', 'OnlineController@trashed')->name('manager.post.online.trashed');
+        Route::post('/{id}/update', 'OnlineController@update')->name('manager.post.online.update');
+        Route::post('/{id}/delete', 'OnlineController@delete')->name('manager.post.online.delete');
+        Route::post('/{id}/delete/force', 'OnlineController@forceDelete')->name('manager.post.online.delete.force');
+        Route::post('/{id}/clone/origin/save', 'OnlineController@cloneSaveOrigin')->name('manager.post.online.clone.origin.save');
+        Route::post('/{id}/clone/origin/delete', 'OnlineController@cloneDeleteOrigin')->name('manager.post.online.clone.origin.delete');
+        Route::post('/delete/many', 'OnlineController@deleteMany')->name('manager.post.online.delete.many');
+        Route::post('/reverse/many', 'OnlineController@reverseMany')->name('manager.post.online.reverse.many');
+    });
 
     Route::group(['prefix' => 'market'], function ()
     {
@@ -54,6 +55,10 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
         Route::post('/{id}/update', 'MarketController@updateMarket')->name('manager.post.market.update');
         Route::post('/store', 'MarketController@storeMarket')->name('manager.post.market.store');
     });
+
+    Route::get('/{id}/fetch', 'OnlineController@view')->name('manager.post.fetch');
+
+
 });
 
 /**

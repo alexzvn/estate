@@ -1,13 +1,12 @@
-<?php use App\Enums\PostType; ?>
-
 @extends('dashboard.app')
+
 @push('style')
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
 @endpush
 
 @section('content')
 <div class="col-md-12">
-    <form class="row" action="{{ route('manager.post.store') }}" method="post" enctype="multipart/form-data">
+    <form class="row" action="{{ route('manager.post.online.store') }}" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="statbox widget box box-shadow">
                 <div class="widget-header">
@@ -26,7 +25,7 @@
                     </div>
                     <div class="form-group">
                         <label for="post_content">Nội dung</label>
-                        <textarea class="form-control" name="post_content" id="post_content" rows="3">{{ old('post_content') }}</textarea>
+                        <textarea class="form-control" name="content" id="post_content" rows="3">{{ old('post_content') }}</textarea>
                     </div>
                 </div>
             </div>
@@ -67,7 +66,7 @@
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                                 <label for="category">Danh mục</label>
-                                <select class="form-control" name="category" id="category">
+                                <select class="form-control" name="category_ids[]" id="category">
                                     <option value="">Chọn danh mục</option>
                                   @foreach ($categories as $item)
                                     @if (!$item->children || count($item->children) < 1)
@@ -138,15 +137,6 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                    <div class="form-group input-group-sm">
-                      <label for="type">Loại Tin</label>
-                      <select class="form-control" name="type" id="type">
-                        <option value="">Trống</option>
-                        @foreach (PostType::getValues() as $name)
-                        <option value="{{ $name }}">{{ $name }}</option>
-                        @endforeach
-                      </select>
-                    </div>
 
                     <div class="form-group input-group-sm">
                       <label for="status">Trạng thái</label>

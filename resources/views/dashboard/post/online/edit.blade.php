@@ -16,7 +16,7 @@
 
 @section('content')
 <div class="col-md-12">
-    <form class="row" action="{{ route('manager.post.update', ['id' => $post->id]) }}" method="post" enctype="multipart/form-data">
+    <form class="row" action="{{ route('manager.post.online.update', ['id' => $post->id]) }}" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="statbox widget box box-shadow">
                 <div class="widget-header">
@@ -68,21 +68,21 @@
                             <div class="form-group input-group-sm">
                               <label for="price">Giá tiền</label>
                               <input type="text"
-                                class="form-control" value="" name="price" id="price" placeholder="Giá tin" required>
+                                class="form-control" value="{{ $post->price }}" name="price" id="price" placeholder="Giá tin" required>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                               <label for="commission">Hoa Hồng</label>
                               <input type="text"
-                                class="form-control" value="" name="commission" id="commission" placeholder="" step="1" value="" min="0" max="100">
+                                class="form-control" value="{{ $post->commission }}" name="commission" id="commission" placeholder="" step="1" value="" min="0" max="100">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                                 <label for="phone">Số điện thoại</label>
                                 <input type="text"
-                                  class="form-control" value="" name="phone" id="phone" placeholder="0355...." required>
+                                  class="form-control" value="{{ $post->phone }}" name="phone" id="phone" placeholder="0355...." required>
                               </div>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                         <div class="col-md-4">
                             <div class="form-group input-group-sm">
                                 <label for="category">Danh mục</label>
-                                <select class="form-control" name="category" id="category">
+                                <select class="form-control" name="category_ids[]" id="category">
                                 <option value="">Chọn danh mục</option>
                                 @php
                                     $catId = $category->id ?? null;
@@ -180,15 +180,6 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                    <div class="form-group input-group-sm">
-                        <label for="type">Loại Tin</label>
-                        <select class="form-control" name="type" id="type">
-                          <option value="">Trống</option>
-                          @foreach (PostType::getValues() as $name)
-                          <option value="{{ $name }}" {{ $post->type === $name ? 'selected' : '' }}>{{ $name }}</option>
-                          @endforeach
-                        </select>
-                    </div>
 
                     <div class="form-group input-group-sm">
                       <label for="status">Trạng thái</label>

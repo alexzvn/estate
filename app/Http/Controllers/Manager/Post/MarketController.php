@@ -24,7 +24,7 @@ class MarketController extends PostController
         return view('dashboard.post.market.list', compact('posts'));
     }
 
-    public function updateMarket(string $id, UpdatePost $request)
+    public function update(string $id, UpdatePost $request)
     {
         $post = Post::findOrFail($id);
 

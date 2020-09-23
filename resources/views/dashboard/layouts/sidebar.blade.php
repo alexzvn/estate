@@ -33,48 +33,27 @@
                     </li>
                     @endcan
 
-                    @can('manager.post.view')
+                    @can('manager.post.online.view')
                     @php
-                        $active = request()->is('manager/post/*') && ! request()->is('manager/post/pending');
+                        $active = request()->is('manager/post/online*');
                     @endphp
                     <li class="menu">
                         <a href="#submenu" data-toggle="collapse" @active($active, 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="file-text"></i>
-                                <span>Tin BĐS</span>
+                                <span>Tin Online</span>
                             </div>
                             <div>
                                 <i data-feather="chevron-right"></i>
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled @active($active, 'show')" id="submenu" data-parent="#accordionExample">
-                            @can('manager.post.create')
-                            <li>
-                                <a href="{{ route('manager.post.create') }}" style="color: red">Tạo tin mới</a>
-                            </li>
-                            @endcan
-                            <li>
-                                <a href="{{ route('manager.post') }}"> Tất cả </a>
+                            <li class="@active('manager.post.online')">
+                                <a href="{{ route('manager.post.online') }}"> Tất cả </a>
                                 {{-- Duyệt từ tin crawl --}}
                             </li>
-                            <li>
-                                <a href="{{ route('manager.post') }}?type={{ PostType::PostFee }}"> Tin xin phí </a>
-                                {{-- Duyệt từ tin crawl --}}
-                            </li>
-                            <li class="d-none">
-                                <a href="javascript:void(0)">Cần thuê - cần mua </a>
-                                {{-- Tin crawl từ trang khác xử lý sau --}}
-                            </li>
-                            <li>
-                                <a href="{{ route('manager.post.market') }}">Tin thị trường</a> 
-                                {{-- Tin ảnh collection --}}
-                            </li>
-                            <li>
-                                <a href="{{ route('manager.post') }}?type={{ PostType::Online }}">Tin web online </a>
-                                {{-- Tin crawl từ trang khác --}}
-                            </li>
-                            <li>
-                                <a href="{{ route('manager.post.trashed') }}">Tin đã xóa </a>
+                            <li class="@active('manager.post.online.trashed')">
+                                <a href="{{ route('manager.post.online.trashed') }}">Tin đã xóa </a>
                             </li>
                         </ul>
                     </li>
