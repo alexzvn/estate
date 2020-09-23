@@ -56,9 +56,6 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
         Route::post('/store', 'MarketController@storeMarket')->name('manager.post.market.store');
     });
 
-    Route::get('/{id}/fetch', 'OnlineController@view')->name('manager.post.fetch');
-
-
 });
 
 /**
