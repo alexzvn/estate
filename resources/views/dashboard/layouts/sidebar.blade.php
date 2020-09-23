@@ -59,7 +59,7 @@
                     </li>
                     @endcan
 
-                    @can('manager.post.view')
+                    @can('manager.censorship.view')
                     <li class="menu">
                         <a href="{{ route('manager.censorship') }}" @active('manager.censorship', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div class="">

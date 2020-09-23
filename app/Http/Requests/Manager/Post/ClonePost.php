@@ -16,7 +16,7 @@ class ClonePost extends FormRequest
      */
     public function authorize()
     {
-        return $this->user() && $this->user()->can('manager.post.modify');
+        return true;
     }
 
     /**

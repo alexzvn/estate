@@ -20,7 +20,7 @@ class OnlineController extends PostController
 {
     public function index(Request $request)
     {
-        $this->authorize('manager.post.view');
+        $this->authorize('manager.post.online.view');
 
         $posts = Online::with(['province', 'district','categories', 'user'])
             ->filter($request)
@@ -34,7 +34,7 @@ class OnlineController extends PostController
 
     public function trashed(Request $request)
     {
-        $this->authorize('manager.post.view');
+        $this->authorize('manager.post.online.view');
 
         $posts = Online::onlyTrashed()
             ->with(['categories'])
@@ -49,7 +49,7 @@ class OnlineController extends PostController
 
     public function fetch(string $id, Post $post)
     {
-        $this->authorize('manager.post.view');
+        $this->authorize('manager.post.online.view');
 
         return $post->with(['user', 'files'])
             ->findOrFail($id);
@@ -57,7 +57,7 @@ class OnlineController extends PostController
 
     public function view(string $id, Post $post)
     {
-        $this->authorize('manager.post.view');
+        $this->authorize('manager.post.online.view');
 
         $post = $post->with(['categories', 'user', 'files'])->findOrFail($id);
         $provinces = Province::with('districts')->active()->get();
@@ -73,7 +73,7 @@ class OnlineController extends PostController
 
     public function create()
     {
-        $this->authorize('manager.post.create');
+        $this->authorize('manager.post.online.create');
 
         return view('dashboard.post.online.create', [
             'provinces' => Province::with('districts')->active()->get(['name']),
@@ -83,6 +83,8 @@ class OnlineController extends PostController
 
     public function store(StoreRequest $request)
     {
+        $this->authorize('manager.post.online.create');
+
         $post = Online::create($request->all());
 
         $this->syncUploadFiles($post, $request);
@@ -99,6 +101,8 @@ class OnlineController extends PostController
 
     public function update(string $id, UpdatePost $request)
     {
+        $this->authorize('manager.post.online.modify');
+
         $post = Post::findOrFail($id);
 
         $post = PostService::update($post, $request->all());
@@ -110,6 +114,8 @@ class OnlineController extends PostController
 
     public function cloneSaveOrigin(string $id, ClonePost $request)
     {
+        $this->authorize('manager.post.online.clone');
+
         $post = Post::findOrFail($id)->replicate();
 
         $request->user()->posts()->save($post);
@@ -126,6 +132,8 @@ class OnlineController extends PostController
 
     public function cloneDeleteOrigin(string $id, ClonePost $request)
     {
+        $this->authorize('manager.post.online.clone');
+
         $post = Post::findOrFail($id);
 
         PostService::update($post, $request->all());
@@ -136,5 +144,19 @@ class OnlineController extends PostController
             'success' => true,
             'data' => 'Đã duyệt xóa gốc',
         ]);
+    }
+
+    public function reverseMany(Request $request)
+    {
+        $this->authorize('manager.post.online.reserve');
+
+        return parent::reverseMany($request);
+    }
+
+    public function deleteMany(Request $request)
+    {
+        $this->authorize('manager.post.online.delete');
+
+        return parent::deleteMany($request);
     }
 }

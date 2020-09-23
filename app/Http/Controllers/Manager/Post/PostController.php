@@ -8,6 +8,7 @@ use App\Repository\Category;
 use Illuminate\Http\Request;
 use App\Repository\Location\Province;
 use App\Http\Controllers\Manager\Controller;
+use App\Repository\Post;
 
 class PostController extends Controller
 {
