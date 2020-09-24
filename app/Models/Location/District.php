@@ -10,7 +10,7 @@ class District extends Model
 
     protected $hidden = ['updated_at', 'created_at'];
 
-    public function provinces()
+    public function province()
     {
         return $this->belongsTo(Province::class);
     }
