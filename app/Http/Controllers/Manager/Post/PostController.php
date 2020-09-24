@@ -8,14 +8,25 @@ use App\Repository\Category;
 use Illuminate\Http\Request;
 use App\Repository\Location\Province;
 use App\Http\Controllers\Manager\Controller;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
     protected function shareCategoriesProvinces()
     {
-        view()->share('categories', Category::parentOnly()->with('children')->get());
-        view()->share('provinces', Province::active()->with('districts')->get());
-        view()->share('whitelist', Whitelist::all());
+        [$categories, $provinces, $whitelist] = Cache::remember(
+            'dashboard.share.default',
+            now()->addSeconds(360),
+            function () {
+                return [
+                    Category::parentOnly()->with('children')->get(),
+                    Province::active()->with('districts')->get(),
+                    Whitelist::all()
+                ];
+            }
+        );
+
+        view()->share(compact('categories', 'provinces', 'whitelist'));
     }
 
     protected function syncUploadFiles($post, Request $request)
