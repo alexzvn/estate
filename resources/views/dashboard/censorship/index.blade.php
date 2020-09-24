@@ -125,7 +125,7 @@
         $('.open-post').on('click', function () {
             let id = $(this).data('id');
 
-            window.location.href = `/manager/post/${id}/view`;
+            window.location.href = `/manager/post/online/${id}/view`;
         });
 
         $('.add-blacklist').on('click', function () {
@@ -154,7 +154,7 @@
 
         $('.lookup-phone').on('click', function () {
             let phone = $(this).data('phone');
-            let uri   = '/manager/post?query=' + phone;
+            let uri   = '/manager/post/online?query=' + phone;
 
             window.open(uri, '_blank');
         });

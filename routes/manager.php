@@ -49,6 +49,19 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
         Route::post('/reverse/many', 'OnlineController@reverseMany')->name('manager.post.online.reverse.many');
     });
 
+    Route::group(['prefix' => 'fee'], function ()
+    {
+        Route::get('/', 'FeeController@index')->name('manager.post.fee');
+        Route::get('/{id}/view', 'FeeController@view')->name('manager.post.fee.view');
+        Route::get('/{id}/fetch', 'FeeController@fetch')->name('manager.post.fee.fetch');
+        Route::get('/create', 'FeeController@create')->name('manager.post.fee.create');
+        Route::get('/trashed', 'FeeController@trashed')->name('manager.post.fee.trashed');
+        Route::post('/{id}/update', 'FeeController@update')->name('manager.post.fee.update');
+        Route::post('/store', 'FeeController@store')->name('manager.post.fee.store');
+        Route::post('/delete/many', 'FeeController@deleteMany')->name('manager.post.fee.delete.many');
+        Route::post('/reverse/many', 'FeeController@reverseMany')->name('manager.post.fee.reverse.many');
+    });
+
     Route::group(['prefix' => 'market'], function ()
     {
         Route::get('/', 'MarketController@index')->name('manager.post.market');

@@ -67,7 +67,7 @@
                             <td>
                                 {{ $report->post->phone ?? 'N/a' }}
                                 @isset($report->post->phone)
-                                    <a class="text-info" target="_blank" href="{{ route('manager.post') }}?query={{ $report->post->phone }}"><i data-feather="external-link"></i></a>
+                                    <a class="text-info" target="_blank" href="{{ route('manager.post.online') }}?query={{ $report->post->phone }}"><i data-feather="external-link"></i></a>
                                 @endisset
                             </td>
                             <td>{{ $report->created_at->diffForHumans() }}</td>
