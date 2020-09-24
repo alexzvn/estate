@@ -9,6 +9,7 @@ use App\Services\System\Post\Handler\CleanScript;
 use App\Services\System\Post\Handler\MakeCategories;
 use App\Services\System\Post\Handler\MakeDistrict;
 use App\Services\System\Post\Handler\MakeProvince;
+use App\Services\System\Post\Handler\NormalizePhone;
 use Illuminate\Pipeline\Pipeline;
 
 trait PostService
@@ -74,7 +75,8 @@ trait PostService
                 CastPriceToInt::class,
                 MakeCategories::class,
                 MakeDistrict::class,
-                MakeProvince::class
+                MakeProvince::class,
+                NormalizePhone::class
             ])
             ->via('handle')
             ->then(function ($attr) {
