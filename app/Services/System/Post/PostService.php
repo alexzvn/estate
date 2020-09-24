@@ -89,7 +89,7 @@ trait PostService
 
     public static function deleteMany(array $ids)
     {
-        return (new static)
+        return app(static::class)
             ->whereIn('_id', $ids)
             ->get()
             ->each(function ($post) {
@@ -99,7 +99,7 @@ trait PostService
 
     public static function reverseMany(array $ids)
     {
-        return (new static)
+        return app(static::class)
             ->whereIn('_id', $ids)
             ->get()
             ->each(function ($post) {
