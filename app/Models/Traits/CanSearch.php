@@ -40,7 +40,8 @@ trait CanSearch
         }
 
         $index = implode('. ', $values ?? []);
-        $index = Str::lower(Str::ascii($index));
+        $index = Str::lower($index);
+        $index .= '. ' . Str::ascii($index);
 
         return $this->forceFill(['index_meta' => $index])->save();
     }
