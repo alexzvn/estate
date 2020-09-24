@@ -150,13 +150,17 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.reserve');
 
-        return parent::reverseMany($request);
+        Online::reverseMany($request->ids ?? []);
+
+        return back()->with('success', 'Đã đảo các mục yêu cầu');
     }
 
     public function deleteMany(Request $request)
     {
         $this->authorize('manager.post.online.delete');
 
-        return parent::deleteMany($request);
+        Online::deleteMany($request->ids ?? []);
+
+        return back()->with('success', 'Đã xóa các mục yêu cầu');
     }
 }

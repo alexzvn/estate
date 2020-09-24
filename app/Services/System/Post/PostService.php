@@ -81,4 +81,24 @@ trait PostService
                 return (array) $attr;
             });
     }
+
+    public static function deleteMany(array $ids)
+    {
+        return (new static)
+            ->whereIn('_id', $ids)
+            ->get()
+            ->each(function ($post) {
+                $post->delete();
+            })->count();
+    }
+
+    public static function reverseMany(array $ids)
+    {
+        return (new static)
+            ->whereIn('_id', $ids)
+            ->get()
+            ->each(function ($post) {
+                $post->forceFill(['publish_at' => now(), 'reverser' => true])->save();
+            })->count();
+    }
 }

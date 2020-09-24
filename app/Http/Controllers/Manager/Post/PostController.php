@@ -8,7 +8,6 @@ use App\Repository\Category;
 use Illuminate\Http\Request;
 use App\Repository\Location\Province;
 use App\Http\Controllers\Manager\Controller;
-use App\Repository\Post;
 
 class PostController extends Controller
 {
@@ -39,25 +38,5 @@ class PostController extends Controller
         if ($ids->count()) {
             $post->files()->sync($ids->toArray());
         }
-    }
-
-    public function deleteMany(Request $request)
-    {
-        Post::whereIn('_id', $request->ids ?? [])->get()->each(function ($post)
-        {
-            $post->delete();
-        });
-
-        return back()->with('success', 'Đã xóa các mục yêu cầu');
-    }
-
-    public function reverseMany(Request $request)
-    {
-        Post::whereIn('_id', $request->ids ?? [])->get()->each(function ($post)
-        {
-            $post->forceFill(['publish_at' => now(), 'reverser' => true])->save();
-        });
-
-        return back()->with('success', 'Đã đảo các tin đã chọn');
     }
 }
