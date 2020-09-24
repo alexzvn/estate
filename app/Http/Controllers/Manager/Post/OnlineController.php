@@ -3,13 +3,8 @@
 namespace App\Http\Controllers\Manager\Post;
 
 use App\Enums\PostType;
-use App\Repository\Post;
 use App\Enums\PostStatus;
-use App\Repository\Category;
 use Illuminate\Http\Request;
-use App\Repository\Location\District;
-use App\Repository\Location\Province;
-use App\Services\System\Post\PostService;
 use App\Http\Requests\Manager\Post\ClonePost;
 use App\Http\Requests\Manager\Post\UpdatePost;
 use App\Http\Requests\Manager\Post\StoreRequest;
@@ -37,7 +32,7 @@ class OnlineController extends PostController
         $this->authorize('manager.post.online.view');
 
         $posts = Online::onlyTrashed()
-            ->with(['categories'])
+            ->with(['categories', 'district'])
             ->filter($request)
             ->newest()
             ->paginate(20);
@@ -47,7 +42,7 @@ class OnlineController extends PostController
         return view('dashboard.post.online.list', compact('posts'));
     }
 
-    public function fetch(string $id, Post $post)
+    public function fetch(string $id, Online $post)
     {
         $this->authorize('manager.post.online.view');
 
@@ -55,19 +50,16 @@ class OnlineController extends PostController
             ->findOrFail($id);
     }
 
-    public function view(string $id, Post $post)
+    public function view(string $id, Online $post)
     {
         $this->authorize('manager.post.online.view');
 
         $post = $post->with(['categories', 'user', 'files'])->findOrFail($id);
-        $provinces = Province::with('districts')->active()->get();
+
+        $this->shareCategoriesProvinces();
 
         return view('dashboard.post.online.edit', [
             'post' => $post,
-            'meta' => $post->meta,
-            'provinces' => $provinces,
-            'districts' => District::all(),
-            'categories' => Category::with('children.children.children')->parentOnly()->get(),
         ]);
     }
 
@@ -75,10 +67,9 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.create');
 
-        return view('dashboard.post.online.create', [
-            'provinces' => Province::with('districts')->active()->get(['name']),
-            'categories' => Category::with('children.children.children')->parentOnly()->get(),
-        ]);
+        $this->shareCategoriesProvinces();
+
+        return view('dashboard.post.online.create');
     }
 
     public function store(StoreRequest $request)
@@ -103,9 +94,9 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.modify');
 
-        $post = Post::findOrFail($id);
+        $post = Online::findOrFail($id);
 
-        $post = PostService::update($post, $request->all());
+        $post = Online::update($post, $request->all());
 
         $this->syncUploadFiles($post, $request);
 
@@ -116,7 +107,7 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.clone');
 
-        $post = Post::findOrFail($id)->replicate();
+        $post = Online::findOrFail($id)->replicate();
 
         $request->user()->posts()->save($post);
 
@@ -134,9 +125,9 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.clone');
 
-        $post = Post::findOrFail($id);
+        $post = Online::findOrFail($id);
 
-        PostService::update($post, $request->all());
+        Online::update($post, $request->all());
 
         $post->fill(['type' => PostType::PostFee])->save();
 
