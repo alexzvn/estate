@@ -38,7 +38,7 @@
                         $active = request()->is('manager/post/online*');
                     @endphp
                     <li class="menu">
-                        <a href="#submenu" data-toggle="collapse" @active($active, 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                        <a href="#online-post" data-toggle="collapse" @active($active, 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="file-text"></i>
                                 <span>Tin Online</span>
@@ -47,13 +47,37 @@
                                 <i data-feather="chevron-right"></i>
                             </div>
                         </a>
-                        <ul class="collapse submenu list-unstyled @active($active, 'show')" id="submenu" data-parent="#accordionExample">
+                        <ul class="collapse submenu list-unstyled @active($active, 'show')" id="online-post" data-parent="#accordionExample">
                             <li class="@active('manager.post.online')">
                                 <a href="{{ route('manager.post.online') }}"> Tất cả </a>
-                                {{-- Duyệt từ tin crawl --}}
                             </li>
                             <li class="@active('manager.post.online.trashed')">
                                 <a href="{{ route('manager.post.online.trashed') }}">Tin đã xóa </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endcan
+
+                    @can('manager.post.fee.view')
+                    @php
+                        $active = request()->is('manager/post/fee*');
+                    @endphp
+                    <li class="menu">
+                        <a href="#fee-post" data-toggle="collapse" @active($active, 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="file-text"></i>
+                                <span>Tin xin phí</span>
+                            </div>
+                            <div>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled @active($active, 'show')" id="fee-post" data-parent="#accordionExample">
+                            <li class="@active('manager.post.online')">
+                                <a href="{{ route('manager.post.fee') }}"> Tất cả </a>
+                            </li>
+                            <li class="@active('manager.post.online.trashed')">
+                                <a href="{{ route('manager.post.fee.trashed') }}">Tin đã xóa </a>
                             </li>
                         </ul>
                     </li>

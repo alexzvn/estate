@@ -10,7 +10,9 @@ class Market extends Post
 {
     use PostService;
 
+    public const TYPE = PostType::PostMarket;
+
     public function __construct(ModelsPost $post) {
-        $this->model = $post->where('type', PostType::PostMarket);
+        $this->model = $post->where('type', self::TYPE);
     }
 }

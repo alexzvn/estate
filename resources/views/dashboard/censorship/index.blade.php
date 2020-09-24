@@ -12,7 +12,6 @@
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                     <h4>
                         Danh sách bài viết
-                        <a href="{{ route('manager.post.create') }}" class="btn btn-success rounded-circle"><i data-feather="plus"></i></a>
                     </h4>
                 </div>
             </div>
@@ -119,14 +118,14 @@
 
     $(document).ready(function () {
         $('#delete-many').click(function () {
-            form.attr('action', "{{ route('manager.post.delete.many') }}");
+            form.attr('action', "{{ route('manager.post.online.delete.many') }}");
             form.submit();
         });
 
         $('.open-post').on('click', function () {
             let id = $(this).data('id');
 
-            window.location.href = `/manager/post/${id}/view`;
+            window.location.href = `/manager/post/online/${id}/view`;
         });
 
         $('.add-blacklist').on('click', function () {
@@ -155,7 +154,7 @@
 
         $('.lookup-phone').on('click', function () {
             let phone = $(this).data('phone');
-            let uri   = '/manager/post?query=' + phone;
+            let uri   = '/manager/post/online?query=' + phone;
 
             window.open(uri, '_blank');
         });

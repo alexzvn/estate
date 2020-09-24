@@ -63,11 +63,11 @@
                         <tr>
                             <td class="text-center" >{{ $loop->index }}</td>
                             <td style="font-weight: bold">{{ $report->user->name }} <br> {{ $report->user->phone }}</td>
-                            <td>{{ $report->post->title }} <a class="text-info" target="_blank" href="{{ route('manager.post.view', ['id' => $report->post->id]) }}"><i data-feather="external-link"></i></a></td>
+                            <td>{{ $report->post->title }} <a class="text-info" target="_blank" href="{{ route('manager.post.online.view', ['id' => $report->post->id]) }}"><i data-feather="external-link"></i></a></td>
                             <td>
                                 {{ $report->post->phone ?? 'N/a' }}
                                 @isset($report->post->phone)
-                                    <a class="text-info" target="_blank" href="{{ route('manager.post') }}?query={{ $report->post->phone }}"><i data-feather="external-link"></i></a>
+                                    <a class="text-info" target="_blank" href="{{ route('manager.post.online') }}?query={{ $report->post->phone }}"><i data-feather="external-link"></i></a>
                                 @endisset
                             </td>
                             <td>{{ $report->created_at->diffForHumans() }}</td>

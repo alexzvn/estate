@@ -9,6 +9,7 @@ use App\Services\System\Post\Handler\CleanScript;
 use App\Services\System\Post\Handler\MakeCategories;
 use App\Services\System\Post\Handler\MakeDistrict;
 use App\Services\System\Post\Handler\MakeProvince;
+use App\Services\System\Post\Handler\NormalizePhone;
 use Illuminate\Pipeline\Pipeline;
 
 trait PostService
@@ -74,11 +75,35 @@ trait PostService
                 CastPriceToInt::class,
                 MakeCategories::class,
                 MakeDistrict::class,
-                MakeProvince::class
+                MakeProvince::class,
+                NormalizePhone::class
             ])
             ->via('handle')
             ->then(function ($attr) {
+
+                $attr->type = static::TYPE;
+
                 return (array) $attr;
             });
+    }
+
+    public static function deleteMany(array $ids)
+    {
+        return (new static)
+            ->whereIn('_id', $ids)
+            ->get()
+            ->each(function ($post) {
+                $post->delete();
+            })->count();
+    }
+
+    public static function reverseMany(array $ids)
+    {
+        return (new static)
+            ->whereIn('_id', $ids)
+            ->get()
+            ->each(function ($post) {
+                $post->forceFill(['publish_at' => now(), 'reverser' => true])->save();
+            })->count();
     }
 }

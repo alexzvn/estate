@@ -14,7 +14,11 @@ trait CanSearch
 
     public function scopeFilterSearch(Builder $builder, $search = '')
     {
-        $builder->whereRaw(['$text' => ['$search' => Str::lower($search)]]);
+        $builder->whereRaw([
+            '$text' => [
+                '$search' => Str::ascii(Str::lower($search))
+                ]
+            ]);
     }
 
     public function scopeOrderByScore(Builder $builder)
@@ -36,7 +40,8 @@ trait CanSearch
         }
 
         $index = implode('. ', $values ?? []);
-        $index = Str::lower(Str::ascii($index));
+        $index = Str::lower($index);
+        $index .= '. ' . Str::ascii($index);
 
         return $this->forceFill(['index_meta' => $index])->save();
     }
