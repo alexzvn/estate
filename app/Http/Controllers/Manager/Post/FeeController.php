@@ -33,7 +33,7 @@ class FeeController extends PostController
         $this->shareCategoriesProvinces();
 
         return view('dashboard.post.fee.edit', [
-            'post' => $post->findOrFail($id)
+            'post' => $post->withTrashed()->findOrFail($id)
         ]);
     }
 
@@ -41,7 +41,7 @@ class FeeController extends PostController
     {
         $this->authorize('manager.post.fee.view');
 
-        $post = $post->findOrFail($id);
+        $post = $post->withTrashed()->findOrFail($id);
 
         return $post->load(['files', 'user']);
     }
@@ -73,11 +73,26 @@ class FeeController extends PostController
             ->with('success', 'Tạo mới thành công');
     }
 
+    public function trashed(Request $request)
+    {
+        $this->authorize('manager.post.fee.view');
+
+        $posts = Fee::onlyTrashed()
+            ->with(['categories', 'district'])
+            ->filter($request)
+            ->newest()
+            ->paginate(20);
+
+        $this->shareCategoriesProvinces();
+
+        return view('dashboard.post.fee.list', compact('posts'));
+    }
+
     public function update(string $id, UpdatePost $request)
     {
         $this->validate($request, ['commission' => 'required|string']);
 
-        $post = Fee::update(Fee::findOrFail($id), $request->all());
+        $post = Fee::update(Fee::withTrashed()->findOrFail($id), $request->all());
 
         $this->syncUploadFiles($post, $request);
 
