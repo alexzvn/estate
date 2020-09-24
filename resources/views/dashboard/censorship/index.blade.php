@@ -12,7 +12,6 @@
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                     <h4>
                         Danh sách bài viết
-                        <a href="{{ route('manager.post.create') }}" class="btn btn-success rounded-circle"><i data-feather="plus"></i></a>
                     </h4>
                 </div>
             </div>
@@ -119,7 +118,7 @@
 
     $(document).ready(function () {
         $('#delete-many').click(function () {
-            form.attr('action', "{{ route('manager.post.delete.many') }}");
+            form.attr('action', "{{ route('manager.post.online.delete.many') }}");
             form.submit();
         });
 
