@@ -10,7 +10,9 @@ class Fee extends Post
 {
     use PostService;
 
+    public const TYPE = PostType::PostFee;
+
     public function __construct(ModelsPost $post) {
-        $this->model = $post->where('type', PostType::PostFee);
+        $this->model = $post->where('type', self::TYPE);
     }
 }

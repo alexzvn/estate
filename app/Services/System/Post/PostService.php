@@ -78,6 +78,9 @@ trait PostService
             ])
             ->via('handle')
             ->then(function ($attr) {
+
+                $attr->type = static::TYPE;
+
                 return (array) $attr;
             });
     }

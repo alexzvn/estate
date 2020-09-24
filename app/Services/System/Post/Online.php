@@ -10,7 +10,9 @@ class Online extends Post
 {
     use PostService;
 
+    public const TYPE = PostType::Online;
+
     public function __construct(ModelsPost $post) {
-        $this->model = $post->where('type', PostType::Online);
+        $this->model = $post->where('type', self::TYPE);
     }
 }
