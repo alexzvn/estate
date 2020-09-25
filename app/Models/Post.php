@@ -65,6 +65,11 @@ class Post extends Model implements Auditable
         return $this->belongsTo(TrackingPost::class, 'phone', 'phone');
     }
 
+    public function verifier()
+    {
+        return $this->belongsTo(User::class, 'verifier_id');
+    }
+
     public function scopePublished(Builder $builder)
     {
         return $builder
