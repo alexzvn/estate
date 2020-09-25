@@ -109,6 +109,8 @@ class OnlineController extends PostController
 
         $post = Online::findOrFail($id)->replicate();
 
+        $post->type = PostType::PostFee;
+
         $request->user()->posts()->save($post);
 
         if ($request->status == PostStatus::Published) {
