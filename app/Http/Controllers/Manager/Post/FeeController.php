@@ -69,7 +69,7 @@ class FeeController extends PostController
             $post->publish_at = now(); $post->save();
         }
 
-        return redirect(route('manager.post.fee.view', ['id' => $post->id]))
+        return redirect(route('manager.post.fee'))
             ->with('success', 'Tạo mới thành công');
     }
 

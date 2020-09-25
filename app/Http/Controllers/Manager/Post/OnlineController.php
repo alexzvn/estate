@@ -86,7 +86,7 @@ class OnlineController extends PostController
             $post->publish_at = now(); $post->save();
         }
 
-        return redirect(route('manager.post.online.view', ['id' => $post->id]))
+        return redirect(route('manager.post.online'))
             ->with('success', 'Tạo mới thành công');
     }
 
@@ -109,7 +109,11 @@ class OnlineController extends PostController
 
         $post = Online::findOrFail($id)->replicate();
 
+        $post->type = PostType::PostFee;
+
         $request->user()->posts()->save($post);
+
+        $post->categories()->attach(Online::find($id)->category_ids ?? []);
 
         if ($request->status == PostStatus::Published) {
             $post->publish_at = now(); $post->save();
