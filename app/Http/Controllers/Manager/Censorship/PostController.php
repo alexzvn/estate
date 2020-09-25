@@ -55,7 +55,9 @@ class PostController extends Controller
         $this->makeListPhone($request->phone)
             ->each(function ($phone) use ($blacklist)
             {
-                $blacklist->findByPhoneOrCreate($phone);
+                $blacklist = $blacklist->findByPhoneOrCreate($phone);
+
+                $blacklist->forceFill(['user_id' => user()->id])->save();
             });
 
         return back()->with('success', "Đã chặn số $request->phone");
@@ -68,7 +70,9 @@ class PostController extends Controller
         $this->makeListPhone($request->phone)
             ->each(function ($phone) use ($whitelist)
             {
-                $whitelist->findByPhoneOrCreate($phone);
+                $whitelist = $whitelist->findByPhoneOrCreate($phone);
+
+                $whitelist->forceFill(['user_id' => user()->id])->save();
             });
 
         return back()->with('success', "Đã thêm số $request->phone vào danh sách trắng");

@@ -114,6 +114,8 @@ class OnlineController extends PostController
 
         $request->user()->posts()->save($post);
 
+        $post->verifier_id = user()->id;
+
         $post->categories()->attach(Online::find($id)->category_ids ?? []);
 
         Fee::update($post, $request->all());
@@ -133,6 +135,8 @@ class OnlineController extends PostController
         $this->authorize('manager.post.online.clone');
 
         $post = Online::findOrFail($id);
+
+        $post->verifier_id = user()->id;
 
         Online::update($post, $request->all());
 

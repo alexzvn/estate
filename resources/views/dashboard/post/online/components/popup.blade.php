@@ -235,7 +235,8 @@ use App\Enums\PostType;
                 text: data.data,
                 pos: 'bottom-right',
             });
-            return;
+
+            return $('#post-edit').modal('hide');
         }
 
         let alertContext;

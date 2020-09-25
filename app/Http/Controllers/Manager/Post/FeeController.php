@@ -14,7 +14,13 @@ class FeeController extends PostController
     {
         $this->authorize('manager.post.fee.view');
 
-        $posts = Fee::with(['province', 'district', 'categories', 'user'])
+        $posts = Fee::with([
+                'province',
+                'district',
+                'categories',
+                'user',
+                'verifier'
+            ])
             ->filter($request)
             ->newest()
             ->paginate(30);
@@ -78,7 +84,7 @@ class FeeController extends PostController
         $this->authorize('manager.post.fee.view');
 
         $posts = Fee::onlyTrashed()
-            ->with(['categories', 'district'])
+            ->with(['categories', 'district', 'verifier'])
             ->filter($request)
             ->newest()
             ->paginate(20);
@@ -111,14 +117,5 @@ class FeeController extends PostController
         Fee::deleteMany($request->ids ?? []);
 
         return back()->with('success', 'Đã xóa các mục yêu cầu');
-    }
-
-    public function reserveMany(Request $request)
-    {
-        $this->authorize('manager.post.fee.delete.many');
-
-        Fee::reserveMany($request->ids ?? []);
-
-        return back()->with('success', 'Đã đảo các mục yêu cầu');
     }
 }
