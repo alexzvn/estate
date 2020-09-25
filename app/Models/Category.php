@@ -13,6 +13,17 @@ class Category extends Model implements Auditable
 
     protected $fillable = ['name', 'description'];
 
+    
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'post_ids', 'plan_ids'
+    ];
+
+
     const NAME = 'danh mục';
 
     public function posts()
