@@ -9,6 +9,7 @@ use App\Http\Requests\Manager\Post\ClonePost;
 use App\Http\Requests\Manager\Post\UpdatePost;
 use App\Http\Requests\Manager\Post\StoreRequest;
 use App\Http\Controllers\Manager\Post\PostController;
+use App\Services\System\Post\Fee;
 use App\Services\System\Post\Online;
 
 class OnlineController extends PostController
@@ -114,6 +115,8 @@ class OnlineController extends PostController
         $request->user()->posts()->save($post);
 
         $post->categories()->attach(Online::find($id)->category_ids ?? []);
+
+        Fee::update($post, $request->all());
 
         if ($request->status == PostStatus::Published) {
             $post->publish_at = now(); $post->save();
