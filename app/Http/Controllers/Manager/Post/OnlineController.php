@@ -86,7 +86,7 @@ class OnlineController extends PostController
             $post->publish_at = now(); $post->save();
         }
 
-        return redirect(route('manager.post.online.view', ['id' => $post->id]))
+        return redirect(route('manager.post.online'))
             ->with('success', 'Tạo mới thành công');
     }
 
