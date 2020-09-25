@@ -113,6 +113,8 @@ class OnlineController extends PostController
 
         $request->user()->posts()->save($post);
 
+        $post->categories()->attach(Online::find($id)->category_ids ?? []);
+
         if ($request->status == PostStatus::Published) {
             $post->publish_at = now(); $post->save();
         }
