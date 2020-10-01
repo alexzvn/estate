@@ -118,4 +118,13 @@ class FeeController extends PostController
 
         return back()->with('success', 'Đã xóa các mục yêu cầu');
     }
+
+    public function reserveMany(Request $request)
+    {
+        $this->authorize('manager.post.fee.delete.many');
+
+        Fee::reserveMany($request->ids ?? []);
+
+        return back()->with('success', 'Đã đảo các mục yêu cầu');
+    }
 }
