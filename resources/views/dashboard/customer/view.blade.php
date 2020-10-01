@@ -149,7 +149,7 @@
                                                 <span id="badge-{{ $item->id }}" class="badge badge-warning">Ngừng hoạt động</span>
                                             @endif
                                         </td>
-    
+
                                         @can('manager.subscription.lock')
                                         <td class="text-center">
                                             <label class="switch s-outline s-outline-info">
@@ -164,8 +164,6 @@
                                 </tbody>
                             </table>
                         </form>
-
-                        @dump($user->subscriptions)
 
                         <a class="text-info" href="{{ route('manager.order') }}?query={{ $user->phone }}">Xem các đơn hàng trước</a>
                     </div>
