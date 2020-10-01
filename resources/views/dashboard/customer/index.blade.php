@@ -139,6 +139,8 @@
                     </tbody>
                 </table>
 
+                <span>Tìm thấy {{ number_format($users->total()) }} kết quả</span>
+
                 <div class="d-flex justify-content-center">
                     {!! $users->appends($_GET)->render() !!}
                 </div>
