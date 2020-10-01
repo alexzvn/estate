@@ -11,10 +11,11 @@ use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CanSearch;
 
 class Order extends Model implements CanNote, Auditable
 {
-    use SoftDeletes, HasNote, CanFilter, TraitsAuditable;
+    use SoftDeletes, HasNote, CanFilter, TraitsAuditable, CanSearch;
 
     public const DISCOUNT_PERCENT = 1;
 
@@ -70,28 +71,37 @@ class Order extends Model implements CanNote, Auditable
         return $this->belongsTo(User::class, 'customer_id');
     }
 
-    public function filterSearch(Builder $builder, $query)
+    public function filterQuery(Builder $builder, $query)
     {
-        $builder->where(function ($builder) use ($query)
+        $search = function ($builder) use ($query) {
+            $builder->search($query);
+        };
+
+        $builder->orWhereHas('customer', $search);
+    }
+
+    public function filterActivatedFrom(Builder $builder, $time)
+    {
+        return $builder->where(
+            'activate_at', '>=', Carbon::createFromFormat('d/m/Y', $time)->startOfDay()
+        );
+    }
+
+    public function filterCreator(Builder $builder, $creator)
+    {
+        return $builder->where('creator_id', $creator);
+    }
+
+    public function filterPlan(Builder $builder, $plan)
+    {
+        return $builder->whereHas('plans', function ($builder) use ($plan)
         {
-            $this->filterSearchUser($builder, $query);
-            $this->filterSearchCustomer($builder, $query);
+            $builder->where('_id', $plan);
         });
     }
 
-    public function filterSearchUser(Builder $builder, $query)
+    public function filterPriceGreater(Builder $builder, $value)
     {
-        $builder->orWhereHas('creator', function ($q) use ($query)
-        {
-            $q->where('index_meta', 'like', "%$query%");
-        });
-    }
-
-    public function filterSearchCustomer(Builder $builder, $query)
-    {
-        $builder->orWhereHas('customer', function ($q) use ($query)
-        {
-            $q->where('index_meta', 'like', "%$query%");
-        });
+        return $builder->where('price', '>=', (int) $value);
     }
 }

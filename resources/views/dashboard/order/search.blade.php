@@ -20,31 +20,34 @@
 
         <div class="col-md-2 pl-md-0 order-first">
             <div class="form-group input-group-sm">
-              <input type="text"
-                class="form-control" name="expires" id="expires_date" value="{{ request('expires') }}" placeholder="Ngày hết hạn">
-            </div>
-        </div>
-
-        <div class="col-md-2 pl-md-0 order-first">
-            <div class="form-group input-group-sm">
-                <select class="form-control" name="expires_last" id="expires_last">
-                    <option value="">Chọn theo ngày hết</option>
-                    @foreach (range(1, 10) as $i)
-                        <option value="{{ $i }}" {{ $i == request('expires_last') ? 'selected' : '' }}>{{ $i }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
-
-        <div class="col-md-2 pl-md-0 order-first">
-            <div class="form-group input-group-sm">
-              <select class="form-control" name="supporter" id="supporter">
-                <option value="">Nhân viên</option>
-                @foreach ($staff as $user)
-                <option value="{{ $user->id }}" {{ request('supporter') === $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+              <select class="form-control" name="plan" id="plan">
+                <option value="">Gói tin</option>
+                @foreach ($plans as $plan)
+                <option value="{{ $plan->id }}" {{ request('plan') === $plan->id ? 'selected' : '' }}>{{ $plan->name }}</option>
                 @endforeach
               </select>
+            </div>
+        </div>
+
+        <div class="col-md-2 pl-md-0 order-first">
+            <div class="form-group input-group-sm">
+              <select class="form-control" name="creator" id="creator">
+                <option value="">Người tạo</option>
+                @foreach ($staff as $user)
+                <option value="{{ $user->id }}" {{ request('creator') === $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                @endforeach
+              </select>
+            </div>
+        </div>
+
+        <div class="col-md-2 pl-md-0 order-first">
+            <div class="form-group input-group-sm">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" name="price_greater" id="price_greater" value="10" {{ request('price_greater') ? 'checked' : '' }}>
+                  Bỏ qua đơn 0đ
+                </label>
+              </div>
             </div>
         </div>
 
@@ -63,32 +66,20 @@
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group input-group-sm">
-                                        <input type="text" class="form-control" name="from" id="from" data-date-orientation="bottom auto"
-                                          data-provide="datepicker" placeholder="Chọn từ ngày..." value="{{ request('from') }}">
-                                          <small class="ml-2 form-text text-muted">Đăng ký từ ngày</small>
+                                        <input type="text" class="form-control" name="activated_from" id="from" data-date-orientation="bottom auto"
+                                          data-provide="datepicker" placeholder="Chọn từ ngày..." value="{{ request('activated_from') }}">
+                                          <small class="ml-2 form-text text-muted">Kích hoạt từ ngày</small>
                                       </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group input-group-sm">
-                                      <input type="text" class="form-control" name="to" id="to" data-date-orientation="bottom auto"
-                                      data-provide="datepicker" placeholder="Đến ngày" value="{{ request('to') }}">
-                                      <small class="ml-2 form-text text-muted">Đăng ký đến ngày</small>
+                                      <input type="text" class="form-control" name="activated_to" id="to" data-date-orientation="bottom auto"
+                                      data-provide="datepicker" placeholder="Đến ngày" value="{{ request('activated_to') }}">
+                                      <small class="ml-2 form-text text-muted">Kích hoạt đến ngày</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-2 pl-md-0">
-                    <div class="form-group input-group-sm">
-                      <select class="form-control" name="status" id="status">
-                        <option>Trạng thái</option>
-                        @foreach (\App\Models\User::getStatusKeyName() as $key => $value)
-                            <option value="{{ $key }}" {{ $key == request('status') ? 'selected' : '' }}>{{ $value }}</option>
-                        @endforeach
-                      </select>
-                      <small class="ml-2 form-text text-muted">Trạng thái người dùng</small>
                     </div>
                 </div>
 
@@ -115,10 +106,6 @@
     }
 
     $(document).ready(function () {
-        let f1 = flatpickr(document.getElementById('expires_date'), {
-            enableTime: false,
-            dateFormat: "d/m/Y",
-        });
 
         let f2 = flatpickr(document.getElementById('to'), {
             enableTime: false,

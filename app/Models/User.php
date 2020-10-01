@@ -184,7 +184,8 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
 
     protected function filterQuery(Builder $builder, $value)
     {
-        return $this->scopeFilterSearch($builder, $value);
+        $builder = $this->scopeSearch($builder, $value);
+        return $this->scopeOrderByScore($builder);
     }
 
     protected function filterRoles(Builder $builder, $roles)
