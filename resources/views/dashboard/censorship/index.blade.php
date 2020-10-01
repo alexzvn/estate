@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                     <h4>
-                        Danh sách bài viết
+                        KIỂM DUYỆT TIN ONLINE
                     </h4>
                 </div>
             </div>
