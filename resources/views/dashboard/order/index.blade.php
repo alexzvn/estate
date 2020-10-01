@@ -28,9 +28,7 @@ function planToString($plans) {
             </div>
         </div>
         <div class="widget-content widget-content-area">
-            <div class="table-responsive">
-
-                @include('dashboard.customer.components.search')
+            @include('dashboard.order.search')
 
                 <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
@@ -79,10 +77,11 @@ function planToString($plans) {
                     </tbody>
                 </table>
 
+                <span>Tìm thấy {{ $orders->total() }} đơn hàng</span>
+
                 <div class="d-flex justify-content-center">
                     {!! $orders->appends($_GET)->render() !!}
                 </div>
-            </div>
 
         </div>
     </div>
