@@ -12,6 +12,7 @@ use App\Http\Requests\Manager\Customer\StoreCustomer;
 use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Order;
+use App\Repository\Permission;
 use App\Repository\Role;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -42,7 +43,10 @@ class CustomerController extends Controller
 
         $users = $users->latest()->paginate(40);
 
-        return view('dashboard.customer.index', compact('users'));
+        return view('dashboard.customer.index', [
+            'users' => $users,
+            'staff' => Permission::findUsersHasPermission('manager.customer.view')
+        ]);
     }
 
     public function view(string $id, User $user)
