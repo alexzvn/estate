@@ -87,9 +87,10 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         return $this->belongsTo(User::class, 'supporter_id');
     }
 
-    public function canSupport(User $customer)
+    public function canSupport(User $customer = null)
     {
-        return $this->id === $customer->supporter_id || $this->can('manager.customer.view.all');
+        return (!is_null($customer) && $this->id === $customer->supporter_id) ||
+            $this->can('manager.customer.view.all');
     }
 
     public function posts()
