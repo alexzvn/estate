@@ -57,6 +57,7 @@ $color = [
                           </select>
                         </div>
                     </div>
+
                     <div class="col-md-2 order-first">
                         <div class="form-group input-group-sm">
                             <input type="text" class="form-control" name="from" id="from" data-date-orientation="bottom auto"
@@ -71,6 +72,7 @@ $color = [
                           <small class="ml-2 form-text text-muted">Chọn đến ngày</small>
                         </div>
                     </div>
+
                     <div class="col-md-2 pl-md-0 order-md-first order-last">
                         <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
                         </a>
