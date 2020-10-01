@@ -12,7 +12,7 @@
 
                 <div class="col-md-9">
                     <div class="form-group input-group-sm">
-                    <input id="query" type="text" class="form-control" name="query" value="{{ request('query') }}" placeholder="Tìm theo sđt">
+                    <input id="query" type="text" class="form-control" name="query" value="{{ request('query') }}" placeholder="Tìm kiếm tài khoản">
                     </div>
                 </div>
             </div>
