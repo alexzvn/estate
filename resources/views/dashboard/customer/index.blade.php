@@ -58,7 +58,7 @@
                                 return $b->created_at <=> $a->created_at;
                             });
 
-                            $sub  = $subs->first();
+                            $sub  = $subs->sortByDesc('expires_at')->first();
 
                             if ($sub) {
                                 if (now()->addDays(3)->lessThan($sub->expires_at)) {

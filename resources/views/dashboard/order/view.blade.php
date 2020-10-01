@@ -32,7 +32,7 @@ $manual  = $order->manual !== null && $order->manual;
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                    <h4 class="mb-3">Khách hàng <span class="text-info">{{ $customer->name }}</span>, số điện thoại: {{ $customer->phone }}</h4>
+                    <h4 class="mb-3">Khách hàng <a href="{{ route('manager.customer.view', ['id' => $customer->id]) }}" class="text-info">{{ $customer->name }}</a></h4>
 
                     <form id="update-form" action="{{ route('manager.order.update', ['id' => $order->id]) }}" method="post">
                         @csrf
