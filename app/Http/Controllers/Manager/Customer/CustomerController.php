@@ -25,11 +25,14 @@ class CustomerController extends Controller
         $this->authorize('manager.customer.view');
 
         $users = User::with(['subscriptions', 'supporter', 'orders'])
-            ->orWhereHas('subscriptions', function ($q) use ($request) {
-                $q->filter($request);
-            })
             ->filter($request)
             ->onlyCustomer();
+
+        if ($request->hasAny(['expires_last', 'expires'])) {
+            $users = $users->whereHas('subscriptions', function ($q) use ($request) {
+                $q->filter($request);
+            });
+        }
 
         $users = $users->latest()->paginate(40);
 

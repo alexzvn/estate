@@ -56,6 +56,8 @@ function rolesToString($roles) {
                     </tbody>
                 </table>
 
+                <span>Tìm thấy {{ $users->total() }} tài khoản</span>
+
                 <div class="d-flex justify-content-center">
                     {!! $users->appends($_GET)->render() !!}
                 </div>
