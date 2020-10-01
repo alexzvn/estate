@@ -64,6 +64,10 @@ class OrderController extends Controller
 
         $order->writeNote($request->note ?? '');
 
+        if ($request->active) {
+            return $this->activate($id, $request);
+        }
+
         return redirect(route('manager.order.view', ['id' => $order->id]));
     }
 
