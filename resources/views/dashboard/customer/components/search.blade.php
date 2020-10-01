@@ -37,7 +37,7 @@
         </div>
 
 
-        <div class="col-md-2 order-first">
+        <div class="col-md-2 pl-md-0 order-first">
             <div class="form-group input-group-sm">
               <select class="form-control" name="supporter" id="supporter">
                 <option value="">Nhân viên</option>
@@ -77,6 +77,18 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2 pl-md-0">
+                    <div class="form-group input-group-sm">
+                      <select class="form-control" name="status" id="status">
+                        <option>Trạng thái</option>
+                        @foreach (\App\Models\User::getStatusKeyName() as $key => $value)
+                            <option value="{{ $key }}" {{ $key == request('status') ? 'selected' : '' }}>{{ $value }}</option>
+                        @endforeach
+                      </select>
+                      <small class="ml-2 form-text text-muted">Trạng thái người dùng</small>
                     </div>
                 </div>
 

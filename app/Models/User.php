@@ -22,6 +22,14 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     use Notifiable, TraitsAuditable;
     use HasRoles, CanVerifyPhone, CanFilter, CanSearch;
 
+    const BANNED = 'banned';
+
+    const VERIFIED = 'verified';
+
+    const UNVERIFIED = 'unverified';
+
+    const ONLINE = 'online';
+
     const NAME = 'người dùng';
 
     /**
@@ -159,6 +167,13 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         );
     }
 
+    public function scopeOnline(Builder $builder)
+    {
+        return $builder
+        ->whereNotNull('session_id')
+        ->where('last_seen', '>=', now()->subMinutes(static::SESSION_TIMEOUT));
+    }
+
     public function scopeOnlyCustomer(Builder $builder)
     {
         return $builder->whereHas('roles', function (Builder $builder)
@@ -210,6 +225,26 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         $builder->where(
             'created_at', '>=', Carbon::createFromFormat('d/m/Y', $time)->startOfDay()
         );
+    }
+
+    protected function filterStatus(Builder $builder, $status)
+    {
+        switch ($status) {
+            case static::BANNED: return $builder->whereNotNull('banned_at');
+            case static::VERIFIED: return $builder->whereNotNull('phone_verified_at');
+            case static::UNVERIFIED: return $builder->whereNull('phone_verified_at');
+            case static::ONLINE: return $this->scopeOnline($builder);
+        }
+    }
+
+    public static function getStatusKeyName()
+    {
+        return [
+            static::BANNED => 'Bị khóa',
+            static::VERIFIED => 'Đã xác thực',
+            static::UNVERIFIED => 'Chưa xác thực',
+            static::ONLINE => 'Đang online'
+        ];
     }
 
     public function getIndexDocumentData()
