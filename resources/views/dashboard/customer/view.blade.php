@@ -128,6 +128,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($user->subscriptions as $item)
+                                    
                                     @if ($plan = $item->plan)
                                     <tr>
                                         <td class="checkbox-column">
@@ -163,6 +164,10 @@
                                 </tbody>
                             </table>
                         </form>
+
+                        @dump($user->subscriptions)
+
+                        <a class="text-info" href="{{ route('manager.order') }}?query={{ $user->phone }}">Xem các đơn hàng trước</a>
                     </div>
                 </div>
             </div>
