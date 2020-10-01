@@ -32,14 +32,10 @@ class CustomerController extends Controller
             $users->where('supporter_id', $request->user()->id);
         }
 
-        if ($date = $request->expires_date) {
-            $date = Carbon::createFromFormat('d/m/Y', $date);
-
-            $users->whereHas('subscriptions', function ($q) use ($date)
-            {
-                $q->whereBetween('expires_at', [$date->startOfDay(), $date->endOfDay()]);
-            });
-        }
+        $users->whereHas('subscriptions', function ($q) use ($request)
+        {
+            $q->filter($request);
+        });
 
         $users = $users->latest()->paginate(40);
 

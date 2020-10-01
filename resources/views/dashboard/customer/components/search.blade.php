@@ -3,6 +3,8 @@
 @endpush
 
 <form id="search-form" action="" method="GET">
+    <input type="hidden" name="roles" value="{{ request('roles') }}">
+
     <div class="row">
         <div class="col-md-4 pl-md-0 order-first">
             <div class="form-row">
@@ -19,9 +21,21 @@
         <div class="col-md-2 pl-md-0 order-first">
             <div class="form-group input-group-sm">
               <input type="text"
-                class="form-control" name="expires_date" id="expires_date" value="{{ request('expires_date') }}" placeholder="Ngày hết hạn">
+                class="form-control" name="expires" id="expires_date" value="{{ request('expires') }}" placeholder="Ngày hết hạn">
             </div>
         </div>
+
+        <div class="col-md-2 pl-md-0 order-first">
+            <div class="form-group input-group-sm">
+                <select class="form-control" name="expires_last" id="expires_last">
+                    <option value="">Chọn theo ngày hết</option>
+                    @foreach (range(1, 10) as $i)
+                        <option value="{{ $i }}" {{ $i == request('expires_last') ? 'selected' : '' }}>{{ $i }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
 
         <div class="col-md-2 order-first">
             <div class="form-group input-group-sm">
@@ -34,17 +48,6 @@
             </div>
         </div>
 
-        <div class="col-md-2 pl-md-0 order-first">
-            <div class="form-group input-group-sm">
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" name="me" id="me" value="true" {{ request('me') ? 'checked' : '' }}>
-                  Đang quản lý
-                </label>
-              </div>
-            </div>
-        </div>
-
         <div class="col-md-2 pl-md-0 order-md-first order-last">
             <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
             <a id="advanced-search" class="btn btn-outline-secondary" href="javascript:void(0)" role="button"> <i data-feather="filter"></i>
@@ -54,7 +57,7 @@
         <div class="col-md-12">
             <div id="advanced-search-form" class="row" style="display: none;">
 
-                <div class="col-md-5 pl-md-0">
+                <div class="col-md-4 pl-md-0">
                     <div class="form-row">
                         <div class="offset-md-3 col-md-9">
                             <div class="form-row">

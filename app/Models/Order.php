@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use App\Contracts\Models\CanNote;
-use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\HasNote;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use App\Models\Traits\CanFilter;
-use Illuminate\Database\Eloquent\Builder;
+use App\Contracts\Models\CanNote;
+use Jenssegers\Mongodb\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Builder;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use App\Models\Traits\Auditable as TraitsAuditable;
 
 class Order extends Model implements CanNote, Auditable
 {
