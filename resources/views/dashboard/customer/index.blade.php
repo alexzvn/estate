@@ -88,7 +88,8 @@
                                 @endif
                             </td>
                             <td>
-                                {{ $user->created_at->format('d/m/Y') }}
+                                {{ $user->created_at->format('d/m/Y') }} <br>
+                                {{ $user->created_at->format('H:i:s') }}
                             </td>
                             <td>{{ number_format($user->orders->sum('after_discount_price')) }} đ</td>
                             <td>{{ $sub && $sub->activate_at ? $sub->activate_at->format('d/m/Y') : 'N/a' }}</td>
@@ -138,6 +139,8 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                <span>Tìm thấy {{ number_format($users->total()) }} kết quả</span>
 
                 <div class="d-flex justify-content-center">
                     {!! $users->appends($_GET)->render() !!}

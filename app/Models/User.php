@@ -10,6 +10,7 @@ use App\Contracts\Auth\MustVerifyPhone;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CanSearch;
 use App\Models\Traits\Notifiable;
+use Illuminate\Support\Carbon;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -190,6 +191,25 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         }
 
         return $builder->where('phone', $phone);
+    }
+
+    protected function filterSupporter(Builder $builder, $support)
+    {
+        return $builder->where('supporter_id', $support);
+    }
+
+    protected function filterTo(Builder $builder, $time)
+    {
+        $builder->where(
+            'created_at', '<=', Carbon::createFromFormat('d/m/Y', $time)->endOfDay()
+        );
+    }
+
+    protected function filterFrom(Builder $builder, $time)
+    {
+        $builder->where(
+            'created_at', '>=', Carbon::createFromFormat('d/m/Y', $time)->startOfDay()
+        );
     }
 
     public function getIndexDocumentData()
