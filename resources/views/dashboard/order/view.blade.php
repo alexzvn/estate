@@ -133,7 +133,7 @@ $manual  = $order->manual !== null && $order->manual;
                         @endif
 
                         @if (! $order->isActivated())
-                            <a class="btn btn-secondary" href="{{ route('manager.order.activate', ['id' => $order->id]) }}" role="button">Kích hoạt</a>
+                            <button class="btn btn-secondary" type="submit" name="active" value="true" role="button">Kích hoạt</button>
                         @endif
 
                         @can('manager.order.delete')
