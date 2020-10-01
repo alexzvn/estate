@@ -77,7 +77,7 @@ class Order extends Model implements CanNote, Auditable
             $builder->search($query);
         };
 
-        $builder->orWhereHas('customer', $search);
+        $builder->whereHas('customer', $search);
     }
 
     public function filterActivatedFrom(Builder $builder, $time)

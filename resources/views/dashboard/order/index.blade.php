@@ -48,7 +48,21 @@ function planToString($plans) {
                         @foreach ($orders as $order)
                         @php
                             $customer = $order->customer;
-                            $canSupport = $customer && user()->canSupport($customer);
+                            $accessTypes = $order->plans->reduce(function ($carry, $item) {
+                                array_push($carry, ...$item->types ?? []);
+
+                                return $carry;
+                            }, []);
+
+                            $canSupport = 
+                                user()->can('*') || (
+                                    $customer &&
+                                    user()->canSupport($customer)
+                                ) || (
+                                    in_array(\App\Enums\PostType::PostFee, array_unique($accessTypes)) &&
+                                    user()->can('manager.order.fee.phone.view')
+                                );
+                                
                         @endphp
                         <tr>
                             <td class="text-center" >{{ $loop->index + 1 }}</td>

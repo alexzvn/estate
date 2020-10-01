@@ -128,6 +128,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($user->subscriptions as $item)
+                                    
                                     @if ($plan = $item->plan)
                                     <tr>
                                         <td class="checkbox-column">
@@ -148,7 +149,7 @@
                                                 <span id="badge-{{ $item->id }}" class="badge badge-warning">Ngừng hoạt động</span>
                                             @endif
                                         </td>
-    
+
                                         @can('manager.subscription.lock')
                                         <td class="text-center">
                                             <label class="switch s-outline s-outline-info">
@@ -163,6 +164,8 @@
                                 </tbody>
                             </table>
                         </form>
+
+                        <a class="text-info" href="{{ route('manager.order') }}?query={{ $user->phone }}">Xem các đơn hàng trước</a>
                     </div>
                 </div>
             </div>
@@ -203,7 +206,7 @@
                             <label for="plans">Chọn các gói</label>
                             <select class="form-control tagging" name="plans[]" id="plans" multiple required>
                                 @foreach ($plans as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                <option value="{{ $item->id }}"> {{ $loop->iteration }}. {{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
