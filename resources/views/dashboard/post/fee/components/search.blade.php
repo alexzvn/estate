@@ -109,6 +109,7 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
                         </select>
                     </div>
                 </div>
+
                 <div class="col-md-2 pl-md-0">
                     <div class="form-group input-group-sm">
                         <select class="form-control" name="province" id="province">
@@ -119,6 +120,18 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
                         </select>
                     </div>
                 </div>
+
+                <div class="col-md-2 pl-md-0">
+                    <div class="form-group input-group-sm">
+                        <select class="form-control" name="status" id="status">
+                          <option value="">Trạng thái</option>
+                          @foreach (\App\Enums\PostStatus::getKeyName() as $key => $name)
+                              <option value="{{ $key }}" {{ $key === request('status') ? 'selected' : ''}}>{{ $name }}</option>
+                          @endforeach
+                        </select>
+                    </div>
+                </div>
+
             </div>
         </div>
 

@@ -21,4 +21,14 @@ final class PostStatus extends Enum
     const Pending   = '1';
 
     const Published = '2';
+
+    public static function getKeyName()
+    {
+        return [
+            static::Draft => 'Bản nháp',
+            static::Locked => 'Đã khóa',
+            static::Pending => 'Chờ duyệt',
+            static::Published => 'Đã đăng',
+        ];
+    }
 }
