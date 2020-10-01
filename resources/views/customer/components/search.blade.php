@@ -26,7 +26,8 @@ $filterPrices = [
     '30000000000-' => '> 30 tỷ',
 ];
 
-$districts = ($provinces->where('_id', request('province'))->first() ?? $provinces->first())->districts;
+$districts = $provinces->where('_id', request('province'))->first() ?? $provinces->first();
+$districts = $districts->districts ?? null;
 @endphp
 
 <form id="search-form" action="" method="GET">
