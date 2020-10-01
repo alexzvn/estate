@@ -55,14 +55,7 @@ function planToString($plans) {
                             }, []);
 
                             $canSupport = 
-                                user()->can('*') || (
-                                    $customer &&
-                                    user()->canSupport($customer)
-                                ) || (
-                                    in_array(\App\Enums\PostType::PostFee, array_unique($accessTypes)) &&
-                                    user()->can('manager.order.fee.phone.view')
-                                );
-                                
+                                user()->can('*') || ($customer && user()->canSupport($customer)) || user()->can('manager.order.phone.view');
                         @endphp
                         <tr>
                             <td class="text-center" >{{ $loop->index + 1 }}</td>

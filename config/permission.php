@@ -135,7 +135,7 @@ return [
             'manager.order.modify' => 'Chỉnh sửa',
             'manager.order.delete' => 'Xóa',
             'manager.order.modify.force' => 'Chỉnh sửa khi đã xác thực',
-            'manager.order.fee.phone.view' => 'Xem sđt gói tin xin phí',
+            'manager.order.phone.view' => 'Xem sđt',
 
             'manager.role.view'   => 'Xem',
             'manager.role.create' => 'Tạo mới',
@@ -282,7 +282,7 @@ return [
                     'manager.order.modify',
                     'manager.order.modify.force',
                     'manager.order.delete',
-                    'manager.order.fee.phone.view'
+                    'manager.order.phone.view'
                 ]
             ],[
                 'name' => 'Nhận thông báo',
