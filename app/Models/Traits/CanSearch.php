@@ -12,9 +12,9 @@ trait CanSearch
 {
     protected $indexField = 'index_meta';
 
-    public function scopeFilterSearch(Builder $builder, $search = '')
+    public function scopeSearch(Builder $builder, $search = '')
     {
-        $builder->whereRaw([
+        return $builder->whereRaw([
             '$text' => [
                 '$search' => Str::ascii(Str::lower($search))
                 ]
@@ -23,7 +23,7 @@ trait CanSearch
 
     public function scopeOrderByScore(Builder $builder)
     {
-        $builder->project(['score' => ['$meta' => 'textScore']])
+        return $builder->project(['score' => ['$meta' => 'textScore']])
             ->orderBy('score', ['$meta' => 'textScore']);
     }
 
