@@ -120,29 +120,21 @@ $manual  = $order->manual !== null && $order->manual;
                             </div>
                         </div>
 
-                        @if (! $order->verified)
-                        <div class="form-check">
-                            <label class="form-check-label">
-                              <input type="checkbox" class="form-check-input" name="verified" id="verified" value="1">
-                              Đánh dấu là đã thanh toán
-                            </label>
-                        </div>
-                        @endif
-
-                        <hr class="mt-0">
-
                         <h5 class="mb-3">Tổng tiền: <span id="total-value" class="text-danger">{{ $order->after_discount_price !== null ? number_format($order->after_discount_price) : number_format($plans->sum('price')) }}đ</span></h5>
 
-                        @can('manager.order.modify')
-                            @if ($order->verified)
-                                @can('manager.category.modify.force')
-                                <button id="submit" class="btn btn-primary">Cập nhật</button>
-                                @endcan
-                            @else
-                                <button id="submit" class="btn btn-success">Cập nhật</button>
-                            @endif
-                        @endcan
-                        
+                        @if ($order->isPaid())
+                            @can('manager.category.modify.force')
+                            <button id="submit" class="btn btn-primary">Cập nhật</button>
+                            @endcan
+                        @else
+                            @can('manager.category.modify')
+                            <button id="submit" class="btn btn-primary">Cập nhật</button>
+                            @endcan
+                        @endif
+
+                        @if (! $order->isActivated())
+                            <a class="btn btn-secondary" href="{{ route('manager.order.activate', ['id' => $order->id]) }}" role="button">Kích hoạt</a>
+                        @endif
 
                         @can('manager.order.delete')
                         <a id="delete-btn" href="javascript:void(0)" class="btn btn-danger btn-sm float-right">Xóa đơn hàng</a>

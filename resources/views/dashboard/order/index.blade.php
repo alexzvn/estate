@@ -12,6 +12,11 @@ function planToString($plans) {
 }
 @endphp
 
+@push('style')
+<link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
+<link href="{{ asset('dashboard/assets/css/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('content')
 <div id="tableLight" class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
@@ -54,8 +59,7 @@ function planToString($plans) {
                                 return $carry;
                             }, []);
 
-                            $canSupport = 
-                                user()->can('*') || ($customer && user()->canSupport($customer)) || user()->can('manager.order.phone.view');
+                            $canSupport =  ($customer && user()->canSupport($customer)) || user()->can('manager.order.phone.view') || user()->can('*');
                         @endphp
                         <tr>
                             <td class="text-center" >{{ $loop->index + 1 }}</td>
@@ -69,15 +73,24 @@ function planToString($plans) {
                             <td>{{ $order->activate_at ? $order->activate_at->format('d/m/Y') : 'N/a' }}</td>
                             <td>{{ $order->expires_at ? $order->expires_at->format('d/m/Y') : ($order->month ? $order->month . ' tháng' : 'N/a') }}</td>
                             <td>
-                                <span class="badge badge-{{ $order->status === $order::PAID ? 'success' : 'primary' }}">
-                                    {{ $order->status === $order::PAID ? 'Đã thanh toán' : 'Chưa thanh toán' }}
-                                </span>
+                                @include('dashboard.order.status', ['status' => $order->status])
                             </td>
                             <td>{{ $order->creator->name ?? 'N/a' }}</td>
-                            <td>
-                                <a href="{{ route('manager.order.view', ['id' => $order->id]) }}">
-                                    <i class="role-edit t-icon t-hover-icon" data-feather="edit"></i>
-                                </a>
+                            <td class="text-center">
+                                <ul class="table-controls">
+                                    <li>
+                                        <a href="{{ route('manager.order.view', ['id' => $order->id]) }}">
+                                            <i class="role-edit" data-feather="edit"></i>
+                                        </a>
+                                    </li>
+                                    @if (user()->can('*') && !$order->isPaid())
+                                    <li>
+                                        <a class="dark" title="Xác thực thanh toán" data-placement="bottom" href="{{ route('manager.order.verify', ['id' => $order->id]) }}">
+                                            <i class="text-danger"  data-feather="heart"></i>
+                                        </a>
+                                    </li>
+                                    @endif
+                                </ul>
                             </td>
                         </tr>
                         @endforeach
@@ -94,3 +107,7 @@ function planToString($plans) {
     </div>
 </div>
 @endsection
+
+@push('script')
+<script src="{{ asset('dashboard/assets/js/elements/tooltip.js') }}"></script>
+@endpush

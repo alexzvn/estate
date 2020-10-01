@@ -158,6 +158,8 @@ Route::group(['prefix' => 'order', 'namespace' => 'Order'], function () {
     Route::post('/store', 'OrderController@store')->name('manager.order.store');
     Route::get('/{id}/view', 'OrderController@view')->name('manager.order.view');
     Route::post('/{id}/update', 'OrderController@update')->name('manager.order.update');
+    Route::get('/{id}/activate', 'OrderController@activate')->name('manager.order.activate');
+    Route::get('/{id}/verify', 'OrderController@verify')->name('manager.order.verify');
     Route::post('/{id}/delete', 'OrderController@delete')->name('manager.order.delete');
 });
 

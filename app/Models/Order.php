@@ -71,6 +71,23 @@ class Order extends Model implements CanNote, Auditable
         return $this->belongsTo(User::class, 'customer_id');
     }
 
+    public function verify()
+    {
+        return $this->forceFill([
+            'status' => static::PAID,
+        ])->save();
+    }
+
+    public function isActivated()
+    {
+        return $this->activate_at !== null;
+    }
+
+    public function isPaid()
+    {
+        return $this->status === static::PAID;
+    }
+
     public function filterQuery(Builder $builder, $query)
     {
         $search = function ($builder) use ($query) {

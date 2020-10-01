@@ -56,9 +56,7 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id)->forceFill(['manual' => (bool) $request->manual]);
 
-        $hasNotOrdered = $order->status !== ModelsOrder::PAID && is_null($order->verifier);
-
-        if ($order->status == ModelsOrder::PENDING || $request->user()->can('manager.order.modify.force')) {
+        if (! $order->isActivated() || user()->can('manager.order.modify.force')) {
             $request->manual ?
                 $this->updateManual($order, $request)->save():
                 $this->updateAuto($order, $request)->save();
@@ -66,14 +64,40 @@ class OrderController extends Controller
 
         $order->writeNote($request->note ?? '');
 
-        if ($hasNotOrdered && $request->verified ) { //activate order in first time
-            (new Customer($order->customer))->renewSubscription($order);
-            $order->activate_at = $request->activeAt();
-            $order->verifier_id = $request->user()->id;
-            $order->save();
+        return redirect(route('manager.order.view', ['id' => $order->id]));
+    }
+
+    public function activate(string $id, Request $request)
+    {
+        $this->authorize('manager.order.modify');
+
+        $order = Order::findOrFail($id);
+
+        if ($order->isActivated()) {
+            return back()->with('danger', 'Bạn không đủ thẩm quyền để kích hoạt gói này');
         }
 
-        return redirect(route('manager.order.view', ['id' => $order->id]));
+        $activated_at = 
+            ($time = strtotime($request->activated_at)) ?
+            Carbon::createFromTimestamp($time) : now();
+
+        (new Customer($order->customer))->renewSubscription($order);
+
+        $order->forceFill([
+            'activate_at' => $activated_at,
+            'verifier_id' => user()->id,
+        ])->save();
+
+        return back()->with('success', 'Đã kích hoạt gói này');
+    }
+
+    public function verify(string $id, Request $request)
+    {
+        $this->authorize('*');
+
+        $order = Order::findOrFail($id)->verify();
+
+        return back()->with('success', 'Đã xác thực đơn hàng');
     }
 
     protected function updateAuto(ModelsOrder $order, UpdateOrder $request)
