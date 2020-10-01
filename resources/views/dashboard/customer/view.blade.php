@@ -203,7 +203,7 @@
                             <label for="plans">Chọn các gói</label>
                             <select class="form-control tagging" name="plans[]" id="plans" multiple required>
                                 @foreach ($plans as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                <option value="{{ $item->id }}"> {{ $loop->iteration }}. {{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
