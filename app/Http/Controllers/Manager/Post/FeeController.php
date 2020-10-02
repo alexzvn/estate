@@ -67,6 +67,8 @@ class FeeController extends PostController
 
         $post = Fee::create($request->all());
 
+        $post->fill(['status' => PostStatus::Published]);
+
         $this->syncUploadFiles($post, $request);
 
         $request->user()->posts()->save($post);
