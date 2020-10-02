@@ -28,7 +28,7 @@ class CustomerController extends Controller
             ->filter($request)
             ->onlyCustomer();
 
-        if ($request->hasAny(['expires_last', 'expires'])) {
+        if (! empty($request->expires_last) && ! empty($request->expires)) {
             $users = $users->whereHas('subscriptions', function ($q) use ($request) {
                 $q->filter($request);
             });
