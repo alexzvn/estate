@@ -19,6 +19,11 @@ class Log extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function isViewPost()
+    {
+        return preg_match('/^Đã xem tin:/', $this->content);
+    }
+
     public function filterPhone(Builder $builder, $phone)
     {
         return $builder->whereHas('user', function (Builder $builder) use ($phone)

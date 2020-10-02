@@ -94,7 +94,12 @@
                             <td>{{ number_format($user->orders->sum('after_discount_price')) }} đ</td>
                             <td>{{ $sub && $sub->activate_at ? $sub->activate_at->format('d/m/Y') : 'N/a' }}</td>
                             <td>{{ $sub && $sub->expires_at ? $sub->expires_at->format('d/m/Y') : 'N/a' }}</td>
-                            <td><a class="text-primary" href="{{ route('manager.log') }}?phone={{ $user->phone }}">Xem</a></td>
+                            <td>
+                                <a class="text-primary" href="{{ route('manager.log') }}?phone={{ $user->phone }}">
+                                    Xem: {{ $user->logs->filter(function ($log) { return $log->isViewPost(); })->count() }} tin
+                                </a> <br>
+                                {{ $user->logs->last() ?  $user->logs->last()->created_at->format('d/m/Y H:i:s') : '' }}
+                            </td>
                             <td>
                                 @if ($supporter)
                                     <span class="text-info">{{ $supporter->id == Auth::id() ? 'Bạn' : "$supporter->name" }}</span>
