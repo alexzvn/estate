@@ -165,4 +165,13 @@ class OnlineController extends PostController
 
         return back()->with('success', 'Đã xóa các mục yêu cầu');
     }
+
+    public function forceDeleteMany(Request $request)
+    {
+        $this->authorize('manager.post.online.delete.force');
+
+        Online::forceDeleteMany($request->ids ?? []);
+
+        return back()->with('success', 'Đã xóa các mục yêu cầu');
+    }
 }

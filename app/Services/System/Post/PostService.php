@@ -97,6 +97,17 @@ trait PostService
             })->count();
     }
 
+    public static function forceDeleteMany(array $ids)
+    {
+        return app(static::class)
+            ->onlyTrashed()
+            ->whereIn('_id', $ids)
+            ->get()
+            ->each(function ($post) {
+                $post->forceDelete();
+            })->count();
+    }
+
     public static function reverseMany(array $ids)
     {
         return app(static::class)

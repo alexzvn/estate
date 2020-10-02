@@ -27,7 +27,7 @@
             @include('dashboard.post.online.components.search')
 
             <div class="table-responsive">
-                <form action="" method="post" id="form-table">
+                <form action="" method="post" id="form-table" data-delete="{{ request()->routeIs('manager.post.online.trashed') ? route('manager.post.online.delete.many.force') : route('manager.post.online.delete.many') }}" data-reverse="{{ route('manager.post.fee.reverse.many') }}">
                 @csrf
                 <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head">
                     <thead>
@@ -284,12 +284,12 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                 return;
             }
 
-            form.attr('action', "{{ route('manager.post.online.delete.many') }}");
+            form.attr('action', $(form).data('delete'));
             form.submit();
         });
 
         $('#reverse-many').click(function () {
-            form.attr('action', "{{ route('manager.post.online.reverse.many') }}");
+            form.attr('action', $(form).data('reverse'));
             form.submit();
         });
 
