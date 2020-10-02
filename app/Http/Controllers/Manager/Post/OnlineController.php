@@ -79,7 +79,11 @@ class OnlineController extends PostController
 
         $post = Online::create($request->all());
 
-        $post->fill(['status' => PostStatus::Published]);
+        $post->forceFill([
+            'status' => PostStatus::Published,
+            'publish_at' => now(),
+            'user_id' => user()->id
+        ])->save();
 
         $this->syncUploadFiles($post, $request);
 

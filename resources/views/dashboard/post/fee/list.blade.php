@@ -44,7 +44,7 @@
                             @endif
                             <th>Giá</th>
                             <th>Số điện thoại</th>
-                            <th>Người duyệt</th>
+                            <th>Người duyệt/đăng</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -87,7 +87,7 @@
                                 </div>
                                 @endisset
                             </td>
-                            <td> <span class="text-info">{{ $post->verifier->name ?? '' }}</span> </td>
+                            <td> <span class="text-info">{{ $post->verifier->name ?? $post->user->name ?? '' }}</span> </td>
                             <td> @include('dashboard.post.components.status', ['status' => $post->status]) </td>
                             <td>
                                 @isset($post->phone)

@@ -67,15 +67,13 @@ class FeeController extends PostController
 
         $post = Fee::create($request->all());
 
-        $post->fill(['status' => PostStatus::Published]);
+        $post->forceFill([
+            'status' => PostStatus::Published,
+            'publish_at' => now(),
+            'user_id' => user()->id
+        ])->save();
 
         $this->syncUploadFiles($post, $request);
-
-        $request->user()->posts()->save($post);
-
-        if ($request->status == PostStatus::Published && empty($post->publish_at)) {
-            $post->publish_at = now(); $post->save();
-        }
 
         return redirect(route('manager.post.fee'))
             ->with('success', 'Tạo mới thành công');
