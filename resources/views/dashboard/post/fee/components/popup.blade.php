@@ -206,6 +206,8 @@ use App\Enums\PostType;
                 pos: 'bottom-right',
             });
 
+            window.location.reload(true);
+
             return $('#post-edit').modal('hide');
         }
 
