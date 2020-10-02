@@ -28,39 +28,40 @@ function rolesToString($roles) {
             </div>
         </div>
         <div class="widget-content widget-content-area">
-            <div class="table-responsive">
-                <table class="table table-hover table-light mb-4">
-                    <thead>
-                        <tr>
-                            <th class="text-center">#</th>
-                            <th>Họ tên</th>
-                            <th>Số điện thoại</th>
-                            <th>Vai trò</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $user)
-                        <tr>
-                            <td class="text-center" >{{ $loop->index }}</td>
-                            <td style="font-weight: bold">{{ $user->name }}</td>
-                            <td>{{ $user->phone }}</td>
-                            <td>{{ rolesToString($user->roles) }}</td>
-                            <td>
-                                <a href="{{ route('manager.user.view', ['id' => $user->id]) }}">
-                                    <i class="role-edit t-icon t-hover-icon" data-feather="edit"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
 
-                <span>Tìm thấy {{ $users->total() }} tài khoản</span>
+            @include('dashboard.user.components.search')
 
-                <div class="d-flex justify-content-center">
-                    {!! $users->appends($_GET)->render() !!}
-                </div>
+            <table class="table table-hover table-light mb-4">
+                <thead>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th>Họ tên</th>
+                        <th>Số điện thoại</th>
+                        <th>Vai trò</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($users as $user)
+                    <tr>
+                        <td class="text-center" >{{ $loop->index }}</td>
+                        <td style="font-weight: bold">{{ $user->name }}</td>
+                        <td>{{ $user->phone }}</td>
+                        <td>{{ rolesToString($user->roles) }}</td>
+                        <td>
+                            <a href="{{ route('manager.user.view', ['id' => $user->id]) }}">
+                                <i class="role-edit t-icon t-hover-icon" data-feather="edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            <span>Tìm thấy {{ $users->total() }} tài khoản</span>
+
+            <div class="d-flex justify-content-center">
+                {!! $users->appends($_GET)->render() !!}
             </div>
 
         </div>
