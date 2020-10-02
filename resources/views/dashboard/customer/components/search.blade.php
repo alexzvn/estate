@@ -1,5 +1,5 @@
 @push('style')
-<link rel="stylesheet" href="{{ asset('dashboard/plugins/flatpickr/flatpickr.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/datepicker/css/bootstrap-datepicker.standalone.min.css') }}">
 @endpush
 
 <form id="search-form" action="" method="GET">
@@ -21,7 +21,7 @@
         <div class="col-md-2 pl-md-0 order-first">
             <div class="form-group input-group-sm">
               <input type="text"
-                class="form-control" name="expires" id="expires_date" value="{{ request('expires') }}" placeholder="Ngày hết hạn">
+                class="form-control" name="expires" id="expires_date" value="{{ request('expires') }}" placeholder="Ngày hết hạn" data-provide="datepicker" data-date-orientation="bottom auto" data-date-format="dd/mm/yyyy">
             </div>
         </div>
 
@@ -63,14 +63,14 @@
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group input-group-sm">
-                                        <input type="text" class="form-control" name="from" id="from" data-date-orientation="bottom auto"
+                                        <input type="text" class="form-control" name="from" id="from" data-date-orientation="bottom auto" data-date-format="dd/mm/yyyy"
                                           data-provide="datepicker" placeholder="Chọn từ ngày..." value="{{ request('from') }}">
                                           <small class="ml-2 form-text text-muted">Đăng ký từ ngày</small>
                                       </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group input-group-sm">
-                                      <input type="text" class="form-control" name="to" id="to" data-date-orientation="bottom auto"
+                                      <input type="text" class="form-control" name="to" id="to" data-date-orientation="bottom auto" data-date-format="dd/mm/yyyy"
                                       data-provide="datepicker" placeholder="Đến ngày" value="{{ request('to') }}">
                                       <small class="ml-2 form-text text-muted">Đăng ký đến ngày</small>
                                     </div>
@@ -99,7 +99,8 @@
 </form>
 
 @push('script')
-<script src="{{ asset('dashboard/plugins/flatpickr/flatpickr.js') }}"></script>
+<script src="{{ asset('assets/vendor/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/datepicker/locales/bootstrap-datepicker.vi.min.js') }}"></script>
 <script>
     let advancedSearch;
 
@@ -115,21 +116,6 @@
     }
 
     $(document).ready(function () {
-        let f1 = flatpickr(document.getElementById('expires_date'), {
-            enableTime: false,
-            dateFormat: "d/m/Y",
-        });
-
-        let f2 = flatpickr(document.getElementById('to'), {
-            enableTime: false,
-            dateFormat: "d/m/Y",
-        });
-
-        let f3 = flatpickr(document.getElementById('from'), {
-            enableTime: false,
-            dateFormat: "d/m/Y",
-        });
-
         $('#search-form').on('change', function () {
             $(this).submit();
         });

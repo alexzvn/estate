@@ -138,15 +138,6 @@
                 </div>
                 <div class="widget-content widget-content-area">
 
-                    <div class="form-group input-group-sm">
-                      <label for="status">Trạng thái</label>
-                      <select class="form-control" name="status" id="status">
-                        <option value="0">Bản nháp</option>
-                        <option value="1">Chờ duyệt</option>
-                        <option value="2">Xuất bản</option>
-                      </select>
-                    </div>
-
                     <button type="submit" class="btn btn-success"><i data-feather="plus"></i> Tạo mới</button>
                 </div>
             </div>

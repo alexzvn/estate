@@ -79,6 +79,12 @@ class OnlineController extends PostController
 
         $post = Online::create($request->all());
 
+        $post->forceFill([
+            'status' => PostStatus::Published,
+            'publish_at' => now(),
+            'user_id' => user()->id
+        ])->save();
+
         $this->syncUploadFiles($post, $request);
 
         $request->user()->posts()->save($post);
@@ -162,6 +168,15 @@ class OnlineController extends PostController
         $this->authorize('manager.post.online.delete');
 
         Online::deleteMany($request->ids ?? []);
+
+        return back()->with('success', 'Đã xóa các mục yêu cầu');
+    }
+
+    public function forceDeleteMany(Request $request)
+    {
+        $this->authorize('manager.post.online.delete.force');
+
+        Online::forceDeleteMany($request->ids ?? []);
 
         return back()->with('success', 'Đã xóa các mục yêu cầu');
     }

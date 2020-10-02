@@ -27,7 +27,7 @@
             @include('dashboard.post.fee.components.search')
 
             <div class="table-responsive">
-                <form action="" method="post" id="form-table">
+                <form action="" method="post" id="form-table" data-delete="{{ request()->routeIs('manager.post.fee.trashed') ? route('manager.post.fee.delete.many.force') : route('manager.post.fee.delete.many') }}" data-reverse="{{ route('manager.post.fee.reverse.many') }}">
                 @csrf
                 <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head">
                     <thead>
@@ -44,7 +44,7 @@
                             @endif
                             <th>Giá</th>
                             <th>Số điện thoại</th>
-                            <th>Người duyệt</th>
+                            <th>Người duyệt/đăng</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -87,7 +87,7 @@
                                 </div>
                                 @endisset
                             </td>
-                            <td> <span class="text-info">{{ $post->verifier->name ?? '' }}</span> </td>
+                            <td> <span class="text-info">{{ $post->verifier->name ?? $post->user->name ?? '' }}</span> </td>
                             <td> @include('dashboard.post.components.status', ['status' => $post->status]) </td>
                             <td>
                                 @isset($post->phone)
@@ -286,12 +286,12 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                 return;
             }
 
-            form.attr('action', "{{ route('manager.post.fee.delete.many') }}");
+            form.attr('action', $(form).data('delete'));
             form.submit();
         });
 
         $('#reverse-many').click(function () {
-            form.attr('action', "{{ route('manager.post.fee.reverse.many') }}");
+            form.attr('action', $(form).data('reverse'));
             form.submit();
         });
 

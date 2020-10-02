@@ -67,13 +67,13 @@ class FeeController extends PostController
 
         $post = Fee::create($request->all());
 
+        $post->forceFill([
+            'status' => PostStatus::Published,
+            'publish_at' => now(),
+            'user_id' => user()->id
+        ])->save();
+
         $this->syncUploadFiles($post, $request);
-
-        $request->user()->posts()->save($post);
-
-        if ($request->status == PostStatus::Published && empty($post->publish_at)) {
-            $post->publish_at = now(); $post->save();
-        }
 
         return redirect(route('manager.post.fee'))
             ->with('success', 'Tạo mới thành công');
@@ -119,12 +119,21 @@ class FeeController extends PostController
         return back()->with('success', 'Đã xóa các mục yêu cầu');
     }
 
-    public function reserveMany(Request $request)
+    public function reverseMany(Request $request)
     {
         $this->authorize('manager.post.fee.delete.many');
 
-        Fee::reserveMany($request->ids ?? []);
+        Fee::reverseMany($request->ids ?? []);
 
         return back()->with('success', 'Đã đảo các mục yêu cầu');
+    }
+
+    public function forceDeleteMany(Request $request)
+    {
+        $this->authorize('manager.post.fee.delete.many.force');
+
+        Fee::forceDeleteMany($request->ids ?? []);
+
+        return back()->with('success', 'Đã xóa các mục yêu cầu');
     }
 }

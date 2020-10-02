@@ -40,10 +40,6 @@ class StoreRequest extends FormRequest
                 'nullable',
                 Rule::in(PostType::getValues())
             ],
-            'status'   => [
-                'required',
-                Rule::in(PostStatus::getValues())
-            ]
         ];
     }
 }
