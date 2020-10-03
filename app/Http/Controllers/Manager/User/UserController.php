@@ -42,7 +42,7 @@ class UserController extends Controller
     {
         
     }
-    
+
     public function update(UpdateUser $request)
     {
         $attr = $request->all();
