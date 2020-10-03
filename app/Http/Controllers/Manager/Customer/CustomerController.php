@@ -13,10 +13,8 @@ use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Order;
 use App\Repository\Permission;
-use App\Repository\Role;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
 {
@@ -46,22 +44,21 @@ class CustomerController extends Controller
     {
         $this->authorize('manager.customer.view');
 
-        $user = $user->with(['permissions', 'subscriptions.plan'])
-                    ->onlyCustomer()->findOrFail($id);
+        $this->rememberLastUrl();
 
-        if ($user->supporter_id !== auth()->id() && request()->user()->cannot('manager.user.assign.customer')) {
+        $user = $user->with(['permissions', 'subscriptions.plan'])
+            ->onlyCustomer()
+            ->findOrFail($id);
+
+        if ($user->supporter_id !== auth()->id() && user()->cannot('manager.user.assign.customer')) {
             abort(403);
         }
 
-        $staffs = Role::with('users')->staff()->get()
-            ->reduce(function (Collection $carry, $role)
-            {
-                return $carry->push(...$role->users);
-            }, collect());
+        $staffs = Permission::findUsersHasPermission('manager.dashboard.access');
 
         return view('dashboard.customer.view', [
             'plans' => Plan::all(),
-            'staffs' => $staffs->unique('id'),
+            'staffs' => $staffs,
             'user' => $user,
         ]);
     }
@@ -70,21 +67,14 @@ class CustomerController extends Controller
     {
         $this->authorize('manager.customer.create');
 
+        $this->rememberLastUrl();
+
         return view('dashboard.customer.create');
     }
 
     public function store(StoreCustomer $request, User $user)
     {
-        $phone = str_replace('.', '', $request->phone);
-
-        if (User::where('phone', $phone)->exists()) {
-            return back()->withErrors(['phone' => 'Số điện thoại đã tồn tại trong hệ thống']);
-        }
-
-        $user->fill($request->all())->fill([
-            'phone' => $phone,
-            'password' => Hash::make($request->password)
-        ]);
+        $user->fill($request->all());
 
         if (empty($user->email)) {
             $user->email = $user->phone . '@' . parse_url(config('app.url'), PHP_URL_HOST);
@@ -96,26 +86,17 @@ class CustomerController extends Controller
             $this->assignCustomerToUser($user, Auth::id());
         }
 
-        return redirect(route('manager.customer.view', ['id' => $user->id]))
+        return redirect($this->pullLastUrl())
             ->with('success', 'Tạo mới thành công');
     }
 
     public function update(UpdateCustomer $request)
     {
         $user = $request->updateUser;
-        $attr = $request->all();
 
-        unset($attr['password']);
+        $user->fill($request->all())->save();
 
-        $user->fill($attr)->fill([
-            'phone' => str_replace('.', '', $request->phone)
-        ])->save();
-
-        if (! empty($request->password)) {
-            $user->forceFill([
-                'password' => Hash::make($request->password)
-            ])->save();
-
+        if ( ! empty($request->password)) {
             $user->emptySession();
         }
 
@@ -123,7 +104,8 @@ class CustomerController extends Controller
             $this->assignCustomer($user->id, app(AssignCustomer::class));
         }
 
-        return back()->with('success', 'Cập nhật thành công');
+        return redirect($this->pullLastUrl())
+            ->with('success', 'Cập nhật thành công');
     }
 
     public function assignCustomer(string $customerId, AssignCustomer $request)
@@ -235,5 +217,18 @@ class CustomerController extends Controller
         $customer->forceFill([
             'supporter_id' => $userId
         ])->save();
+    }
+
+    protected function rememberLastUrl()
+    {
+        return request()->session()->push(
+            'manager.customer.last.link',
+            url()->previous(route('manager.customer', [], false))
+        );
+    }
+
+    protected function pullLastUrl()
+    {
+        return request()->session()->pull('manager.customer.last.link');
     }
 }
