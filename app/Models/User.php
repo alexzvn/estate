@@ -242,11 +242,13 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
 
     public function setPasswordAttribute($password)
     {
-        if (empty($password)) {
-            return;
+        if ($password === null || $password === '') return;
+
+        if (Hash::info($password)['algo'] === '2y') {
+            return $this->attributes['password'] = $password;
         }
 
-        $this->attributes['password'] = Hash::make($password);
+        return $this->attributes['password'] = Hash::make($password);
     }
 
     public function setPhoneAttribute($phone)

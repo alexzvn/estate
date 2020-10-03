@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Events\UserRegister;
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Repository\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
+use App\Events\UserRegister;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
