@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Manager\Censorship;
 
-use App\Repository\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Censorship\Blacklist\AddBlacklist;
@@ -10,10 +9,11 @@ use App\Http\Requests\Manager\Censorship\Blacklist\AddWhitelist;
 use App\Models\Whitelist;
 use App\Repository\Blacklist;
 use App\Repository\Location\Province;
+use App\Services\System\Post\Online;
 
 class PostController extends Controller
 {
-    public function index(Post $post, Request $request)
+    public function index(Online $post, Request $request)
     {
         $this->authorize('manager.censorship.view');
 

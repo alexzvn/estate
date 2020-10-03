@@ -11,6 +11,7 @@ use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CanSearch;
 use App\Models\Traits\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -239,6 +240,22 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         }
     }
 
+    public function setPasswordAttribute($password)
+    {
+        if ($password === null || $password === '') return;
+
+        if (Hash::info($password)['algo'] === '2y') {
+            return $this->attributes['password'] = $password;
+        }
+
+        return $this->attributes['password'] = Hash::make($password);
+    }
+
+    public function setPhoneAttribute($phone)
+    {
+        $this->attributes['phone'] = str_replace(['.', ' '], '', $phone);
+    }
+
     public static function getStatusKeyName()
     {
         return [
@@ -257,10 +274,5 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             'phone' => $this->phone,
             'address' => $this->address,
         ];
-    }
-
-    public function setPhone(string $phone)
-    {
-        return str_replace(['.', ' '], '', $phone);
     }
 }

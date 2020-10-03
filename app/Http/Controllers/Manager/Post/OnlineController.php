@@ -116,19 +116,14 @@ class OnlineController extends PostController
 
         $post = Online::findOrFail($id)->replicate();
 
-        $post->type = PostType::PostFee;
-
-        $request->user()->posts()->save($post);
-
-        $post->verifier_id = user()->id;
-
-        $post->categories()->attach(Online::find($id)->category_ids ?? []);
+        $post->forceFill([
+            'user_id' => user()->id,
+            'verifier_id' => user()->id,
+            'status' => PostStatus::Published,
+            'publish_at' => now(),
+        ]);
 
         Fee::update($post, $request->all());
-
-        if ($request->status == PostStatus::Published) {
-            $post->publish_at = now(); $post->save();
-        }
 
         return response([
             'success' => true,
@@ -142,11 +137,14 @@ class OnlineController extends PostController
 
         $post = Online::findOrFail($id);
 
-        $post->verifier_id = user()->id;
+        $post->forceFill([
+            'verifier_id' => user()->id,
+            'status' => PostStatus::Published,
+            'user_id' => user()->id,
+            'publish_at' => now(),
+        ]);
 
-        Online::update($post, $request->all());
-
-        $post->fill(['type' => PostType::PostFee])->save();
+        Fee::update($post, $request->all());
 
         return response([
             'success' => true,
