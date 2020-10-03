@@ -51,6 +51,12 @@ class TrackingPost extends Model
 
     public function onlinePosts()
     {
-        return $this->posts()->where('type', PostType::Online);
+        static $post;
+
+        if (is_null($post)) {
+            $post = $this->posts()->where('type', PostType::Online)->get();
+        }
+
+        return $post;
     }
 }
