@@ -69,7 +69,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['phone'] .'@'. parse_url(config('app.url'), PHP_URL_HOST),
             'phone' => $data['phone'],
-            'password' => Hash::make($data['password']),
+            'password' => $data['password'],
         ]);
 
         return tap($user, function ($user)
