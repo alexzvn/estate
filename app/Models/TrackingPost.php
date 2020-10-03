@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PostType;
 use Jenssegers\Mongodb\Eloquent\Model;
 
 /**
@@ -32,7 +33,7 @@ class TrackingPost extends Model
     public function tracking()
     {
         return $this->forceFill([
-            'seen' => $this->posts->count(),
+            'seen' => $this->onlinePosts()->count(),
             'district_unique' => $this->countDistrict(),
             'categories_unique' => $this->countProvince(),
         ])->save();
@@ -40,11 +41,16 @@ class TrackingPost extends Model
 
     public function countProvince()
     {
-        return $this->posts->unique('province_id')->count();
+        return $this->onlinePosts()->unique('province_id')->count();
     }
 
     public function countDistrict()
     {
-        return $this->posts->unique('district_id')->count();
+        return $this->onlinePosts()->unique('district_id')->count();
+    }
+
+    public function onlinePosts()
+    {
+        return $this->posts()->where('type', PostType::Online);
     }
 }
