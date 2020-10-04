@@ -32,7 +32,6 @@
                                   <label class="custom-control-label" for="todoAll"></label>
                                 </div>
                             </th>
-                            <th>#</th>
                             <th>Tiêu đề</th>
                             <th>Số điện thoại</th>
                             <th>Trạng thái</th>
@@ -45,10 +44,9 @@
                             <td class="checkbox-column">
                                 <div class="custom-control custom-checkbox checkbox-primary">
                                 <input type="checkbox" id="todo-{{ $post->id }}" class="custom-control-input todochkbox" name="ids[]" value="{{ $post->id }}">
-                                <label class="custom-control-label" for="todo-{{ $post->id }}"></label>
+                                <label class="custom-control-label" for="todo-{{ $post->id }}">{{ $loop->iteration }}</label>
                                 </div>
                             </td>
-                            <td>{{ $loop->iteration }}</td>
                             <td class="open-post cursor-pointer" data-id="{{ $post->id }}">
                                 <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ Str::ucfirst(Str::of($post->title)->limit(73)) }}</strong> <br>
                                     <span class="mb-0" style="font-size: 12px;">
