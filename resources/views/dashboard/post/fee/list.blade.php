@@ -38,6 +38,7 @@
                                   <label class="custom-control-label" for="todoAll"></label>
                                 </div>
                             </th>
+                            <td>#</td>
                             <th>Tiêu đề</th>
                             @if ($hasCommission)
                             <th>Hoa Hồng</th>
@@ -58,6 +59,7 @@
                                   <label class="custom-control-label" for="todo-{{ $post->id }}"></label>
                                 </div>
                             </td>
+                            <td>{{ $loop->iteration }}</td>
                             <td class="cursor-pointer open-post" data-id="{{ $post->id }}">
                                 <p class="mb-0">
                                     <strong>

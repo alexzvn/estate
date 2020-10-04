@@ -221,7 +221,7 @@ class CustomerController extends Controller
 
     protected function rememberLastUrl()
     {
-        return request()->session()->push(
+        return request()->session()->put(
             'manager.customer.last.link',
             url()->previous(route('manager.customer', [], false))
         );
