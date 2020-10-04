@@ -32,6 +32,7 @@
                                   <label class="custom-control-label" for="todoAll"></label>
                                 </div>
                             </th>
+                            <th>#</th>
                             <th>Tiêu đề</th>
                             <th>Số điện thoại</th>
                             <th>Trạng thái</th>
@@ -47,6 +48,7 @@
                                 <label class="custom-control-label" for="todo-{{ $post->id }}"></label>
                                 </div>
                             </td>
+                            <td>{{ $loop->iteration }}</td>
                             <td class="open-post cursor-pointer" data-id="{{ $post->id }}">
                                 <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ Str::ucfirst(Str::of($post->title)->limit(73)) }}</strong> <br>
                                     <span class="mb-0" style="font-size: 12px;">
