@@ -73,7 +73,7 @@
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled @active($active, 'show')" id="fee-post" data-parent="#accordionExample">
-                            <li class="@active('manager.post.online')">
+                            <li class="@active('manager.post.fee')">
                                 <a href="{{ route('manager.post.fee') }}"> Tất cả </a>
                             </li>
                             <li class="@active('manager.post.online.trashed')">
