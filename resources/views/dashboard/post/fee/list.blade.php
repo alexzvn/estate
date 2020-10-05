@@ -5,10 +5,6 @@
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
 @endpush
 
-@php
-    $hasCommission = isset($posts[0]) && isset($posts[0]->commission);
-@endphp
-
 @section('content')
 <div id="tableLight" class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
@@ -38,13 +34,11 @@
                                   <label class="custom-control-label" for="todoAll"></label>
                                 </div>
                             </th>
-                            <th>Tiêu đề</th>
-                            @if ($hasCommission)
+                            <th class="w-100">Tiêu đề</th>
                             <th>Hoa Hồng</th>
-                            @endif
                             <th>Giá</th>
-                            <th>Số điện thoại</th>
-                            <th>Người duyệt/đăng</th>
+                            <th>SĐT</th>
+                            <th>Duyệt bởi</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -75,9 +69,7 @@
                                     </span>
                                 </p>
                             </td>
-                            @if ($hasCommission)
                             <td>{{ $post->commission ?? '' }}</td>
-                            @endif
                             <td>{{ $post->price ? format_web_price($post->price ?? 0) : 'N/a' }}</td>
                             <td>
                                 @isset($post->phone)
@@ -151,13 +143,13 @@ ClassicEditor
         console.error( err.stack );
     });
 
-let upload = new FileUploadWithPreview('mySecondImage', {
-        text: {
-            chooseFile: 'Chọn ảnh',
-            browse: 'Tìm',
-            selectedCount: 'ảnh đã chọn',
-        },
-    });
+// let upload = new FileUploadWithPreview('mySecondImage', {
+//         text: {
+//             chooseFile: 'Chọn ảnh',
+//             browse: 'Tìm',
+//             selectedCount: 'ảnh đã chọn',
+//         },
+//     });
 
 (function (window) {
     $(document).ready(function () {
@@ -211,8 +203,6 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                     status: post.status,
                 };
 
-                console.log(options.category);
-
                 address.setDistricts(options.province);
 
                 for (const key in options) {
@@ -222,11 +212,11 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                     }
                 }
 
-                let files = post.files.map(file => {
-                    return `/storage/${file.path}?fid=${file._id}`;
-                });
+                // let files = post.files.map(file => {
+                //     return `/storage/${file.path}?fid=${file._id}`;
+                // });
 
-                upload.addImagesFromPath(files);
+                // upload.addImagesFromPath(files);
             });
         });
     });
@@ -234,7 +224,7 @@ let upload = new FileUploadWithPreview('mySecondImage', {
     let resetForm = () => {
         let modal = $('#post-edit');
         let form = $('#post-form');
-        upload.clearPreviewPanel();
+        // upload.clearPreviewPanel();
         $('#sync-file-ids').html('');
         $('#form-modal').trigger('');
         $('#post-content').html('');
@@ -264,8 +254,8 @@ let upload = new FileUploadWithPreview('mySecondImage', {
         });
     }
 
-    $(window).on('fileUploadWithPreview:imagesAdded', syncInput);
-    $(window).on('fileUploadWithPreview:imageDeleted', syncInput);
+    // $(window).on('fileUploadWithPreview:imagesAdded', syncInput);
+    // $(window).on('fileUploadWithPreview:imageDeleted', syncInput);
 }(window))
 </script>
 @endpush
