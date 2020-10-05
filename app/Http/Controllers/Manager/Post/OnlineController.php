@@ -123,6 +123,8 @@ class OnlineController extends PostController
                 'publish_at' => now(),
             ])->save();
 
+        $origin->forceFill(['approveFee' => true])->save();
+
         return response([
             'success' => true,
             'data' => 'Đã duyệt lưu gốc'
