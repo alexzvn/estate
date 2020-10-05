@@ -232,4 +232,10 @@ return [
 
     ],
 
+
+    'extension' => [
+        'key' => env('APP_EXTENSION_KEY', ''),
+        'protect' => env('APP_EXTENSION_PROTECT', false),
+    ],
+
 ];

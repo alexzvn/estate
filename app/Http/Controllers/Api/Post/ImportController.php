@@ -26,6 +26,20 @@ class ImportController extends Controller
     {
         $posts = collect(json_decode($request->getContent()));
 
+        if ($posts->isEmpty()) {
+            return response([
+                'message' => 'the post was empty',
+                'success' => false
+            ], 400);
+        }
+
+        $this->queue($posts);
+
+        return ['message' => 'okey', 'success' => true];
+    }
+
+    protected function queue($posts)
+    {
         $posts->each(function ($post) {
             $post->hash  = sha1($post->url);
 
@@ -35,8 +49,6 @@ class ImportController extends Controller
 
             ImportPost::dispatch($post);
         });
-
-        return ['message', 'okey'];
     }
 
     protected function stringPriceToNumber(string $price)
