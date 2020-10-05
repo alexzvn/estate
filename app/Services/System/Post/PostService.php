@@ -51,9 +51,9 @@ trait PostService
     {
         $attr = collect(self::handleRawAttribute($attr));
 
-        $post->update(
+        $post->forceFill(
             $attr->only(static::$fillable)->toArray()
-        );
+        )->save();
 
         $post->categories()->sync($attr['categories']);
 
