@@ -3,6 +3,11 @@
 @extends('dashboard.app')
 @push('style')
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
+<style>
+.active td {
+    color: #1b55e2 !important;
+}
+</style>
 @endpush
 
 @php
@@ -50,7 +55,7 @@
                     </thead>
                     <tbody>
                         @foreach ($posts as $post)
-                        <tr>
+                        <tr class="{{ $post->approveFee ? 'active' : '' }}">
                             <td class="checkbox-column">
                                 <div class="custom-control custom-checkbox checkbox-primary">
                                   <input type="checkbox" id="todo-{{ $post->id }}" class="custom-control-input todochkbox" name="ids[]" value="{{ $post->id }}">
@@ -62,6 +67,9 @@
                                     <strong>
                                         @if (isset($post->phone) && $whitelist->whereIn('phone', $post->phone)->isNotEmpty())
                                         [<span class="text-success font-weight-bolder">Chính chủ</span>]
+                                        @endif
+                                        @if ($post->approveFee)
+                                            [<span class="text-secondary font-weight-bolder">Đã duyệt</span>]
                                         @endif
                                         {{ Str::ucfirst(Str::of($post->title)->limit(73)) }}
                                     </strong>
