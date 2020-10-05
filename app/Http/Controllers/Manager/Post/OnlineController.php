@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Manager\Post;
 
-use App\Enums\PostType;
+use App\Models\Post;
 use App\Enums\PostStatus;
 use Illuminate\Http\Request;
+use App\Services\System\Post\Fee;
+use App\Services\System\Post\Online;
 use App\Http\Requests\Manager\Post\ClonePost;
 use App\Http\Requests\Manager\Post\UpdatePost;
 use App\Http\Requests\Manager\Post\StoreRequest;
 use App\Http\Controllers\Manager\Post\PostController;
-use App\Services\System\Post\Fee;
-use App\Services\System\Post\Online;
 
 class OnlineController extends PostController
 {
@@ -116,15 +116,12 @@ class OnlineController extends PostController
 
         $origin = Online::findOrFail($id);
 
-        Fee::update($origin->replicate() , $request->all())
+        Fee::update($origin->replicate(['category_ids']) , $request->all())
             ->forceFill([
                 'user_id' => user()->id,
                 'verifier_id' => user()->id,
-                'status' => PostStatus::Published,
                 'publish_at' => now(),
             ])->save();
-
-        $origin->forceFill(['approveFee' => true])->save();
 
         return response([
             'success' => true,
@@ -139,7 +136,6 @@ class OnlineController extends PostController
         Fee::update(Online::findOrFail($id), $request->all())
             ->forceFill([
                 'verifier_id' => user()->id,
-                'status'      => PostStatus::Published,
                 'user_id'     => user()->id,
                 'publish_at'  => now(),
             ])->save();
