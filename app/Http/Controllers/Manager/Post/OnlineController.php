@@ -114,16 +114,17 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.clone');
 
-        $post = Online::findOrFail($id)->replicate();
+        $origin = Online::findOrFail($id);
 
-        $post->forceFill([
-            'user_id' => user()->id,
-            'verifier_id' => user()->id,
-            'status' => PostStatus::Published,
-            'publish_at' => now(),
-        ]);
+        Fee::update($origin->replicate() , $request->all())
+            ->forceFill([
+                'user_id' => user()->id,
+                'verifier_id' => user()->id,
+                'status' => PostStatus::Published,
+                'publish_at' => now(),
+            ])->save();
 
-        Fee::update($post, $request->all());
+        $origin->forceFill(['approveFee' => true])->save();
 
         return response([
             'success' => true,
@@ -135,16 +136,13 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.clone');
 
-        $post = Online::findOrFail($id);
-
-        $post->forceFill([
-            'verifier_id' => user()->id,
-            'status' => PostStatus::Published,
-            'user_id' => user()->id,
-            'publish_at' => now(),
-        ]);
-
-        Fee::update($post, $request->all());
+        Fee::update(Online::findOrFail($id), $request->all())
+            ->forceFill([
+                'verifier_id' => user()->id,
+                'status'      => PostStatus::Published,
+                'user_id'     => user()->id,
+                'publish_at'  => now(),
+            ])->save();
 
         return response([
             'success' => true,
