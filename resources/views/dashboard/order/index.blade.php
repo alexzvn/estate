@@ -34,7 +34,7 @@ function planToString($plans) {
         </div>
         <div class="widget-content widget-content-area">
             @include('dashboard.order.search')
-
+            <div class="table-responsive">
                 <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
                         <tr>
@@ -96,12 +96,13 @@ function planToString($plans) {
                         @endforeach
                     </tbody>
                 </table>
+            </div>
 
-                <span>Tìm thấy {{ $orders->total() }} đơn hàng</span>
+            <span>Tìm thấy {{ $orders->total() }} đơn hàng</span>
 
-                <div class="d-flex justify-content-center">
-                    {!! $orders->appends($_GET)->render() !!}
-                </div>
+            <div class="d-flex justify-content-center">
+                {!! $orders->appends($_GET)->render() !!}
+            </div>
 
         </div>
     </div>
