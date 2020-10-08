@@ -1,6 +1,7 @@
 @extends('dashboard.app')
 
 @push('style')
+<link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
 @endpush
 
@@ -40,45 +41,45 @@
             
                 </div>
             </form>
+            <div class="table-responsive">
+                <table id="example" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Số điện thoại</th>
+                            <th>Người thêm</th>
+                            <th>Ngày thêm</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        @foreach ($blacklist as $blackphone)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td><span class="text-secondary font-weight-bold">{{ $blackphone->phone }}</span></td>
+                            {{-- <td><input type="text" class="form-control note" value="{{ $blackphone->readNote() }}" placeholder="" data-id="{{ $blackphone->id }}" @cannot('blacklist.phone.modify') disabled @endcannot ></td> --}}
+                            <td>{{ $blackphone->user->name ?? '' }}</td>
+                            <td>{{ $blackphone->created_at->format('d/m/Y H:i:s') }}</td>
+                            <td>
+                                @can('blacklist.phone.delete')
+                                <button type="button" class="btn btn-danger delete" data-id="{{ $blackphone->id }}">Xóa</button>
+                                @endcan
+                            </td>
+                        </tr>
+                        @endforeach
 
-            <table id="example" class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Số điện thoại</th>
-                        <th>Người thêm</th>
-                        <th>Ngày thêm</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    @foreach ($blacklist as $blackphone)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td><span class="text-secondary font-weight-bold">{{ $blackphone->phone }}</span></td>
-                        {{-- <td><input type="text" class="form-control note" value="{{ $blackphone->readNote() }}" placeholder="" data-id="{{ $blackphone->id }}" @cannot('blacklist.phone.modify') disabled @endcannot ></td> --}}
-                        <td>{{ $blackphone->user->name ?? '' }}</td>
-                        <td>{{ $blackphone->created_at->format('d/m/Y H:i:s') }}</td>
-                        <td>
-                            @can('blacklist.phone.delete')
-                            <button type="button" class="btn btn-danger delete" data-id="{{ $blackphone->id }}">Xóa</button>
-                            @endcan
-                        </td>
-                    </tr>
-                    @endforeach
-
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>#</th>
-                        <th>Số điện thoại</th>
-                        <th>Ngày thêm</th>
-                        <th>Actions</th>
-                    </tr>
-                </tfoot>
-            </table>
-
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Số điện thoại</th>
+                            <th>Ngày thêm</th>
+                            <th>Actions</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
 
             {{ $blacklist->onEachSide(0)->withQueryString()->render() }}
 
