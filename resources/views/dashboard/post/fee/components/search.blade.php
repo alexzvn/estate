@@ -76,26 +76,19 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
 
         <div class="col-md-12">
             <div id="advanced-search-form" class="row" style="display: none;">
-                <div class="col-md-5 pl-md-0">
-                    <div class="form-row">
-                        <div class="offset-md-3 col-md-9">
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group input-group-sm">
-                                        <input type="text" class="form-control" name="from" id="from" data-date-orientation="bottom auto"
-                                          data-provide="datepicker" placeholder="Chọn từ ngày..." value="{{ request('from') }}" data-date-format="dd-mm-yyyy">
-                                          <small class="ml-2 form-text text-muted">Chọn tin từ ngày</small>
-                                      </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group input-group-sm">
-                                      <input type="text" class="form-control" name="to" id="to" data-date-orientation="bottom auto"
-                                      data-provide="datepicker" placeholder="Đến ngày" value="{{ request('to') }}" data-date-format="dd-mm-yyyy">
-                                      <small class="ml-2 form-text text-muted">Chọn tin đến ngày</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-md-2 pl-4">
+                    <div class="form-group input-group-sm">
+                        <input type="text" class="form-control" name="from" id="from" data-date-orientation="bottom auto"
+                          data-provide="datepicker" placeholder="Chọn từ ngày..." value="{{ request('from') }}" data-date-format="dd-mm-yyyy">
+                          <small class="ml-2 form-text text-muted">Chọn tin từ ngày</small>
+                      </div>
+                </div>
+
+                <div class="col-md-2 pl-md-0">
+                    <div class="form-group input-group-sm">
+                      <input type="text" class="form-control" name="to" id="to" data-date-orientation="bottom auto"
+                      data-provide="datepicker" placeholder="Đến ngày" value="{{ request('to') }}" data-date-format="dd-mm-yyyy">
+                      <small class="ml-2 form-text text-muted">Chọn tin đến ngày</small>
                     </div>
                 </div>
         
@@ -128,6 +121,20 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
                           @foreach (\App\Enums\PostStatus::getKeyName() as $key => $name)
                               <option value="{{ $key }}" {{ $key === request('status') ? 'selected' : ''}}>{{ $name }}</option>
                           @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2 pl-md-0">
+                    <div class="form-group input-group-sm">
+                        <select class="custom-select" name="verifier_id" id="verifier_id">
+                            <option value="">Lọc theo NV</option>
+                            @foreach ($staff as $user)
+                            <option
+                                value="{{ $user->id }}"
+                                @active(request('verifier_id') == $user->id, 'selected')
+                            >{{ $user->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>

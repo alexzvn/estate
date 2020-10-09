@@ -17,6 +17,35 @@ class Customer extends Controller
         ]);
     }
 
+    public function history()
+    {
+        return view('customer.me.history', [
+            'logs' => user()->logs()->latest()->limit(20)->get()
+        ]);
+    }
+
+    public function orders()
+    {
+        $orders = user()->orders()->latest();
+
+        $orders->with(['creator', 'plans']);
+
+        return view('customer.me.order', [
+            'orders' => $orders->paginate(20)
+        ]);
+    }
+
+    public function subscriptions()
+    {
+        $subs = user()->subscriptions();
+
+        $subs->with('plan')->latest();
+
+        return view('customer.me.subscription', [
+            'subscriptions' => $subs->get()
+        ]);
+    }
+
     public function update(UpdateInfo $request)
     {
         $user = Auth::user();
