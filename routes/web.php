@@ -32,7 +32,12 @@ Route::group(['middleware' => ['auth', 'customer'], 'namespace' => 'Customer'], 
     Route::get('/post/{id}/action/report', 'Post\ActionController@report')->name('post.action.report');
 
     Route::group(['prefix' => 'me'], function () {
+
         Route::get('/account', 'Customer@me')->name('customer.self.account');
+        Route::get('/history', 'Customer@history')->name('customer.self.history');
+        Route::get('/orders', 'Customer@orders')->name('customer.self.orders');
+        Route::get('/subscriptions', 'Customer@subscriptions')->name('customer.self.subscriptions');
+
         Route::post('/account/update', 'Customer@update')->name('customer.self.account.update');
         // Route::get('/update/avatar', 'Customer@me')->name('customer.self.account');
 

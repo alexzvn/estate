@@ -1,3 +1,7 @@
+@php
+    $customer = user();
+@endphp
+
 <div class="col-lg-3 col-md-4">
     <div class="wrap-info card">
         <div class="wrap-avatar">
@@ -24,10 +28,11 @@
     </div>
 
     <div class="list-group mb-4">
-        <a href="#" class="list-group-item list-group-item-action active">Tài khoản</a>
-        <a href="#" class="list-group-item list-group-item-action">Đơn hàng</a>
-        <a href="#" class="list-group-item list-group-item-action">Danh sách gói đăng ký</a>
-        <a href="#" class="list-group-item list-group-item-action">Lịch sử truy cập</a>
-        <a href="#" class="list-group-item list-group-item-action">...</a>
+        <a href="{{ route('customer.self.account') }}" class="list-group-item list-group-item-action @active('customer.self.account')">Tài khoản</a>
+        <a href="{{ route('customer.self.orders') }}" class="list-group-item list-group-item-action @active('customer.self.orders')">Đơn hàng</a>
+        <a href="{{ route('customer.self.subscriptions') }}" class="list-group-item list-group-item-action @active('customer.self.subscriptions')">Danh sách gói đăng ký</a>
+        <a href="{{ route('customer.self.history') }}" class="list-group-item list-group-item-action @active('customer.self.history')">Lịch sử truy cập</a>
+        <a href="javascript:void(0)" class="list-group-item list-group-item-action" onclick="event.preventDefault();
+            document.getElementById('logout-form').submit();">Đăng xuất</a>
     </div>
 </div>
