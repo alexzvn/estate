@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\System\Post\Fee;
 use App\Http\Requests\Manager\Post\StoreRequest;
 use App\Http\Requests\Manager\Post\UpdatePost;
+use App\Repository\Permission;
 
 class FeeController extends PostController
 {
@@ -28,7 +29,8 @@ class FeeController extends PostController
         $this->shareCategoriesProvinces();
 
         return view('dashboard.post.fee.list', [
-            'posts' => $posts
+            'posts' => $posts,
+            'staff' => Permission::findUsersHasPermission('manager.dashboard.access')
         ]);
     }
 

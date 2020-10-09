@@ -22,6 +22,10 @@ class Post extends Model implements Auditable
 
     const NAME = 'tin';
 
+    protected $filterable = [
+        'verifier_id'
+    ];
+
     protected $fillable = [
         'content',
         'title',

@@ -16,7 +16,7 @@ trait CanFilter
      *
      * @var array
      */
-    protected $filterable = [];
+    // protected $filterable = [];
 
     public function scopeFilter(Builder $query, $filters)
     {
