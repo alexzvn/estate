@@ -104,6 +104,13 @@ class Order extends Model implements CanNote, Auditable
         );
     }
 
+    public function filterActivatedTo(Builder $builder, $time)
+    {
+        return $builder->where(
+            'activate_at', '>=', Carbon::createFromFormat('d/m/Y', $time)->endOfDay()
+        );
+    }
+
     public function filterCreator(Builder $builder, $creator)
     {
         return $builder->where('creator_id', $creator);
