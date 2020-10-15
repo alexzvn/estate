@@ -83,14 +83,14 @@ $districts = $districts->districts ?? null;
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="from" id="from" 
+                                        <input type="text" class="form-control" name="from" id="from" autocomplete="off"
                                           data-provide="datepicker" placeholder="Chọn từ ngày..." value="{{ request('from') }}" data-date-format="dd-mm-yyyy">
                                           <small class="ml-2 form-text text-muted">Chọn tin từ ngày</small>
                                       </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                      <input type="text" class="form-control" name="to" id="to"
+                                      <input type="text" class="form-control" name="to" id="to" autocomplete="off"
                                       data-provide="datepicker" placeholder="Đến ngày" value="{{ request('to') }}" data-date-format="dd-mm-yyyy">
                                       <small class="ml-2 form-text text-muted">Chọn tin đến ngày</small>
                                     </div>
