@@ -119,7 +119,7 @@ class Post extends Model implements Auditable
     public function filterFrom(Builder $builder, $date)
     {
         if ($date = strtotime($date)) {
-            $builder->where('publish_at', '>=', Carbon::createFromTimestamp($date)->subDay());
+            $builder->where('publish_at', '>=', Carbon::createFromTimestamp($date)->startOfDay());
         }
 
         return $builder;
@@ -128,7 +128,7 @@ class Post extends Model implements Auditable
     public function filterTo(Builder $builder, $date)
     {
         if ($date = strtotime($date)) {
-            $builder->where('publish_at', '<=', Carbon::createFromTimestamp($date)->addDay());
+            $builder->where('publish_at', '<=', Carbon::createFromTimestamp($date)->endOfDay());
         }
 
         return $builder;

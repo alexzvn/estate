@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{{ asset('assets/vendor/datepicker/css/bootstrap-datepicker.standalone.min.css') }}">
 @endpush
 
-<form id="search-form" action="" method="GET">
+<form id="search-form" action="" method="GET" autocomplete="off">
     <div class="row">
         <div class="col-md-4 pl-md-0 order-first">
             <div class="form-row">
