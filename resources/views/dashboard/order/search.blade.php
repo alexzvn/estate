@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/flatpickr/flatpickr.css') }}">
 @endpush
 
-<form id="search-form" action="" method="GET">
+<form id="search-form" action="" method="GET" autocomplete="off">
     <input type="hidden" name="roles" value="{{ request('roles') }}">
 
     <div class="row">
