@@ -19,7 +19,9 @@ class AuditController extends Controller
 
         $user = Permission::findUsersHasPermission('manager.dashboard.access');
 
-        $user = User::filter($request)->whereIn('_id', $user->modelKeys())->get();
+        $user = User::filter(
+            $request->only(['user', 'phone'])
+        )->whereIn('_id', $user->modelKeys())->get();
 
         $audit = Audit::with(['user', 'auditable'])
             ->whereIn('user_id', $user->modelKeys())
