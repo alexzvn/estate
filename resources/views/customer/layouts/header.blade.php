@@ -90,6 +90,9 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        @can('manager.dashboard.access')
+                        <a class="dropdown-item" href="{{ route('manager') }}">Quản lý</a>
+                        @endcan
                         <a class="dropdown-item" href="{{ route('customer.self.account') }}">Tài khoản</a>
                         <a class="dropdown-item" href="{{ route('customer.self.orders') }}">Đơn hàng</a>
                         <a class="dropdown-item" href="{{ route('customer.self.subscriptions') }}">Gói đăng ký</a>

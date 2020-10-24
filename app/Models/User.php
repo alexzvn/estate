@@ -29,6 +29,14 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
 
     const UNVERIFIED = 'unverified';
 
+    const SPEND_ZERO = 'spend_zero';
+
+    const SPEND_MORE = 'spend_more';
+
+    const NEVER_LOGIN_BEFORE = 'never_login_before';
+
+    const NEVER_READ_POST_BEFORE = 'never_read_post_before';
+
     const ONLINE = 'online';
 
     const NAME = 'người dùng';
@@ -184,6 +192,38 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         });
     }
 
+    public function scopeSpendZero(Builder $builder)
+    {
+        return $builder->whereDoesntHave('orders', function (Builder $builder)
+        {
+            $builder->where('after_discount_price', '>', 0);
+        });
+    }
+
+    public function scopeSpendMore(Builder $builder)
+    {
+        return $builder->whereHas('orders', function (Builder $builder)
+        {
+            $builder->where('after_discount_price', '>', 0);
+        });
+    }
+
+    public function scopeNeverLogin(Builder $builder)
+    {
+        return $builder->whereDoesntHave('logs', function (Builder $builder)
+        {
+            $builder->where('content', 'regexp', '/^(Đã đăng nhập)/');
+        });
+    }
+
+    public function scopeNeverReadPostBefore(Builder $builder)
+    {
+        return $builder->whereDoesntHave('logs', function (Builder $builder)
+        {
+            $builder->where('content', 'regexp', '/^(Đã xem tin)/');
+        });
+    }
+
     protected function filterQuery(Builder $builder, $value)
     {
         $builder = $this->scopeSearch($builder, $value);
@@ -237,6 +277,10 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             case static::VERIFIED: return $builder->whereNotNull('phone_verified_at');
             case static::UNVERIFIED: return $builder->whereNull('phone_verified_at');
             case static::ONLINE: return $this->scopeOnline($builder);
+            case static::SPEND_ZERO: return $this->scopeSpendZero($builder);
+            case static::SPEND_MORE: return $this->scopeSpendMore($builder);
+            case static::NEVER_LOGIN_BEFORE: return $this->scopeNeverLogin($builder);
+            case static::NEVER_READ_POST_BEFORE: return $this->scopeNeverReadPostBefore($builder);
         }
     }
 
@@ -262,7 +306,11 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             static::BANNED => 'Bị khóa',
             static::VERIFIED => 'Đã xác thực',
             static::UNVERIFIED => 'Chưa xác thực',
-            static::ONLINE => 'Đang online'
+            static::ONLINE => 'Đang online',
+            static::SPEND_ZERO => 'Tài khoản 0đ',
+            static::SPEND_MORE => 'Tài khoản trên 0đ',
+            static::NEVER_LOGIN_BEFORE => 'Chưa đăng nhập lần nào',
+            static::NEVER_READ_POST_BEFORE => 'Chưa xem tin nào'
         ];
     }
 
