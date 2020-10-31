@@ -19,15 +19,15 @@
                             <div class="col-sm-6">
                                 <p>
                                     <strong>Ms. Thủy Ngân</strong><br>
-                                    ĐT/Zalo: <strong>033.5366.224</strong><br>
-                                    Thuyngan@nguonchinhchu.vn
+                                    ĐT/Zalo: <strong>096.55.33.958</strong><br>
+                                    Thequang@nguonchinhchu.vn
                                 </p>
                             </div>
                             <div class="col-sm-6">
                                 <p>
-                                    <strong>Ms. Thủy Ngân</strong><br>
-                                    ĐT/Zalo: <strong>096.55.33.958</strong><br>
-                                    Thequang@nguonchinhchu.vn
+                                    <strong>Ngân hàng Vietcombank</strong><br>
+                                    Họ Tên: <strong>Trần Thị Thuỷ</strong><br>
+                                    Số tài khoản: <strong>1017290966</strong>
                                 </p>
                             </div>
                         </div>
