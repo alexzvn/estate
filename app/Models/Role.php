@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Maklad\Permission\Models\Role as Model;
+use Spatie\Permission\Models\Role as Model;
 
 class Role extends Model
 {

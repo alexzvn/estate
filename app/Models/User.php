@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\Role as Type;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanVerifyPhone;
-use Maklad\Permission\Traits\HasRoles;
 use App\Contracts\Auth\MustVerifyPhone;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CanSearch;
@@ -13,8 +12,9 @@ use App\Models\Traits\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
-use Jenssegers\Mongodb\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Permission\Traits\HasRoles;
 
 // use Illuminate\Notifications\Notifiable;
 

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Maklad\Permission\Models\Permission as Model;
+use Spatie\Permission\Models\Permission as Model;
 
 class Permission extends Model
 {
