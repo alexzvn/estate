@@ -14,7 +14,9 @@ class CreateReportsTable extends Migration
     public function up()
     {
         Schema::create('reports', function (Blueprint $table) {
-            $table->index(['user_id', 'post_id']);
+            $table->id();
+            $table->foreignId('user_id');
+            $table->foreignId('post_id');
             $table->timestamps();
         });
     }

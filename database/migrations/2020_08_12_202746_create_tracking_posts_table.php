@@ -14,8 +14,9 @@ class CreateTrackingPostsTable extends Migration
     public function up()
     {
         Schema::create('tracking_posts', function (Blueprint $table) {
-            $table->unique('phone');
+            $table->string('phone', 50)->unique();
             $table->integer(['district_unique', 'categories_unique', 'seen']);
+            $table->timestamps();
         });
     }
 

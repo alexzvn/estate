@@ -14,11 +14,28 @@ class CreatePostsTable extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->softDeletes();
-            $table->index(['user_id', 'price', 'phone', 'status']);
-            $table->string(['content', 'title']);
+            $table->id();
+
+            $table->string('title', 250)->nullable();
+            $table->mediumText('content')->nullable();
+            $table->string('phone', 20)->nullable();
+            $table->unsignedBigInteger('price')->nullable();
+
+            $table->string('hash', 80)->nullable();
+            $table->tinyInteger('status')->default(0);
+            $table->string('type')->default('');
             $table->timestamp('publish_at');
+
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('verified_id')->nullable();
+            $table->foreignId('province_id')->nullable();
+            $table->foreignId('district_id')->nullable();
+            $table->foreignId('user_id')->nullable();
+
             $table->timestamps();
+            $table->softDeletes();
+
+            fulltext('posts', 'content', 'title');
         });
     }
 

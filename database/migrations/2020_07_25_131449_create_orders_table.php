@@ -14,8 +14,18 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->index(['verifier_id', 'customer_id']);
-            $table->integer('status');
+            $table->id();
+            $table->integer('discount')->default(0);
+            $table->tinyInteger('discount_type')->default(2);
+            $table->integer('price')->default(0);
+            $table->integer('after_discount_price')->default(0);
+            $table->tinyInteger('status');
+            $table->boolean('manual')->default(false);
+            $table->tinyInteger('month')->nullable();
+            $table->boolean('verified')->default(false);
+            $table->foreignId('verifier_id')->nullable();
+            $table->foreignId('customer_id')->nullable();
+            $table->foreignId('creator_id')->nullable();
             $table->timestamp(['activate_at', 'expires_at']);
         });
     }
