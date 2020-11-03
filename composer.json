@@ -15,16 +15,15 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
-        "jenssegers/mongodb": "^3.7",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
         "mews/purifier": "^3.2",
-        "mostafamaklad/laravel-permission-mongodb": "^2.0",
         "owen-it/laravel-auditing": "^11.0",
         "predis/predis": "^1.1",
         "rennokki/laravel-eloquent-query-cache": "^2.1",
         "sentry/sentry-laravel": "1.8.0",
+        "spatie/laravel-permission": "^3.17",
         "symfony/http-kernel": "5.1.5"
     },
     "require-dev": {
