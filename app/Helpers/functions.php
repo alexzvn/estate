@@ -71,3 +71,17 @@ function format_web_price($price)
         }
     }
 }
+
+
+function fulltext(string $table, string ...$columns)
+{
+    $columns = array_map(function ($col) {
+        return "`$col`";
+    }, $columns);
+
+    $columns = implode(', ', $columns);
+
+    Illuminate\Support\Facades\DB::statement(
+        "ALTER TABLE $table ADD FULLTEXT `search` ($columns)"
+    );
+}
