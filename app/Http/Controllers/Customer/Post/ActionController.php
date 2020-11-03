@@ -66,11 +66,11 @@ class ActionController extends BaseController
 
     private function shouldNotSave($post)
     {
-        return $this->customer->savePosts()->where(id, $post->id)->exists();
+        return $this->customer->savePosts()->where('id', $post->id)->exists();
     }
 
     private function shouldNotBlacklist($post)
     {
-        return $this->customer->blacklistPosts()->where(id, $post->id)->exists();
+        return $this->customer->blacklistPosts()->where('id', $post->id)->exists();
     }
 }

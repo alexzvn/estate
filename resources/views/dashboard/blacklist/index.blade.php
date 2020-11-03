@@ -128,7 +128,7 @@
         $('.note').on('change', function () {
             let id = $(this).data('id');
 
-            console.log(id);
+            console.log('id');
 
             fetch(`/manager/blacklist/phone/${id}/update`, {
                 headers: {

@@ -237,7 +237,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         return $builder->whereHas('roles', function (Builder $builder) use ($roles)
         {
             foreach ($roles as $role) {
-                $builder->orWhere(id, $role);
+                $builder->orWhere('id', $role);
             }
         });
     }

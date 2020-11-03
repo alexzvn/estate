@@ -20,8 +20,8 @@ class SettingController extends Controller
 
     public function update(SaveSetting $request, Setting $setting)
     {
-        Province::whereIn(id, $request->provinces)->update(['active' => true]);
-        Province::whereNotIn(id, $request->provinces)->update(['active' => false]);
+        Province::whereIn('id', $request->provinces)->update(['active' => true]);
+        Province::whereNotIn('id', $request->provinces)->update(['active' => false]);
 
         $setting->setConfigs([
             'title' => $request->title,
