@@ -14,7 +14,7 @@ class CreateWhitelistsTable extends Migration
     public function up()
     {
         Schema::create('whitelists', function (Blueprint $table) {
-            $table->string('phone', 50)->unique();
+            $table->string('phone', 50)->primary();
         });
     }
 

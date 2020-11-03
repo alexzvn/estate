@@ -14,9 +14,10 @@ class CreateWardsTable extends Migration
     public function up()
     {
         Schema::create('wards', function (Blueprint $table) {
+            $table->id();
             $table->string('name');
             $table->string('type');
-            $table->foreign('district_id');
+            $table->foreignId('district_id');
             $table->timestamps();
         });
     }

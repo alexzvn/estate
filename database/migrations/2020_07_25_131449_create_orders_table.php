@@ -26,7 +26,9 @@ class CreateOrdersTable extends Migration
             $table->foreignId('verifier_id')->nullable();
             $table->foreignId('customer_id')->nullable();
             $table->foreignId('creator_id')->nullable();
-            $table->timestamp(['activate_at', 'expires_at']);
+            $table->timestamp('expires_at')->nullable();
+            $table->timestamp('activate_at')->nullable();
+            $table->timestamps();
         });
     }
 

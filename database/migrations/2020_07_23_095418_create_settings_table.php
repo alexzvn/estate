@@ -14,8 +14,8 @@ class CreateSettingsTable extends Migration
     public function up()
     {
         Schema::create('settings', function (Blueprint $table) {
-            $table->unique('key');
-            $table->boolean('preload');
+            $table->string('key', 50)->primary();
+            $table->boolean('preload')->default(true);
         });
     }
 

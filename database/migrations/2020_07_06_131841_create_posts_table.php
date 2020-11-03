@@ -30,12 +30,11 @@ class CreatePostsTable extends Migration
             $table->foreignId('verified_id')->nullable();
             $table->foreignId('province_id')->nullable();
             $table->foreignId('district_id')->nullable();
-            $table->foreignId('user_id')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
 
-            fulltext('posts', 'content', 'title');
+            // fulltext('posts', 'content', 'title');
         });
     }
 

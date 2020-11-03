@@ -14,7 +14,8 @@ class CreateLogsTable extends Migration
     public function up()
     {
         Schema::create('logs', function (Blueprint $table) {
-            $table->index('user_id');
+            $table->id();
+            $table->foreignId('user_id');
             $table->string('link', 2048)->nullable();
             $table->string('content', 2000);
             $table->timestamps();

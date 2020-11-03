@@ -14,7 +14,9 @@ class CreateSubscriptionsTable extends Migration
     public function up()
     {
         Schema::create('subscriptions', function (Blueprint $table) {
-            $table->index(['user_id', 'plan_id']);
+            $table->id();
+            $table->foreignId('user_id');
+            $table->foreignId('plan_id');
             $table->timestamp('expires_at');
         });
     }
