@@ -10,6 +10,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TrackingPost extends Model
 {
+    protected $primaryKey = 'phone';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
     protected $fillable = ['phone'];
 
     /**
