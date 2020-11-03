@@ -31,6 +31,8 @@ class CreatePostsTable extends Migration
             $table->foreignId('province_id')->nullable();
             $table->foreignId('district_id')->nullable();
 
+            $table->longText('index_meta')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
 
