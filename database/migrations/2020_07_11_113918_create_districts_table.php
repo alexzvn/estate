@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateDistrictsTable extends Migration
@@ -13,10 +13,10 @@ class CreateDistrictsTable extends Migration
      */
     public function up()
     {
-        Schema::create('districts', function (Blueprint $collection) {
-            $collection->index(['name', 'province_id']);
-            $collection->string('type');
-            $collection->timestamps();
+        Schema::create('districts', function (Blueprint $table) {
+            $table->index(['name', 'province_id']);
+            $table->string('type');
+            $table->timestamps();
         });
     }
 

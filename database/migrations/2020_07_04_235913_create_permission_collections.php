@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreatePermissionCollections extends Migration
 {
@@ -13,16 +13,16 @@ class CreatePermissionCollections extends Migration
      */
     public function up()
     {
-        $collectionNames = config('permission.collection_names');
+        $tableNames = config('permission.collection_names');
 
-        Schema::table($collectionNames['roles'], function (Blueprint $collection) {
-            $collection->string('display_name');
-            $collection->unique(['name', 'guard_name']);
+        Schema::table($tableNames['roles'], function (Blueprint $table) {
+            $table->string('display_name');
+            $table->unique(['name', 'guard_name']);
         });
 
-        Schema::table($collectionNames['permissions'], function (Blueprint $collection) {
-            $collection->string('display_name');
-            $collection->unique(['name', 'guard_name']);
+        Schema::table($tableNames['permissions'], function (Blueprint $table) {
+            $table->string('display_name');
+            $table->unique(['name', 'guard_name']);
         });
     }
 
@@ -33,9 +33,9 @@ class CreatePermissionCollections extends Migration
      */
     public function down()
     {
-        $collectionNames = config('permission.collection_names');
+        $tableNames = config('permission.collection_names');
 
-        Schema::drop($collectionNames['roles']);
-        Schema::drop($collectionNames['permissions']);
+        Schema::drop($tableNames['roles']);
+        Schema::drop($tableNames['permissions']);
     }
 }

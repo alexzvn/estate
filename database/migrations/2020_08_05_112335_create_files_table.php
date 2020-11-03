@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateFilesTable extends Migration
@@ -13,10 +13,10 @@ class CreateFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('files', function (Blueprint $collection) {
-            $collection->string('name');
-            $collection->string('path');
-            $collection->timestamps();
+        Schema::create('files', function (Blueprint $table) {
+            $table->string('name');
+            $table->string('path');
+            $table->timestamps();
         });
     }
 

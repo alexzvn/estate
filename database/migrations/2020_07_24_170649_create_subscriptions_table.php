@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateSubscriptionsTable extends Migration
@@ -13,9 +13,9 @@ class CreateSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $collection) {
-            $collection->index(['user_id', 'plan_id']);
-            $collection->timestamp('expires_at');
+        Schema::create('subscriptions', function (Blueprint $table) {
+            $table->index(['user_id', 'plan_id']);
+            $table->timestamp('expires_at');
         });
     }
 

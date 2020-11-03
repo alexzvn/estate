@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateOrdersTable extends Migration
@@ -13,10 +13,10 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $collection) {
-            $collection->index(['verifier_id', 'customer_id']);
-            $collection->integer('status');
-            $collection->timestamp(['activate_at', 'expires_at']);
+        Schema::create('orders', function (Blueprint $table) {
+            $table->index(['verifier_id', 'customer_id']);
+            $table->integer('status');
+            $table->timestamp(['activate_at', 'expires_at']);
         });
     }
 

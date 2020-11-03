@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateProvincesTable extends Migration
@@ -13,9 +13,9 @@ class CreateProvincesTable extends Migration
      */
     public function up()
     {
-        Schema::create('provinces', function (Blueprint $collection) {
-            $collection->string('type');
-            $collection->timestamps();
+        Schema::create('provinces', function (Blueprint $table) {
+            $table->string('type');
+            $table->timestamps();
         });
     }
 

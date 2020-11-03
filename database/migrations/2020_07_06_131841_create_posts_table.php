@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreatePostsTable extends Migration
@@ -13,12 +13,12 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $collection) {
-            $collection->softDeletes();
-            $collection->index(['user_id', 'price', 'phone', 'status']);
-            $collection->string(['content', 'title']);
-            $collection->timestamp('publish_at');
-            $collection->timestamps();
+        Schema::create('posts', function (Blueprint $table) {
+            $table->softDeletes();
+            $table->index(['user_id', 'price', 'phone', 'status']);
+            $table->string(['content', 'title']);
+            $table->timestamp('publish_at');
+            $table->timestamps();
         });
     }
 
