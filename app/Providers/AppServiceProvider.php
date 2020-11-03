@@ -27,15 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (config('app.debug')) {
-            \DB::connection( 'mongodb' )->enableQueryLog();
-        }
-
         Gate::before(function (User $user, $ability) {
             return $user->hasPermissionTo('*') ? true : null;
         });
-
-        
 
         view()->share('setting', $this->app->make(Setting::class));
     }
