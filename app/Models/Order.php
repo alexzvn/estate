@@ -120,7 +120,7 @@ class Order extends Model implements CanNote, Auditable
     {
         return $builder->whereHas('plans', function ($builder) use ($plan)
         {
-            $builder->where('_id', $plan);
+            $builder->where(id, $plan);
         });
     }
 

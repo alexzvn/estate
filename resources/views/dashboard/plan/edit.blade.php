@@ -46,7 +46,7 @@
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="categories[]" id="categories"
-                                            value="{{ $item->id }}" {{ $plan->categories->where('_id', $item->id)->isNotEmpty() ? 'checked' : '' }}>
+                                            value="{{ $item->id }}" {{ $plan->categories->where(id, $item->id)->isNotEmpty() ? 'checked' : '' }}>
                                             {{ $item->name }}
                                         </label>
                                     </div>
@@ -75,7 +75,7 @@
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input type="checkbox" class="form-check-input" name="provinces[]" id="provinces"
-                                    value="{{ $item->id }}" {{ $plan->provinces->where('_id', $item->id)->isNotEmpty() ? 'checked' : '' }}>
+                                    value="{{ $item->id }}" {{ $plan->provinces->where(id, $item->id)->isNotEmpty() ? 'checked' : '' }}>
                                     {{ $item->name }}
                                 </label>
                             </div>

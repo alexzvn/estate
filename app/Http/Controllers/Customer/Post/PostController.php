@@ -72,7 +72,7 @@ class PostController extends BaseController
 
     public function view(string $id, Request $request)
     {
-        $post = Post::withRelation()->where('_id', $id)->firstOrFail();
+        $post = Post::withRelation()->where(id, $id)->firstOrFail();
 
         $this->customer->createLog([
             'content' => "Đã xem tin: $post->title",
@@ -100,7 +100,7 @@ class PostController extends BaseController
         $post = Post::withRelation()
             ->published()
             ->where('type', $type)
-            ->whereNotIn('_id', $this->customer->post_blacklist_ids ?? [])
+            ->whereNotIn(id, $this->customer->post_blacklist_ids ?? [])
             ->filter([
                 'categories' => $categories,
                 'provinces'  => $this->access->provinces($type)

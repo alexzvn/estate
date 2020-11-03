@@ -65,7 +65,7 @@
                                 <div class="form-check">
                                   <label class="form-check-label">
                                     <input type="checkbox" class="form-check-input" name="permissions[]" id="permissions"
-                                    value="{{ $perm->id }}" {{ $role->permissions->whereIn('_id', $perm->id)->count() ? 'checked' : '' }}>
+                                    value="{{ $perm->id }}" {{ $role->permissions->whereIn(id, $perm->id)->count() ? 'checked' : '' }}>
                                     {{ $perm->display_name }}
                                   </label>
                                 </div>

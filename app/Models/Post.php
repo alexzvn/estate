@@ -140,7 +140,7 @@ class Post extends Model implements Auditable
 
         return $builder->whereHas('categories', function (Builder $q) use ($values)
         {
-            $q->whereIn('_id', $values);
+            $q->whereIn(id, $values);
         });
     }
 
