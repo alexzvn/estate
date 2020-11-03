@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\CanFilter;
 use Illuminate\Database\Eloquent\Builder;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Log extends Model
 {

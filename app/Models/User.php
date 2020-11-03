@@ -12,7 +12,7 @@ use App\Models\Traits\CanSearch;
 use App\Models\Traits\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Jenssegers\Mongodb\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use OwenIt\Auditing\Contracts\Auditable;
 

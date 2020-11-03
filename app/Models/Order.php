@@ -6,7 +6,7 @@ use App\Models\Traits\HasNote;
 use Illuminate\Support\Carbon;
 use App\Models\Traits\CanFilter;
 use App\Contracts\Models\CanNote;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;

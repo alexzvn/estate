@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\Traits\Auditable as TraitsAuditable;
-use Jenssegers\Mongodb\Eloquent\Builder;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Category extends Model implements Auditable

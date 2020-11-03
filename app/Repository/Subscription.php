@@ -14,7 +14,7 @@ class Subscription extends BaseRepository
      * get model with default relation ship
      *
      * @param string|array $relation
-     * @return \Jenssegers\Mongodb\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function withRelation($relation = null)
     {

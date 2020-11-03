@@ -7,7 +7,7 @@ interface RepositoryInterface
     /**
      * Get the model
      *
-     * @return \Jenssegers\Mongodb\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function model();
 }

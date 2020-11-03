@@ -10,8 +10,8 @@ use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanSearch;
 use App\Models\Traits\HasFiles;
 use Carbon\Carbon;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 

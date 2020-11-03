@@ -5,8 +5,8 @@ namespace App\Models;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CanFilter;
 use Illuminate\Support\Carbon;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Subscription extends Model implements Auditable

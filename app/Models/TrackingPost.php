@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PostType;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * class dùng trong việc theo dõi tin môi giới

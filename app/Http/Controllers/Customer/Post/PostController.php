@@ -88,7 +88,7 @@ class PostController extends BaseController
     /**
      * default select data from post collection
      *
-     * @return \Jenssegers\Mongodb\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     private function defaultPost(string $type)
     {

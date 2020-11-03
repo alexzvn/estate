@@ -2,7 +2,7 @@
 
 namespace App\Models\Location;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class District extends Model
 {
