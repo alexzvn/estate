@@ -178,6 +178,18 @@ Route::group(['prefix' => 'blacklist'], function () {
 });
 
 /**
+ * WHITELIST
+ */
+Route::group(['prefix' => 'whitelist'], function () {
+    Route::group(['prefix' => 'phone', 'namespace' => 'Whitelist'], function () {
+        Route::get('/', 'WhitelistController@index')->name('manager.whitelist.phone');
+        Route::post('/store', 'WhitelistController@store')->name('manager.whitelist.phone.store');
+        Route::post('/{id}/update', 'WhitelistController@update')->name('manager.whitelist.phone.update');
+        Route::post('/{id}/delete', 'WhitelistController@delete')->name('manager.whitelist.phone.delete');
+    });
+});
+
+/**
  * ACTIVITY
  */
 Route::group(['prefix' => 'activity', 'namespace' => 'Activity'], function () {
