@@ -9,6 +9,7 @@ use Maklad\Permission\Traits\HasRoles;
 use App\Contracts\Auth\MustVerifyPhone;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CanSearch;
+use App\Models\Traits\HasNote;
 use App\Models\Traits\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +21,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class User extends Authenticatable implements MustVerifyPhone, Auditable
 {
-    use Notifiable, TraitsAuditable;
+    use Notifiable, TraitsAuditable, HasNote;
     use HasRoles, CanVerifyPhone, CanFilter, CanSearch;
 
     const BANNED = 'banned';

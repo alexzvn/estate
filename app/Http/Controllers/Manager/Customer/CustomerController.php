@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Manager\Customer;
 use App\Repository\Plan;
 use App\Repository\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Customer\AssignCustomer;
 use App\Http\Requests\Manager\Customer\StoreCustomer;
@@ -14,7 +13,6 @@ use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Order;
 use App\Repository\Permission;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
 {
@@ -22,7 +20,7 @@ class CustomerController extends Controller
     {
         $this->authorize('manager.customer.view');
 
-        $users = User::with(['subscriptions', 'supporter', 'orders', 'logs'])
+        $users = User::with(['subscriptions', 'supporter', 'orders', 'logs', 'note'])
             ->filter($request)
             ->onlyCustomer();
 
@@ -95,6 +93,10 @@ class CustomerController extends Controller
         $user = $request->updateUser;
 
         $user->fill($request->all())->save();
+
+        if ($request->note) {
+            $user->writeNote($request->note);
+        }
 
         if ( ! empty($request->password)) {
             $user->emptySession();

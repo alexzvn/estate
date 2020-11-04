@@ -2,6 +2,7 @@
 
 @push('style')
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
+<link href="{{ asset('dashboard/assets/css/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
 <style>
     .user-active td {
         color: #1b55e2 !important;
@@ -109,6 +110,12 @@
                             </td>
                             <td class="text-center">
                                 <ul class="table-controls">
+                                    <li>
+                                        <a class="bs-tooltip" title="{{ $user->readNote() }}">
+                                            <i @unless(empty($user->readNote())) class="text-info" @endunless data-feather="file-text"></i>
+                                        </a>
+                                    </li>
+
                                     @can('manager.customer.take')
                                         @php
                                             $canTake = empty($supporter) || Auth::user()->can('manager.user.assign.customer');
@@ -158,6 +165,7 @@
 @endsection
 
 @push('script')
+<script src="{{ asset('dashboard/assets/js/elements/tooltip.js') }}"></script>
 <script>
     $(document).ready(function () {
         $('.open-user').on('click', function () {
@@ -165,6 +173,8 @@
 
             window.location.href = `/manager/customer/${id}/view`;
         });
+
+        $('.bs-tooltip').tooltip();
     });
 </script>
 @endpush
