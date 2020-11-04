@@ -215,6 +215,17 @@
                     </li>
                     @endcan
 
+                    @can('whitelist.phone.view')
+                    <li class="menu">
+                        <a href="{{ route('manager.whitelist.phone') }}" @active('manager.whitelist.phone', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="phone"></i>
+                                <span>Điện thoại trắng</span>
+                            </div>
+                        </a>
+                    </li>
+                    @endcan
+
                     @can('manager.site.setting')
                     <li class="menu">
                         <a href="{{ route('manager.setting') }}" @active('manager.setting*', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
