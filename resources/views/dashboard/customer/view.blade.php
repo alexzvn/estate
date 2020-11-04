@@ -72,6 +72,11 @@
                         </div>
                     @endcan
 
+                    <div class="form-group input-group-sm">
+                      <label for="note">Ghi chú</label>
+                      <textarea class="form-control" name="note" id="note" rows="3" placeholder="Nội dung ghi chú">{{ $user->readNote() }}</textarea>
+                    </div>
+
                     <hr>
 
                     <div>
