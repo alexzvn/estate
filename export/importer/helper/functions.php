@@ -110,11 +110,7 @@ function restore(string $table, string $file, int $chunk = 0)
     $data = require_once $file;
 
     $insert = function ($data) use ($table) {
-        try {
-            return $table->insert($data);
-        } catch (\Throwable $th) {
-            
-        }
+        return $table->insert($data);
     };
 
     if ($chunk < 1) {
