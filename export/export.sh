@@ -4,5 +4,5 @@ collections=(audits blacklists categories dictricts failed_jobs files logs migra
 
 for collect in $( eval echo ${collections[*]})
 do
-    mongoexport --db estate -c $collect --out e/newdbexport.json --forceTableScan
+    mongoexport --db estate -c $collect --out e/${collect}.json --forceTableScan
 done
