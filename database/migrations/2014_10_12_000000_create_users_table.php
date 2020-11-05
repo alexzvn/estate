@@ -18,15 +18,20 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->unique();
-            $table->longText('index_meta')->nullable();
+            $table->string('password');
+            $table->string('address')->nullable();
             $table->string('session_id')->unique()->nullable();
+            $table->rememberToken();
+            $table->longText('index_meta')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->dateTime('last_seen')->nullable();
+            $table->timestamp('banned_at')->nullable();
+            $table->timestamp('birthday')->nullable();
+            $table->timestamp('last_seen')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreignId('supporter_id')->nullable();
         });
     }
 

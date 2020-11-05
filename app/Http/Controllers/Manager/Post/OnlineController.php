@@ -123,7 +123,7 @@ class OnlineController extends PostController
                 'publish_at' => now(),
             ])->save();
 
-        $origin->forceFill(['approveFee' => true])->save();
+        $origin->forceFill(['approve_fee' => true])->save();
 
         return response([
             'success' => true,

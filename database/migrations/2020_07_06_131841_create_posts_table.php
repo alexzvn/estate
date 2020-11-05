@@ -18,7 +18,8 @@ class CreatePostsTable extends Migration
 
             $table->string('title', 250)->nullable();
             $table->mediumText('content')->nullable();
-            $table->string('phone', 20)->nullable();
+            $table->string('phone', 300)->nullable();
+            $table->string('commission', 20)->nullable();
             $table->unsignedBigInteger('price')->nullable();
 
             $table->string('hash', 80)->nullable();
@@ -27,9 +28,12 @@ class CreatePostsTable extends Migration
             $table->timestamp('publish_at');
 
             $table->foreignId('user_id')->nullable();
-            $table->foreignId('verified_id')->nullable();
+            $table->foreignId('verifier_id')->nullable();
             $table->foreignId('province_id')->nullable();
             $table->foreignId('district_id')->nullable();
+
+            $table->boolean('reverser')->default(false);
+            $table->boolean('approve_fee')->default(false);
 
             $table->longText('index_meta')->nullable();
 
