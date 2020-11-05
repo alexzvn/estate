@@ -11,9 +11,17 @@ $auditable = function ($oid, $data)
 };
 
 return get('audits', new Mapper([
-    '_id' => 'empty',
-    'auditable_id' => $auditable,
-    'user_id' => 'id.users',
-    'updated_at' => 'datetime',
-    'created_at' => 'datetime',
+    'user_id'        => 'id.users',
+    'user_type'      => 'string',
+    'event'          => 'string',
+    'auditable_id'   => $auditable,
+    'auditable_type' => 'string',
+    'old_values'     => 'string',
+    'new_values'     => 'string',
+    'url'            => 'string',
+    'ip_address'     => 'string',
+    'user_agent'     => 'string',
+    'tags'           => 'string',
+    'updated_at'     => 'datetime',
+    'created_at'     => 'datetime',
 ]));

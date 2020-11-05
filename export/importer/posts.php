@@ -1,11 +1,15 @@
 <?php
 
 return get('posts', new Mapper([
-    '_id' => 'empty',
-    'category_ids'=> 'empty',
-    'user_save_ids'=> 'empty',
-    'user_blacklist_ids'=> 'empty',
-    'file_ids'=> 'empty',
+    'title' => 'string',
+    'content' => 'string',
+    'phone' => 'string',
+    'hash' => 'string',
+    'type' => 'string',
+    'reverser' => 'boolean',
+    'approve_fee' => 'boolean',
+    'commission' => 'string',
+    'index_meta' => 'string',
     'price' => 'int',
     'status' => 'int',
     'verifier_id' => 'id.users',

@@ -18,18 +18,8 @@ class Mapper
     {
         $data['_id'] = $data['_id']['$oid'];
 
-        foreach ($data as $key => $value) {
-            if (!isset($this->caster[$key])) continue;
-
-            if ($this->caster[$key] === 'empty') {
-                unset($data[$key]); continue;
-            }
-
-            if ($value === null) {
-                continue;
-            }
-
-            $data[$key] = $this->castValue($value, $key, $data);
+        foreach ($this->caster as $field => $type) {
+            $data[$field] = $this->castValue($data[$field] ?? null, $type, $data);
         }
 
         foreach ($this->rename as $old => $new) {
@@ -38,19 +28,36 @@ class Mapper
             $data[$new] = $data[$old]; unset($data[$old]);
         }
 
+        return $this->removeUnnecessary($data);
+    }
+
+    protected function removeUnnecessary(array $data)
+    {
+        $allowedKey = array_merge(
+            array_keys($this->caster),
+            array_keys($this->rename)
+        );
+
+        foreach ($data as $key => $value) {
+            if (! in_array($key, $allowedKey)) {
+                unset($data[$key]);
+            }
+        }
+
         return $data;
     }
 
-    protected function castValue($value, string $key, $data)
+    protected function castValue($value, string $type, $data)
     {
-        $type = $this->caster[$key];
+        if ($value === null) return $value;
 
         switch (true) {
-            case $type instanceof Closure: return $type($value, $data);
             case $type === 'null': return null;
+            case $type instanceof Closure: return $type($value, $data);
             case $type === 'datetime': return $this->date($value, $type);
             case Str::startsWith($type, 'id') : return $this->id($value, $type);
             case $type === 'int': return $this->int($value);
+            case $type === 'boolean': return $this->boolean($value);
         }
 
         return $value;
@@ -71,5 +78,15 @@ class Mapper
     protected function int($value)
     {
         return $value > PHP_INT_MAX || $value < 0 ? null : (int) $value;
+    }
+
+    protected function string($value)
+    {
+        return $value;
+    }
+
+    public function boolean($value)
+    {
+        return (bool) $value;
     }
 }
