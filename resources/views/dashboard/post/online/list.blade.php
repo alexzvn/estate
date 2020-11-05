@@ -55,7 +55,7 @@
                     </thead>
                     <tbody>
                         @foreach ($posts as $post)
-                        <tr class="{{ $post->approveFee ? 'active' : '' }}">
+                        <tr class="{{ $post->approve_fee ? 'active' : '' }}">
                             <td class="checkbox-column">
                                 <div class="custom-control custom-checkbox checkbox-primary">
                                   <input type="checkbox" id="todo-{{ $post->id }}" class="custom-control-input todochkbox" name="ids[]" value="{{ $post->id }}">
@@ -68,7 +68,7 @@
                                         @if (isset($post->phone) && $whitelist->whereIn('phone', $post->phone)->isNotEmpty())
                                         [<span class="text-success font-weight-bolder">Chính chủ</span>]
                                         @endif
-                                        @if ($post->approveFee)
+                                        @if ($post->approve_fee)
                                             [<span class="text-secondary font-weight-bolder">Đã duyệt</span>]
                                         @endif
                                         {{ Str::ucfirst(Str::of($post->title)->limit(73)) }}
