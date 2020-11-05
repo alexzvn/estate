@@ -12,3 +12,4 @@ npm-debug.log
 yarn-error.log
 .docker/data/*
 export/e
+export/id
