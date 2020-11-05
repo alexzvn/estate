@@ -35,7 +35,7 @@ class Mapper
     {
         $allowedKey = array_merge(
             array_keys($this->caster),
-            array_keys($this->rename)
+            array_values($this->rename)
         );
 
         foreach ($data as $key => $value) {
