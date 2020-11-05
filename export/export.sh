@@ -1,6 +1,6 @@
 #!/bin/bash
 
-collections=(audits blacklists categories dictricts failed_jobs files logs migrations notes orders password_resets permission_groups permission plans posts provinces reports roles settings subscriptions tracking_posts user_subscriptions users wards whitelist)
+collections=(audits blacklists categories districts failed_jobs files logs migrations notes orders password_resets permission_groups permissions plans posts provinces reports roles settings subscriptions tracking_posts user_subscriptions users wards whitelists)
 
 for collect in $( eval echo ${collections[*]})
 do
