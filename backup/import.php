@@ -5,12 +5,14 @@ require_once __DIR__ . '/importer/helper/functions.php';
 
 // mapIds();
 
-foreach (glob(backup_path('importer/*.php')) as $file) {
-    $table = explode('/', $file);
-    $table = str_replace('.php', '', $table[count($table) - 1]);
+// foreach (glob(backup_path('importer/*.php')) as $file) {
+//     $table = explode('/', $file);
+//     $table = str_replace('.php', '', $table[count($table) - 1]);
 
-    restore($table, $file, 1);
-}
+//     restore($table, $file, 1);
+// }
+
+// restore('logs', backup_path('importer/logs.php'), 300);
 
 /**
  * Get backup path

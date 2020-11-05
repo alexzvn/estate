@@ -1,32 +1,13 @@
 version: '3.1'
 
 services:
-  mongo:
-    image: mongo
-    restart: always
-    volumes:
-      - ./.docker/data/mongo:/data/db
-      - ./.docker/mongod.conf:/etc/mongod.conf
-    ports:
-      - ${DB_PORT}:27017
-    # environment:
-      # MONGO_INITDB_ROOT_USERNAME: root
-      # MONGO_INITDB_ROOT_PASSWORD: example
 
-  redis:
-    image: redis
-    restart: always
-    volumes:
-      - ./.docker/data/redis:/data
-    ports:
-      - ${REDIS_PORT}:6379
 
-  php-queue:
-    restart: always
-    build: 
-      context: .
-      dockerfile: ./.docker/php.dockerfile
-    volumes:
-      - ".:/app"
-    command: "php artisan queue:work"
-    network_mode: host
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+  queue-network:
+    driver: bridge
+  db-network:
+    driver: bridge
