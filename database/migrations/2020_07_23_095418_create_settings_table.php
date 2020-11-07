@@ -15,6 +15,7 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->string('key', 50)->primary();
+            $table->mediumText('value');
             $table->boolean('preload')->default(true);
         });
     }
