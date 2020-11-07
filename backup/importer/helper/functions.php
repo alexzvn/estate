@@ -118,7 +118,9 @@ function restore(string $table, string $file, int $chunk = 0)
     }
 
     foreach (array_chunk($data, $chunk) as $dataInsert) {
-        $insert($dataInsert);
+        try {
+            $insert($dataInsert);
+        } catch (\Throwable $th) {}
     }
 }
 

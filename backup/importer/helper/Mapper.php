@@ -47,10 +47,8 @@ class Mapper
         return $data;
     }
 
-    protected function castValue($value, string $type, $data)
+    protected function castValue($value, $type, $data)
     {
-        if ($value === null) return $value;
-
         switch (true) {
             case $type === 'null': return null;
             case $type instanceof Closure: return $type($value, $data);
@@ -65,11 +63,15 @@ class Mapper
 
     protected function date($value, $key)
     {
+        if (is_null($value)) return null;
+
         return Carbon::parse($value['$date'])->format('Y-m-d H:i:s');
     }
 
     protected function id($value, $key)
     {
+        if (is_null($value)) return null;
+
         [$junk, $collection] = explode('.', $key);
 
         return id($collection, $value);
@@ -77,11 +79,15 @@ class Mapper
 
     protected function int($value)
     {
+        if (is_null($value)) return null;
+
         return $value > PHP_INT_MAX || $value < 0 ? null : (int) $value;
     }
 
     protected function string($value)
     {
+        if (is_null($value)) return null;
+
         return $value;
     }
 
