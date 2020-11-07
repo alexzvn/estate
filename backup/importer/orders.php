@@ -4,10 +4,10 @@ return get('orders', new Mapper([
     'status'               => 'int',
     'month'                => 'int',
     'verified'             => 'boolean',
-    'discount'             => 'int',
-    'discount_type'        => 'int',
-    'price'                => 'int',
-    'after_discount_price' => 'int',
+    'discount'             => fn($val) => (int) $val,
+    'discount_type'        => fn($val) => (int) $val,
+    'origin_price'         => fn($val, $data) => ($data['price'] ?? 0),
+    'price'                => fn($val, $data) => ($data['after_discount_price'] ?? 0),
 
     'customer_id'          => 'id.users',
     'creator_id'           => 'id.users',
@@ -18,7 +18,4 @@ return get('orders', new Mapper([
     'updated_at'           => 'datetime',
     'created_at'           => 'datetime',
     'deleted_at'           => 'datetime',
-], [
-    'price' => 'origin_price',
-    'after_discount_price' => 'price'
 ]));

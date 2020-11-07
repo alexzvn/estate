@@ -1,24 +1,31 @@
 <?php
 
+use App\Models\Blacklist;
 use App\Models\Order;
 use App\Models\User;
 
 $noteType = function ($value, array $data)
 {
-    if (isset($data['user_id'])) {
-        return User::class;
+    switch (true) {
+        case isset($data['user_id']): return User::class;
+        case isset($data['order_id']): return Order::class;
+        case isset($data['blacklist_id']): return Blacklist::class;
     }
 
-    return Order::class;
+    return dd($data);
 };
 
 $noteId = function ($value, array $data) use ($noteType)
 {
-    if ($noteType($value, $data) === User::class) {
-        return id('users', $value);
+    $type = $noteType($value, $data);
+
+    switch ($type) {
+        case User::class: return id('users', $data['user_id']);
+        case Order::class: return id('orders', $data['order_id']);
+        case Blacklist::class: return id('blacklists', $data['blacklist_id']);
     }
 
-    return id('orders', $value);
+    return dd($data);
 };
 
 return get('notes', new Mapper([
