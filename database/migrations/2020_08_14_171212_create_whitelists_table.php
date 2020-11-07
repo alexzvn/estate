@@ -15,6 +15,8 @@ class CreateWhitelistsTable extends Migration
     {
         Schema::create('whitelists', function (Blueprint $table) {
             $table->string('phone', 50)->primary();
+            $table->foreignId('user_id')->nullable();
+            $table->timestamps();
         });
     }
 

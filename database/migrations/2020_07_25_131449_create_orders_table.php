@@ -17,8 +17,8 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->integer('discount')->default(0);
             $table->tinyInteger('discount_type')->default(2);
+            $table->integer('origin_price')->default(0);
             $table->integer('price')->default(0);
-            $table->integer('after_discount_price')->default(0);
             $table->tinyInteger('status');
             $table->boolean('manual')->default(false);
             $table->tinyInteger('month')->nullable();
@@ -29,6 +29,7 @@ class CreateOrdersTable extends Migration
             $table->timestamp('expires_at')->nullable();
             $table->timestamp('activate_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

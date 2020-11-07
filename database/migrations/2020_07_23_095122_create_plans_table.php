@@ -14,6 +14,8 @@ class CreatePlansTable extends Migration
     public function up()
     {
         Schema::create('plans', function (Blueprint $table) {
+            $table->string('name');
+            $table->unsignedBigInteger('price')->default(0);
             $table->timestamps();
         });
     }
