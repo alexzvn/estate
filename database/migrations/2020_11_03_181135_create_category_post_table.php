@@ -14,9 +14,9 @@ class CreateCategoryPostTable extends Migration
     public function up()
     {
         Schema::create('category_post', function (Blueprint $table) {
-            $table->foreignId('post_id')->constrained();
-            $table->foreignId('category_id')->constrained();
-            $table->timestamps();
+            $table->id();
+            $table->foreignId('post_id')->constrained()->deleteOnNull();
+            $table->foreignId('category_id')->constrained()->deleteOnNull();
         });
     }
 
