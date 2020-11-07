@@ -45,6 +45,37 @@ function get(string $collection, Mapper $mapper = null)
 }
 
 /**
+ * Extract Ids to list id - primary 
+ *
+ * @param string $collection
+ * @param string $foreign foreign primary collection in relation table
+ * @param string $ids ids field in mongodb
+ * @param string $id id column in mysql
+ * @param string $collection2 cache collection id for (ids/id)
+ * @return array
+ */
+function get_extract(string $collection, string $foreign, string $ids, string $id, string $collection2) {
+
+    return collect(get($collection))->reduce(function (array $carry, $model) use ($collection, $foreign, $ids, $id, $collection2)
+    {
+        $foreignId = id($collection, $model['_id']['$oid']);
+
+        foreach ($model[$ids] ?? [] as $oid) {
+
+            if ($oid === null || id($collection2, $oid) === null) continue;
+
+            array_push($carry, [
+                $id => id($collection2, $oid),
+                $foreign => $foreignId,
+            ]);
+        }
+
+        return $carry;
+    }, []);
+    
+}
+
+/**
  * Get id from oid
  *
  * @param string $collection
