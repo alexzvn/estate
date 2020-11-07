@@ -5,14 +5,33 @@ require_once __DIR__ . '/importer/helper/functions.php';
 
 // mapIds();
 
-// foreach (glob(backup_path('importer/*.php')) as $file) {
-//     $table = explode('/', $file);
-//     $table = str_replace('.php', '', $table[count($table) - 1]);
+$restores = [
+    'provinces'      => 0,
+    'districts'      => 0,
+    'wards'          => 0,
+    'users'          => 1,
+    'whitelists'     => 0,
+    'blacklists'     => 0,
+    'categories'     => 0,
 
-//     restore($table, $file, 1);
-// }
+    'plans'          => 0,
+    'subscriptions'  => 0,
+    'posts'          => 1,
 
-// restore('logs', backup_path('importer/logs.php'), 300);
+    'orders'         => 0,
+    'notes'          => 0,
+    'logs'           => 0,
+    'reports'        => 0,
+    'tracking_posts' => 0,
+    'audits'         => 0,
+];
+
+foreach ($restores as $table => $chunk) {
+
+    $chunk = $chunk === 0 ? 2000 : $chunk;
+
+    restore($table, backup_path("importer/$table.php"), $chunk);
+}
 
 /**
  * Get backup path
