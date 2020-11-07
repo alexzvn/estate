@@ -26,6 +26,7 @@ $restores = [
     'audits'         => 1,
 
     'category_post' => 0,
+    'order_plan'    => 0,
 ];
 
 foreach ($restores as $table => $chunk) {
