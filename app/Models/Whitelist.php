@@ -10,6 +10,13 @@ class Whitelist extends Model implements Auditable
 {
     use TraitsAuditable;
 
+    protected $primaryKey = 'phone';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
+
     protected $fillable = ['phone'];
 
     const NAME = 'danh sách trắng';
