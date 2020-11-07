@@ -58,8 +58,8 @@ class Category extends Model implements Auditable
 
     public function removeChildren()
     {
-        foreach ($this->children()->get() as $child) {
-            $child->forceFill(['parent_id' => null])->save();
-        }
+        $this->children()->update([
+            'parent_id' => null
+        ]);
     }
 }
