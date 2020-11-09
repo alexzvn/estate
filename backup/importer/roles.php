@@ -5,5 +5,5 @@ return get('roles', new Mapper([
     'guard_name' => 'string',
     'customer' => 'boolean',
     'created_at' => 'datetime',
-    'deleted_at' => 'datetime',
+    'updated_at' => 'datetime',
 ]));

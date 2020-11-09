@@ -62,7 +62,7 @@ function get_extract(string $collection, string $foreign, string $ids, string $i
 
         foreach ($model[$ids] ?? [] as $oid) {
 
-            if ($oid === null || id($collection2, $oid) === null) continue;
+            if (empty($oid) || id($collection2, $oid) === null) continue;
 
             array_push($carry, [
                 $id => id($collection2, $oid),

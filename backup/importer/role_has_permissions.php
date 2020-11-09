@@ -1,9 +1,9 @@
 <?php
 
 return get_extract(
-    'roles',
-    'role_id',
-    'permission_ids',
+    'permissions',
     'permission_id',
-    'permissions'
+    'role_ids',
+    'role_id',
+    'roles'
 );

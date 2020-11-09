@@ -6,5 +6,5 @@ return get('permissions', new Mapper([
     'guard_name' => 'string',
     'group_id' => 'id.permission_groups',
     'created_at' => 'datetime',
-    'deleted_at' => 'datetime',
+    'updated_at' => 'datetime',
 ]));
