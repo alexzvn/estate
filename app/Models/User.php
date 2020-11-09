@@ -139,12 +139,12 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
 
     public function blacklistPosts()
     {
-        return $this->belongsToMany(Post::class, null, 'user_blacklist_ids', 'post_blacklist_ids');
+        return $this->belongsToMany(Post::class, null, 'post_user_blacklist');
     }
 
     public function savePosts()
     {
-        return $this->belongsToMany(Post::class, null, 'user_save_ids', 'post_save_ids');
+        return $this->belongsToMany(Post::class, null, 'post_user_save');
     }
 
     public function markPhoneAsNotVerified()
