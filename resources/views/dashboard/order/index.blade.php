@@ -79,6 +79,11 @@ function planToString($plans) {
                             <td class="text-center">
                                 <ul class="table-controls">
                                     <li>
+                                        <a class="bs-tooltip" title="{{ $order->readNote() }}">
+                                            <i @unless(empty($order->readNote())) class="text-info" @endunless data-feather="file-text"></i>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="{{ route('manager.order.view', ['id' => $order->id]) }}">
                                             <i class="role-edit" data-feather="edit"></i>
                                         </a>
