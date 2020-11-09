@@ -11,10 +11,12 @@ use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CacheDefault;
 use App\Models\Traits\CanSearch;
 
 class Order extends Model implements CanNote, Auditable
 {
+    use CacheDefault;
     use SoftDeletes, HasNote, CanFilter, TraitsAuditable, CanSearch;
 
     public const DISCOUNT_PERCENT = 1;

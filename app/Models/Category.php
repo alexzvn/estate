@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CacheDefault;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Category extends Model implements Auditable
 {
+    use CacheDefault;
     use TraitsAuditable;
 
     protected $fillable = ['name', 'description'];

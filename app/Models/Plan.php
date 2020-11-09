@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Models\Location\Province;
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CacheDefault;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Plan extends Model implements Auditable
 {
-    use TraitsAuditable;
+    use TraitsAuditable, CacheDefault;
 
     const NAME = 'gói đăng ký';
 

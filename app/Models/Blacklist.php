@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CacheDefault;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\HasNote;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,7 +12,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Blacklist extends Model implements Auditable
 {
-    use HasNote, CanFilter, TraitsAuditable;
+    use HasNote, CanFilter, TraitsAuditable, CacheDefault;
 
     protected $primaryKey = 'phone';
 

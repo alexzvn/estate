@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CacheDefault;
 use App\Models\Traits\CanFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Log extends Model
 {
-    use CanFilter;
+    use CanFilter, CacheDefault;
 
     protected $fillable = [
         'content', 'link'

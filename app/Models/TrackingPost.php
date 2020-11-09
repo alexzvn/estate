@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PostType;
+use App\Models\Traits\CacheDefault;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TrackingPost extends Model
 {
+    use CacheDefault;
+
     protected $primaryKey = 'phone';
 
     public $incrementing = false;

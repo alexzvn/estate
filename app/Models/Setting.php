@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CacheDefault;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Setting extends Model implements Auditable
 {
-    use TraitsAuditable;
+    use TraitsAuditable, CacheDefault;
 
     protected $fillable = [
         'key', 'value', 'preload'

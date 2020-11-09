@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CacheDefault;
 use App\Models\Traits\CanFilter;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Subscription extends Model implements Auditable
 {
-    use TraitsAuditable, CanFilter;
+    use TraitsAuditable, CanFilter, CacheDefault;
 
     const NAME = 'gói khách hàng đang đăng ký';
 

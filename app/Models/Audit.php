@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CacheDefault;
 use Illuminate\Support\Carbon;
 use App\Models\Traits\CanFilter;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use OwenIt\Auditing\Contracts\Audit as ContractsAudit;
 
 class Audit extends Model implements ContractsAudit
 {
-    use AuditingAudit, CanFilter;
+    use AuditingAudit, CanFilter, CacheDefault;
 
     /**
      * {@inheritdoc}
