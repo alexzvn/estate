@@ -26,4 +26,9 @@ class Plan extends Model implements Auditable
     {
         return $this->belongsToMany(Category::class);
     }
+
+    public function type()
+    {
+        return $this->hasMany(PlanType::class);
+    }
 }
