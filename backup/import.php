@@ -13,6 +13,8 @@ $restores = [
     'whitelists'     => 1,
     'blacklists'     => 1,
     'categories'     => 0,
+    'permissions'    => 0,
+    'roles'          => 0,
 
     'plans'          => 0,
     'subscriptions'  => 0,
@@ -30,8 +32,13 @@ $restores = [
     'plan_province' => 0,
     'plan_category' => 0,
     'plan_types'    => 0,
-    'post_user_blacklist' => 0,
-    'post_user_save' => 0,
+
+    'post_user_blacklist'   => 0,
+    'post_user_save'        => 0,
+    'role_has_permissions'  => 0,
+    'model_has_roles'       => 0,
+    'model_has_permissions' => 0,
+
 ];
 
 foreach ($restores as $table => $chunk) {
