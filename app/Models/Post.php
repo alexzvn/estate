@@ -74,6 +74,11 @@ class Post extends Model implements Auditable
         return $this->belongsTo(User::class, 'verifier_id');
     }
 
+    public function whitelist()
+    {
+        return $this->hasMany(Whitelist::class, 'phone', 'phone');
+    }
+
     public function scopePublished(Builder $builder)
     {
         return $builder
@@ -93,12 +98,7 @@ class Post extends Model implements Auditable
 
     public function scopeWithoutWhitelist(Builder $builder)
     {
-        $whitelist = Whitelist::all()->map(function ($whitelist)
-        {
-            return $whitelist->phone;
-        });
-
-        $builder->whereNotIn('phone', $whitelist->toArray());
+        return $builder->whereDoesntHave('whitelist');
     }
 
     public function scopeWithoutBlacklist(Builder $builder)
