@@ -30,14 +30,14 @@ $restores = [
     'category_post' => 0,
     'order_plan'    => 0,
     'plan_province' => 0,
-    'plan_category' => 0,
+    'category_plan' => 0,
     'plan_types'    => 0,
 
     'post_user_blacklist'   => 0,
     'post_user_save'        => 0,
-    'role_has_permissions'  => 0,
-    'model_has_roles'       => 0,
-    'model_has_permissions' => 0,
+    'role_has_permissions'  => 1,
+    'model_has_roles'       => 1,
+    'model_has_permissions' => 1,
 
 ];
 
