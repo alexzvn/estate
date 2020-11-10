@@ -29,12 +29,12 @@ class UpdatePost extends FormRequest
         return [
             'title'     => 'required',
             'phone'     => 'required|regex:/^[0-9_.]+$/',
-            'category_ids'  => 'required|exists:categories,_id',
-            'province'  => 'required|exists:provinces,_id',
-            'district'  => 'required|exists:districts,_id',
+            'category_ids'  => 'required|exists:categories,id',
+            'province'  => 'required|exists:provinces,id',
+            'district'  => 'required|exists:districts,id',
             'images'    => 'nullable',
             'images.*'   => 'image|mimes:jpeg,png,jpg,gif|max:8192',
-            'image_ids' => 'nullable|array|exists:files,_id',
+            'image_ids' => 'nullable|array|exists:files,id',
             'type'      => [
                 'nullable',
                 Rule::in(PostType::getValues())

@@ -47,7 +47,7 @@ class UpdateUser extends FormRequest
                 ->ignore('phone', str_replace('.', '', $updateUser->phone))
             ],
             'name' => 'required',
-            'roles' => 'nullable|array|exists:roles,_id',
+            'roles' => 'nullable|array|exists:roles,id',
             'password' => 'nullable',
             'password_confirm' => 'required_with:password|same:password'
         ];

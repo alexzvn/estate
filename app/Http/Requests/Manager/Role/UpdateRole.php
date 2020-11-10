@@ -26,7 +26,7 @@ class UpdateRole extends FormRequest
         return [
             'name' => "required|string|unique:roles,name,$this->name,name",
             'for_customer' => 'nullable|boolean',
-            'permissions'  => 'array|exists:permissions,_id'
+            'permissions'  => 'array|exists:permissions,id'
         ];
     }
 }
