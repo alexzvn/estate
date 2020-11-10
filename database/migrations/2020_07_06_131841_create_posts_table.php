@@ -23,8 +23,8 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger('price')->nullable();
 
             $table->string('hash', 80)->nullable()->index();
-            $table->tinyInteger('status')->default(0);
-            $table->string('type')->nullable();
+            $table->tinyInteger('status')->default(0)->index();
+            $table->string('type')->nullable()->index();
 
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('verifier_id')->nullable()->constrained('users')->nullOnDelete();
