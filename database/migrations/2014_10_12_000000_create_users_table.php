@@ -29,9 +29,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('birthday')->nullable();
             $table->timestamp('last_seen')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+            $table->softDeletes()->index();
 
-            $table->foreignId('supporter_id')->nullable();
+            $table->foreignId('supporter_id')->nullable()->constrained('users')->nullOnDelete();
         });
     }
 

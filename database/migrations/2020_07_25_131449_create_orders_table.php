@@ -23,13 +23,17 @@ class CreateOrdersTable extends Migration
             $table->boolean('manual')->default(false);
             $table->tinyInteger('month')->nullable();
             $table->boolean('verified')->default(false);
-            $table->foreignId('verifier_id')->nullable();
-            $table->foreignId('customer_id')->nullable();
-            $table->foreignId('creator_id')->nullable();
+
+            $table->foreignId('verifier_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('customer_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('creator_id')->nullable()->constrained('users')->nullOnDelete();
+
             $table->timestamp('expires_at')->nullable();
             $table->timestamp('activate_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index(['expires_at', 'activate_at', 'deleted_at']);
         });
     }
 

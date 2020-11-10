@@ -17,7 +17,7 @@ class CreateDistrictsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('type');
-            $table->foreignId('province_id');
+            $table->foreignId('province_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

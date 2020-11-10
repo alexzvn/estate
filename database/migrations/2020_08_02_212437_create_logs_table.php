@@ -15,7 +15,7 @@ class CreateLogsTable extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id')->cascadeOnDelete();
             $table->string('link', 2048)->nullable();
             $table->string('content', 2000);
             $table->timestamps();

@@ -22,15 +22,14 @@ class CreatePostsTable extends Migration
             $table->string('commission', 20)->nullable();
             $table->unsignedBigInteger('price')->nullable();
 
-            $table->string('hash', 80)->nullable();
+            $table->string('hash', 80)->nullable()->index();
             $table->tinyInteger('status')->default(0);
-            $table->string('type')->default('');
-            $table->timestamp('publish_at');
+            $table->string('type')->nullable();
 
-            $table->foreignId('user_id')->nullable();
-            $table->foreignId('verifier_id')->nullable();
-            $table->foreignId('province_id')->nullable();
-            $table->foreignId('district_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('verifier_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('province_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('district_id')->nullable()->constrained()->nullOnDelete();
 
             $table->boolean('reverser')->default(false);
             $table->boolean('approve_fee')->default(false);
@@ -39,8 +38,9 @@ class CreatePostsTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
+            $table->timestamp('publish_at')->nullable()->index();
 
-            // fulltext('posts', 'content', 'title');
+            $table->index('created_at');
         });
     }
 
