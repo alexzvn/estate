@@ -30,7 +30,5 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function (User $user, $ability) {
             return $user->hasPermissionTo('*') ? true : null;
         });
-
-        view()->share('setting', $this->app->make(Setting::class));
     }
 }
