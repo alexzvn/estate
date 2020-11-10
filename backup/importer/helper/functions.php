@@ -119,9 +119,9 @@ function saveCollectionIds(string $collection, Closure $makeIds = null)
 
     if ($makeIds === null) {
         $makeIds = function () use ($collection) {
-            $collect = get($collection, new Mapper);
-            for ($i=0, $n = count($collect); $i < $n; $i++) { 
-                $ids[$collect[$i]['_id']] = $i + 1;
+            $collect = get($collection);
+            for ($i=0, $n = count($collect); $i < $n; $i++) {
+                $ids[$collect[$i]['_id']['$oid']] = $i + 1;
             }
             return $ids ?? [];
         };
