@@ -12,7 +12,4 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function __construct() {
-        view()->share('setting', app(Setting::class));
-    }
 }

@@ -9,8 +9,6 @@ class Controller extends BaseController
 {
     public function __construct() {
 
-        parent::__construct();
-
         $roles = Role::all();
 
         view()->share('roles', $roles);
