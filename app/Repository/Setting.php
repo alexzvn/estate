@@ -52,6 +52,7 @@ class Setting extends BaseRepository
         foreach ($this->pendingSave as $key => $value) {
             $model = $this->model()->where('key', $key)->firstOrNew();
             $model->fill(compact('key', 'value'));
+            $model->value ??= '';
             $model->preload = $this->pendingSavePreload[$key] ?? false;
             $model->save();
         }
