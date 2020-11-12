@@ -20,7 +20,6 @@ services:
       - database
       - cache
 
-
   #Nginx Service
   webserver:
     image: nginx:alpine
