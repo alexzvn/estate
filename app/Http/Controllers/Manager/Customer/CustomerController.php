@@ -175,6 +175,20 @@ class CustomerController extends Controller
         return back()->with('success', 'Đã nhận quản lý khách hàng này');
     }
 
+    public function untake(string $id, User $user)
+    {
+        $this->authorize('manager.customer.take');
+
+        $user = $user->findOrFail($id);
+
+        if ($user->supporter_id === Auth::id() || Auth::user()->can('*')) {
+            $user->forceFill(['supporter_id' => null])->save();
+            return back()->with('success', 'Đã bỏ quản lý khách hàng này');
+        }
+
+        return back();
+    }
+
     public function verifyPhone(string $id, User $user)
     {
         $this->authorize('manager.customer.verify.phone');
