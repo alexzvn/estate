@@ -119,7 +119,7 @@
                                     @can('manager.customer.take')
                                         @php
                                             $canTake = empty($supporter) || Auth::user()->can('manager.user.assign.customer');
-                                            $canUnTake = $supporter->id == Auth::id() || Auth::user()->can('manager.user.assign.customer')
+                                            $canUnTake = (isset($supporter) && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer')
                                         @endphp
 
                                         <li>
