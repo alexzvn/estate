@@ -20,7 +20,7 @@
         </div>
         <div class="widget-content widget-content-area">
 
-            @include('dashboard.post.fee.components.search')
+            @include('dashboard.post.fee.components.search', ['staff' => $staff])
 
             <div class="table-responsive">
                 <form action="" method="post" id="form-table" data-delete="{{ request()->routeIs('manager.post.fee.trashed') ? route('manager.post.fee.delete.many.force') : route('manager.post.fee.delete.many') }}" data-reverse="{{ route('manager.post.fee.reverse.many') }}">
