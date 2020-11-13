@@ -119,10 +119,19 @@
                                     @can('manager.customer.take')
                                         @php
                                             $canTake = empty($supporter) || Auth::user()->can('manager.user.assign.customer');
+                                            $canUnTake = $supporter->id == Auth::id() || Auth::user()->can('manager.user.assign.customer')
                                         @endphp
 
                                         <li>
-                                            <a @if($canTake) href="{{ route('manager.customer.take', ['id' => $user->id]) }}" @endIf><i @if($canTake) class="text-success" @endIf data-feather="target"></i></a>
+                                            @empty($supporter)
+                                            <a @if($canTake) href="{{ route('manager.customer.take', ['id' => $user->id]) }}" @endIf>
+                                                <i @if($canTake) class="text-success" @endIf data-feather="target"></i>
+                                            </a>
+                                            @else
+                                            <a @if($canUnTake) href="{{ route('manager.customer.untake', ['id' => $user->id]) }}" @endIf>
+                                                <i @if($canUnTake) class="text-warning" @endIf data-feather="target"></i>
+                                            </a>
+                                            @endempty
                                         </li>
                                     @endcan
 
