@@ -84,8 +84,7 @@ class CustomerController extends Controller
             $this->assignCustomerToUser($user, Auth::id());
         }
 
-        return redirect($this->pullLastUrl())
-            ->with('success', 'Tạo mới thành công');
+        return redirect($this->pullLastUrl());
     }
 
     public function update(UpdateCustomer $request)
@@ -106,8 +105,7 @@ class CustomerController extends Controller
             $this->assignCustomer($user->id, app(AssignCustomer::class));
         }
 
-        return redirect($this->pullLastUrl())
-            ->with('success', 'Cập nhật thành công');
+        return redirect($this->pullLastUrl());
     }
 
     public function assignCustomer(string $customerId, AssignCustomer $request)
