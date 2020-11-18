@@ -69,6 +69,16 @@ class Post extends Model implements Auditable
         return $this->belongsTo(TrackingPost::class, 'phone', 'phone');
     }
 
+    public function whitelists()
+    {
+        return $this->belongsTo(Whitelist::class, 'phone', 'phone');
+    }
+
+    public function blacklists()
+    {
+        return $this->belongsTo(Blacklist::class, 'phone', 'phone');
+    }
+
     public function verifier()
     {
         return $this->belongsTo(User::class, 'verifier_id');
@@ -93,22 +103,12 @@ class Post extends Model implements Auditable
 
     public function scopeWithoutWhitelist(Builder $builder)
     {
-        $whitelist = Whitelist::all()->map(function ($whitelist)
-        {
-            return $whitelist->phone;
-        });
-
-        $builder->whereNotIn('phone', $whitelist->toArray());
+        $builder->whereDoesntHave('whitelists');
     }
 
     public function scopeWithoutBlacklist(Builder $builder)
     {
-        $blacklist = Blacklist::all()->map(function ($blacklist)
-        {
-            return $blacklist->phone;
-        });
-
-        $builder->whereNotIn('phone', $blacklist->toArray());
+        $builder->whereDoesntHave('blacklists');
     }
 
     public function filterType(Builder $builder, $type)
