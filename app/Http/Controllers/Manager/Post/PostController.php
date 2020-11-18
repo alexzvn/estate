@@ -25,7 +25,7 @@ class PostController extends Controller
             }
         );
 
-        view()->share(compact('categories', 'provinces', 'whitelist'));
+        view()->share(compact('categories', 'provinces'));
     }
 
     protected function syncUploadFiles($post, Request $request)
