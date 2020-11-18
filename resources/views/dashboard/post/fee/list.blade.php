@@ -188,7 +188,7 @@ ClassicEditor
                     commission: post.commission,
                     price: post.price,
                     title: post.title,
-                    id: post._id,
+                    id: post.id,
                 };
 
                 editor.setData(post.content);
@@ -218,7 +218,7 @@ ClassicEditor
                 }
 
                 // let files = post.files.map(file => {
-                //     return `/storage/${file.path}?fid=${file._id}`;
+                //     return `/storage/${file.path}?fid=${file.id}`;
                 // });
 
                 // upload.addImagesFromPath(files);

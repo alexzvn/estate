@@ -140,7 +140,7 @@
             let id = $('#province').val();
             let district = $('#district');
 
-            let province = address.filter((e) => {return e._id === id})[0];
+            let province = address.filter((e) => {return e.id === id})[0];
 
             district.html('');
             district.append('<option value="" selected>Chọn</option');
@@ -148,7 +148,7 @@
             if (province === undefined) return;
 
             province.districts.map((e) => {
-                district.append(`<option value="${e._id}">${e.name}</option`);
+                district.append(`<option value="${e.id}">${e.name}</option`);
             });
         });
     });

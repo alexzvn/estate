@@ -197,7 +197,7 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                     commission: post.commission,
                     price: post.price,
                     title: post.title,
-                    id: post._id,
+                    id: post.id,
                 };
 
                 editor.setData(post.content);
@@ -217,8 +217,6 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                     status: post.status,
                 };
 
-                console.log(options.category);
-
                 address.setDistricts(options.province);
 
                 for (const key in options) {
@@ -229,7 +227,7 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                 }
 
                 let files = post.files.map(file => {
-                    return `/storage/${file.path}?fid=${file._id}`;
+                    return `/storage/${file.path}?fid=${file.id}`;
                 });
 
                 upload.addImagesFromPath(files);
