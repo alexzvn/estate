@@ -21,7 +21,6 @@ class PostController extends Controller
                 return [
                     Category::parentOnly()->with('children')->get(),
                     Province::active()->with('districts')->get(),
-                    Whitelist::all()
                 ];
             }
         );
