@@ -14,7 +14,7 @@ class PostController extends Controller
 {
     protected function shareCategoriesProvinces()
     {
-        [$categories, $provinces, $whitelist] = Cache::remember(
+        [$categories, $provinces] = Cache::remember(
             'dashboard.share.default',
             now()->addSeconds(360),
             function () {
