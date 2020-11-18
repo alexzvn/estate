@@ -55,9 +55,6 @@
                             <td class="cursor-pointer open-post" data-id="{{ $post->id }}">
                                 <p class="mb-0">
                                     <strong>
-                                        @if (isset($post->phone) && $whitelist->whereIn('phone', $post->phone)->isNotEmpty())
-                                        [<span class="text-success font-weight-bolder">Chính chủ</span>]
-                                        @endif
                                         {{ Str::ucfirst(Str::of($post->title)->limit(73)) }}
                                     </strong>
                                     <br>
