@@ -265,7 +265,7 @@ let upload = new FileUploadWithPreview('mySecondImage', {
 
         inputFid.html('');
 
-        ids.forEach('id' => {
+        ids.forEach(id => {
             inputFid.append(`<input type="hidden" name="image_ids[]" value="${id}">`);
         });
     }
