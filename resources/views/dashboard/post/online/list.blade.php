@@ -65,7 +65,7 @@
                             <td class="cursor-pointer open-post" data-id="{{ $post->id }}">
                                 <p class="mb-0">
                                     <strong>
-                                        @if (isset($post->phone) && $whitelist->whereIn('phone', $post->phone)->isNotEmpty())
+                                        @if ($post->whitelist)
                                         [<span class="text-success font-weight-bolder">Chính chủ</span>]
                                         @endif
                                         @if ($post->approve_fee)
@@ -210,7 +210,7 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                 }
 
                 let options = {
-                    category: post.category_ids[0],
+                    category: post.categories[0].id,
                     province: post.province_id,
                     district: post.district_id,
                     type: post.type,
