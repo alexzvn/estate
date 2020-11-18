@@ -77,7 +77,12 @@ class Post extends Model implements Auditable
 
     public function whitelist()
     {
-        return $this->hasMany(Whitelist::class, 'phone', 'phone');
+        return $this->belongsTo(Whitelist::class, 'phone', 'phone');
+    }
+
+    public function blacklist()
+    {
+        return $this->belongsTo(Blacklist::class, 'phone', 'phone');
     }
 
     public function scopePublished(Builder $builder)
@@ -104,12 +109,7 @@ class Post extends Model implements Auditable
 
     public function scopeWithoutBlacklist(Builder $builder)
     {
-        $blacklist = Blacklist::all()->map(function ($blacklist)
-        {
-            return $blacklist->phone;
-        });
-
-        $builder->whereNotIn('phone', $blacklist->toArray());
+        $builder->whereDoesntHave('blacklist');
     }
 
     public function filterType(Builder $builder, $type)
