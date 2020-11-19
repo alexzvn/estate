@@ -2,7 +2,7 @@
 
 @section('content')
 <div id="tableLight" class="col-lg-12 col-12 layout-spacing">
-    <form id="update-form" class="row" action="{{ route('manager.customer.store') }}" method="POST">
+    <form id="create-form" class="row" action="{{ route('manager.customer.store') }}" method="POST">
         @csrf
         <div class="col-md-8 mb-4">
             <div class="statbox widget box box-shadow">
@@ -55,9 +55,12 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                    @can('manager.customer.create')
-                    <button type="submit" class="btn btn-success">Tạo mới</button>
-                    @endcan
+                    <div class="d-flex justify-content-between">
+                        @can('manager.customer.create')
+                        <a id="submit" class="btn btn-success">Tạo mới</a>
+                        <a id="submit-exit" class="btn btn-success">Lưu & thoát</a>
+                        @endcan
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,6 +71,23 @@
 @push('script') 
 <script src="{{ asset('dashboard/plugins/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
 <script>
-$('#phone').inputmask("9999.999.999")
+(function (window) {
+    $('#phone').inputmask("9999.999.999");
+
+    $('#submit').click(function () {
+        if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
+            $('#create-form').attr('action', '{{ route("manager.customer.store") }}');
+            $('#create-form').submit();
+        }
+    });
+
+    $('#submit-exit').click(function () {
+        if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
+            $('#create-form').attr('action', '{{ route("manager.customer.store.exit") }}');
+            $('#create-form').submit();
+        }
+    });
+
+}(window))
 </script>
 @endpush

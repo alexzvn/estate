@@ -136,8 +136,10 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
     Route::get('/', 'CustomerController@index')->name('manager.customer');
     Route::get('/create', 'CustomerController@create')->name('manager.customer.create');
     Route::post('/store', 'CustomerController@store')->name('manager.customer.store');
+    Route::post('/store/exit', 'CustomerController@storeAndExit')->name('manager.customer.store.exit');
     Route::get('/{id}/view', 'CustomerController@view')->name('manager.customer.view');
     Route::post('/{id}/update', 'CustomerController@update')->name('manager.customer.update');
+    Route::post('/{id}/update/exit', 'CustomerController@updateAndExit')->name('manager.customer.update.exit');
     Route::post('/{id}/delete', 'CustomerController@delete')->name('manager.customer.delete');
     Route::get('/{id}/verify/phone', 'CustomerController@verifyPhone')->name('manager.customer.verify.phone');
     Route::get('/{id}/unverified/phone', 'CustomerController@unverifiedPhone')->name('manager.customer.unverified.phone');
