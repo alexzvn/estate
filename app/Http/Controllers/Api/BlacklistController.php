@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blacklist;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -20,6 +21,9 @@ class BlacklistController extends Controller
         }
 
         if (isset($data) && count($data) > 0) {
+
+            Post::lockByPhone($blacklist);
+
             return response([
                 'success' => Blacklist::insert($data),
                 'phoneToAdd' => count($blacklist),
