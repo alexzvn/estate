@@ -124,6 +124,11 @@ Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
     Route::post('/{id}/delete', 'UserController@delete')->name('manager.user.delete');
 });
 
+Route::group(['prefix' => 'note', 'namespace' => 'Note'], function ()
+{
+    Route::get('/user', 'NoteController@indexUser')->name('manager.note.user');
+});
+
 /**
  * CUSTOMERS
  */
