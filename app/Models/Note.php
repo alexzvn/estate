@@ -13,4 +13,14 @@ class Note extends Model implements Auditable
     const NAME = 'ghi chú';
 
     protected $fillable = ['content'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function adder()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
