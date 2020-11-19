@@ -5,22 +5,6 @@
 <link rel="stylesheet" href="{{ asset('assets/vendor/datepicker/css/bootstrap-datepicker.standalone.min.css') }}">
 @endpush
 
-@php
-$type = [
-    'created' => 'tạo mới',
-    'updated' => 'cập nhật',
-    'deleted' => 'xóa bỏ',
-    'restored' => 'khôi phục'
-];
-
-$color = [
-    'created' => 'success',
-    'updated' => 'primary',
-    'deleted' => 'danger',
-    'restored' => 'secondary'
-];
-@endphp
-
 @section('content')
 <div id="tableLight" class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
@@ -94,11 +78,18 @@ $color = [
                     </thead>
                     <tbody>
                         @foreach ($notes as $note)
+
+                        {{-- @dd($note->new_values) --}}
+
                         <tr>
                             <td class="text-center" >{{ $loop->index }}</td>
-                            <td><a class="text-primary font-weight-bolder" href="{{ route('manager.user.view', ['id' => $note->adder]) }}">{{ $note->adder->name }}</a></td>
-                            <td><span class="text-info">{{ $note->content }}</span></td>
                             <td><a class="text-primary font-weight-bolder" href="{{ route('manager.user.view', ['id' => $note->user]) }}">{{ $note->user->name }}</a></td>
+                            <td><span class="text-info">{{ $note->new_values['content'] ?? '' }}</span></td>
+                            @empty($note->auditable->user)
+                            <td></td>
+                            @else
+                            <td><a class="text-primary font-weight-bolder" href="{{ route('manager.user.view', ['id' => $note->auditable->user ?? '2']) }}">{{ $note->auditable->user->name }}</a></td>
+                            @endempty
                             <td>{{ $note->updated_at->format('d/m/Y H:i:s') }}</td>
                         </tr>
                         @endforeach
