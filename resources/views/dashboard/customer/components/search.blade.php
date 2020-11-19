@@ -92,6 +92,13 @@
                     </div>
                 </div>
 
+                <div class="col-md-2 pl-md-0">
+                    <div class="form-group input-group-sm">
+                      <input type="number"
+                        class="form-control" name="page" id="page" aria-describedby="page-help" value="{{ request('page') }}" placeholder="Trang">
+                      <small id="page-help" class="form-text text-muted">Phân trang</small>
+                    </div>
+                </div>
             </div>
         </div>
 
