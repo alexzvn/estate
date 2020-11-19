@@ -18,7 +18,7 @@ class OrderController extends Controller
     {
         $this->authorize('manager.order.view');
 
-        $order = Order::with(['plans', 'customer', 'creator'])
+        $order = Order::with(['plans', 'customer.note', 'creator'])
         ->whereHas('customer')
         ->filter($request)
         ->latest();
