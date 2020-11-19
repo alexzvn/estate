@@ -93,7 +93,7 @@ class CustomerController extends Controller
 
         $user->fill($request->all())->save();
 
-        if ($request->note) {
+        if (! empty($request->note)) {
             $user->writeNote($request->note);
         }
 
