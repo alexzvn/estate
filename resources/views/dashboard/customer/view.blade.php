@@ -201,9 +201,12 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                    @can('manager.customer.modify')
-                    <a id="submit" class="btn btn-primary">Cập Nhật</a>
-                    @endcan
+                    <div class="d-flex justify-content-between">
+                        @can('manager.customer.modify')
+                        <a id="submit" class="btn btn-primary">Cập nhật</a>
+                        <a id="submit-exit" class="btn btn-primary">Lưu & thoát</a>
+                        @endcan
+                    </div>
                 </div>
             </div>
 
@@ -256,7 +259,15 @@
 
     $('#submit').click(function () {
         if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
-            document.getElementById('update-form').submit();
+            $('#update-form').attr('action', '{{ route("manager.customer.update", ["id" => $user]) }}');
+            $('#update-form').submit();
+        }
+    });
+
+    $('#submit-exit').click(function () {
+        if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
+            $('#update-form').attr('action', '{{ route("manager.customer.update.exit", ["id" => $user]) }}');
+            $('#update-form').submit();
         }
     });
 

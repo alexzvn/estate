@@ -70,6 +70,20 @@ class CustomerController extends Controller
         return view('dashboard.customer.create');
     }
 
+    public function storeAndExit(StoreCustomer $request, User $user)
+    {
+        $this->store($request, $user);
+
+        return redirect($this->pullLastUrl());
+    }
+
+    public function updateAndExit(UpdateCustomer $request)
+    {
+        $this->update($request);
+
+        return redirect($this->pullLastUrl());
+    }
+
     public function store(StoreCustomer $request, User $user)
     {
         $user->fill($request->all());
@@ -84,7 +98,7 @@ class CustomerController extends Controller
             $this->assignCustomerToUser($user, Auth::id());
         }
 
-        return redirect($this->pullLastUrl());
+        return redirect(route('manager.customer.view', ['id' => $user->id]));
     }
 
     public function update(UpdateCustomer $request)
@@ -105,7 +119,7 @@ class CustomerController extends Controller
             $this->assignCustomer($user->id, app(AssignCustomer::class));
         }
 
-        return redirect($this->pullLastUrl());
+        return back()->with('success', 'Cập nhật thành công');
     }
 
     public function assignCustomer(string $customerId, AssignCustomer $request)
@@ -235,6 +249,13 @@ class CustomerController extends Controller
 
     protected function rememberLastUrl()
     {
+        if (
+            preg_match('/manager\/customer\/create/', url()->previous()) ||
+            preg_match('/manager\/customer\/(.*?)\/view/', url()->previous())
+        ) {
+            return;
+        }
+
         return request()->session()->put(
             'manager.customer.last.link',
             url()->previous(route('manager.customer', [], false))

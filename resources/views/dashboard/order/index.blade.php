@@ -64,8 +64,11 @@ function planToString($plans) {
                         <tr>
                             <td class="text-center" >{{ $loop->index + 1 }}</td>
                             <td>
-                                <a class="{{ $canSupport ? 'text-primary' : '' }} font-weight-bolder d-block" href="{{ $canSupport  ? route('manager.customer.view', ['id' => $customer->id]) : 'javascript:void(0)' }}">
-                                    {{ $customer->name ?? 'N/a' }} <br> {{ $canSupport ? $customer->phone : hide_phone($customer->phone) }}
+                                <a class="bs-tooltip" title="{{ $customer->readNote() }}" class="{{ $canSupport ? 'text-primary' : '' }} font-weight-bolder d-block" href="{{ $canSupport  ? route('manager.customer.view', ['id' => $customer->id]) : 'javascript:void(0)' }}">
+                                    @unless (empty($customer->note)) <i style="width: 14px; height: 14px;" class="text-info" data-feather="file-text"></i> @endUnless
+                                    {{ $customer->name ?? 'N/a' }}
+                                    <br>
+                                    {{ $canSupport ? $customer->phone : hide_phone($customer->phone) }}
                                 </a>
                             </td>
                             <td>{{ planToString($order->plans) }}</td>

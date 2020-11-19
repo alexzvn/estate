@@ -174,6 +174,16 @@
                     </li>
                     @endcan
 
+                    @can('manager.note.user.view')
+                    <li class="menu">
+                        <a href="{{ route('manager.note.user') }}" @active('manager.note.user', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div>
+                                <i data-feather="file"></i> <span>Lịch sử ghi chú</span>
+                            </div>
+                        </a>
+                    </li>
+                    @endcan
+
                     @can('manager.audit.view')
                     <li class="menu">
                         <a href="{{ route('manager.audit') }}" @active('manager.audit', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
