@@ -28,7 +28,7 @@ $color = [
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                     <h4>
-                        Lịch sử hoạt động chung
+                        Lịch sử ghi chú khách hàng
                     </h4>
                 </div>
             </div>
