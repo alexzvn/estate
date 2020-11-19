@@ -74,8 +74,23 @@
 
                     <div class="form-group input-group-sm">
                       <label for="note">Ghi chú</label>
-                      <textarea class="form-control" name="note" id="note" rows="3" placeholder="Nội dung ghi chú">{{ $user->readNote() }}</textarea>
+                      <textarea class="form-control" name="note" id="note" rows="3" placeholder="Nội dung ghi chú"></textarea>
                     </div>
+
+                    @php
+                        $notes = $user->note ? $user->note->audits()->with('user')->get() : collect();
+                        $notes = $notes->reverse()
+                            ->filter(function ($note) {
+                                return ! empty($note->new_values['content']);
+                            })
+                    @endphp
+
+                    @if ($notes->isNotEmpty())
+                    <div class="form-group input-group-sm">
+                        <label>Lịch sử ghi chú</label>
+                        <textarea class="form-control" rows="6" readonly placeholder="lịch sử trống">@forelse ($notes as $note){{ ($loop->remaining + 1) . ". {$note->user->name} - {$note->created_at} \n" . $note->new_values['content'] . "\n\n" }}@empty Lịch sử trống @endforelse</textarea>
+                    </div>
+                    @endif
 
                     <hr>
 

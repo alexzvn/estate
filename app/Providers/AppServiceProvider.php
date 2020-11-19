@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
-use App\Enums\Role;
 use App\Models\User;
 use App\Repository\Setting;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,14 +29,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         if (config('app.debug')) {
-            \DB::connection( 'mongodb' )->enableQueryLog();
+            DB::connection( 'mongodb' )->enableQueryLog();
         }
 
         Gate::before(function (User $user, $ability) {
             return $user->hasPermissionTo('*') ? true : null;
         });
 
-        
+        Carbon::setToStringFormat('d/m/Y h:iA');
 
         view()->share('setting', $this->app->make(Setting::class));
     }

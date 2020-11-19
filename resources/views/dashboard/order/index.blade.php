@@ -116,4 +116,11 @@ function planToString($plans) {
 
 @push('script')
 <script src="{{ asset('dashboard/assets/js/elements/tooltip.js') }}"></script>
+<script>
+(function () {
+    $(document).ready(function () {
+        $('.bs-tooltip').tooltip();
+    });
+}())
+</script>
 @endpush

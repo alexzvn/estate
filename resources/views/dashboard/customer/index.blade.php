@@ -111,9 +111,14 @@
                             <td class="text-center">
                                 <ul class="table-controls">
                                     <li>
-                                        <a class="bs-tooltip" title="{{ $user->readNote() }}">
-                                            <i @unless(empty($user->readNote())) class="text-info" @endunless data-feather="file-text"></i>
+                                        @unless (empty($user->readNote()))
+                                        <a class="bs-tooltip" data-html="true" title="{{ $user->readNote() }} {!! '<br>' . $user->note->updated_at !!}">
+                                            <i class="text-info" data-feather="file-text"></i>
                                         </a>
+                                        @else
+                                        <a><i data-feather="file-text"></i></a>
+                                        @endunless
+                                        
                                     </li>
 
                                     @can('manager.customer.take')

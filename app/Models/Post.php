@@ -111,6 +111,17 @@ class Post extends Model implements Auditable
         $builder->whereDoesntHave('blacklists');
     }
 
+    public static function lockByPhone($phones)
+    {
+        if (is_string($phones)) {
+            $phones = [$phones];
+        }
+
+        return static::whereIn('phone', $phones)->update([
+            'status' => PostStatus::Locked
+        ]);
+    }
+
     public function filterType(Builder $builder, $type)
     {
         return $builder->where('type', $type);
