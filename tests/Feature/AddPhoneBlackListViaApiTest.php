@@ -50,6 +50,15 @@ class AddPhoneBlackListViaApiTest extends TestCase
         ]);
     }
 
+    public function test_add_nothing_to_list()
+    {
+        $this->postJson('api/blacklist/add')
+        ->assertJson([
+            'success' => true,
+            'phoneToAdd' => 0
+        ]);
+    }
+
     private function mapPhoneData(array $phones)
     {
         foreach ($phones as $phone) {
