@@ -7,15 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
 use App\Repository\Permission;
 use App\Repository\User;
-use Illuminate\Support\Carbon;
 
 class AuditController extends Controller
 {
     public function index(Request $request)
     {
         $this->authorize('manager.audit.view');
-
-        $getId = function ($model) { return $model->id; };
 
         $user = Permission::findUsersHasPermission('manager.dashboard.access');
 
