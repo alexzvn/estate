@@ -288,7 +288,7 @@ return [
                 ]
             ],[
                 'name' => 'Lịch sử ghi chú KH',
-                'permission' => [
+                'permissions' => [
                     'manager.note.user.view'
                 ]
             ],[
