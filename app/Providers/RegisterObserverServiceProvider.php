@@ -21,7 +21,6 @@ class RegisterObserverServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Note::observe(NoteObserver::class);
         Post::observe(PostObserver::class);
         User::observe(UserObserver::class);
         Blacklist::observe(BlacklistObserver::class);
