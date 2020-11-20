@@ -17,6 +17,7 @@ class NoteController extends Controller
 
         $notes = Audit::where('auditable_type', Note::class)
             ->filter(request())
+            ->latest()
             ->with(['user', 'auditable.user'])
             ->paginate();
 
