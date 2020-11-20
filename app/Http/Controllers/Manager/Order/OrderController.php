@@ -62,7 +62,9 @@ class OrderController extends Controller
                 $this->updateAuto($order, $request)->save();
         }
 
-        $order->writeNote($request->note ?? '');
+        if (! empty($request->note)) {
+            $order->writeNote($request->note);
+        }
 
         if ($request->active) {
             return $this->activate($id, $request);
