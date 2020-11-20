@@ -11,7 +11,7 @@ class NoteController extends Controller
 {
     public function indexUser() // index note for user
     {
-        $this->authorize('manager.notes.user.view');
+        $this->authorize('manager.note.user.view');
 
         $employee = Permission::findUsersHasPermission('manager.user.view');
 
