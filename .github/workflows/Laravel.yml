@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      run: php -r "file_exists('.env') || copy('.env.test', '.env');"
 
     # Pull the latest image to build, and avoid caching pull-only images.
     # (docker pull is faster than caching in most cases.)
@@ -40,7 +40,7 @@ jobs:
           ${{ runner.os }}-composer-
 
     - name: Start Database
-      run: docker-compose up -d mongo redis
+      run: docker-compose up
 
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
