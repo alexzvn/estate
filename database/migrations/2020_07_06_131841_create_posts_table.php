@@ -28,8 +28,6 @@ class CreatePostsTable extends Migration
 
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('verifier_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('province_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('district_id')->nullable()->constrained()->nullOnDelete();
 
             $table->boolean('reverser')->default(false);
             $table->boolean('approve_fee')->default(false);
