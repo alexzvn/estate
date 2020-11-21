@@ -39,8 +39,8 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-composer-
 
-    - name: Start Database
-      run: docker-compose up
+    - name: Start all service
+      run: docker-compose up -d
 
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
@@ -52,9 +52,6 @@ jobs:
 
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
-    
-    - name: Start the rest of docker services
-      run: docker-compose up -d
 
     - name: Migrate Database
       run: php artisan migrate --force
