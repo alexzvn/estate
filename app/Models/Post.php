@@ -70,6 +70,16 @@ class Post extends Model implements Auditable
         return $this->belongsTo(TrackingPost::class, 'phone', 'phone');
     }
 
+    public function whitelists()
+    {
+        return $this->belongsTo(Whitelist::class, 'phone', 'phone');
+    }
+
+    public function blacklists()
+    {
+        return $this->belongsTo(Blacklist::class, 'phone', 'phone');
+    }
+
     public function verifier()
     {
         return $this->belongsTo(User::class, 'verifier_id');
@@ -110,6 +120,17 @@ class Post extends Model implements Auditable
     public function scopeWithoutBlacklist(Builder $builder)
     {
         $builder->whereDoesntHave('blacklist');
+    }
+
+    public static function lockByPhone($phones)
+    {
+        if (is_string($phones)) {
+            $phones = [$phones];
+        }
+
+        return static::whereIn('phone', $phones)->update([
+            'status' => PostStatus::Locked
+        ]);
     }
 
     public function filterType(Builder $builder, $type)

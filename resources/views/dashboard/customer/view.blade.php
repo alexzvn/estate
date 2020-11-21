@@ -72,6 +72,26 @@
                         </div>
                     @endcan
 
+                    <div class="form-group input-group-sm">
+                      <label for="note">Ghi chú</label>
+                      <textarea class="form-control" name="note" id="note" rows="3" placeholder="Nội dung ghi chú"></textarea>
+                    </div>
+
+                    @php
+                        $notes = $user->note ? $user->note->audits()->with('user')->get() : collect();
+                        $notes = $notes->reverse()
+                            ->filter(function ($note) {
+                                return ! empty($note->new_values['content']);
+                            })
+                    @endphp
+
+                    @if ($notes->isNotEmpty())
+                    <div class="form-group input-group-sm">
+                        <label>Lịch sử ghi chú</label>
+                        <textarea class="form-control" rows="6" readonly placeholder="lịch sử trống">@forelse ($notes as $note){{ ($loop->remaining + 1) . ". {$note->user->name} - {$note->created_at} \n" . $note->new_values['content'] . "\n\n" }}@empty Lịch sử trống @endforelse</textarea>
+                    </div>
+                    @endif
+
                     <hr>
 
                     <div>
@@ -181,9 +201,12 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                    @can('manager.customer.modify')
-                    <a id="submit" class="btn btn-primary">Cập Nhật</a>
-                    @endcan
+                    <div class="d-flex justify-content-between">
+                        @can('manager.customer.modify')
+                        <a id="submit" class="btn btn-primary">Cập nhật</a>
+                        <a id="submit-exit" class="btn btn-primary">Lưu & thoát</a>
+                        @endcan
+                    </div>
                 </div>
             </div>
 
@@ -236,7 +259,15 @@
 
     $('#submit').click(function () {
         if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
-            document.getElementById('update-form').submit();
+            $('#update-form').attr('action', '{{ route("manager.customer.update", ["id" => $user]) }}');
+            $('#update-form').submit();
+        }
+    });
+
+    $('#submit-exit').click(function () {
+        if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
+            $('#update-form').attr('action', '{{ route("manager.customer.update.exit", ["id" => $user]) }}');
+            $('#update-form').submit();
         }
     });
 

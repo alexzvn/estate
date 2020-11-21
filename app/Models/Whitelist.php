@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use App\Models\Traits\Auditable as TraitsAuditable;
+
+use App\Models\Traits\CanFilter;
 use App\Models\Traits\CacheDefault;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Whitelist extends Model implements Auditable
 {
-    use TraitsAuditable, CacheDefault;
+
+    use TraitsAuditable, CacheDefault, CanFilter;
 
     protected $primaryKey = 'phone';
 
@@ -17,8 +20,9 @@ class Whitelist extends Model implements Auditable
 
     protected $keyType = 'string';
 
-
     protected $fillable = ['phone'];
+
+    protected $filterable = ['phone'];
 
     const NAME = 'danh sách trắng';
 
@@ -32,5 +36,10 @@ class Whitelist extends Model implements Auditable
     public function posts()
     {
         return $this->hasMany(Post::class, 'phone', 'phone');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

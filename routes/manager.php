@@ -124,6 +124,11 @@ Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
     Route::post('/{id}/delete', 'UserController@delete')->name('manager.user.delete');
 });
 
+Route::group(['prefix' => 'note', 'namespace' => 'Note'], function ()
+{
+    Route::get('/user', 'NoteController@indexUser')->name('manager.note.user');
+});
+
 /**
  * CUSTOMERS
  */
@@ -131,8 +136,10 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
     Route::get('/', 'CustomerController@index')->name('manager.customer');
     Route::get('/create', 'CustomerController@create')->name('manager.customer.create');
     Route::post('/store', 'CustomerController@store')->name('manager.customer.store');
+    Route::post('/store/exit', 'CustomerController@storeAndExit')->name('manager.customer.store.exit');
     Route::get('/{id}/view', 'CustomerController@view')->name('manager.customer.view');
     Route::post('/{id}/update', 'CustomerController@update')->name('manager.customer.update');
+    Route::post('/{id}/update/exit', 'CustomerController@updateAndExit')->name('manager.customer.update.exit');
     Route::post('/{id}/delete', 'CustomerController@delete')->name('manager.customer.delete');
     Route::get('/{id}/verify/phone', 'CustomerController@verifyPhone')->name('manager.customer.verify.phone');
     Route::get('/{id}/unverified/phone', 'CustomerController@unverifiedPhone')->name('manager.customer.unverified.phone');
@@ -141,6 +148,7 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
     Route::get('/{id}/pardon', 'CustomerController@pardon')->name('manager.customer.pardon');
     Route::get('/{id}/logout', 'CustomerController@logout')->name('manager.customer.logout');
     Route::get('/{id}/take', 'CustomerController@take')->name('manager.customer.take');
+    Route::get('/{id}/untake', 'CustomerController@untake')->name('manager.customer.untake');
 
     Route::group(['prefix' => '{id}/order'], function () {
         Route::get('/', 'OrderController@index')->name('manager.customer.order');
@@ -174,6 +182,18 @@ Route::group(['prefix' => 'blacklist'], function () {
         Route::post('/store', 'BlacklistController@store')->name('manager.blacklist.phone.store');
         Route::post('/{id}/update', 'BlacklistController@update')->name('manager.blacklist.phone.update');
         Route::post('/{id}/delete', 'BlacklistController@delete')->name('manager.blacklist.phone.delete');
+    });
+});
+
+/**
+ * WHITELIST
+ */
+Route::group(['prefix' => 'whitelist'], function () {
+    Route::group(['prefix' => 'phone', 'namespace' => 'Whitelist'], function () {
+        Route::get('/', 'WhitelistController@index')->name('manager.whitelist.phone');
+        Route::post('/store', 'WhitelistController@store')->name('manager.whitelist.phone.store');
+        Route::post('/{id}/update', 'WhitelistController@update')->name('manager.whitelist.phone.update');
+        Route::post('/{id}/delete', 'WhitelistController@delete')->name('manager.whitelist.phone.delete');
     });
 });
 

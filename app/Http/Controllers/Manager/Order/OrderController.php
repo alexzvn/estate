@@ -18,7 +18,7 @@ class OrderController extends Controller
     {
         $this->authorize('manager.order.view');
 
-        $order = Order::with(['plans', 'customer', 'creator'])
+        $order = Order::with(['plans', 'customer.note', 'creator'])
         ->whereHas('customer')
         ->filter($request)
         ->latest();
@@ -62,7 +62,9 @@ class OrderController extends Controller
                 $this->updateAuto($order, $request)->save();
         }
 
-        $order->writeNote($request->note ?? '');
+        if (! empty($request->note)) {
+            $order->writeNote($request->note);
+        }
 
         if ($request->active) {
             return $this->activate($id, $request);

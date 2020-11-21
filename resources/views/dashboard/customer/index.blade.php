@@ -2,6 +2,7 @@
 
 @push('style')
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
+<link href="{{ asset('dashboard/assets/css/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
 <style>
     .user-active td {
         color: #1b55e2 !important;
@@ -109,13 +110,33 @@
                             </td>
                             <td class="text-center">
                                 <ul class="table-controls">
+                                    <li>
+                                        @unless (empty($user->readNote()))
+                                        <a class="bs-tooltip" data-html="true" title="{{ $user->readNote() }} {!! '<br>' . $user->note->updated_at !!}">
+                                            <i class="text-info" data-feather="file-text"></i>
+                                        </a>
+                                        @else
+                                        <a><i data-feather="file-text"></i></a>
+                                        @endunless
+                                        
+                                    </li>
+
                                     @can('manager.customer.take')
                                         @php
                                             $canTake = empty($supporter) || Auth::user()->can('manager.user.assign.customer');
+                                            $canUnTake = (isset($supporter) && $supporter->id == Auth::id()) || Auth::user()->can('manager.user.assign.customer')
                                         @endphp
 
                                         <li>
-                                            <a @if($canTake) href="{{ route('manager.customer.take', ['id' => $user->id]) }}" @endIf><i @if($canTake) class="text-success" @endIf data-feather="target"></i></a>
+                                            @empty($supporter)
+                                            <a @if($canTake) href="{{ route('manager.customer.take', ['id' => $user->id]) }}" @endIf>
+                                                <i @if($canTake) class="text-success" @endIf data-feather="target"></i>
+                                            </a>
+                                            @else
+                                            <a @if($canUnTake) href="{{ route('manager.customer.untake', ['id' => $user->id]) }}" @endIf>
+                                                <i @if($canUnTake) class="text-warning" @endIf data-feather="target"></i>
+                                            </a>
+                                            @endempty
                                         </li>
                                     @endcan
 
@@ -158,6 +179,7 @@
 @endsection
 
 @push('script')
+<script src="{{ asset('dashboard/assets/js/elements/tooltip.js') }}"></script>
 <script>
     $(document).ready(function () {
         $('.open-user').on('click', function () {
@@ -165,6 +187,8 @@
 
             window.location.href = `/manager/customer/${id}/view`;
         });
+
+        $('.bs-tooltip').tooltip();
     });
 </script>
 @endpush

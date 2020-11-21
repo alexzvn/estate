@@ -20,3 +20,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('import-crawl-post', 'Api\Post\ImportController@store')
     ->middleware('extension')->name('api.crawl.import.tcc');
+
+Route::post('blacklist/add', 'Api\BlacklistController@import')
+    ->middleware('extension');

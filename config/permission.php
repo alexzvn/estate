@@ -195,7 +195,7 @@ return [
             'manager.customer.verify.phone' => 'Xác thực SĐT',
             'manager.customer.ban'          => 'Khóa tài khoản',
             'manager.customer.pardon'       => 'Mở khóa tài khoản',
-            'manager.customer.take'     => 'Nhận QL khách',
+            'manager.customer.take'         => 'Nhận QL khách',
             'manager.customer.logout'       => 'Thoát đăng nhập',
 
             'manager.subscription.delete'   => 'Xóa gói đăng ký',
@@ -242,6 +242,8 @@ return [
             'blacklist.phone.modify' => 'Sửa SĐT đen',
             'blacklist.phone.delete' => 'Bỏ chặn SĐT đen',
             'whitelist.phone.create' => 'Thêm SĐT trắng',
+
+            'manager.note.user.view' => 'Xem ghi chú của khách',
 
             'manager.site.setting' => 'Cẫu hình trang web',
             'manager.audit.view' => 'Xem audit',
@@ -354,6 +356,11 @@ return [
                     'manager.order.modify.force',
                     'manager.order.delete',
                     'manager.order.phone.view'
+                ]
+            ],[
+                'name' => 'Lịch sử ghi chú KH',
+                'permissions' => [
+                    'manager.note.user.view'
                 ]
             ],[
                 'name' => 'Nhận thông báo',

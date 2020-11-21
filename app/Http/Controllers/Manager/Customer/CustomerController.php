@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Manager\Customer;
 use App\Repository\Plan;
 use App\Repository\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Customer\AssignCustomer;
 use App\Http\Requests\Manager\Customer\StoreCustomer;
@@ -14,7 +13,6 @@ use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Order;
 use App\Repository\Permission;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
 {
@@ -22,7 +20,7 @@ class CustomerController extends Controller
     {
         $this->authorize('manager.customer.view');
 
-        $users = User::with(['subscriptions', 'supporter', 'orders', 'logs'])
+        $users = User::with(['subscriptions', 'supporter', 'orders', 'logs', 'note'])
             ->filter($request)
             ->onlyCustomer();
 
@@ -72,6 +70,20 @@ class CustomerController extends Controller
         return view('dashboard.customer.create');
     }
 
+    public function storeAndExit(StoreCustomer $request, User $user)
+    {
+        $this->store($request, $user);
+
+        return redirect($this->pullLastUrl());
+    }
+
+    public function updateAndExit(UpdateCustomer $request)
+    {
+        $this->update($request);
+
+        return redirect($this->pullLastUrl());
+    }
+
     public function store(StoreCustomer $request, User $user)
     {
         $user->fill($request->all());
@@ -86,8 +98,7 @@ class CustomerController extends Controller
             $this->assignCustomerToUser($user, Auth::id());
         }
 
-        return redirect($this->pullLastUrl())
-            ->with('success', 'Tạo mới thành công');
+        return redirect(route('manager.customer.view', ['id' => $user->id]));
     }
 
     public function update(UpdateCustomer $request)
@@ -95,6 +106,10 @@ class CustomerController extends Controller
         $user = $request->updateUser;
 
         $user->fill($request->all())->save();
+
+        if (! empty($request->note)) {
+            $user->writeNote($request->note);
+        }
 
         if ( ! empty($request->password)) {
             $user->emptySession();
@@ -104,8 +119,7 @@ class CustomerController extends Controller
             $this->assignCustomer($user->id, app(AssignCustomer::class));
         }
 
-        return redirect($this->pullLastUrl())
-            ->with('success', 'Cập nhật thành công');
+        return back()->with('success', 'Cập nhật thành công');
     }
 
     public function assignCustomer(string $customerId, AssignCustomer $request)
@@ -173,6 +187,20 @@ class CustomerController extends Controller
         return back()->with('success', 'Đã nhận quản lý khách hàng này');
     }
 
+    public function untake(string $id, User $user)
+    {
+        $this->authorize('manager.customer.take');
+
+        $user = $user->findOrFail($id);
+
+        if ($user->supporter_id === Auth::id() || Auth::user()->can('*')) {
+            $user->forceFill(['supporter_id' => null])->save();
+            return back()->with('success', 'Đã bỏ quản lý khách hàng này');
+        }
+
+        return back();
+    }
+
     public function verifyPhone(string $id, User $user)
     {
         $this->authorize('manager.customer.verify.phone');
@@ -221,6 +249,13 @@ class CustomerController extends Controller
 
     protected function rememberLastUrl()
     {
+        if (
+            preg_match('/manager\/customer\/create/', url()->previous()) ||
+            preg_match('/manager\/customer\/(.*?)\/view/', url()->previous())
+        ) {
+            return;
+        }
+
         return request()->session()->put(
             'manager.customer.last.link',
             url()->previous(route('manager.customer', [], false))
