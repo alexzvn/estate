@@ -5,23 +5,24 @@ namespace App\Models;
 use App\Enums\Role as Type;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanVerifyPhone;
-use Maklad\Permission\Traits\HasRoles;
 use App\Contracts\Auth\MustVerifyPhone;
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CacheDefault;
 use App\Models\Traits\CanSearch;
 use App\Models\Traits\HasNote;
 use App\Models\Traits\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Jenssegers\Mongodb\Eloquent\Builder;
-use Jenssegers\Mongodb\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Permission\Traits\HasRoles;
 
 // use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements MustVerifyPhone, Auditable
 {
-    use Notifiable, TraitsAuditable, HasNote;
+    use Notifiable, TraitsAuditable, CacheDefault, HasNote;
     use HasRoles, CanVerifyPhone, CanFilter, CanSearch;
 
     const BANNED = 'banned';
@@ -140,12 +141,12 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
 
     public function blacklistPosts()
     {
-        return $this->belongsToMany(Post::class, null, 'user_blacklist_ids', 'post_blacklist_ids');
+        return $this->belongsToMany(Post::class, null, 'post_user_blacklist');
     }
 
     public function savePosts()
     {
-        return $this->belongsToMany(Post::class, null, 'user_save_ids', 'post_save_ids');
+        return $this->belongsToMany(Post::class, null, 'post_user_save');
     }
 
     public function markPhoneAsNotVerified()
@@ -238,7 +239,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         return $builder->whereHas('roles', function (Builder $builder) use ($roles)
         {
             foreach ($roles as $role) {
-                $builder->orWhere('_id', $role);
+                $builder->orWhere('id', $role);
             }
         });
     }

@@ -11,7 +11,7 @@ trait HasNote
 {
     public function note()
     {
-        return $this->hasOne(Note::class);
+        return $this->morphOne(Note::class, 'notable');
     }
 
     public function readNote()

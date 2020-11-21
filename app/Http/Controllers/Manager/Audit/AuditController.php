@@ -18,7 +18,7 @@ class AuditController extends Controller
 
         $user = User::filter(
             $request->only(['user', 'phone'])
-        )->whereIn('_id', $user->modelKeys())->get();
+        )->whereIn('id', $user->modelKeys())->get();
 
         $audit = Audit::with(['user', 'auditable'])
             ->whereIn('user_id', $user->modelKeys())

@@ -3,7 +3,7 @@
 namespace App\Models\Traits;
 
 use Illuminate\Support\Str;
-use Jenssegers\Mongodb\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * 
@@ -14,17 +14,15 @@ trait CanSearch
 
     public function scopeSearch(Builder $builder, $search = '')
     {
-        return $builder->whereRaw([
-            '$text' => [
-                '$search' => Str::ascii(Str::lower($search))
-                ]
-            ]);
+        return $builder->selectRaw(
+            "*, MATCH (`$this->indexField`) AGAINST (? IN BOOLEAN MODE) AS score",
+            [$this->fullTextWildcards($search)]
+        );
     }
 
     public function scopeOrderByScore(Builder $builder)
     {
-        return $builder->project(['score' => ['$meta' => 'textScore']])
-            ->orderBy('score', ['$meta' => 'textScore']);
+        return $builder->orderBy('score', 'desc');
     }
 
     public function index()
@@ -44,6 +42,24 @@ trait CanSearch
         $index .= '. ' . Str::ascii($index);
 
         return $this->forceFill(['index_meta' => $index])->save();
+    }
+
+    protected function fullTextWildcards($term)
+    {
+        // removing symbols used by MySQL
+        $reservedSymbols = ['-', '+', '<', '>', '@', '(', ')', '~'];
+        $term = str_replace($reservedSymbols, '', $term);
+
+        $words = explode(' ', $term);
+
+        foreach ($words as $key => $word) {
+
+            if (strlen($word) >= 2) {
+                $words[$key] = '+' . $word . '*';
+            }
+        }
+
+        return implode(' ', $words);
     }
 
     public function getIndexDocumentData()

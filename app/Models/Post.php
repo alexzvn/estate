@@ -6,18 +6,19 @@ use App\Enums\PostStatus;
 use App\Models\Location\District;
 use App\Models\Location\Province;
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CacheDefault;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanSearch;
 use App\Models\Traits\HasFiles;
 use Carbon\Carbon;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\Builder;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Post extends Model implements Auditable
 {
-    use TraitsAuditable;
+    use TraitsAuditable, CacheDefault;
     use SoftDeletes, CanFilter, CanSearch, HasFiles;
 
     const NAME = 'tin';
@@ -84,6 +85,16 @@ class Post extends Model implements Auditable
         return $this->belongsTo(User::class, 'verifier_id');
     }
 
+    public function whitelist()
+    {
+        return $this->belongsTo(Whitelist::class, 'phone', 'phone');
+    }
+
+    public function blacklist()
+    {
+        return $this->belongsTo(Blacklist::class, 'phone', 'phone');
+    }
+
     public function scopePublished(Builder $builder)
     {
         return $builder
@@ -103,12 +114,12 @@ class Post extends Model implements Auditable
 
     public function scopeWithoutWhitelist(Builder $builder)
     {
-        $builder->whereDoesntHave('whitelists');
+        return $builder->whereDoesntHave('whitelist');
     }
 
     public function scopeWithoutBlacklist(Builder $builder)
     {
-        $builder->whereDoesntHave('blacklists');
+        $builder->whereDoesntHave('blacklist');
     }
 
     public static function lockByPhone($phones)
@@ -151,7 +162,7 @@ class Post extends Model implements Auditable
 
         return $builder->whereHas('categories', function (Builder $q) use ($values)
         {
-            $q->whereIn('_id', $values);
+            $q->whereIn('id', $values);
         });
     }
 

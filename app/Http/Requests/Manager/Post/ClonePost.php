@@ -31,13 +31,13 @@ class ClonePost extends FormRequest
             'title'     => 'required',
             'phone'     => 'required|regex:/^[0-9_.]+$/',
             'price'     => 'required|regex:/^[0-9,.]+$/',
-            'category_ids'  => 'required|exists:categories,_id',
-            'province'  => 'nullable|exists:provinces,_id',
+            'category_ids'  => 'required|exists:categories,id',
+            'province'  => 'nullable|exists:provinces,id',
             'commission'=> 'required|string|max:20',
-            'district'  => 'nullable|exists:districts,_id',
+            'district'  => 'nullable|exists:districts,id',
             'images'    => 'nullable',
             'images.*'   => 'image|mimes:jpeg,png,jpg,gif|max:4096',
-            'image_ids' => 'nullable|array|exists:files,_id',
+            'image_ids' => 'nullable|array|exists:files,id',
             'type'      => [
                 'nullable',
                 Rule::in(PostType::getValues())

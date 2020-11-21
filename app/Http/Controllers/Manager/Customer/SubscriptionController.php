@@ -12,7 +12,7 @@ class SubscriptionController extends Controller
     {
         $this->authorize('manager.subscription.delete');
 
-        Subscription::whereIn('_id', $request->subscriptions ?? [])->delete();
+        Subscription::whereIn('id', $request->subscriptions ?? [])->delete();
 
         return back()->with('success', 'Xóa thành công');
     }

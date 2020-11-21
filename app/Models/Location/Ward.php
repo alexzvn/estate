@@ -2,10 +2,13 @@
 
 namespace App\Models\Location;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use App\Models\Traits\CacheDefault;
+use Illuminate\Database\Eloquent\Model;
 
 class Ward extends Model
 {
+    use CacheDefault;
+
     protected $fillable = ['name', 'type'];
 
     protected $hidden = ['updated_at', 'created_at'];

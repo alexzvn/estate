@@ -3,13 +3,22 @@
 namespace App\Models;
 
 use App\Enums\PostType;
-use Jenssegers\Mongodb\Eloquent\Model;
+use App\Models\Traits\CacheDefault;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * class dùng trong việc theo dõi tin môi giới
  */
 class TrackingPost extends Model
 {
+    use CacheDefault;
+
+    protected $primaryKey = 'phone';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
     protected $fillable = ['phone'];
 
     /**

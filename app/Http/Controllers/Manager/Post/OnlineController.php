@@ -18,7 +18,7 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.view');
 
-        $posts = Online::with(['province', 'district','categories', 'user'])
+        $posts = Online::with(['province', 'district','categories', 'user', 'whitelist'])
             ->filter($request)
             ->newest()
             ->paginate(30);
@@ -47,7 +47,7 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.view');
 
-        return $post->with(['user', 'files'])
+        return $post->with(['user', 'files', 'categories'])
             ->findOrFail($id);
     }
 
@@ -123,7 +123,7 @@ class OnlineController extends PostController
                 'publish_at' => now(),
             ])->save();
 
-        $origin->forceFill(['approveFee' => true])->save();
+        $origin->forceFill(['approve_fee' => true])->save();
 
         return response([
             'success' => true,

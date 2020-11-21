@@ -226,7 +226,7 @@
                         commission: post.commission,
                         price: post.price,
                         title: post.title,
-                        id: post._id,
+                        id: post.id,
                     };
 
                     for (const key in map) {
@@ -237,7 +237,7 @@
                     }
 
                     let options = {
-                        category: post.categories[0] ? post.categories[0]._id : null,
+                        category: post.categories[0] ? post.categories[0].id : null,
                         province: post.province_id,
                         district: post.district_id,
                         type: post.type,
@@ -254,7 +254,7 @@
                     }
 
                     let files = post.files.map(file => {
-                        return `/storage/${file.path}?fid=${file._id}`;
+                        return `/storage/${file.path}?fid=${file.id}`;
                     });
 
                     upload.addImagesFromPath(files);
@@ -294,7 +294,7 @@
 
     window.address = {
         setDistricts(provinceId) {
-            let province = data.filter((e) => {return e._id === provinceId})[0];
+            let province = data.filter((e) => {return e.id === provinceId})[0];
             let district = $('#district');
 
             district.html('');
@@ -303,7 +303,7 @@
             if (province === undefined) return;
 
             province.districts.map((e) => {
-                district.append(`<option value="${e._id}">${e.name}</option`);
+                district.append(`<option value="${e.id}">${e.name}</option`);
             });
         }
     };

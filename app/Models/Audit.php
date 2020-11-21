@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CacheDefault;
 use Illuminate\Support\Carbon;
 use App\Models\Traits\CanFilter;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use OwenIt\Auditing\Audit as AuditingAudit;
 use OwenIt\Auditing\Contracts\Audit as ContractsAudit;
 
 class Audit extends Model implements ContractsAudit
 {
-    use AuditingAudit, CanFilter;
+    use AuditingAudit, CanFilter, CacheDefault;
 
     /**
      * {@inheritdoc}

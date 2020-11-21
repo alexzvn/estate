@@ -55,7 +55,7 @@
                     </thead>
                     <tbody>
                         @foreach ($posts as $post)
-                        <tr class="{{ $post->approveFee ? 'active' : '' }}">
+                        <tr class="{{ $post->approve_fee ? 'active' : '' }}">
                             <td class="checkbox-column">
                                 <div class="custom-control custom-checkbox checkbox-primary">
                                   <input type="checkbox" id="todo-{{ $post->id }}" class="custom-control-input todochkbox" name="ids[]" value="{{ $post->id }}">
@@ -65,10 +65,10 @@
                             <td class="cursor-pointer open-post" data-id="{{ $post->id }}">
                                 <p class="mb-0">
                                     <strong>
-                                        @if (isset($post->phone) && $whitelist->whereIn('phone', $post->phone)->isNotEmpty())
+                                        @if ($post->whitelist)
                                         [<span class="text-success font-weight-bolder">Chính chủ</span>]
                                         @endif
-                                        @if ($post->approveFee)
+                                        @if ($post->approve_fee)
                                             [<span class="text-secondary font-weight-bolder">Đã duyệt</span>]
                                         @endif
                                         {{ Str::ucfirst(Str::of($post->title)->limit(73)) }}
@@ -197,7 +197,7 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                     commission: post.commission,
                     price: post.price,
                     title: post.title,
-                    id: post._id,
+                    id: post.id,
                 };
 
                 editor.setData(post.content);
@@ -210,14 +210,12 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                 }
 
                 let options = {
-                    category: post.category_ids[0],
+                    category: post.categories[0].id,
                     province: post.province_id,
                     district: post.district_id,
                     type: post.type,
                     status: post.status,
                 };
-
-                console.log(options.category);
 
                 address.setDistricts(options.province);
 
@@ -229,7 +227,7 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                 }
 
                 let files = post.files.map(file => {
-                    return `/storage/${file.path}?fid=${file._id}`;
+                    return `/storage/${file.path}?fid=${file.id}`;
                 });
 
                 upload.addImagesFromPath(files);

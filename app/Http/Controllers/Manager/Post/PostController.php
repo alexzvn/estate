@@ -14,19 +14,18 @@ class PostController extends Controller
 {
     protected function shareCategoriesProvinces()
     {
-        [$categories, $provinces, $whitelist] = Cache::remember(
+        [$categories, $provinces] = Cache::remember(
             'dashboard.share.default',
             now()->addSeconds(360),
             function () {
                 return [
                     Category::parentOnly()->with('children')->get(),
                     Province::active()->with('districts')->get(),
-                    Whitelist::all()
                 ];
             }
         );
 
-        view()->share(compact('categories', 'provinces', 'whitelist'));
+        view()->share(compact('categories', 'provinces'));
     }
 
     protected function syncUploadFiles($post, Request $request)

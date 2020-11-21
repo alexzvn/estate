@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateBlacklistsTable extends Migration
@@ -13,8 +13,10 @@ class CreateBlacklistsTable extends Migration
      */
     public function up()
     {
-        Schema::create('blacklists', function (Blueprint $collection) {
-            $collection->string('phone');
+        Schema::create('blacklists', function (Blueprint $table) {
+            $table->string('phone', 50)->primary();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->timestamps();
         });
     }
 

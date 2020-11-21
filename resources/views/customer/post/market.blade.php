@@ -102,7 +102,7 @@
             $('.trigger-show-list-img').on('click', function () {
                 let id = $(this).data('id');
 
-                eventFire(document.getElementById(id), 'click');
+                eventFire(document.getElementById('id'), 'click');
             });
         });
     }(window))

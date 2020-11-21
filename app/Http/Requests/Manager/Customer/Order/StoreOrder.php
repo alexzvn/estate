@@ -24,7 +24,7 @@ class StoreOrder extends FormRequest
     public function rules()
     {
         return [
-            'plans' => 'array|exists:plans,_id',
+            'plans' => 'array|exists:plans,id',
         ];
     }
 }

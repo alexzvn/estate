@@ -26,7 +26,7 @@ $filterPrices = [
     '30000000000-' => '> 30 tỷ',
 ];
 
-$districts = ($provinces->where('_id', request('province'))->first() ?? $provinces->first())->districts;
+$districts = ($provinces->where('id', request('province'))->first() ?? $provinces->first())->districts;
 @endphp
 
 <form id="search-form" action="" method="GET" autocomplete="off">
@@ -179,7 +179,7 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
             let id = $('#province').val();
             let district = $('#district');
 
-            let province = address.filter((e) => {return e._id === id})[0];
+            let province = address.filter((e) => {return e.id === id})[0];
 
             district.html('');
             district.append('<option value="" selected>Chọn</option');
@@ -187,7 +187,7 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
             if (province === undefined) return;
 
             province.districts.map((e) => {
-                district.append(`<option value="${e._id}">${e.name}</option`);
+                district.append(`<option value="${e.id}">${e.name}</option`);
             });
         });
     });

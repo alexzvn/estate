@@ -6,15 +6,17 @@ use App\Models\Traits\HasNote;
 use Illuminate\Support\Carbon;
 use App\Models\Traits\CanFilter;
 use App\Contracts\Models\CanNote;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CacheDefault;
 use App\Models\Traits\CanSearch;
 
 class Order extends Model implements CanNote, Auditable
 {
+    use CacheDefault;
     use SoftDeletes, HasNote, CanFilter, TraitsAuditable, CanSearch;
 
     public const DISCOUNT_PERCENT = 1;
@@ -120,7 +122,7 @@ class Order extends Model implements CanNote, Auditable
     {
         return $builder->whereHas('plans', function ($builder) use ($plan)
         {
-            $builder->where('_id', $plan);
+            $builder->where('id', $plan);
         });
     }
 

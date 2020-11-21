@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CacheDefault;
+use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model implements Auditable
 {
-    use TraitsAuditable;
+    use TraitsAuditable, CacheDefault;
 
     const NAME = 'ghi chú';
 
@@ -19,8 +20,8 @@ class Note extends Model implements Auditable
         return $this->belongsTo(User::class);
     }
 
-    public function adder()
+    public function notable()
     {
-        return $this->belongsTo(User::class);
+        return $this->morphTo();
     }
 }

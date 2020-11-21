@@ -55,9 +55,6 @@
                             <td class="cursor-pointer open-post" data-id="{{ $post->id }}">
                                 <p class="mb-0">
                                     <strong>
-                                        @if (isset($post->phone) && $whitelist->whereIn('phone', $post->phone)->isNotEmpty())
-                                        [<span class="text-success font-weight-bolder">Chính chủ</span>]
-                                        @endif
                                         {{ Str::ucfirst(Str::of($post->title)->limit(73)) }}
                                     </strong>
                                     <br>
@@ -188,7 +185,7 @@ ClassicEditor
                     commission: post.commission,
                     price: post.price,
                     title: post.title,
-                    id: post._id,
+                    id: post.id,
                 };
 
                 editor.setData(post.content);
@@ -218,7 +215,7 @@ ClassicEditor
                 }
 
                 // let files = post.files.map(file => {
-                //     return `/storage/${file.path}?fid=${file._id}`;
+                //     return `/storage/${file.path}?fid=${file.id}`;
                 // });
 
                 // upload.addImagesFromPath(files);
