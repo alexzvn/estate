@@ -16,6 +16,7 @@ class NoteController extends Controller
         $employee = Permission::findUsersHasPermission('manager.user.view');
 
         $notes = Audit::where('auditable_type', Note::class)
+            ->where('event', '<>', 'created')
             ->filter(request())
             ->latest()
             ->with(['user', 'auditable.user'])
