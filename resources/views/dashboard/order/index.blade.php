@@ -73,8 +73,8 @@ function planToString($plans) {
                             </td>
                             <td>{{ planToString($order->plans) }}</td>
                             <td>{{ $order->after_discount_price ? number_format($order->after_discount_price) : number_format($order->price) }}đ</td>
-                            <td>{{ $order->activate_at ? $order->activate_at->format('d/m/Y') : 'N/a' }}</td>
-                            <td>{{ $order->expires_at ? $order->expires_at->format('d/m/Y') : ($order->month ? $order->month . ' tháng' : 'N/a') }}</td>
+                            <td>{{ $order->activate_at ? $order->activate_at->format('d/m/Y ') . $order->created_at->format('h:iA') : 'N/a' }}</td>
+                            <td>{{ $order->expires_at ? $order->expires_at : ($order->month ? $order->month . ' tháng' : 'N/a') }}</td>
                             <td>
                                 @include('dashboard.order.status', ['status' => $order->status])
                             </td>

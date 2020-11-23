@@ -23,13 +23,16 @@ class FeeController extends PostController
                 'verifier'
             ])
             ->filter($request)
-            ->newest()
-            ->paginate(30);
+            ->newest();
+
+        if (auth()->user()->cannot('manager.post.fee.view.all')) {
+            $posts->where('user_id', auth()->id());
+        }
 
         $this->shareCategoriesProvinces();
 
         return view('dashboard.post.fee.list', [
-            'posts' => $posts,
+            'posts' => $posts->paginate(30),
             'staff' => Permission::findUsersHasPermission('manager.dashboard.access')
         ]);
     }

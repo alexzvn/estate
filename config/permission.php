@@ -150,6 +150,7 @@ return [
             'manager.post.online.reserve' => 'Đảo tin',
 
             'manager.post.fee.view'   => 'Xem',
+            'manager.post.fee.view.all'   => 'Xem tất',
             'manager.post.fee.create' => 'Tạo mới',
             'manager.post.fee.modify' => 'Chỉnh sửa',
             'manager.post.fee.delete' => 'Xóa',
