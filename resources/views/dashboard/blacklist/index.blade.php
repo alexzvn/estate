@@ -61,7 +61,7 @@
                             <td><span class="text-secondary font-weight-bold">{{ $blackphone->phone }}</span></td>
                             {{-- <td><input type="text" class="form-control note" value="{{ $blackphone->readNote() }}" placeholder="" data-id="{{ $blackphone->id }}" @cannot('blacklist.phone.modify') disabled @endcannot ></td> --}}
                             <td>{{ $blackphone->user->name ?? '' }}</td>
-                            <td>{{ $blackphone->created_at->format('d/m/Y H:i:s') }}</td>
+                            <td>{{ $blackphone->created_at ? $blackphone->created_at->format('d/m/Y H:i:s') : 'n/a' }}</td>
                             <td>{{ $blackphone->source }}</td>
                             <td>
                                 @can('blacklist.phone.delete')
