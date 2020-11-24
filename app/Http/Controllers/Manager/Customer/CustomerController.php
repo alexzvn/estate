@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Manager\Customer;
 
+use App\Models\Order;
 use App\Repository\Plan;
 use App\Repository\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Manager\Controller;
-use App\Http\Requests\Manager\Customer\AssignCustomer;
-use App\Http\Requests\Manager\Customer\StoreCustomer;
-use App\Http\Requests\Manager\Customer\UpdateCustomer;
-use App\Http\Requests\Manager\Customer\Order\StoreOrder;
-use App\Models\Order;
 use App\Repository\Permission;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Manager\Controller;
+use App\Http\Requests\Manager\Customer\StoreCustomer;
+use App\Http\Requests\Manager\Customer\AssignCustomer;
+use App\Http\Requests\Manager\Customer\UpdateCustomer;
+use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 
 class CustomerController extends Controller
 {
@@ -89,7 +90,7 @@ class CustomerController extends Controller
         $user->fill($request->all());
 
         if (empty($user->email)) {
-            $user->email = $user->phone . '@' . parse_url(config('app.url'), PHP_URL_HOST);
+            $user->email = Str::random(10) . '@' . $request->getHttpHost();
         }
 
         $user->save();
