@@ -264,6 +264,7 @@ class CustomerController extends Controller
 
     protected function pullLastUrl()
     {
-        return request()->session()->pull('manager.customer.last.link');
+        return request()->session()->pull('manager.customer.last.link') ||
+            route('manager.customer.view');
     }
 }
