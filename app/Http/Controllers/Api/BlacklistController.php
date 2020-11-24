@@ -17,7 +17,10 @@ class BlacklistController extends Controller
         );
 
         foreach ($blacklist as $phone) {
-            $data[]['phone'] = $phone;
+            $data[] = [
+                'phone' => $phone,
+                'source' => 'api'
+            ];
         }
 
         if (isset($data) && count($data) > 0) {
