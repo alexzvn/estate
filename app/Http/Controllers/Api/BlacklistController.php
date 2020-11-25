@@ -17,10 +17,10 @@ class BlacklistController extends Controller
         );
 
         foreach ($blacklist as $phone) {
-            $data[] = [
+            Blacklist::create([
                 'phone' => $phone,
                 'source' => 'api'
-            ];
+            ]);
         }
 
         if (isset($data) && count($data) > 0) {
