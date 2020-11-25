@@ -13,7 +13,7 @@ class Blacklist extends Model implements Auditable
 {
     use HasNote, CanFilter, TraitsAuditable;
 
-    protected $fillable = ['phone'];
+    protected $fillable = ['phone', 'source'];
 
     const NAME = 'danh sách đen';
 
