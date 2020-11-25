@@ -23,19 +23,11 @@ class BlacklistController extends Controller
             ]);
         }
 
-        if (isset($data) && count($data) > 0) {
-
-            Post::lockByPhone($blacklist);
-
-            return response([
-                'success' => Blacklist::insert($data),
-                'phoneToAdd' => count($blacklist),
-            ]);
-        }
+        Post::lockByPhone($blacklist);
 
         return response([
             'success' => true,
-            'phoneToAdd' => 0
+            'phoneToAdd' => count($blacklist)
         ]);
     }
 
