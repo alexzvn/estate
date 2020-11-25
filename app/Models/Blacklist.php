@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\HasNote;
-use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -15,12 +14,9 @@ class Blacklist extends Model implements Auditable
 
     protected $fillable = ['phone', 'source'];
 
-    const NAME = 'danh sách đen';
+    protected $filterable = ['phone', 'source'];
 
-    public function filterPhone(Builder $builder, $value)
-    {
-        return $builder->where('phone', $value);
-    }
+    const NAME = 'danh sách đen';
 
     public function posts()
     {

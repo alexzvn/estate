@@ -29,9 +29,17 @@
             
                             <div class="col-md-9">
                                 <div class="form-group input-group-sm">
-                                <input id="phone" type="text" class="form-control" name="phone" value="{{ request('phone') }}" placeholder="tìm theo SĐT">
+                                    <input id="phone" type="text" class="form-control" name="phone" value="{{ request('phone') }}" placeholder="tìm theo SĐT">
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-2 order-first">
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="source" id="source" value="api" {{ request('source') === 'api' ? 'checked' : '' }}>
+                            Nguồn khác
+                          </label>
                         </div>
                     </div>
                     <div class="col-md-3 pl-md-0 order-md-first order-last">
@@ -82,8 +90,11 @@
                     </tfoot>
                 </table>
             </div>
+            <span class="text-muted">Tìm thấy {{ $blacklist->total() }} kết quả</span>
 
-            {{ $blacklist->onEachSide(0)->withQueryString()->render() }}
+            <div class="d-flex justify-content-center">
+                {{ $blacklist->onEachSide(0)->withQueryString()->render() }}
+            </div>
 
         </div>
     </div>
