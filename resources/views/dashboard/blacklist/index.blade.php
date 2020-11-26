@@ -66,7 +66,14 @@
                         @foreach ($blacklist as $blackphone)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td><span class="text-secondary font-weight-bold">{{ $blackphone->phone }}</span></td>
+                            <td>
+                                <span class="text-secondary font-weight-bold">
+                                    {{ $blackphone->phone }} 
+                                    <span class="text-muted">
+                                        ({{ $blackphone->posts->count() }})
+                                    </span>
+                                </span>
+                            </td>
                             {{-- <td><input type="text" class="form-control note" value="{{ $blackphone->readNote() }}" placeholder="" data-id="{{ $blackphone->id }}" @cannot('blacklist.phone.modify') disabled @endcannot ></td> --}}
                             <td>{{ $blackphone->user->name ?? '' }}</td>
                             <td>{{ $blackphone->created_at ? $blackphone->created_at->format('d/m/Y H:i:s') : 'n/a' }}</td>

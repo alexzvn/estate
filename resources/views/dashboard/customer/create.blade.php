@@ -69,10 +69,8 @@
 @endsection
 
 @push('script') 
-<script src="{{ asset('dashboard/plugins/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
 <script>
 (function (window) {
-    $('#phone').inputmask("9999.999.999");
 
     $('#submit').click(function () {
         if (confirm('Bạn có chắc muốn thực hiện các thay đổi này?')) {
