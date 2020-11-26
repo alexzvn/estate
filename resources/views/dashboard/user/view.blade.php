@@ -113,7 +113,6 @@ $('#change-password').click(function () {
     $('#change-password-input').fadeIn();
 });
 
-$('#phone').inputmask("9999.999.999")
 $('#email').inputmask({alias: "email"});
 </script>
 @endpush
