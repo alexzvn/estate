@@ -2,7 +2,7 @@
 
 @section('content')
 <div id="tableLight" class="col-lg-12 col-12 layout-spacing">
-    <form id="create-form" class="row" action="{{ route('manager.customer.store') }}" method="POST">
+    <form id="create-form" class="row" action="{{ route('manager.customer.store') }}" autocomplete="off" method="POST">
         @csrf
         <div class="col-md-8 mb-4">
             <div class="statbox widget box box-shadow">
@@ -16,17 +16,17 @@
                 <div class="widget-content widget-content-area">
                     <div class="form-group input-group-sm">
                       <label for="name">Họ Tên</label>
-                      <input type="text" name="name" id="name" class="form-control" placeholder="Họ tên tài khoản" required>
+                      <input type="text" name="name" id="name" value="{{ request('name') }}" class="form-control" placeholder="Họ tên tài khoản" required>
                     </div>
 
                     <div class="form-group input-group-sm">
                       <label for="phone">Số điện thoại</label>
-                      <input type="text" name="phone" id="phone" class="form-control" placeholder="Số điện thoại" required>
+                      <input type="text" name="phone" id="phone" value="{{ request('phone') }}" class="form-control" placeholder="Số điện thoại" required>
                     </div>
 
                     <div class="form-group input-group-sm">
                       <label for="email">Email</label>
-                      <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+                      <input type="email" name="email" id="email" class="form-control" placeholder="Email" autocomplete="off">
                     </div>
 
                     <div class="mt-3" id="change-password-input">

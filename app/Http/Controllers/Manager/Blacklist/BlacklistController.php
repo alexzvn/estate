@@ -16,7 +16,7 @@ class BlacklistController extends Controller
 
         return view('dashboard.blacklist.index', [
             'blacklist' => Blacklist::latest()->with([
-                'user', 'posts'
+                'user', 'posts', 'adder'
             ])->filter($request)->paginate(40)
         ]);
     }

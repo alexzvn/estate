@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Location\Province;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\HasNote;
@@ -23,8 +24,18 @@ class Blacklist extends Model implements Auditable
         return $this->hasMany(Post::class, 'phone', 'phone');
     }
 
+    public function adder()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'phone', 'phone');
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
     }
 }
