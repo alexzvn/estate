@@ -56,32 +56,51 @@
                             <th>#</th>
                             <th>Số điện thoại</th>
                             <th>Người thêm</th>
+                            <th>Thông tin</th>
                             <th>Ngày thêm</th>
-                            <th>Nguồn</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         
-                        @foreach ($blacklist as $blackphone)
+                        @foreach ($blacklist as $phone)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>
                                 <span class="text-secondary font-weight-bold">
-                                    {{ $blackphone->phone }} 
+                                    {{ $phone->phone }} 
                                     <span class="text-muted">
-                                        ({{ $blackphone->posts->count() }})
+                                        ({{ $phone->posts->count() }})
                                     </span>
                                 </span>
                             </td>
-                            {{-- <td><input type="text" class="form-control note" value="{{ $blackphone->readNote() }}" placeholder="" data-id="{{ $blackphone->id }}" @cannot('blacklist.phone.modify') disabled @endcannot ></td> --}}
-                            <td>{{ $blackphone->user->name ?? '' }}</td>
-                            <td>{{ $blackphone->created_at ? $blackphone->created_at->format('d/m/Y H:i:s') : 'n/a' }}</td>
-                            <td>{{ $blackphone->source }}</td>
+                            <td>{{ $phone->adder->name ?? '' }} @empty($phone->adder->name) <strong class="text-info">API</strong> @endEmpty</td>
                             <td>
-                                @can('blacklist.phone.delete')
-                                <button type="button" class="btn btn-danger delete" data-id="{{ $blackphone->id }}">Xóa</button>
-                                @endcan
+                                <strong>
+                                    @isset($phone->name)
+                                        <p class="m-0">{{ $phone->name }}</p>
+                                    @endisset
+                                    @isset($phone->province)
+                                        <p class="m-0">{{ $phone->province->name }}</p>
+                                    @endisset
+                                    @isset ($phone->url)
+                                        <a class="text-info" href="{{ $phone->url }}">Link bài gốc</a>
+                                    @endisset
+                                </strong>
+                            </td>
+                            <td>{{ $phone->created_at ? $phone->created_at->format('d/m/Y H:i:s') : 'n/a' }}</td>
+                            <td>
+                                <div class="">
+                                    @can('blacklist.phone.delete')
+                                    <button type="button" class="btn btn-danger delete" data-id="{{ $phone->id }}">Xóa</button>
+                                    @endcan
+
+                                    @can('manager.customer.create')
+                                    @empty($phone->user)
+                                    <a target="_blank" href="{{ route('manager.customer.create') . "?phone=$phone->phone&name=$phone->name" }}" type="button" class="btn btn-success">Tạo TK</a>
+                                    @endempty
+                                    @endcan
+                                </div>
                             </td>
                         </tr>
                         @endforeach

@@ -18,7 +18,7 @@ class BlacklistController extends Controller
         );
 
         foreach ($blacklist as $phone) {
-            Blacklist::create([
+            Blacklist::forceCreate([
                 'name'   => $phone->agencyName,
                 'phone' => $phone->phoneNumber,
                 'url'   => $phone->url,
