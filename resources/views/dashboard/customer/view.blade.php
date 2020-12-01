@@ -88,7 +88,7 @@
                     @if ($notes->isNotEmpty())
                     <div class="form-group input-group-sm">
                         <label>Lịch sử ghi chú</label>
-                        <textarea class="form-control" rows="6" readonly placeholder="lịch sử trống">@forelse ($notes as $note){{ ($loop->remaining + 1) . ". {$note->user->name} - {$note->created_at} \n" . $note->new_values['content'] . "\n\n" }}@empty Lịch sử trống @endforelse</textarea>
+                        <textarea class="form-control" rows="6" readonly placeholder="lịch sử trống">@forelse ($notes as $note){{ ($loop->remaining + 1). ($note->user->name ?? '[deleted]') . " - {$note->created_at} \n" . $note->new_values['content'] . "\n\n" }}@empty Lịch sử trống @endforelse</textarea>
                     </div>
                     @endif
 
