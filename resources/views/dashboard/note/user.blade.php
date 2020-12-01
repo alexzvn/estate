@@ -83,7 +83,11 @@
 
                         <tr>
                             <td class="text-center" >{{ $loop->index }}</td>
+                            @if ($note->user)
                             <td><a class="text-primary font-weight-bolder" href="{{ route('manager.customer.view', ['id' => $note->user]) }}">{{ $note->user->name }}</a></td>
+                            @else
+                            <td><span class="text-muted">[deleted]</span></td>
+                            @endif
                             <td><span class="text-info">{{ $note->new_values['content'] ?? '' }}</span></td>
                             @empty($note->auditable->user)
                             <td></td>
