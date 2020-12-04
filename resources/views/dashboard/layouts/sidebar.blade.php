@@ -76,9 +76,34 @@
                             <li class="@active('manager.post.fee')">
                                 <a href="{{ route('manager.post.fee') }}"> Tất cả </a>
                             </li>
-                            <li class="@active('manager.post.online.trashed')">
+                            <li class="@active('manager.post.fee.trashed')">
                                 <a href="{{ route('manager.post.fee.trashed') }}">Tin đã xóa </a>
                             </li>
+                        </ul>
+                    </li>
+                    @endcan
+
+                    @can('manager.post.market.view')
+                    @php
+                        $active = request()->is('manager/post/market*');
+                    @endphp
+                    <li class="menu">
+                        <a href="#market-post" data-toggle="collapse" @active($active, 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="file-text"></i>
+                                <span>Tin thị trường</span>
+                            </div>
+                            <div>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled @active($active, 'show')" id="market-post" data-parent="#accordionExample">
+                            <li class="@active('manager.post.market')">
+                                <a href="{{ route('manager.post.market') }}"> Tất cả </a>
+                            </li>
+                            {{-- <li class="@active('manager.post.market.trashed')">
+                                <a href="{{ route('manager.post.market.trashed') }}">Tin đã xóa </a>
+                            </li> --}}
                         </ul>
                     </li>
                     @endcan
