@@ -165,6 +165,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         return (
             ! empty($this->session_id) &&
             $this->session_id !== request()->session()->getId() &&
+            isset($this->last_seen) &&
             now()->lessThan($this->last_seen->addMinutes(self::SESSION_TIMEOUT))
         );
     }
