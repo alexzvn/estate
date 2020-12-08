@@ -30,14 +30,14 @@
 <div class="col-12 mb-4">
     <h4>
         Danh sách bài viết
-        <a href="javascript:void(0)" id="create-button" class="btn btn-success rounded-circle"><i data-feather="plus"></i></a>
+        <a id="create-button" class="btn btn-success rounded-circle"><i data-feather="plus"></i></a>
     </h4>
 </div>
 
 @foreach ($posts as $post)
 <div class="col-md-4 col-sm-6 mb-3">
     <div class="card component-card_2">
-        <img src="{{ '/storage/' . $post->files[0]->path ?? '' }}" class="card-img-header cursor-pointer" data-images='@json($post->files)'>
+        <img src="@isset($post->files[0]){{ '/storage/' . $post->files[0]->path }}@endisset" class="card-img-header cursor-pointer" data-images='@json($post->files)'>
         <div class="card-body">
             <h5 class="card-title">{{ $post->title }}</h5>
             <p class="card-text">
@@ -60,11 +60,6 @@
 
 @include('dashboard.layouts.photoswipe')
 
-
-{{-- <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#edit">
-  Launch
-</button> --}}
 
 <!-- Modal -->
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
@@ -106,7 +101,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group input-group-sm">
                                         <label for="category">Danh mục</label>
-                                        <select class="form-control" name="category_ids" id="category" required>
+                                        <select class="form-control" name="category_ids[]" id="category" required>
                                         <option value="">Chọn danh mục</option>
                                         @php
                                             $catId = $category->id ?? null;
@@ -211,6 +206,7 @@
     $(document).ready(() => {
         $('#create-button').click(() => {
             $('#form-modal').attr('action', "{{ route('manager.post.market.store') }}")
+            $('#edit').modal()
         });
 
         $('.editable').on('click', (e) => {
@@ -218,7 +214,7 @@
 
             $('#form-modal').attr('action', `/manager/post/market/${id}/update`);
 
-            fetch('/manager/post/' + id + '/view', {headers: {Accept: 'application/json'}})
+            fetch('/manager/post/market/' + id + '/fetch', {headers: {Accept: 'application/json'}})
                 .then(res => res.json())
                 .then(post => {
                     let map = {
@@ -237,7 +233,7 @@
                     }
 
                     let options = {
-                        category: post.categories[0] ? post.categories[0]._id : null,
+                        category: post.category_ids[0] ? post.category_ids[0]._id : null,
                         province: post.province_id,
                         district: post.district_id,
                         type: post.type,

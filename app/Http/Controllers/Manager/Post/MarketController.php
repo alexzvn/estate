@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manager\Post;
 use App\Enums\PostType;
 use App\Http\Requests\Manager\Post\Market\UpdatePost;
 use App\Repository\Post;
+use App\Services\System\Post\Market;
 use App\Services\System\Post\PostService;
 use Illuminate\Http\Request;
 
@@ -28,10 +29,26 @@ class MarketController extends PostController
     {
         $post = Post::findOrFail($id);
 
-        $post = PostService::update($post, $request->all());
+        $post = Market::update($post, $request->all());
 
         $this->syncUploadFiles($post, $request);
 
         return back()->with('success', 'Cập nhật thành công');
+    }
+
+    public function store(UpdatePost $request)
+    {
+        $post = Market::create($request->all());
+
+        $this->syncUploadFiles($post, $request);
+
+        return back()->with('success', 'ok');
+    }
+
+    public function fetch(string $id)
+    {
+        $this->authorize('manager.post.market.view');
+
+        return Market::findOrFail($id)->load(['files', 'user']);
     }
 }
