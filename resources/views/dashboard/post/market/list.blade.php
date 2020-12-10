@@ -222,6 +222,10 @@
             window.location.href = `/manager/post/market/${id}/delete`
         })
 
+        $('#province').on('change', (e) => {
+            address.setDistricts($(e.currentTarget).val());
+        })
+
         $('.editable').on('click', (e) => {
             const id = $(e.currentTarget).data('id');
             $('#unique-id').val(id)
@@ -246,7 +250,7 @@
                     }
 
                     let options = {
-                        category: post.category_ids[0] ? post.category_ids[0]._id : null,
+                        category: post.category_ids[0],
                         province: post.province_id,
                         district: post.district_id,
                         type: post.type,
