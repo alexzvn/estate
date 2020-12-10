@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api\Post\Imports;
 
-use App\Enums\PostStatus;
-use App\Http\Controllers\Api\Post\ImportController;
-use App\Jobs\Post\ImportFacebookJob;
 use App\Models\Category;
+use App\Enums\PostStatus;
+use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use App\Models\Location\District;
 use App\Models\Location\Province;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use App\Jobs\Post\ImportFacebookJob;
+use App\Http\Controllers\Api\Post\ImportController;
 
 class LocTinBdsController extends ImportController
 {
@@ -27,6 +28,10 @@ class LocTinBdsController extends ImportController
 
         $posts->each(function ($post) use ($sell, $rent)
         {
+            $categories = Str::contains($post->type, ['Cho Thuê', 'Sang Nhượng'])
+                ? [$rent]
+                : [$sell];
+
             ImportFacebookJob::dispatch((object) [
                 'title'        => $post->title,
                 'content'      => nl2br($post->content),
@@ -36,7 +41,7 @@ class LocTinBdsController extends ImportController
                 'publish_at'   => $this->getDate($post->createdDate),
                 'province_id'  => $this->getProvince($post->city)->id ?? null,
                 'district_id'  => $this->getDistrict($post->district)->id ?? null,
-                'categories'   => $post->type === 'Cần Thuê' ? [$rent] : [$sell],
+                'categories'   => $categories,
                 'hash'         => "loctinbds.facebook.$post->id",
                 'extra'    => (object) [
                     'source'     => $post->source,
