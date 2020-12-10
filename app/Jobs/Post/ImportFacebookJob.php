@@ -38,7 +38,7 @@ class ImportFacebookJob implements ShouldQueue
             return;
         }
 
-        $post = Online::create($this->post->hash);
+        $post = Online::create((array) $this->post);
 
         if (! empty($post->phone)) {
             Post::lockByPhone($post->phone);
