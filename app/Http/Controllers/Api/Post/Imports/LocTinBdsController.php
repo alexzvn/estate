@@ -62,7 +62,10 @@ class LocTinBdsController extends ImportController
             $provinces = Province::all();
         }
 
-        return $provinces->where('name', 'like', "%$name%")->first();
+        return $provinces->filter(function ($province) use ($name)
+        {
+            return preg_match("/$name/", $province->name);
+        })->first();
     }
 
     private function getDistrict(string $name)
@@ -73,7 +76,10 @@ class LocTinBdsController extends ImportController
             $districts = District::all();
         }
 
-        return $districts->where('name', 'like', "%$name%")->first();
+        return $districts->filter(function ($district) use ($name)
+        {
+            return preg_match("/$name/", $district->name);
+        })->first();
     }
 
     private function getFacebookCategories()
