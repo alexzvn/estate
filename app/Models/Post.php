@@ -34,6 +34,7 @@ class Post extends Model implements Auditable
         'phone',
         'price',
         'commission',
+        'extra',
     ];
 
     protected $dates = [
