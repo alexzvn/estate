@@ -9,8 +9,8 @@ use Illuminate\Support\Carbon;
 use App\Models\Location\District;
 use App\Models\Location\Province;
 use Illuminate\Support\Collection;
-use App\Jobs\Post\ImportFacebookJob;
 use App\Http\Controllers\Api\Post\ImportController;
+use App\Jobs\Post\ImportLocTinBdsJob;
 
 class LocTinBdsController extends ImportController
 {
@@ -20,24 +20,52 @@ class LocTinBdsController extends ImportController
         {
             return $post->source === 'NGUỒN FACEBOOK';
         }));
+
+        $this->queueWebPosts($posts->filter(function ($post)
+        {
+            return $post->source === 'NGUỒN WEB BĐS';
+        }));
+    }
+
+    public function queueWebPosts(Collection $posts)
+    {
+        $posts->each(function ($post)
+        {
+            ImportLocTinBdsJob::dispatch((object) [
+                'title'        => $post->title,
+                'content'      => nl2br($post->content),
+                'price'        => $this->normalizePrice($post->price),
+                'phone'        => $this->getPhone($post->phoneNumber, $post->title, $post->content),
+                'status'       => $this->getStatus($post),
+                'publish_at'   => $this->getDate($post->createdDate),
+                'province_id'  => $this->getProvince($post->city)->id ?? null,
+                'district_id'  => $this->getDistrict($post->district)->id ?? null,
+                'categories'   => $this->getWebCategories($post->type),
+                'hash'         => "loctinbds.web.$post->id",
+                'extra'    => (object) [
+                    'source'      => $post->source,
+                    'authorName'  => $post->fbPostAuthorName,
+                    'authorUrl'   => $post->fbPostAuthorUrl,
+                    'originalUrl' => $post->seeMoreUrl ?? null
+                ]
+            ]);
+        });
     }
 
     public function queueFacebook(Collection $posts)
     {
         $posts->each(function ($post)
         {
-            
-
-            ImportFacebookJob::dispatch((object) [
+            ImportLocTinBdsJob::dispatch((object) [
                 'title'        => $post->title,
                 'content'      => nl2br($post->content),
                 'price'        => $this->normalizePrice($post->price),
                 'phone'        => $this->getPhone($post->phoneNumber, $post->title, $post->content),
-                'status'       => $this->getStatus($post->status),
+                'status'       => $this->getStatus($post),
                 'publish_at'   => $this->getDate($post->createdDate),
                 'province_id'  => $this->getProvince($post->city)->id ?? null,
                 'district_id'  => $this->getDistrict($post->district)->id ?? null,
-                'categories'   => $this->getCategories($post->type),
+                'categories'   => $this->getFacebookCategories($post->type),
                 'hash'         => "loctinbds.facebook.$post->id",
                 'extra'    => (object) [
                     'source'      => $post->source,
@@ -64,12 +92,46 @@ class LocTinBdsController extends ImportController
         return PostStatus::Published;
     }
 
-    private function getCategories($type)
+    private function getWebCategories($type)
+    {
+        static $categories;
+
+        $type = $this->mapWebCategories($type);
+
+        if (empty($categories)) {
+            $categories = Category::childrenOnly()->get();
+        }
+
+        dd($type);
+
+        return $categories->filter(function ($category) use ($type)
+        {
+            return preg_match("/$type/", $category->name);
+        })->first();
+    }
+
+    private function mapWebCategories($type)
+    {
+        $mapped = [
+            'bán nhà'      => 'Bán nhà nhà riêng, trong ngõ',
+            'bán đất'      => 'Bán đất ở, đất thổ cư',
+            'bán chung cư' => 'Bán căn hộ, chung cư',
+            'sang nhượng'  => 'Cho thuê văn phòng, mặt bằng kinh doanh'
+        ];
+
+        return $mapped[Str::lower($type)] ?? 'Cho thuê khác';
+    }
+
+    private function getFacebookCategories($type)
     {
         static $categories;
 
         if (! isset($categories)) {
-            $categories = $this->getFacebookCategories();
+            $categories = [
+                Category::childrenOnly()->where('name', 'regexp', '/bán facebook/')->first(),
+                Category::childrenOnly()->where('name', 'regexp', '/thuê facebook/')->first(),
+                Category::childrenOnly()->where('name', 'regexp', '/Khách cần mua & thuê/')->first(),
+            ];
         }
 
         [$sell, $rent, $needed] = $categories;
@@ -123,14 +185,5 @@ class LocTinBdsController extends ImportController
         {
             return preg_match("/$name/", $district->name);
         })->first();
-    }
-
-    private function getFacebookCategories()
-    {
-        return [
-            Category::childrenOnly()->where('name', 'regexp', '/bán facebook/')->first(),
-            Category::childrenOnly()->where('name', 'regexp', '/thuê facebook/')->first(),
-            Category::childrenOnly()->where('name', 'regexp', '/Khách cần mua & thuê/')->first(),
-        ];
     }
 }

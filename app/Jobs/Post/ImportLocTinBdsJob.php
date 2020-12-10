@@ -2,7 +2,6 @@
 
 namespace App\Jobs\Post;
 
-use App\Enums\PostStatus;
 use App\Models\Blacklist;
 use App\Models\Post;
 use App\Services\System\Post\Online;
@@ -13,7 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use stdClass;
 
-class ImportFacebookJob implements ShouldQueue
+class ImportLocTinBdsJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
