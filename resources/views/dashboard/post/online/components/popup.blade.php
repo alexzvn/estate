@@ -132,7 +132,7 @@ use App\Enums\PostType;
                         <p class="text-muted m-0">Ngày cập nhật cuối cùng là <span class="text-info"></span>, đăng bởi
                     </div>
 
-                    <div id="sync-file-ids"></div>
+                    {{-- <div id="sync-file-ids"></div>
 
                     <div class="widget-content widget-content-area">
                         <div class="custom-file-container" data-upload-id="mySecondImage">
@@ -144,7 +144,7 @@ use App\Enums\PostType;
                             </label>
                             <div class="custom-file-container__image-preview"></div>
                         </div>
-                    </div>
+                    </div> --}}
                 </form>
             </div>
             <div class="modal-footer">
