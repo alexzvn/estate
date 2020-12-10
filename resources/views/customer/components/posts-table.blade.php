@@ -38,7 +38,13 @@
         @if($hasCommission)
         <td class="d-none d-lg-table-cell"> <strong>{{ $item->commission ?? '' }}</strong> </td>
         @endif
-        <td class="d-none d-lg-table-cell"><strong>{{ isset($item->price) ? format_web_price($item->price) : 'Không rõ' }}</strong></td>
+        <td class="d-none d-lg-table-cell">
+          @if (! empty($item->price))
+          <strong>{{ format_web_price($item->price) }}</strong>
+          @else
+          <span class="text-muted">Không rõ</span>
+          @endif
+        </td>
         <td class="d-none d-lg-table-cell">
           @isset($item->phone)
           <span onclick="$(this).html(`<a href='tel:${$(this).data('phone')}'>${$(this).data('phone')}</a>`)" data-phone="{{ $item->phone }}">
