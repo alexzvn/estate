@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Post;
 
+use App\Enums\PostStatus;
 use App\Models\Blacklist;
 use App\Models\Post;
 use App\Services\System\Post\Online;
@@ -37,6 +38,10 @@ class ImportFacebookJob implements ShouldQueue
     {
         if (Online::whereHash($this->post->hash)->exists()) {
             return;
+        }
+
+        if (empty($this->post->content) && empty($this->post->phone)) {
+            $this->post->status = PostStatus::Draft;
         }
 
         $post = Online::create((array) $this->post);
