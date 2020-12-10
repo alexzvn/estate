@@ -14,7 +14,7 @@
         <p>
             <strong>Số điện thoại: </strong>
             @isset($post->phone)
-            <span onclick="$(this).html(`<a href='tel:${$(this).data('phone')}'>${$(this).data('phone')}</a>`)" data-phone="{{ $item->phone }}">
+            <span onclick="$(this).html(`<a href='tel:${$(this).data('phone')}'>${$(this).data('phone')}</a>`)" data-phone="{{ $post->phone }}">
                 <button class="btn btn-sm btn-success">Xem SĐT</button>
             </span>
             @else
