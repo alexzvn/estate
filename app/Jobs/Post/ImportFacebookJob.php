@@ -40,10 +40,6 @@ class ImportFacebookJob implements ShouldQueue
             return;
         }
 
-        if (empty($this->post->content) && empty($this->post->phone)) {
-            $this->post->status = PostStatus::Draft;
-        }
-
         $post = Online::create((array) $this->post);
 
         if (! empty($post->phone) && Blacklist::wherePhone($post->phone)->exists()) {

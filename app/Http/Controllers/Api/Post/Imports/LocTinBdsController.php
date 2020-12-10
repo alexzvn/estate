@@ -26,12 +26,14 @@ class LocTinBdsController extends ImportController
     {
         $posts->each(function ($post)
         {
+            
+
             ImportFacebookJob::dispatch((object) [
                 'title'        => $post->title,
                 'content'      => nl2br($post->content),
                 'price'        => $this->normalizePrice($post->price),
                 'phone'        => $this->getPhone($post->phoneNumber, $post->title, $post->content),
-                'status'       => PostStatus::Published,
+                'status'       => $this->getStatus($post->status),
                 'publish_at'   => $this->getDate($post->createdDate),
                 'province_id'  => $this->getProvince($post->city)->id ?? null,
                 'district_id'  => $this->getDistrict($post->district)->id ?? null,
@@ -47,6 +49,19 @@ class LocTinBdsController extends ImportController
                 ]
             ]);
         });
+    }
+
+    private function getStatus($post)
+    {
+        if (
+            empty($post->content) &&
+            empty($post->phone) &&
+            ! Str::contains(Str::lower($post->type), 'cần tìm')
+        ) {
+            return PostStatus::Draft;
+        }
+
+        return PostStatus::Published;
     }
 
     private function getCategories($type)
