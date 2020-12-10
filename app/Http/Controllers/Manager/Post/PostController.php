@@ -33,11 +33,7 @@ class PostController extends Controller
     {
         $ids = collect($request->image_ids ?? []);
 
-        if (! $request->hasFile('images')) {
-            return;
-        }
-
-        foreach ($request->file('images') as $file) {
+        foreach ($request->file('images') ?? [] as $file) {
             $uploaded = File::create([
                 'name' => $file->getFilename(),
                 'path' => $file->store('media/images', 'public')

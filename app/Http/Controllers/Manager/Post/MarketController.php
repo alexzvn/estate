@@ -51,4 +51,13 @@ class MarketController extends PostController
 
         return Market::findOrFail($id)->load(['files', 'user']);
     }
+
+    public function delete(string $id)
+    {
+        $this->authorize('manager.post.market.delete');
+
+        Market::findOrFail($id)->delete();
+
+        return back()->with('success', 'Đã xóa tin thị trường này');
+    }
 }

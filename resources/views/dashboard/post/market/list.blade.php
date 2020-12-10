@@ -48,7 +48,9 @@
             </p>
         </div>
         <div class="card-footer">
+            @can('manager.post.market.modify')
             <a href="javascript:void(0)" class="btn btn-primary editable" data-id="{{ $post->id }}">Chỉnh sửa</a>
+            @endcan
         </div>
     </div>
 </div>
@@ -66,6 +68,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form id="form-modal" action="" method="POST" enctype="multipart/form-data"> @csrf
+                <input id="unique-id" type="hidden" name="id" value="">
                 <div class="modal-header">
                     <h5 class="modal-title">Tin thị trường</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -178,10 +181,14 @@
                     </div>
 
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Lưu</button>
-                </div>
+                <div class="modal-footer justify-content-between">
+                    @can('manager.post.market.delete')
+                    <a href="javascript:void(0)" class="btn btn-danger removable">Xóa bài</a>
+                    @endcan
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
             </form>
         </div>
     </div>
@@ -209,9 +216,15 @@
             $('#edit').modal()
         });
 
+        $('.removable').click(() => {
+            const id = $('#unique-id').val();
+
+            window.location.href = `/manager/post/market/${id}/delete`
+        })
+
         $('.editable').on('click', (e) => {
             const id = $(e.currentTarget).data('id');
-
+            $('#unique-id').val(id)
             $('#form-modal').attr('action', `/manager/post/market/${id}/update`);
 
             fetch('/manager/post/market/' + id + '/fetch', {headers: {Accept: 'application/json'}})
