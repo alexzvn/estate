@@ -69,6 +69,7 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
         Route::get('/', 'MarketController@index')->name('manager.post.market');
         Route::post('/{id}/update', 'MarketController@update')->name('manager.post.market.update');
         Route::post('/store', 'MarketController@store')->name('manager.post.market.store');
+        Route::get('/{id}/delete', 'MarketController@delete')->name('manager.post.market.delete');
         Route::get('/{id}/fetch', 'MarketController@fetch')->name('manager.post.market.fetch');
     });
 
