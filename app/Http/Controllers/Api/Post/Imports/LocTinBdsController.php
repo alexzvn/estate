@@ -24,13 +24,17 @@ class LocTinBdsController extends ImportController
 
     public function queueFacebook(Collection $posts)
     {
-        [$sell, $rent] = $this->getFacebookCategories();
+        [$sell, $rent, $needed] = $this->getFacebookCategories();
 
-        $posts->each(function ($post) use ($sell, $rent)
+        $posts->each(function ($post) use ($sell, $rent, $needed)
         {
-            $categories = Str::contains($post->type, ['Cho Thuê', 'Sang Nhượng'])
-                ? [$rent]
-                : [$sell];
+            if (Str::contains(Str::lower($post->type), 'cần tìm')) {
+                $categories = [$needed];
+            } else {
+                $categories = Str::contains($post->type, ['Cho Thuê', 'Sang Nhượng'])
+                    ? [$rent]
+                    : [$sell];
+            }
 
             ImportFacebookJob::dispatch((object) [
                 'title'        => $post->title,
@@ -93,6 +97,7 @@ class LocTinBdsController extends ImportController
         return [
             Category::childrenOnly()->where('name', 'regexp', '/bán facebook/')->first(),
             Category::childrenOnly()->where('name', 'regexp', '/thuê facebook/')->first(),
+            Category::childrenOnly()->where('name', 'regexp', '/Khách cần mua & thuê/')->first(),
         ];
     }
 }
