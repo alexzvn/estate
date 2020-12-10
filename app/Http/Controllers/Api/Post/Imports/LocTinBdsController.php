@@ -37,7 +37,7 @@ class LocTinBdsController extends ImportController
                 'province_id'  => $this->getProvince($post->city)->id ?? null,
                 'district_id'  => $this->getDistrict($post->district)->id ?? null,
                 'categories'   => $post->type === 'Cần Thuê' ? [$rent] : [$sell],
-                'hash'         => sha1($post->originalUrl),
+                'hash'         => "loctinbds.facebook.$post->id",
                 'extra'    => (object) [
                     'source'     => $post->source,
                     'groupName'  => $post->fbGroupName,
