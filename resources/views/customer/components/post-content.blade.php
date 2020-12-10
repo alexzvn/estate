@@ -11,15 +11,15 @@
         <strong>Thông tin thêm: </strong>
 
             @isset($post->extra['groupName'])
-                <p><strong>Người đăng: </strong> <a href="{{ $post->extra['groupUrl'] }}">{{ $post->extra['groupName'] }}</a></p>
+            <br>Nhóm FB: <a target="_blank" href="{{ $post->extra['groupUrl'] }}">{{ $post->extra['groupName'] }}</a>
             @endisset
 
             @isset($post->extra['authorName'])
-                <p><strong>Nhóm FB: </strong><a href="{{ $post->extra['authorUrl'] }}">{{ $post->extra['authorName'] }}</a></p>
+            <br>Người đăng: <a target="_blank" href="{{ $post->extra['authorUrl'] }}">{{ $post->extra['authorName'] }}</a>
             @endisset
 
             @isset($post->extra['originalUrl'])
-                <p><a href="{{ $post->extra['originalUrl'] }}">Link bài viết gốc</a></p>
+            <br><a target="_blank" href="{{ $post->extra['originalUrl'] }}">Link bài viết gốc</a>
             @endisset
 
         @endisset
