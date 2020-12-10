@@ -7,6 +7,19 @@
         <strong><i class="fa fa-hand-o-right"></i> Nội dung:</strong>
         {!! $post->content !!}
 
+        @isset($post->extra)
+        <strong>Thông tin thêm: </strong>
+
+            @isset($post->extra['groupName'])
+                <p><strong>Người đăng: </strong> <a href="{{ $post->extra['groupUrl'] }}">{{ $post->extra['groupName'] }}</a></p>
+            @endisset
+
+            @isset($post->extra['authorName'])
+                <p><strong>Nhóm FB: </strong><a href="{{ $post->extra['authorUrl'] }}">{{ $post->extra['authorName'] }}</a></p>
+            @endisset
+
+        @endisset
+
         <hr class="d-block d-md-none">
     </div>
 
@@ -18,20 +31,20 @@
                 <button class="btn btn-sm btn-success">Xem SĐT</button>
             </span>
             @else
-            N/a
+            Liên hệ
             @endisset
         </p>
-        <p><strong>Giá khoảng: </strong> {{ format_web_price($post->price) ?? 'N/a' }}</p>
+        <p><strong>Giá khoảng: </strong> {{ format_web_price($post->price) ?? 'Không rõ' }}</p>
         @if ($post->commission)
         <p><strong>Hoa Hồng: </strong> {{ $post->commission }}</p>
         @endif
-        <p><strong>Quận/huyện: </strong> {{ $post->district->name ?? 'N/a' }}</p>
-        <p><strong>Tỉnh/Thành phố: </strong> {{ $post->province->name ?? 'N/a' }}</p>
+        <p><strong>Quận/huyện: </strong> {{ $post->district->name ?? 'Không rõ' }}</p>
+        <p><strong>Tỉnh/Thành phố: </strong> {{ $post->province->name ?? 'Không rõ' }}</p>
         @isset($post->categories[0])
         <p><strong>Danh mục: </strong> {{ $post->categories[0]->name }}</p>
         @endisset
         
-        <p><strong>Ngày đăng: </strong> {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'N/a' }}</p>
+        <p><strong>Ngày đăng: </strong> {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'Không rõ' }}</p>
 
         @isset($post->report)
         <p style="color: red"><strong>Đã báo môi giới bởi: </strong> {{ Auth::id() == $post->report->user_id ? 'Bạn' : $post->report->user->name }}</p>

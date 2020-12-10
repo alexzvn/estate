@@ -23,13 +23,13 @@
             <p class="mb-0"><i class="fa fa-file-text-o"></i> <strong>{{ Str::ucfirst(Str::of($item->title)->limit(73)) }}</strong> <br>
 
             <span class="mb-0" style="font-size: 12px;">
-                <strong>Danh mục: </strong> <i>{{ $item->categories[0]->name ?? '' }}</i> <span class="text-muted">|</span>
-                <strong>Quận/huyện: </strong> <i>{{ $item->district->name ?? 'N/a' }}</i> <span class="text-muted">|</span>
-                <strong>Ngày đăng: </strong> <i>{{ $item->publish_at ? $item->publish_at->format('d/m/Y') : 'N/a' }}</i>
+                <strong>Danh mục: </strong> <i>{{ $item->categories[0]->name ?? 'Không rõ' }}</i> <span class="text-muted">|</span>
+                <strong>Quận/huyện: </strong> <i>{{ $item->district->name ?? 'Không rõ' }}</i> <span class="text-muted">|</span>
+                <strong>Ngày đăng: </strong> <i>{{ $item->publish_at ? $item->publish_at->format('d/m/Y') : 'Không rõ' }}</i>
             </span>
             </p>
             <p class="d-block d-lg-none" style="color: red">
-              <strong> Giá khoảng {{ isset($item->price) ? format_web_price($item->price) : 'N/a' }} </strong>
+              <strong> Giá khoảng {{ isset($item->price) ? format_web_price($item->price) : 'Không rõ' }} </strong>
               @isset($item->commission)
               - <strong> Hoa Hồng {{ $item->commission }}</strong>
               @endisset
@@ -38,14 +38,14 @@
         @if($hasCommission)
         <td class="d-none d-lg-table-cell"> <strong>{{ $item->commission ?? '' }}</strong> </td>
         @endif
-        <td class="d-none d-lg-table-cell"><strong>{{ isset($item->price) ? format_web_price($item->price) : 'N/a' }}</strong></td>
+        <td class="d-none d-lg-table-cell"><strong>{{ isset($item->price) ? format_web_price($item->price) : 'Không rõ' }}</strong></td>
         <td class="d-none d-lg-table-cell">
           @isset($item->phone)
           <span onclick="$(this).html(`<a href='tel:${$(this).data('phone')}'>${$(this).data('phone')}</a>`)" data-phone="{{ $item->phone }}">
               <button class="btn btn-sm btn-success">Xem SĐT</button>
           </span>
           @else
-          N/a
+          Liên hệ
           @endisset
         </td>
         <td class="d-none d-lg-table-cell">
