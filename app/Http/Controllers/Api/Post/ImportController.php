@@ -22,7 +22,7 @@ class ImportController extends Controller
     protected $posts;
 
     public function __construct() {
-        $this->post = collect(json_decode(request()->getContent()));
+        $this->posts = collect(json_decode(request()->getContent()));
     }
 
     public function store()
