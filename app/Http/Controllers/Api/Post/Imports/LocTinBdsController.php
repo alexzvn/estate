@@ -44,11 +44,12 @@ class LocTinBdsController extends ImportController
                 'categories'   => $categories,
                 'hash'         => "loctinbds.facebook.$post->id",
                 'extra'    => (object) [
-                    'source'     => $post->source,
-                    'groupName'  => $post->fbGroupName,
-                    'groupUrl'   => $post->fbGroupUrl,
-                    'authorName' => $post->fbPostAuthorName,
-                    'authorUrl'  => $post->fbPostAuthorUrl,
+                    'source'      => $post->source,
+                    'groupName'   => $post->fbGroupName,
+                    'groupUrl'    => $post->fbGroupUrl,
+                    'authorName'  => $post->fbPostAuthorName,
+                    'authorUrl'   => $post->fbPostAuthorUrl,
+                    'originalUrl' => $post->originalUrl
                 ]
             ]);
         });

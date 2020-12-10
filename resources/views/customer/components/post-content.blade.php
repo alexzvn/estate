@@ -18,6 +18,10 @@
                 <p><strong>Nhóm FB: </strong><a href="{{ $post->extra['authorUrl'] }}">{{ $post->extra['authorName'] }}</a></p>
             @endisset
 
+            @isset($post->extra['originalUrl'])
+                <p><a href="{{ $post->extra['originalUrl'] }}">Link bài viết gốc</a></p>
+            @endisset
+
         @endisset
 
         <hr class="d-block d-md-none">
