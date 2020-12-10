@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Post;
 
+use App\Models\Blacklist;
 use App\Models\Post;
 use App\Services\System\Post\Online;
 use Illuminate\Bus\Queueable;
@@ -40,7 +41,7 @@ class ImportFacebookJob implements ShouldQueue
 
         $post = Online::create((array) $this->post);
 
-        if (! empty($post->phone)) {
+        if (! empty($post->phone) && Blacklist::wherePhone($post->phone)->exists()) {
             Post::lockByPhone($post->phone);
         }
     }
