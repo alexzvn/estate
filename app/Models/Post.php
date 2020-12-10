@@ -35,8 +35,13 @@ class Post extends Model implements Auditable
         'price',
         'commission',
     ];
+
     protected $dates = [
         'publish_at'
+    ];
+
+    protected $casts = [
+        'extra' => 'json'
     ];
 
     public function user()
