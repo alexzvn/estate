@@ -68,7 +68,7 @@ use App\Enums\PostType;
                             <div class="form-group input-group-sm">
                                 <label for="post-phone">Số điện thoại</label>
                                 <input type="text"
-                                  class="form-control" value="" name="phone" id="post-phone" placeholder="0355...." required>
+                                  class="form-control" value="" name="phone" id="post-phone" placeholder="0355....">
                               </div>
                         </div>
                     </div>

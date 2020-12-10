@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,8 +17,14 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('import-crawl-post', 'Api\Post\ImportController@store')
+Route::post('import-crawl-post', 'Api\Post\Imports\TccController@store')
     ->middleware('extension')->name('api.crawl.import.tcc');
+
+Route::post('import/crawl/tcc', 'Api\Post\Imports\TccController@store')
+    ->middleware('extension');
+
+Route::post('import/crawl/loctinbds', 'Api\Post\Imports\LocTinBdsController@store')
+    ->middleware('extension')->name('api.crawl.import.loctinbds');
 
 Route::post('blacklist/add', 'Api\BlacklistController@import')
     ->middleware('extension');

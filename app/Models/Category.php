@@ -33,7 +33,12 @@ class Category extends Model implements Auditable
 
     public function scopeParentOnly(Builder $builder)
     {
-        return $builder->where('parent_id', null);
+        return $builder->whereNull('parent_id');
+    }
+
+    public function scopeChildrenOnly(Builder $builder)
+    {
+        return $builder->whereNotNull('parent_id');
     }
 
     /**

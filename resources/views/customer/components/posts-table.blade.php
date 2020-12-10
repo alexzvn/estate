@@ -41,7 +41,7 @@
         <td class="d-none d-lg-table-cell"><strong>{{ isset($item->price) ? format_web_price($item->price) : 'N/a' }}</strong></td>
         <td class="d-none d-lg-table-cell">
           @isset($item->phone)
-          <span onclick="$(this).html($(this).data('phone'))" data-phone="{{ $item->phone }}">
+          <span onclick="$(this).html(`<a href='tel:${$(this).data('phone')}'>${$(this).data('phone')}</a>`)" data-phone="{{ $item->phone }}">
               <button class="btn btn-sm btn-success">Xem SĐT</button>
           </span>
           @else

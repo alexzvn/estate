@@ -185,7 +185,7 @@
         $('.open-user').on('click', function () {
             let id = $(this).data('id');
 
-            window.location.href = `/manager/customer/${id}/view`;
+            window.open(`/manager/customer/${id}/view`)
         });
 
         $('.bs-tooltip').tooltip();

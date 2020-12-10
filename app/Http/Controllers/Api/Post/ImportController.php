@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Api\Post;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Jobs\Post\ImportPostJob as ImportPost;
 
 class ImportController extends Controller
 {
-    protected $price = [
+    private $price = [
         'tỷ'    => 1000000000,
         'triệu' => 1000000,
         'nghìn' => 1000,
@@ -17,41 +15,49 @@ class ImportController extends Controller
     ];
 
     /**
-     * Store a newly created resource in storage.
+     * Body payload posts
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @var \Illuminate\Support\Collection
      */
-    public function store(Request $request)
-    {
-        $posts = collect(json_decode($request->getContent()));
+    protected $posts;
 
-        if ($posts->isEmpty()) {
+    public function __construct() {
+        $this->posts = collect(json_decode(request()->getContent()));
+    }
+
+    public function store()
+    {
+        if ($this->posts->isEmpty()) {
             return response([
                 'message' => 'the post was empty',
                 'success' => false
             ], 400);
         }
 
-        $this->queue($posts);
+        $this->queue($this->posts);
 
         return ['message' => 'okey', 'success' => true];
     }
 
-    protected function queue($posts)
+    protected function normalizePhone($phone)
     {
-        $posts->each(function ($post) {
-            $post->hash  = sha1($post->url);
+        if (empty($phone)) {
+            return null;
+        }
 
-            $price = $this->stringPriceToNumber($post->price ?? '');
+        $phone = str_replace(['.', ',', '+'], '', $phone);
 
-            $post->price = $price || $price == 0 ? round($price) : null;
-
-            ImportPost::dispatch($post);
-        });
+        return preg_replace('/^84/', '0', $phone);
     }
 
-    protected function stringPriceToNumber(string $price)
+    protected function normalizePrice($price)
+    {
+        $price = $this->priceNumbered($price ?? '');
+
+        return $price || $price == 0 ? round($price) : null;
+    }
+
+    private function priceNumbered($price)
     {
         if (preg_match('/^[0-9]+$/', $price)) {
             return (float) $price;

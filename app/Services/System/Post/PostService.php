@@ -25,7 +25,8 @@ trait PostService
         'commission',
         'province_id',
         'district_id',
-        'publish_at'
+        'publish_at',
+        'extra'
     ];
 
     /**

@@ -29,7 +29,7 @@ class UpdatePost extends FormRequest
         return [
             'content'    => 'required',
             'title'     => 'required',
-            'phone'     => 'required|regex:/^[0-9_.]+$/',
+            'phone'     => 'nullable|regex:/^[0-9_.]+$/',
             'price'     => 'required|regex:/^[0-9,.]+$/',
             'category_ids'  => 'required|exists:categories,_id',
             'province'  => 'nullable|exists:provinces,_id',
