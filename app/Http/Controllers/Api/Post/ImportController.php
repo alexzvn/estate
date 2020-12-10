@@ -39,15 +39,15 @@ class ImportController extends Controller
         return ['message' => 'okey', 'success' => true];
     }
 
-    protected function normalizePhone($phone)
+    protected function normalizePhone($content)
     {
-        if (empty($phone)) {
-            return null;
+        $vietnamPhone = '/(\+?84|0)(\s|\.)?(\d{1,4})(\s|\.)?(\d{2,4})(\s|\.)?(\d{2,5})/im';
+
+        if (preg_match($vietnamPhone, $content, $matches)) {
+            return "0{$matches[3]}{$matches[5]}{$matches[7]}";
         }
 
-        $phone = str_replace(['.', ',', '+'], '', $phone);
-
-        return preg_replace('/^84/', '0', $phone);
+        return null;
     }
 
     protected function normalizePrice($price)
