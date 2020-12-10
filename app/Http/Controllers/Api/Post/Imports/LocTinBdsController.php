@@ -24,28 +24,18 @@ class LocTinBdsController extends ImportController
 
     public function queueFacebook(Collection $posts)
     {
-        [$sell, $rent, $needed] = $this->getFacebookCategories();
-
-        $posts->each(function ($post) use ($sell, $rent, $needed)
+        $posts->each(function ($post)
         {
-            if (Str::contains(Str::lower($post->type), 'cần tìm')) {
-                $categories = [$needed];
-            } else {
-                $categories = Str::contains($post->type, ['Cho Thuê', 'Sang Nhượng'])
-                    ? [$rent]
-                    : [$sell];
-            }
-
             ImportFacebookJob::dispatch((object) [
                 'title'        => $post->title,
                 'content'      => nl2br($post->content),
                 'price'        => $this->normalizePrice($post->price),
-                'phone'        => $this->normalizePhone($post->phoneNumber),
+                'phone'        => $this->getPhone($post->phoneNumber, $post->title, $post->content),
                 'status'       => PostStatus::Published,
                 'publish_at'   => $this->getDate($post->createdDate),
                 'province_id'  => $this->getProvince($post->city)->id ?? null,
                 'district_id'  => $this->getDistrict($post->district)->id ?? null,
-                'categories'   => $categories,
+                'categories'   => $this->getCategories($post->type),
                 'hash'         => "loctinbds.facebook.$post->id",
                 'extra'    => (object) [
                     'source'      => $post->source,
@@ -57,6 +47,34 @@ class LocTinBdsController extends ImportController
                 ]
             ]);
         });
+    }
+
+    private function getCategories($type)
+    {
+        static $categories;
+
+        if (! isset($categories)) {
+            $categories = $this->getFacebookCategories();
+        }
+
+        [$sell, $rent, $needed] = $categories;
+
+        if (Str::contains(Str::lower($type), 'cần tìm')) {
+            return [$needed];
+        }
+
+        return Str::contains($type, ['Cho Thuê', 'Sang Nhượng']) ? [$rent]: [$sell];
+    }
+
+    private function getPhone(...$content)
+    {
+        foreach ($content as $value) {
+            if ($this->normalizePhone($value)) {
+                return $this->normalizePhone($value);
+            }
+        }
+
+        return null;
     }
 
     private function getDate(string $date)
