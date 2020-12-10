@@ -39,7 +39,7 @@ class LocTinBdsController extends ImportController
                 'categories'   => $post->type === 'Cần Thuê' ? [$rent] : [$sell],
                 'hash'         => sha1($post->originalUrl),
                 'extra'    => (object) [
-                    'source'     => $post->originalName,
+                    'source'     => $post->source,
                     'groupName'  => $post->fbGroupName,
                     'groupUrl'   => $post->fbGroupUrl,
                     'authorName' => $post->fbPostAuthorName,
