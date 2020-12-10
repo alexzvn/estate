@@ -31,7 +31,7 @@ class LocTinBdsController extends ImportController
                 'title'        => $post->title,
                 'content'      => nl2br($post->content),
                 'price'        => $this->normalizePrice($post->price),
-                'phone'        => empty($post->phoneNumber) ? null : $post->phoneNumber,
+                'phone'        => $this->normalizePhone($post->phoneNumber),
                 'status'       => PostStatus::Published,
                 'publish_at'   => $this->getDate($post->createdDate),
                 'province_id'  => $this->getProvince($post->city)->id ?? null,
@@ -79,8 +79,8 @@ class LocTinBdsController extends ImportController
     private function getFacebookCategories()
     {
         return [
-            Category::where('name', 'regexp', '/bán facebook/')->first(),
-            Category::where('name', 'regexp', '/thuê facebook/')->first(),
+            Category::childrenOnly()->where('name', 'regexp', '/bán facebook/')->first(),
+            Category::childrenOnly()->where('name', 'regexp', '/thuê facebook/')->first(),
         ];
     }
 }

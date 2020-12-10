@@ -39,6 +39,17 @@ class ImportController extends Controller
         return ['message' => 'okey', 'success' => true];
     }
 
+    protected function normalizePhone($phone)
+    {
+        if (empty($phone)) {
+            return null;
+        }
+
+        $phone = str_replace(['.', ',', '+'], '', $phone);
+
+        return preg_replace('/^84/', '0', $phone);
+    }
+
     protected function normalizePrice($price)
     {
         $price = $this->priceNumbered($price ?? '');
