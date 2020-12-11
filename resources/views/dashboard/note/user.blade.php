@@ -79,8 +79,6 @@
                     <tbody>
                         @foreach ($notes as $note)
 
-                        {{-- @dd($note->new_values) --}}
-
                         <tr>
                             <td class="text-center" >{{ $loop->index }}</td>
                             @if ($note->user)
