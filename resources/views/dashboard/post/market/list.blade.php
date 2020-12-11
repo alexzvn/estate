@@ -129,12 +129,7 @@
                                         <select class="form-control" name="province" id="province" required>
                                             <option value="" selected>Trống</option>
                                             @foreach ($provinces as $province)
-                                            <option value="{{ $province->id }}" {{ $post->province_id == $province->id ? 'selected' :'' }}>{{ $province->name }}</option>
-                                            @php
-                                                if ($post->province_id == $province->id) {
-                                                    $activeProvince = $province;
-                                                }
-                                            @endphp
+                                            <option value="{{ $province->id }}">{{ $province->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -147,7 +142,7 @@
                                             <option value="" selected>Trống</option>
                                             @isset($activeProvince)
                                             @foreach ($activeProvince->districts as $district)
-                                            <option value="{{ $district->id }}" {{ $post->district_id == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
+                                            <option value="{{ $district->id }}">{{ $district->name }}</option>
                                             @endforeach
                                             @endisset
                                         </select>
