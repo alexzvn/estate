@@ -102,10 +102,11 @@ class LocTinBdsController extends ImportController
             $categories = Category::childrenOnly()->get();
         }
 
-        return $categories->filter(function ($category) use ($type)
-        {
-            return preg_match("/$type/", $category->name);
-        })->first();
+        return [
+            $categories->filter(function ($category) use ($type) {
+                return preg_match("/$type/", $category->name);
+            })->first()
+        ];
     }
 
     private function mapWebCategories($type)
