@@ -102,8 +102,6 @@ class LocTinBdsController extends ImportController
             $categories = Category::childrenOnly()->get();
         }
 
-        dd($type);
-
         return $categories->filter(function ($category) use ($type)
         {
             return preg_match("/$type/", $category->name);
