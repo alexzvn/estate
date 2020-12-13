@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manager\Post;
 
+use App\Enums\PostStatus;
 use App\Enums\PostType;
 use App\Http\Requests\Manager\Post\Market\UpdatePost;
 use App\Repository\Post;
@@ -29,18 +30,28 @@ class MarketController extends PostController
     {
         $post = Post::findOrFail($id);
 
-        $post = Market::update($post, $request->all());
+        $post = Market::update($post, $request->all())
+            ->forceFill([
+                'user_id' => user()->id,
+                'status' => PostStatus::Published,
+                'publish_at' => now()
+            ]);
 
-        $this->syncUploadFiles($post, $request);
+        $this->syncUploadFiles(tap($post)->save(), $request);
 
         return back()->with('success', 'Cập nhật thành công');
     }
 
     public function store(UpdatePost $request)
     {
-        $post = Market::create($request->all());
+        $post = Market::create($request->all())
+            ->forceFill([
+                'user_id' => user()->id,
+                'status' => PostStatus::Published,
+                'publish_at' => now()
+            ]);
 
-        $this->syncUploadFiles($post, $request);
+        $this->syncUploadFiles(tap($post)->save(), $request);
 
         return back()->with('success', 'ok');
     }
