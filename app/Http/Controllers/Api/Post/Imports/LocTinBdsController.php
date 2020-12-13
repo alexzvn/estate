@@ -31,12 +31,11 @@ class LocTinBdsController extends ImportController
     {
         $posts->each(function ($post)
         {
-            ImportLocTinBdsJob::dispatch((object) [
+            $post = (object) [
                 'title'        => $post->title,
                 'content'      => nl2br($post->content),
                 'price'        => $this->normalizePrice($post->price),
                 'phone'        => $this->getPhone($post->phoneNumber, $post->title, $post->content),
-                'status'       => $this->getStatus($post),
                 'publish_at'   => $this->getDate($post->createdDate),
                 'province_id'  => $this->getProvince($post->city)->id ?? null,
                 'district_id'  => $this->getDistrict($post->district)->id ?? null,
@@ -48,7 +47,11 @@ class LocTinBdsController extends ImportController
                     'authorUrl'   => $post->fbPostAuthorUrl,
                     'originalUrl' => $post->seeMoreUrl ?? null
                 ]
-            ]);
+            ];
+
+            $post->status = $this->getStatus($post);
+
+            ImportLocTinBdsJob::dispatch($post);
         });
     }
 
@@ -56,12 +59,11 @@ class LocTinBdsController extends ImportController
     {
         $posts->each(function ($post)
         {
-            ImportLocTinBdsJob::dispatch((object) [
+            $post = (object) [
                 'title'        => $post->title,
                 'content'      => nl2br($post->content),
                 'price'        => $this->normalizePrice($post->price),
                 'phone'        => $this->getPhone($post->phoneNumber, $post->title, $post->content),
-                'status'       => $this->getStatus($post),
                 'publish_at'   => $this->getDate($post->createdDate),
                 'province_id'  => $this->getProvince($post->city)->id ?? null,
                 'district_id'  => $this->getDistrict($post->district)->id ?? null,
@@ -75,14 +77,17 @@ class LocTinBdsController extends ImportController
                     'authorUrl'   => $post->fbPostAuthorUrl,
                     'originalUrl' => $post->originalUrl
                 ]
-            ]);
+            ];
+
+            $post->status = $this->getStatus($post);
+
+            ImportLocTinBdsJob::dispatch($post);
         });
     }
 
     private function getStatus($post)
     {
         if (
-            empty($post->content) &&
             empty($post->phone) &&
             ! Str::contains(Str::lower($post->type), 'cần tìm')
         ) {

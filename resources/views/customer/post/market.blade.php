@@ -20,52 +20,56 @@
         </div>
         @endif
 
-    </div>
-</div>
-
-<div class="container mt-5">
-    <div class="row">
-
-        @foreach ($posts as $post)
-        @php
-            $firstImages = $post->files->shift();
-        @endphp
-
-        <div class="col-xl-3 col-lg-4 col-sm-6 col-12 px-2">
-            <div class="item-post">
-                <div class="product-thumb">
-                    @isset ($firstImages)
-                    <a class="show-list-img" id="{{ $post->id }}" href="{{ asset('storage/' . $firstImages->path) }}"
-                        data-lightbox="{{ $post->id }}" data-title="">
-                        <img src="{{ asset('storage/' . $firstImages->path) }}">
-                    </a>
-                    @endisset
+        <div class="col-md-12 my-3">
+            <div class="row">
+    
+                @foreach ($posts as $post)
+                @php
+                    $firstImages = $post->files->shift();
+                @endphp
+        
+                <div class="col-xl-3 col-lg-4 col-sm-6 col-xs-12 px-2 mt-3">
+                    <div class="item-post h-100">
+                        <div class="product-thumb">
+                            @isset ($firstImages)
+                            <a class="show-list-img" id="{{ $post->id }}" href="{{ asset('storage/' . $firstImages->path) }}"
+                                data-lightbox="{{ $post->id }}" data-title="">
+                                <img src="{{ asset('storage/' . $firstImages->path) }}">
+                            </a>
+                            @endisset
+                        </div>
+                        <div class="home-product-bound">
+                            <ul class="wrap-list-detai-img">
+                                @foreach ($post->files as $image)
+                                <li>
+                                    <a href="{{ asset('storage/' . $image->path) }}"
+                                        data-lightbox="{{ $post->id }}" data-title="">123</a>
+                                <li>
+                                @endforeach
+                            </ul>
+                            <div class="p-title">
+                                <a class="trigger-show-list-img" data-id="{{ $post->id }}" href="javascript:void(0)"> {{ $post->title }}
+                                </a>
+                            </div>
+                            <div class="product-info mt-3">
+                                <img src="{{ asset('/assets/img/selection.png') }}" width="16"> <strong>{{ $post->phone ?? '' }}</strong>
+                            </div>
+                            <div class="product-info">
+                                <img src="{{ asset('/assets/img/location.png') }}" width="18">
+                                <a href="javascript:void(0)">{{ $post->district->name }}</a>,
+                                <a href="javascript:void(0)">{{ $post->province->name }}</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="home-product-bound">
-                    <ul class="wrap-list-detai-img">
-                        @foreach ($post->files as $image)
-                        <li>
-                            <a href="{{ asset('storage/' . $image->path) }}"
-                                data-lightbox="{{ $post->id }}" data-title="">123</a>
-                        <li>
-                        @endforeach
-                    </ul>
-                    <div class="p-title">
-                        <a class="trigger-show-list-img" data-id="{{ $post->id }}" href="javascript:void(0)"> {{ $post->title }}
-                        </a>
-                    </div>
-                    <div class="product-info mt-3">
-                        <img src="{{ asset('/assets/img/selection.png') }}" width="16"> <strong>{{ $post->phone ?? '' }}</strong>
-                    </div>
-                    <div class="product-info">
-                        <img src="{{ asset('/assets/img/location.png') }}" width="18">
-                        <a href="javascript:void(0)">{{ $post->district->name }}</a>,
-                        <a href="javascript:void(0)">{{ $post->province->name }}</a>
-                    </div>
-                </div>
+                @endforeach
+        
+            </div>
+
+            <div class="d-flex justify-content-center">
+                {{ $posts->withQueryString()->onEachSide(1)->links('customer.layouts.paginate') }}
             </div>
         </div>
-        @endforeach
 
     </div>
 </div>
@@ -121,7 +125,6 @@
 
     .home-product-bound {
         padding: 13px 8px;
-        border: 1px solid #ECECEC;
         border-top: 0;
         box-sizing: border-box;
         border-radius: 0 0 5px 5px;
@@ -155,7 +158,6 @@
     .item-post {
         border-radius: 5px;
         background: #fff;
-        margin-bottom: 20px;
         box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         transition: box-shadow ease-in .25s;
     }
@@ -171,10 +173,6 @@
         color: #777;
         line-height: 22px;
         margin-bottom: 7px;
-    }
-
-    .home-product-bound .p-title {
-        height: 65px;
     }
 
     .home-product-bound .p-title a {
