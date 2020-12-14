@@ -31,7 +31,7 @@ class LocTinBdsController extends ImportController
     {
         $posts->each(function ($post)
         {
-            $post = (object) [
+            $info = (object) [
                 'title'        => $post->title,
                 'content'      => nl2br($post->content),
                 'price'        => $this->normalizePrice($post->price),
@@ -49,9 +49,9 @@ class LocTinBdsController extends ImportController
                 ]
             ];
 
-            $post->status = $this->getStatus($post);
+            $info->status = $this->getStatus($post);
 
-            ImportLocTinBdsJob::dispatch($post);
+            ImportLocTinBdsJob::dispatch($info);
         });
     }
 
@@ -59,7 +59,7 @@ class LocTinBdsController extends ImportController
     {
         $posts->each(function ($post)
         {
-            $post = (object) [
+            $info = (object) [
                 'title'        => $post->title,
                 'content'      => nl2br($post->content),
                 'price'        => $this->normalizePrice($post->price),
@@ -79,9 +79,9 @@ class LocTinBdsController extends ImportController
                 ]
             ];
 
-            $post->status = $this->getStatus($post);
+            $info->status = $this->getStatus($post);
 
-            ImportLocTinBdsJob::dispatch($post);
+            ImportLocTinBdsJob::dispatch($info);
         });
     }
 
