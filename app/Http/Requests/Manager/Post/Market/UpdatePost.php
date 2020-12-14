@@ -33,7 +33,7 @@ class UpdatePost extends FormRequest
             'province'  => 'required|exists:provinces,_id',
             'district'  => 'required|exists:districts,_id',
             'images'    => 'nullable',
-            'images.*'   => 'image|mimes:jpeg,png,jpg,gif|max:8192',
+            'images.*'   => 'image|mimes:jpeg,png,jpg,gif',
             'image_ids' => 'nullable|array|exists:files,_id',
             'type'      => [
                 'nullable',

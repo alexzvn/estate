@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Manager\Post;
 
 use App\Repository\File;
 use App\Models\Whitelist;
+use Illuminate\Support\Str;
 use App\Repository\Category;
 use Illuminate\Http\Request;
 use App\Repository\Location\Province;
-use App\Http\Controllers\Manager\Controller;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\Manager\Controller;
+use Intervention\Image\Image;
 
 class PostController extends Controller
 {
@@ -36,7 +38,7 @@ class PostController extends Controller
         foreach ($request->file('images') ?? [] as $file) {
             $uploaded = File::create([
                 'name' => $file->getFilename(),
-                'path' => $file->store('media/images', 'public')
+                'path' => $this->storeImage(image($file))
             ]);
 
             $ids->push($uploaded->id);
@@ -45,5 +47,21 @@ class PostController extends Controller
         if ($ids->count()) {
             $post->files()->sync($ids->toArray());
         }
+    }
+
+    protected function storeImage(Image $image)
+    {
+        if ($image->getHeight() > 1080) {
+            $image->heighten(1080);
+        }
+
+        $image->encode('jpg', 75);
+
+        $path = '/media/' . Str::uuid() . '.jpg';
+
+        return tap($path, function ($path) use ($image)
+        {
+            $image->save(public_path($path));
+        });
     }
 }

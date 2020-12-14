@@ -37,7 +37,7 @@
 @foreach ($posts as $post)
 <div class="col-md-4 col-sm-6 mb-3">
     <div class="card component-card_2">
-        <img src="@isset($post->files[0]){{ '/storage/' . $post->files[0]->path }}@endisset" class="card-img-header cursor-pointer" data-images='@json($post->files)'>
+        <img src="@isset($post->files[0]) {{ asset($post->files[0]->path) }} @endisset" class="card-img-header cursor-pointer" data-images='@json($post->files)'>
         <div class="card-body">
             <h5 class="card-title">{{ $post->title }}</h5>
             <p class="card-text">
@@ -262,7 +262,7 @@
                     }
 
                     let files = post.files.map(file => {
-                        return `/storage/${file.path}?fid=${file._id}`;
+                        return `${file.path}?fid=${file._id}`;
                     });
 
                     upload.addImagesFromPath(files);
@@ -331,7 +331,7 @@
 $(document).ready(function () {
     $('.card-img-header').on('click', function () {
         const images = $(this).data('images').map(image => {
-            return {src: `/storage/${image.path}`, w: 0, h: 0};
+            return {src: `${image.path}`, w: 0, h: 0};
         });
 
         let pswpElement = document.querySelectorAll('.pswp')[0];

@@ -35,7 +35,7 @@ class StoreRequest extends FormRequest
             'province' => 'nullable|exists:provinces,_id',
             'district' => 'nullable|exists:districts,_id',
             'images'    => 'nullable',
-            'images.*'   => 'image|mimes:jpeg,png,jpg,gif|max:4096',
+            'images.*'   => 'image|mimes:jpeg,png,jpg,gif',
             'type'     => [
                 'nullable',
                 Rule::in(PostType::getValues())

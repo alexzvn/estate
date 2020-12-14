@@ -36,7 +36,7 @@ class ClonePost extends FormRequest
             'commission'=> 'required|string|max:20',
             'district'  => 'nullable|exists:districts,_id',
             'images'    => 'nullable',
-            'images.*'   => 'image|mimes:jpeg,png,jpg,gif|max:4096',
+            'images.*'   => 'image|mimes:jpeg,png,jpg,gif',
             'image_ids' => 'nullable|array|exists:files,_id',
             'type'      => [
                 'nullable',
