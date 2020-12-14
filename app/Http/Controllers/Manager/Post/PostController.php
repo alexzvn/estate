@@ -37,7 +37,7 @@ class PostController extends Controller
 
         foreach ($request->file('images') ?? [] as $file) {
             $uploaded = File::create([
-                'name' => $file->getFilename(),
+                'name' => $file->getClientOriginalName(),
                 'path' => $this->storeImage(image($file))
             ]);
 
