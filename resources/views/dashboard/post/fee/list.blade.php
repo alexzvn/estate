@@ -218,7 +218,7 @@ ClassicEditor
                 }
 
                 // let files = post.files.map(file => {
-                //     return `/storage/${file.path}?fid=${file._id}`;
+                //     return `${file.path}?fid=${file._id}`;
                 // });
 
                 // upload.addImagesFromPath(files);

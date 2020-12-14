@@ -32,9 +32,9 @@
                     <div class="item-post h-100">
                         <div class="product-thumb">
                             @isset ($firstImages)
-                            <a class="show-list-img" id="{{ $post->id }}" href="{{ asset('storage/' . $firstImages->path) }}"
+                            <a class="show-list-img" id="{{ $post->id }}" href="{{ asset($firstImages->path) }}"
                                 data-lightbox="{{ $post->id }}" data-title="">
-                                <img src="{{ asset('storage/' . $firstImages->path) }}">
+                                <img src="{{ asset($firstImages->path) }}">
                             </a>
                             @endisset
                         </div>
@@ -42,7 +42,7 @@
                             <ul class="wrap-list-detai-img">
                                 @foreach ($post->files as $image)
                                 <li>
-                                    <a href="{{ asset('storage/' . $image->path) }}"
+                                    <a href="{{ asset($image->path) }}"
                                         data-lightbox="{{ $post->id }}" data-title="">123</a>
                                 <li>
                                 @endforeach

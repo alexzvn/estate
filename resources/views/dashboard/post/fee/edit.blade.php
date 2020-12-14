@@ -10,7 +10,7 @@
 
     $pathFiles = $post->files->map(function ($file)
     {
-        return asset('storage/'.$file->path) . "?fid=$file->id";
+        return asset($file->path) . "?fid=$file->id";
     });
 @endphp
 
