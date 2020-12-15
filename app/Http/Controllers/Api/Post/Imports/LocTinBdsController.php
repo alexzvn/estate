@@ -49,7 +49,7 @@ class LocTinBdsController extends ImportController
                 ]
             ];
 
-            $info->status = $this->getStatus($post);
+            $info->status = $this->getStatus($post->type, $info->phone);
 
             ImportLocTinBdsJob::dispatch($info);
         });
@@ -79,17 +79,17 @@ class LocTinBdsController extends ImportController
                 ]
             ];
 
-            $info->status = $this->getStatus($post);
+            $info->status = $this->getStatus($post->type, $info->phone);
 
             ImportLocTinBdsJob::dispatch($info);
         });
     }
 
-    private function getStatus($post)
+    private function getStatus($type, $phone)
     {
         if (
-            empty($post->phone) &&
-            ! Str::contains(Str::lower($post->type), 'cần tìm')
+            empty($phone) &&
+            ! Str::contains(Str::lower($type), 'cần tìm')
         ) {
             return PostStatus::Draft;
         }
