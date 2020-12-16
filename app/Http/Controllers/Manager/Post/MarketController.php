@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manager\Post;
 use App\Enums\PostStatus;
 use App\Enums\PostType;
 use App\Http\Requests\Manager\Post\Market\UpdatePost;
+use App\Repository\Permission;
 use App\Repository\Post;
 use App\Services\System\Post\Market;
 use App\Services\System\Post\PostService;
@@ -23,7 +24,10 @@ class MarketController extends PostController
 
         $this->shareCategoriesProvinces();
 
-        return view('dashboard.post.market.list', compact('posts'));
+        return view('dashboard.post.market.list', [
+            'posts' => $posts,
+            'staff' => Permission::findUsersHasPermission('manager.dashboard.access')
+        ]);
     }
 
     public function update(string $id, UpdatePost $request)
