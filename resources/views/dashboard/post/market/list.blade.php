@@ -34,6 +34,10 @@
     </h4>
 </div>
 
+<div class="col-12 mb-4">
+    @include('dashboard.post.fee.components.search')
+</div>
+
 @foreach ($posts as $post)
 <div class="col-md-4 col-sm-6 mb-3">
     <div class="card component-card_2">

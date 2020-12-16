@@ -13,7 +13,7 @@ class NoteController extends Controller
     {
         $this->authorize('manager.note.user.view');
 
-        $employee = Permission::findUsersHasPermission('manager.user.view');
+        $employee = Permission::findUsersHasPermission('manager.dashboard.access');
 
         $notes = Audit::where('auditable_type', Note::class)
             ->where('event', '<>', 'created')
