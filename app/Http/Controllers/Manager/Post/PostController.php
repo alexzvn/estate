@@ -61,7 +61,7 @@ class PostController extends Controller
 
         return tap($path, function ($path) use ($image)
         {
-            $image->save(public_path($path));
+            $image->orientate()->save(public_path($path));
         });
     }
 }
