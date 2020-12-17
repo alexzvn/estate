@@ -130,7 +130,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group input-group-sm">
                                         <label for="province">Tỉnh, thành phố</label>
-                                        <select class="form-control" name="province" id="province" required>
+                                        <select class="form-control" name="province" id="main-province" required>
                                             <option value="" selected>Trống</option>
                                             @foreach ($provinces as $province)
                                             <option value="{{ $province->id }}">{{ $province->name }}</option>
@@ -142,7 +142,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group input-group-sm">
                                         <label for="district">Quận/huyện</label>
-                                        <select class="form-control" name="district" id="district" required>
+                                        <select class="form-control" name="district" id="main-district" required>
                                             <option value="" selected>Trống</option>
                                             @isset($activeProvince)
                                             @foreach ($activeProvince->districts as $district)
@@ -221,7 +221,7 @@
             window.location.href = `/manager/post/market/${id}/delete`
         })
 
-        $('#province').on('change', (e) => {
+        $('#main-province').on('change', (e) => {
             address.setDistricts($(e.currentTarget).val());
         })
 
@@ -250,13 +250,13 @@
 
                     let options = {
                         category: post.category_ids[0],
-                        province: post.province_id,
-                        district: post.district_id,
+                        'main-province': post.province_id,
+                        'main-district': post.district_id,
                         type: post.type,
                         status: post.status,
                     };
 
-                    address.setDistricts(options.province);
+                    address.setDistricts(options['main-province']);
 
                     for (const key in options) {
                         if (options.hasOwnProperty(key) && options[key]) {
@@ -307,7 +307,7 @@
     window.address = {
         setDistricts(provinceId) {
             let province = data.filter((e) => {return e._id === provinceId})[0];
-            let district = $('#district');
+            let district = $('#main-district');
 
             district.html('');
             district.append('<option value="" selected>Chọn</option');
