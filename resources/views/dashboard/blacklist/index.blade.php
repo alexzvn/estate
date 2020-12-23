@@ -23,10 +23,10 @@
 
             <form id="search-form" action="" method="GET">
                 <div class="row">
-                    <div class="col-md-5 pl-md-0 order-first">
+                    <div class="col-md-4 pl-md-0 order-first">
                         <div class="form-row">
                             <label for="phone" class="col-md-3 col-form-label text-md-right d-none d-md-block"><strong>Tìm kiếm: </strong></label>
-            
+
                             <div class="col-md-9">
                                 <div class="form-group input-group-sm">
                                     <input id="phone" type="text" class="form-control" name="phone" value="{{ request('phone') }}" placeholder="tìm theo SĐT">
@@ -34,19 +34,41 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row col-md-2 order-first">
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="source" id="source" value="api" {{ request('source') === 'api' ? 'checked' : '' }}>
-                            Nguồn khác
-                          </label>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                  <input type="checkbox" class="form-check-input" name="source" id="source" value="api" {{ request('source') === 'api' ? 'checked' : '' }}>
+                                  Nguồn khác
+                                </label>
+                              </div>
                         </div>
                     </div>
-                    <div class="col-md-3 pl-md-0 order-md-first order-last">
-                        <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
-                        </a>
+
+                    <div class="col-md-2 pl-md-0 order-first">
+                        <div class="form-group input-group-sm">
+                            <select class="form-control" name="province" id="province">
+                              <option value="">Chọn Tỉnh/TP</option>
+                              @foreach ($provinces ?? [] as $item)
+                                  <option value="{{ $item->id }}" {{ $item->id === request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                              @endforeach
+                            </select>
+                        </div>
                     </div>
-            
+
+                    <div class="col-md-2 pl-md-0 order-first">
+                        <div class="form-group input-group-sm">
+                            <input type="text" value="{{ request('page') }}"
+                              class="form-control" name="page" id="page" aria-describedby="helpId" placeholder="Phân trang">
+                            <small id="helpId" class="form-text text-muted">Phân trang</small>
+                          </div>
+                    </div>
+
+                    <div class="col-md-2 pl-md-0 order-md-first order-last">
+                        <button type="submit" class="btn btn-sm btn-primary mb-2">Tìm kiếm</button>
+                    </div>
+
                 </div>
             </form>
             <div class="table-responsive">
@@ -164,6 +186,7 @@
 <script>
 
     $(document).ready(function() {
+
         $('.note').on('change', function () {
             let id = $(this).data('id');
 
