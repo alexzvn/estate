@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Manager\Blacklist;
 
+use Illuminate\Http\Request;
+use App\Repository\Blacklist;
+use App\Repository\Location\Province;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Blacklist\Phone\StorePhone;
 use App\Http\Requests\Manager\Blacklist\Phone\UpdatePhone;
-use App\Repository\Blacklist;
-use Illuminate\Http\Request;
 
 class BlacklistController extends Controller
 {
@@ -17,7 +18,9 @@ class BlacklistController extends Controller
         return view('dashboard.blacklist.index', [
             'blacklist' => Blacklist::latest()->with([
                 'user', 'posts', 'adder'
-            ])->filter($request)->paginate(40)
+            ])->filter($request)->paginate(40),
+
+            'provinces' => Province::active()->get()
         ]);
     }
 
