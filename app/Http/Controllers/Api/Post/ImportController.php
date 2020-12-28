@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Api\Post;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Collection;
 
-class ImportController extends Controller
+abstract class ImportController extends Controller
 {
     private $price = [
         'tỷ'    => 1000000000,
@@ -77,4 +78,6 @@ class ImportController extends Controller
 
         return ((float) $price) * $priceString;
     }
+
+    abstract public function queue(Collection $posts);
 }

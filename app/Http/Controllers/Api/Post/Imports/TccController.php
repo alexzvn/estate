@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 
 class TccController extends ImportController
 {
-    protected function queue(Collection $posts)
+    public function queue(Collection $posts)
     {
         $posts->each(function ($post) {
             $post->hash  = sha1($post->url);
