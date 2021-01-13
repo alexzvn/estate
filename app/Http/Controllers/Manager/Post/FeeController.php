@@ -20,7 +20,8 @@ class FeeController extends PostController
                 'district',
                 'categories',
                 'user',
-                'verifier'
+                'verifier',
+                'tracking'
             ])
             ->filter($request)
             ->newest();
