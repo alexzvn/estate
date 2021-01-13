@@ -18,7 +18,13 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.view');
 
-        $posts = Online::with(['province', 'district','categories', 'user'])
+        $posts = Online::with([
+                'province',
+                'district',
+                'categories',
+                'tracking',
+                'user'
+            ])
             ->filter($request)
             ->newest()
             ->paginate(30);

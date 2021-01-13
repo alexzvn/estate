@@ -90,6 +90,9 @@
                                 @isset($post->phone)
                                 <div class="d-flex">
                                     {!! implode('<br>', explode(',', $post->phone ?? '')) ?? 'N/a' !!}
+                                    @if ($post->tracking)
+                                        <small class="text-muted">({{ $post->tracking->seen ?? 1 }})</small>
+                                    @endif
                                     <i class="lookup-phone t-icon t-hover-icon" data-feather="search" data-phone="{{ $post->phone ?? '' }}"></i>
                                 </div>
                                 @endisset
