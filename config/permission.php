@@ -150,7 +150,7 @@ return [
             'manager.post.online.reserve' => 'Đảo tin',
 
             'manager.post.fee.view'   => 'Xem',
-            'manager.post.fee.view.all'   => 'Xem tất',
+            'manager.post.fee.view.all' => 'Xem tất',
             'manager.post.fee.create' => 'Tạo mới',
             'manager.post.fee.modify' => 'Chỉnh sửa',
             'manager.post.fee.delete' => 'Xóa',
@@ -211,6 +211,7 @@ return [
                     'manager.post.fee.create',
                     'manager.post.fee.modify',
                     'manager.post.fee.delete',
+                    'manager.post.fee.view.all'
                 ]
             ],[
                 'name' => 'Quản lý tin thị trường',
