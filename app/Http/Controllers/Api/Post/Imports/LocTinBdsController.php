@@ -162,32 +162,4 @@ class LocTinBdsController extends ImportController
     {
         return Carbon::createFromFormat('d/m/y', $date);
     }
-
-    private function getProvince(string $name)
-    {
-        static $provinces;
-
-        if ($provinces === null) {
-            $provinces = Province::all();
-        }
-
-        return $provinces->filter(function ($province) use ($name)
-        {
-            return preg_match("/$name/", $province->name);
-        })->first();
-    }
-
-    private function getDistrict(string $name)
-    {
-        static $districts;
-
-        if ($districts === null) {
-            $districts = District::all();
-        }
-
-        return $districts->filter(function ($district) use ($name)
-        {
-            return preg_match("/$name/", $district->name);
-        })->first();
-    }
 }
