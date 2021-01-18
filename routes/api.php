@@ -17,14 +17,12 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('import-crawl-post', 'Api\Post\Imports\TccController@store')
-    ->middleware('extension')->name('api.crawl.import.tcc');
+Route::group(['middleware' => 'extension'], function ()
+{
+    Route::post('blacklist/add', 'Api\BlacklistController@import');
+    Route::post('import-crawl-post', 'Api\Post\Imports\TccController@store');
 
-Route::post('import/crawl/tcc', 'Api\Post\Imports\TccController@store')
-    ->middleware('extension');
-
-Route::post('import/crawl/loctinbds', 'Api\Post\Imports\LocTinBdsController@store')
-    ->middleware('extension')->name('api.crawl.import.loctinbds');
-
-Route::post('blacklist/add', 'Api\BlacklistController@import')
-    ->middleware('extension');
+    Route::post('import/crawl/tcc', 'Api\Post\Imports\TccController@store')->name('api.crawl.import.tcc');
+    Route::post('import/crawl/chotot', 'Api\Post\Imports\ChoTotController@store')->name('api.crawl.import.chotot');
+    Route::post('import/crawl/loctinbds', 'Api\Post\Imports\LocTinBdsController@store')->name('api.crawl.import.loctinbds');
+});

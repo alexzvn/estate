@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api\Post;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
+use App\Http\Controllers\Controller;
+use App\Repository\Location\District;
+use App\Repository\Location\Province;
 
 abstract class ImportController extends Controller
 {
@@ -77,6 +79,34 @@ abstract class ImportController extends Controller
         );
 
         return ((float) $price) * $priceString;
+    }
+
+    protected function getProvince(string $name)
+    {
+        static $provinces;
+
+        if ($provinces === null) {
+            $provinces = Province::all();
+        }
+
+        return $provinces->filter(function ($province) use ($name)
+        {
+            return preg_match("/$name/", $province->name);
+        })->first();
+    }
+
+    protected function getDistrict(string $name)
+    {
+        static $districts;
+
+        if ($districts === null) {
+            $districts = District::all();
+        }
+
+        return $districts->filter(function ($district) use ($name)
+        {
+            return preg_match("/$name/", $district->name);
+        })->first();
     }
 
     abstract public function queue(Collection $posts);
