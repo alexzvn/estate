@@ -39,7 +39,9 @@ trait PostService
     {
         $attr = collect(self::handleRawAttribute($attr));
 
-        $post = tap(new Post)->forceFill(
+        $post = new Post;
+
+        $post->forceFill(
             $attr->only(static::$fillable)->toArray()
         )->save();
 
