@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api\Post\Imports;
 
-use App\Http\Controllers\Api\Post\ImportController;
-use App\Jobs\Post\ImportChoTotJob;
 use App\Models\Category;
+use Illuminate\Support\Str;
+use App\Jobs\Post\ImportChoTotJob;
 use Illuminate\Support\Collection;
+use App\Http\Controllers\Api\Post\ImportController;
 
 class ChoTotController extends ImportController
 {
@@ -34,7 +35,7 @@ class ChoTotController extends ImportController
                 'phone'       => $this->normalizePhone($raw->phoneNumber, $raw->content),
                 'province_id' => $this->findProvince($province)->id ?? null,
                 'district_id' => $this->findDistrict($district)->id ?? null,
-                'categories'  => $this->findCategories($raw->category),
+                'categories'  => $this->findCategories(Str::lower($raw->category)),
                 'hash'        => sha1($raw->url),
                 'extra'       => (object) $this->makeExtra($raw)
             ];

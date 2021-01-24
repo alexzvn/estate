@@ -2,15 +2,17 @@
 
 namespace App\Jobs\Post;
 
-use App\Models\Blacklist;
+use stdClass;
 use App\Models\Post;
-use App\Services\System\Post\Online;
+use App\Enums\PostStatus;
+use App\Models\Blacklist;
 use Illuminate\Bus\Queueable;
+use App\Services\System\Post\Online;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use stdClass;
 
 class ImportLocTinBdsJob implements ShouldQueue
 {
@@ -41,8 +43,16 @@ class ImportLocTinBdsJob implements ShouldQueue
 
         $post = Online::create((array) $this->post);
 
-        if (! empty($post->phone) && Blacklist::wherePhone($post->phone)->exists()) {
-            Post::lockByPhone($post->phone);
+        if ($this->getBlacklist()->where('phone', $post->phone)->isNotEmpty()) {
+            $post->fill(['status' => PostStatus::Locked])->save();
         }
+    }
+
+    protected function getBlacklist()
+    {
+        return Cache::remember('blacklist.phone', now()->addMinute(), function ()
+        {
+            return Blacklist::all();
+        });
     }
 }
