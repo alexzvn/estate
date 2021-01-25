@@ -14,7 +14,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class ImportChoTotJob implements ShouldQueue
+class ImportChoTotJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
