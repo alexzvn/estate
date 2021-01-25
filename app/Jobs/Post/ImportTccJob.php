@@ -2,44 +2,18 @@
 
 namespace App\Jobs\Post;
 
-
-use stdClass;
 use Carbon\Carbon;
-
 use App\Repository\Post;
 use App\Enums\PostStatus;
 use App\Enums\PostType;
-use App\Repository\Blacklist;
 use Illuminate\Support\Str;
-
 use App\Repository\Category;
-
-use Illuminate\Bus\Queueable;
 use App\Repository\Location\District;
 use App\Repository\Location\Province;
 use App\Services\System\Post\Online;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Cache;
 
-class ImportTccJob
+class ImportTccJob extends ImportPostJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    protected $post;
-
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct(stdClass $post)
-    {
-        $this->post = $post;
-    }
-
     /**
      * Execute the job.
      *
@@ -70,7 +44,7 @@ class ImportTccJob
             'district_id' => $district->id ?? null,
         ]);
 
-        if ($this->getBlacklist()->where('phone', $this->post->phone)->isNotEmpty()) {
+        if ($this->isInBlacklist($post->phone)) {
             $post->fill(['status' => PostStatus::Locked]);
         }
 
@@ -86,13 +60,5 @@ class ImportTccJob
         $category = Category::where('name', 'like', "%$category%")->first();
 
         return [$category];
-    }
-
-    protected function getBlacklist()
-    {
-        return Cache::remember('blacklist.phone', now()->addMinute(), function ()
-        {
-            return Blacklist::all();
-        });
     }
 }
