@@ -22,6 +22,7 @@ trait PostService
         'phone',
         'price',
         'hash',
+        'source',
         'commission',
         'province_id',
         'district_id',

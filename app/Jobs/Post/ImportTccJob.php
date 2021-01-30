@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Post;
 
+use App\Enums\PostSource;
 use Carbon\Carbon;
 use App\Repository\Post;
 use App\Enums\PostStatus;
@@ -37,6 +38,7 @@ class ImportTccJob extends ImportPostJob
             'publish_at'  => Carbon::createFromDate(...$date),
             'status'      => PostStatus::Published,
             'type'        => PostType::Online,
+            'source'      => PostSource::TinChinhChu,
             'categories'  => $this->getCategory(),
             'price'       => $this->post->price,
             'phone'       => $this->post->phone,
