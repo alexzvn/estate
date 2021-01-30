@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Post\Imports;
 
+use App\Enums\PostSource;
 use App\Models\Category;
 use App\Enums\PostStatus;
 use Illuminate\Support\Str;
@@ -41,6 +42,7 @@ class LocTinBdsController extends ImportController
                 'district_id'  => $this->getDistrict($post->district)->id ?? null,
                 'categories'   => $this->getWebCategories($post->type),
                 'hash'         => "loctinbds.web.$post->id",
+                'source'       => PostSource::LocTinBds,
                 'extra'    => (object) [
                     'source'      => $post->source,
                     'authorName'  => $post->fbPostAuthorName,

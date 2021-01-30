@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Post\Imports;
 
+use App\Enums\PostSource;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use App\Jobs\Post\ImportChoTotJob;
@@ -37,6 +38,7 @@ class ChoTotController extends ImportController
                 'district_id' => $this->findDistrict($district)->id ?? null,
                 'categories'  => $this->findCategories(Str::lower($raw->category)),
                 'hash'        => sha1($raw->url),
+                'source'      => PostSource::ChoTot,
                 'extra'       => (object) $this->makeExtra($raw)
             ];
 
