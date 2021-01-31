@@ -1,4 +1,7 @@
-<?php use App\Enums\PostType; ?>
+<?php
+use App\Enums\PostType;
+use App\Enums\PostSource;
+?>
 <!--  BEGIN SIDEBAR  -->
         
         <div class="sidebar-wrapper sidebar-theme">
@@ -48,8 +51,20 @@
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled @active($active, 'show')" id="online-post" data-parent="#accordionExample">
+                            @php
+                                $online = route('manager.post.online');
+                            @endphp
                             <li class="@active('manager.post.online')">
-                                <a href="{{ route('manager.post.online') }}"> Tất cả </a>
+                                <a href="{{ $online }}"> Tất cả </a>
+                            </li>
+                            <li class="@active(request('source') == PostSource::TinChinhChu)">
+                                <a href="{{ "$online?source=" . PostSource::TinChinhChu }}">Tin chính chủ</a>
+                            </li>
+                            <li class="@active(request('source') == PostSource::LocTinBds)">
+                                <a href="{{ "$online?source=" . PostSource::LocTinBds }}">Lọc tin BDS</a>
+                            </li>
+                            <li class="@active(request('source') == PostSource::ChoTot)">
+                                <a href="{{ "$online?source=" . PostSource::ChoTot }}">Tin chợ tốt</a>
                             </li>
                             <li class="@active('manager.post.online.trashed')">
                                 <a href="{{ route('manager.post.online.trashed') }}">Tin đã xóa </a>
