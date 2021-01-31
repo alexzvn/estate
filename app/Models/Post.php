@@ -26,8 +26,7 @@ class Post extends Model implements Auditable
         'verifier_id',
         'status',
         'type',
-        'phone',
-        'source',
+        'phone'
     ];
 
     protected $fillable = [
@@ -178,6 +177,11 @@ class Post extends Model implements Auditable
     public function filterDistrict(Builder $builder, $value)
     {
         return $builder->where('district_id', $value);
+    }
+
+    public function filterSource(Builder $builder, $source)
+    {
+        return $builder->whereSource((int) $source);
     }
 
     public function filterPrice(Builder $builder, $price)

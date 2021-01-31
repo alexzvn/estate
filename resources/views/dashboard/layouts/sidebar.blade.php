@@ -57,7 +57,7 @@ use App\Enums\PostSource;
                             <li class="@active('manager.post.online')">
                                 <a href="{{ $online }}"> Tất cả </a>
                             </li>
-                            <li class="@active(request('source') == PostSource::TinChinhChu)">
+                            <li class="@active(request('source', -1) == PostSource::TinChinhChu)">
                                 <a href="{{ "$online?source=" . PostSource::TinChinhChu }}">Tin chính chủ</a>
                             </li>
                             <li class="@active(request('source') == PostSource::LocTinBds)">
