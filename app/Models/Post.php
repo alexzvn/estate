@@ -23,7 +23,11 @@ class Post extends Model implements Auditable
     const NAME = 'tin';
 
     protected $filterable = [
-        'verifier_id'
+        'verifier_id',
+        'status',
+        'type',
+        'phone',
+        'source',
     ];
 
     protected $fillable = [
@@ -128,11 +132,6 @@ class Post extends Model implements Auditable
         ]);
     }
 
-    public function filterType(Builder $builder, $type)
-    {
-        return $builder->where('type', $type);
-    }
-
     public function filterFrom(Builder $builder, $date)
     {
         if ($date = strtotime($date)) {
@@ -179,16 +178,6 @@ class Post extends Model implements Auditable
     public function filterDistrict(Builder $builder, $value)
     {
         return $builder->where('district_id', $value);
-    }
-
-    public function filterPhone(Builder $builder, $value)
-    {
-        return $builder->where('phone', $value);
-    }
-
-    public function filterStatus(Builder $builder, $value)
-    {
-        return $builder->where('status', $value);
     }
 
     public function filterPrice(Builder $builder, $price)
