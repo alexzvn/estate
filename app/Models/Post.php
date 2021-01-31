@@ -26,7 +26,7 @@ class Post extends Model implements Auditable
         'verifier_id',
         'status',
         'type',
-        'phone',
+        'phone'
     ];
 
     protected $fillable = [
