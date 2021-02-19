@@ -4,9 +4,12 @@ namespace App\Console;
 
 use App\Console\Commands\ReverserPost;
 use App\Console\Commands\SyncPermissionConfig;
+use App\Models\Post;
+use App\Models\TrackingPost;
 use App\Repository\Setting;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 
 class Kernel extends ConsoleKernel
@@ -37,6 +40,21 @@ class Kernel extends ConsoleKernel
                 ->between('7:00', '22:00')
                 ->appendOutputTo(storage_path('logs/schedule.log'));
         }
+
+        // Re-index phone for every 2 hours 
+        // Not best solution but honest work
+        // TODO fix remove after upgrade to mysql database
+        $schedule->call(function () {
+
+            Post::chunk(2000, function (Collection $posts) {
+                $posts->each(function (Post $post) {
+                    if ($post->phone) {
+                        TrackingPost::findByPhoneOrCreate($post->phone)->tracking();
+                    }
+                });
+            });
+
+        })->everyTwoHours();
     }
 
     /**
