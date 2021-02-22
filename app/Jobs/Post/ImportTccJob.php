@@ -50,6 +50,7 @@ class ImportTccJob extends ImportPostJob
             'phone'       => $this->post->phone,
             'province_id' => $province->id ?? null,
             'district_id' => $district->id ?? null,
+            'extra'       => ['url' => $this->post->url ?? null]
         ]);
 
         if ($this->isInBlacklist($post->phone)) {

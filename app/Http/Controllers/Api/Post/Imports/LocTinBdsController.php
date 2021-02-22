@@ -44,6 +44,7 @@ class LocTinBdsController extends ImportController
                 'hash'         => "loctinbds.web.$post->id",
                 'source'       => PostSource::LocTinBds,
                 'extra'    => (object) [
+                    'url'         => $post->url ?? null,
                     'source'      => $post->source,
                     'authorName'  => $post->fbPostAuthorName,
                     'authorUrl'   => $post->fbPostAuthorUrl,
