@@ -72,7 +72,9 @@ class LocTinBdsController extends ImportController
                 'district_id'  => $this->getDistrict($post->district)->id ?? null,
                 'categories'   => $this->getFacebookCategories($post->type),
                 'hash'         => "loctinbds.facebook.$post->id",
+                'source'       => PostSource::LocTinBds,
                 'extra'    => (object) [
+                    'url'         => $post->url ?? null,
                     'source'      => $post->source,
                     'groupName'   => $post->fbGroupName,
                     'groupUrl'    => $post->fbGroupUrl,
