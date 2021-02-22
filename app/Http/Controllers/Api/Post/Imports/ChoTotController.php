@@ -61,6 +61,7 @@ class ChoTotController extends ImportController
             'length',
             'livingSize',
             'acreage',
+            'url'
         ])->toArray();
     }
 
