@@ -165,6 +165,6 @@ class LocTinBdsController extends ImportController
 
     private function getDate(string $date)
     {
-        return Carbon::createFromFormat('d/m/y', $date);
+        return now();
     }
 }
