@@ -20,7 +20,7 @@ class MarketController extends PostController
             ->where('type', PostType::PostMarket)
             ->filter($request)
             ->orderBy('publish_at', 'desc')
-            ->paginate(30);
+            ->simplePaginate(40);
 
         $this->shareCategoriesProvinces();
 
