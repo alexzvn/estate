@@ -113,6 +113,10 @@
                             <td>{{ $phone->created_at ? $phone->created_at->format('d/m/Y H:i:s') : 'n/a' }}</td>
                             <td>
                                 <div class="">
+                                    @can('blacklist.phone.sms')
+                                    <button type="button" class="btn btn-primary sms" data-id="{{ $phone->id }}"><small>{{ $phone->sms_count }}</small> SMS</button>
+                                    @endcan
+
                                     @can('blacklist.phone.delete')
                                     <button type="button" class="btn btn-danger delete" data-id="{{ $phone->id }}">Xóa</button>
                                     @endcan
@@ -122,6 +126,7 @@
                                     <a target="_blank" href="{{ route('manager.customer.create') . "?phone=$phone->phone&name=$phone->name" }}" type="button" class="btn btn-success">Tạo TK</a>
                                     @endempty
                                     @endcan
+
                                 </div>
                             </td>
                         </tr>
@@ -179,6 +184,39 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="fetch-sms" tabindex="-1" role="dialog" aria-labelledby="Sms" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Lịch sử nhắn SMS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" id="fetch-sms-form">
+                    @csrf
+
+                    <div class="form-group">
+                        <p>Tổng số lần: <strong id="sms-count"></strong> </p>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Lịch sử nhắn: </label>
+                      <textarea id="sms-history" class="form-control w-100" readonly rows="3"></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-success">Thêm lần SMS</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <form id="delete-form" action="" method="POST">@csrf</form>
 @endsection
 
@@ -209,6 +247,35 @@
             form.attr('action', `/manager/blacklist/phone/${id}/delete`);
 
             form.submit();
+        });
+
+        $('.sms').on('click', function () {
+            const id = $(this).data('id');
+
+            fetch(`/manager/blacklist/phone/${id}/sms`)
+                .then(res => res.json())
+                .then(data => {
+                    let i = 0;
+
+                    const histories = data.history.map(e => ++i + '. ' + e).join('\n');
+
+                    $('#sms-count').html(data.count);
+                    $('#sms-history').val(histories);
+                }).catch(() => {
+                    Snackbar.show({
+                        text: 'Danger',
+                        actionTextColor: '#fff',
+                        backgroundColor: '#e7515a',
+                        text: 'Có lỗi trong quá trình lấy dữ liệu',
+                        pos: 'bottom-right',
+                        duration: 5000,
+                        showAction: false
+                    });
+                });
+
+            $('#fetch-sms-form').attr('action', `/manager/blacklist/phone/${id}/sms/increase`);
+
+            $('#fetch-sms').modal();
         });
     });
 
