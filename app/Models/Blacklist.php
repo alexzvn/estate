@@ -14,6 +14,8 @@ class Blacklist extends Model implements Auditable
 {
     use HasNote, CanFilter, TraitsAuditable;
 
+    protected $casts = ['sms_history' => 'array'];
+
     protected $fillable = ['phone', 'source'];
 
     protected $filterable = ['phone', 'source'];

@@ -184,6 +184,8 @@ Route::group(['prefix' => 'blacklist'], function () {
         Route::post('/store', 'BlacklistController@store')->name('manager.blacklist.phone.store');
         Route::post('/{id}/update', 'BlacklistController@update')->name('manager.blacklist.phone.update');
         Route::post('/{id}/delete', 'BlacklistController@delete')->name('manager.blacklist.phone.delete');
+        Route::get('{blacklist}/sms', 'BlacklistSmsController@fetch')->name('manager.blacklist.sms.show');
+        Route::post('{blacklist}/sms/increase', 'BlacklistSmsController@increase')->name('manager.blacklist.increase');
     });
 });
 
