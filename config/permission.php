@@ -171,6 +171,7 @@ return [
             'blacklist.phone.create' => 'Thêm SĐT đen',
             'blacklist.phone.modify' => 'Sửa SĐT đen',
             'blacklist.phone.delete' => 'Bỏ chặn SĐT đen',
+            'blacklist.phone.sms'    => 'Đếm SMS SĐT đen',
             'whitelist.phone.create' => 'Thêm SĐT trắng',
 
             'manager.note.user.view' => 'Xem ghi chú của khách',
@@ -192,6 +193,7 @@ return [
                     'blacklist.phone.create',
                     'blacklist.phone.modify',
                     'blacklist.phone.delete',
+                    'blacklist.phone.sms',
                     'whitelist.phone.create'
                 ]
             ],[
