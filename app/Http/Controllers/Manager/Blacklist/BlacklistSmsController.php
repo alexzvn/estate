@@ -10,7 +10,7 @@ class BlacklistSmsController extends Controller
 {
     public function increase(Blacklist $blacklist)
     {
-        $this->authorize('manager.blacklist.sms');
+        $this->authorize('blacklist.phone.sms');
 
         $blacklist->sms_count += 1;
 
