@@ -41,6 +41,6 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::useBootstrap();
 
-        // view()->share('setting', $this->app->make(Setting::class));
+        view()->share('setting', $this->app->make(Setting::class));
     }
 }
