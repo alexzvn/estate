@@ -117,7 +117,7 @@
 
 
                 <div class="d-flex justify-content-center">
-                    {!! $posts->appends($_GET)->render() !!}
+                    {!! $posts->onEachSide(0)->withQueryString()->render() !!}
                 </div>
                 </form>
             </div>

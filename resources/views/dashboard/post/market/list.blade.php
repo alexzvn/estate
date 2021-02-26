@@ -61,7 +61,7 @@
 @endforeach
 
 <div class="col-12 justify-content-center">
-    {{ $posts->withQueryString()->render() }}
+    {{ $posts->onEachSide(0)->withQueryString()->render() }}
 </div>
 
 @include('dashboard.layouts.photoswipe')
