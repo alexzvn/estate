@@ -27,7 +27,7 @@ class OnlineController extends PostController
             ])
             ->filter($request)
             ->newest()
-            ->simplePaginate(40);
+            ->paginate(40);
 
         $this->shareCategoriesProvinces();
 
@@ -42,7 +42,9 @@ class OnlineController extends PostController
             ->with(['categories', 'district'])
             ->filter($request)
             ->newest()
-            ->simplePaginate();
+            ->paginate();
+
+        view()->share('staff', Permission::findUsersHasPermission('manager.dashboard.access'));
 
         $this->shareCategoriesProvinces();
 
