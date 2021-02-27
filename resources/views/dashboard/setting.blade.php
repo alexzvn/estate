@@ -35,7 +35,7 @@
                         <label for="role">Vai trò mặc định cho tài khoản mới</label>
                         <select class="form-control" name="role" id="role">
                           @foreach ($roles as $item)
-                              <option value="{{ $item->id }}" {{ $item->id === $setting->config('user.role.default') ? 'selected' : '' }}>{{ $item->name }}</option>
+                              <option value="{{ $item->id }}" {{ $item->id === $setting->get('user.role.default') ? 'selected' : '' }}>{{ $item->name }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -51,13 +51,13 @@
 
                     <div class="form-group input-group-sm">
                       <label for="google_analytics">Mã tracking google Analytics</label>
-                      <input type="text" name="google_analytics" id="google_analytics" class="form-control" placeholder="UA-17429...." value="{{ $setting->config('google.analytics') }}">
+                      <input type="text" name="google_analytics" id="google_analytics" class="form-control" placeholder="UA-17429...." value="{{ $setting->get('google.analytics') }}">
                     </div>
 
                     <div class="form-group">
                         <div class="form-check">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="reverse" id="reverse" value="true" @if($setting->config('post.reverse', false)) checked @endif>
+                            <input type="checkbox" class="form-check-input" name="reverse" id="reverse" value="true" @if($setting->get('post.reverse', false)) checked @endif>
                             Đảo tin
                           </label>
                         </div>

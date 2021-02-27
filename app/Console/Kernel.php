@@ -6,11 +6,10 @@ use App\Console\Commands\ReverserPost;
 use App\Console\Commands\SyncPermissionConfig;
 use App\Models\Post;
 use App\Models\TrackingPost;
-use App\Repository\Setting;
+use App\Setting;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Artisan;
 
 class Kernel extends ConsoleKernel
 {
@@ -32,9 +31,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $setting = app(Setting::class);
+        $setting = Setting::load();
 
-        if ($setting->config('post.reverse', false)) {
+        if ($setting->compareStrict('post.reverse', false)) {
             $schedule->command('post:reverser --item=3')
                 ->everyTenMinutes()
                 ->between('7:00', '22:00')
