@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Manager;
 use App\Http\Requests\Manager\SaveSetting;
 use App\Repository\Location\Province;
 use App\Repository\Role;
-use App\Repository\Setting;
-use Illuminate\Http\Request;
+use App\Setting;
 
 class SettingController extends Controller
 {
@@ -23,15 +22,13 @@ class SettingController extends Controller
         Province::whereIn('_id', $request->provinces)->update(['active' => true]);
         Province::whereNotIn('_id', $request->provinces)->update(['active' => false]);
 
-        $setting->setConfigs([
+        $setting->fill([
             'title' => $request->title,
             'user.role.default' => $request->role,
             'notification' => $request->notification,
             'google.analytics' => $request->google_analytics,
             'post.reverse' => (bool) $request->reverse
         ]);
-
-        $setting->saveConfig();
 
         return redirect(route('manager.setting'))->with('success', 'Cập nhật thành công');
     }

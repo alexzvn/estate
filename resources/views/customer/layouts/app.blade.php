@@ -44,7 +44,7 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    @if ($tracking = $setting->config('google.analytics', false))
+    @if ($tracking = $setting->get('google.analytics', false))
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ $tracking }}"></script>
     <script>
