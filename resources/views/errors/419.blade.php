@@ -25,8 +25,7 @@
                     <h1 class="display-1">419</h1>
                     <div class="my-3 d-inline-block" style="width: 80px; border-bottom: 6px solid #11a6ff"></div>
                     <h3 class="text-muted my-3">
-                        Có vẻ như trang hiện tại đã hết hạn <br>
-                        Hãy làm mới lại trang và thử lại
+                      Tài khoản của bạn đã bị out vì không sử dụng <br /> Hãy click dưới đây để đăng nhập lại
                     </h3>
         
                     <a class="btn btn-outline-secondary btn-lg" href="/" role="button">Quay lại trang chủ</a>

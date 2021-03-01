@@ -21,6 +21,7 @@
         "laravel/legacy-factories": "^1.1",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
+        "livewire/livewire": "^2.4",
         "mews/purifier": "^3.2",
         "mostafamaklad/laravel-permission-mongodb": "^3.1",
         "owen-it/laravel-auditing": "^11.0",
