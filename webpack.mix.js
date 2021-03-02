@@ -11,19 +11,8 @@ const mix = require('laravel-mix');
  |
  */
 
-let assets = {
-    js: [
-        "resources/js/app.js"
-    ],
-    css: [
-        "resources/sass/app.scss"
-    ]
-}
-
-assets.js.forEach(source => {
-    mix.js(source, "public/assets/js");
-});
-
-assets.css.forEach(source => {
-    mix.sass(source, "public/assets/css");
-});
+mix.disableSuccessNotifications()
+    .js('resources/js/app.js', 'public/assets/js')
+    .postCss('resources/css/app.css', 'public/assets/css', [
+        require('tailwindcss')
+    ]);
