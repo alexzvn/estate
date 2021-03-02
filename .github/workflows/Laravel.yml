@@ -56,6 +56,7 @@ jobs:
       run: docker-compose up -d
 
     - name: Migrate Database
+      run: touch database/database.sqlite
       run: php artisan migrate --force
 
     - name: Setup laravel project
