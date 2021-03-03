@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Setting;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
@@ -16,6 +17,10 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     public function register()
     {
+        if (Setting::load()->compare('telescope', false)) {
+            return false;
+        }
+
         // Telescope::night();
 
         $this->hideSensitiveRequestDetails();
