@@ -51,7 +51,7 @@ class Setting
      */
     public function compare(string $key, $value)
     {
-        return $this->config[$key] == $value;
+        return $this->get($key) == $value;
     }
 
     /**
@@ -63,7 +63,7 @@ class Setting
      */
     public function compareStrict(string $key, $value)
     {
-        return $this->config[$key] === $value;
+        return $this->get($key) === $value;
     }
 
     /**
