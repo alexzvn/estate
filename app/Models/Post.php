@@ -126,6 +126,10 @@ class Post extends Model implements Auditable
             $phones = [$phones];
         }
 
+        if (empty($phones)) {
+            return;
+        }
+
         return static::whereIn('phone', $phones)->update([
             'status' => PostStatus::Locked
         ]);
