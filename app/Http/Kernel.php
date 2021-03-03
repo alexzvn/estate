@@ -37,8 +37,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\AuthUpdateLastSeen::class,
-            \Inspector\Laravel\Middleware\WebRequestMonitoring::class,
+            \App\Http\Middleware\AuthUpdateLastSeen::class
         ],
 
         'customer' => [
@@ -49,8 +48,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:60,1',
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Inspector\Laravel\Middleware\WebRequestMonitoring::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class
         ],
     ];
 
