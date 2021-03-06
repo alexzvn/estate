@@ -80,6 +80,7 @@ class AddPhoneBlackListViaApiTest extends TestCase
                 'agencyName'  => 'random name',
                 'phoneNumber' => '0' . random_int(100000000, 999999999),
                 'region'      => 'Quảng Nam',
+                'category'    => 'Mua bán',
                 'url'         => 'https://nha.chotot.com'
             ];
         }
