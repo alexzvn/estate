@@ -105,6 +105,9 @@
                                     @isset($phone->province)
                                         <p class="m-0">{{ $phone->province->name }}</p>
                                     @endisset
+                                    @isset($phone->category)
+                                        <p class="m-0">{{ $phone->category }}</p>
+                                    @endisset
                                     @isset ($phone->url)
                                         <a class="text-info" href="{{ $phone->url }}">Link bài gốc</a>
                                     @endisset

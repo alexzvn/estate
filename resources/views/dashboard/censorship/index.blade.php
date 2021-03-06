@@ -2,6 +2,7 @@
 
 @push('style')
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
 @endpush
 
 @section('content')
@@ -88,7 +89,7 @@
                 </div>
 
                 <div class="d-flex justify-content-center">
-                    {!! $posts->appends($_GET)->render() !!}
+                    {{ $posts->onEachSide(0)->withQueryString()->render() }}
                 </div>
                 </form>
             </div>
