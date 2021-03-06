@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/forms/theme-checkbox-radio.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/lightbox/photoswipe.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/lightbox/default-skin/default-skin.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/lightbox/custom-photswipe.css') }}">
 
 <style>

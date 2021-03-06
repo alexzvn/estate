@@ -3,6 +3,7 @@
 @push('style')
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
 <link href="{{ asset('dashboard/assets/css/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
 <style>
     .user-active td {
         color: #1b55e2 !important;
@@ -169,7 +170,7 @@
                 <span>Tìm thấy {{ number_format($users->total()) }} kết quả</span>
 
                 <div class="d-flex justify-content-center">
-                    {!! $users->appends($_GET)->render() !!}
+                    {{ $users->onEachSide(0)->withQueryString()->render() }}
                 </div>
             </div>
 

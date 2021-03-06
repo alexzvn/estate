@@ -101,7 +101,7 @@
                 <span class="text-muted">Tổng cộng có {{ $notes->total() }} bản ghi</span>
 
                 <div class="d-flex justify-content-center">
-                    {!! $notes->appends($_GET)->render() !!}
+                    {{ $notes->onEachSide(0)->withQueryString()->render() }}
                 </div>
             </div>
 

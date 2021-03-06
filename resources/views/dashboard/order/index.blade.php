@@ -1,5 +1,9 @@
 @extends('dashboard.app')
 
+@push('style')
+<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
+@endpush
+
 @php
 function planToString($plans) {
     if (! $plans) return 'N/A';
@@ -109,7 +113,7 @@ function planToString($plans) {
             <span>Tìm thấy {{ $orders->total() }} đơn hàng</span>
 
             <div class="d-flex justify-content-center">
-                {!! $orders->appends($_GET)->render() !!}
+                {{ $orders->onEachSide(0)->withQueryString()->render() }}
             </div>
 
         </div>

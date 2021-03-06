@@ -1,5 +1,9 @@
 @extends('dashboard.app')
 
+@push('style')
+<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
+@endpush
+
 @php
 function rolesToString($roles) {
     if (! $roles) return 'N/A';
@@ -61,7 +65,7 @@ function rolesToString($roles) {
             <span>Tìm thấy {{ $users->total() }} tài khoản</span>
 
             <div class="d-flex justify-content-center">
-                {!! $users->appends($_GET)->render() !!}
+                {{ $users->onEachSide(0)->withQueryString()->render() }}
             </div>
 
         </div>

@@ -23,6 +23,7 @@ class BlacklistController extends Controller
                 'phone' => $phone->phoneNumber,
                 'url'   => $phone->url,
                 'province_id' => $this->getProvinceId($phone->region),
+                'category' => $phone->category,
                 'source' => 'api'
             ]);
         }
