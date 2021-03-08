@@ -59,6 +59,10 @@
                                 <a href="javascript:void(0)">{{ $post->district->name }}</a>,
                                 <a href="javascript:void(0)">{{ $post->province->name }}</a>
                             </div>
+                            <div class="product-info">
+                                <i class="fa fa-clock-o"></i>
+                               {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'Không rõ' }}
+                            </div>
                         </div>
                     </div>
                 </div>
