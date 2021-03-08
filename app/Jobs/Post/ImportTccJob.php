@@ -32,6 +32,10 @@ class ImportTccJob extends ImportPostJob
         $province = Province::where('name', 'regexp', "/{$this->post->province}/")->first();
         $district = District::where('name', 'regexp', "/{$this->post->district}/")->first();
 
+        if (!$province && $district->province) {
+            $province = $district->province;
+        }
+
         $post = Online::create([
             'title'       => $this->post->title,
             'content'     => nl2br($this->post->content),
