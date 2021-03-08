@@ -32,9 +32,8 @@ class ImportTccJob extends ImportPostJob
         $province = Province::where('name', 'regexp', "/{$this->post->province}/")->first();
         $district = District::where('name', 'regexp', "/{$this->post->district}/")->first();
 
-        if ($this->checkItems($province, $district, $category)) {
-            $this->setReport((array) $this->post);
-            throw new \Exception("Province, district or category is empty", 1);
+        if (!$province && $district->province) {
+            $province = $district->province;
         }
 
         $post = Online::create([
@@ -80,10 +79,13 @@ class ImportTccJob extends ImportPostJob
 
     protected function getCategory()
     {
-        $category = ucfirst(Str::lower($this->post->category));
-        $category = trim($category);
+        $category = trim(
+            ucfirst(Str::lower($this->post->category))
+        );
 
         $category = Category::where('name', 'like', "%$category%")->first();
+
+        $category ??= Category::whereName($this->post->category)->first();
 
         return [$category];
     }

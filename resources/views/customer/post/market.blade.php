@@ -52,6 +52,10 @@
                                 </a>
                             </div>
                             <div class="product-info mt-3">
+                                <i class="fa fa-clock-o"></i>
+                               {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'Không rõ' }}
+                            </div>
+                            <div class="product-info">
                                 <img src="{{ asset('/assets/img/selection.png') }}" width="16"> <strong>{{ $post->phone ?? '' }}</strong>
                             </div>
                             <div class="product-info">
