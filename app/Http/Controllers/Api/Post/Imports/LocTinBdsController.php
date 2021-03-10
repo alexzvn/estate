@@ -32,14 +32,17 @@ class LocTinBdsController extends ImportController
     {
         $posts->each(function ($post)
         {
+            $district = $this->getDistrict($post->district) ?? null;
+            $province = $this->getProvince($post->city) ?? $district->province ?? null;
+
             $info = (object) [
                 'title'        => $post->title,
                 'content'      => nl2br($post->content),
                 'price'        => $this->normalizePrice($post->price),
                 'phone'        => $this->getPhone($post->phoneNumber, $post->title, $post->content),
                 'publish_at'   => $this->getDate($post->createdDate),
-                'province_id'  => $this->getProvince($post->city)->id ?? null,
-                'district_id'  => $this->getDistrict($post->district)->id ?? null,
+                'province_id'  => $province->id ?? null,
+                'district_id'  => $district->id ?? null,
                 'categories'   => $this->getWebCategories($post->type),
                 'hash'         => "loctinbds.web.$post->id",
                 'source'       => PostSource::LocTinBds,
@@ -62,14 +65,17 @@ class LocTinBdsController extends ImportController
     {
         $posts->each(function ($post)
         {
+            $district = $this->getDistrict($post->district) ?? null;
+            $province = $this->getProvince($post->city) ?? $district->province ?? null;
+
             $info = (object) [
                 'title'        => $post->title,
                 'content'      => nl2br($post->content),
                 'price'        => $this->normalizePrice($post->price),
                 'phone'        => $this->getPhone($post->phoneNumber, $post->title, $post->content),
                 'publish_at'   => $this->getDate($post->createdDate),
-                'province_id'  => $this->getProvince($post->city)->id ?? null,
-                'district_id'  => $this->getDistrict($post->district)->id ?? null,
+                'province_id'  => $province->id ?? null,
+                'district_id'  => $district->id ?? null,
                 'categories'   => $this->getFacebookCategories($post->type),
                 'hash'         => "loctinbds.facebook.$post->id",
                 'source'       => PostSource::LocTinBds,
