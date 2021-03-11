@@ -24,7 +24,10 @@ class Post extends Model implements Auditable
     const NAME = 'tin';
 
     protected $filterable = [
-        'verifier_id'
+        'verifier_id',
+        'status',
+        'type',
+        'phone'
     ];
 
     protected $fillable = [
@@ -35,9 +38,15 @@ class Post extends Model implements Auditable
         'phone',
         'price',
         'commission',
+        'extra',
     ];
+
     protected $dates = [
         'publish_at'
+    ];
+
+    protected $casts = [
+        'extra' => 'json'
     ];
 
     public function user()
@@ -128,14 +137,13 @@ class Post extends Model implements Auditable
             $phones = [$phones];
         }
 
+        if (empty($phones)) {
+            return;
+        }
+
         return static::whereIn('phone', $phones)->update([
             'status' => PostStatus::Locked
         ]);
-    }
-
-    public function filterType(Builder $builder, $type)
-    {
-        return $builder->where('type', $type);
     }
 
     public function filterFrom(Builder $builder, $date)
@@ -186,14 +194,9 @@ class Post extends Model implements Auditable
         return $builder->where('district_id', $value);
     }
 
-    public function filterPhone(Builder $builder, $value)
+    public function filterSource(Builder $builder, $source)
     {
-        return $builder->where('phone', $value);
-    }
-
-    public function filterStatus(Builder $builder, $value)
-    {
-        return $builder->where('status', $value);
+        return $builder->whereSource((int) $source);
     }
 
     public function filterPrice(Builder $builder, $price)
@@ -229,6 +232,14 @@ class Post extends Model implements Auditable
 
     public function getIndexDocumentData()
     {
+        $extra = '';
+
+        foreach ($this->extra ?? [] as $key => $value) {
+            if (is_string($value)) {
+                $extra = "$extra. $value";
+            }
+        }
+
         return [
             'title' => $this->title,
             'content' => remove_tags($this->content),
@@ -237,6 +248,7 @@ class Post extends Model implements Auditable
             'province' => $this->province->name ?? null,
             'district' => $this->district->name ?? null,
             'categories' => $this->categories[0]->name ?? null,
+            'extra' => $extra
         ];
     }
 }

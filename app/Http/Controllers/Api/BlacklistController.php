@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blacklist;
+use App\Models\Location\Province;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -17,48 +18,45 @@ class BlacklistController extends Controller
         );
 
         foreach ($blacklist as $phone) {
-            $data[]['phone'] = $phone;
-        }
-
-        if (isset($data) && count($data) > 0) {
-
-            Post::lockByPhone($blacklist);
-
-            return response([
-                'success' => Blacklist::insert($data),
-                'phoneToAdd' => count($blacklist),
+            Blacklist::forceCreate([
+                'name'   => $phone->agencyName,
+                'phone' => $phone->phoneNumber,
+                'url'   => $phone->url,
+                'province_id' => $this->getProvinceId($phone->region),
+                'category' => $phone->category,
+                'source' => 'api'
             ]);
         }
 
+        Post::lockByPhone($blacklist);
+
         return response([
             'success' => true,
-            'phoneToAdd' => 0
+            'phoneToAdd' => count($blacklist)
         ]);
     }
 
-    protected function filterDuplicated(Collection $list)
+    protected function filterDuplicated(Collection $list) : Collection
     {
-        $duplicated = Blacklist::whereIn('phone', $list->toArray())
-            ->get()
-            ->reduce(function ($carry, $phone)
-            {
-                $carry[] = $phone->phone;
-                return $carry;
-            }, []);
+        $listPhone = $list->map(fn($p) => $p->phoneNumber)->toArray();
+
+        $duplicated = Blacklist::whereIn('phone', $listPhone)->get();
 
         return $list->filter(function ($phone) use ($duplicated)
         {
-            return ! in_array($phone, $duplicated);
+            return $duplicated->where('phone', $phone->phoneNumber)->isEmpty();
         });
     }
 
-    public function createPhoneCollection(Request $request) : Collection
+    protected function createPhoneCollection(Request $request) : Collection
     {
-        $listPhone = json_decode($request->getContent());
+        return collect(
+            json_decode($request->getContent())
+        );
+    }
 
-        return array_reduce($listPhone, function (Collection $carry, $item)
-        {
-            return $carry->push($item->phoneNumber);
-        }, collect());
+    protected function getProvinceId($name)
+    {
+        return Province::where('name', 'regexp', "/$name/")->first()->id ?? null;
     }
 }

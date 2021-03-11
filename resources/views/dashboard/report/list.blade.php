@@ -1,6 +1,7 @@
 @extends('dashboard.app')
 
 @push('style')
+<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
 @endpush
 
@@ -89,7 +90,7 @@
                 </table>
 
                 <div class="d-flex justify-content-center">
-                    {!! $reports->appends($_GET)->render() !!}
+                    {{ $reports->onEachSide(0)->withQueryString()->render() }}
                 </div>
             </div>
 

@@ -1,7 +1,9 @@
 <?php use App\Enums\PostType; ?>
 
 @extends('dashboard.app')
+
 @push('style')
+<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
 <style>
 .active td {
@@ -90,6 +92,9 @@
                                 @isset($post->phone)
                                 <div class="d-flex">
                                     {!! implode('<br>', explode(',', $post->phone ?? '')) ?? 'N/a' !!}
+                                    @if ($post->tracking)
+                                        <small class="text-muted">({{ $post->tracking->seen ?? 1 }})</small>
+                                    @endif
                                     <i class="lookup-phone t-icon t-hover-icon" data-feather="search" data-phone="{{ $post->phone ?? '' }}"></i>
                                 </div>
                                 @endisset
@@ -123,7 +128,7 @@
                 </div>
 
                 <div class="d-flex justify-content-center">
-                    {!! $posts->appends($_GET)->render() !!}
+                    {!! $posts->onEachSide(0)->withQueryString()->render() !!}
                 </div>
                 </form>
             </div>
@@ -227,7 +232,7 @@ let upload = new FileUploadWithPreview('mySecondImage', {
                 }
 
                 let files = post.files.map(file => {
-                    return `/storage/${file.path}?fid=${file.id}`;
+                    return `${file.path}?fid=${file._id}`;
                 });
 
                 upload.addImagesFromPath(files);

@@ -10,7 +10,7 @@
 
     $pathFiles = $post->files->map(function ($file)
     {
-        return asset('storage/'.$file->path) . "?fid=$file->id";
+        return asset($file->path) . "?fid=$file->id";
     });
 @endphp
 
@@ -206,8 +206,6 @@
             digits: 0,
             rightAlign: false
         });
-
-        $('#phone').inputmask("9999.999.999")
 
         ClassicEditor
         .create(document.querySelector('#post_content'))

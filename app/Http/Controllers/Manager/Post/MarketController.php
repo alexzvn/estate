@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Manager\Post;
 
+use App\Enums\PostStatus;
 use App\Enums\PostType;
 use App\Http\Requests\Manager\Post\Market\UpdatePost;
+use App\Repository\Permission;
 use App\Repository\Post;
+use App\Services\System\Post\Market;
 use App\Services\System\Post\PostService;
 use Illuminate\Http\Request;
 
@@ -17,21 +20,59 @@ class MarketController extends PostController
             ->where('type', PostType::PostMarket)
             ->filter($request)
             ->orderBy('publish_at', 'desc')
-            ->paginate(30);
+            ->paginate(40);
 
         $this->shareCategoriesProvinces();
 
-        return view('dashboard.post.market.list', compact('posts'));
+        return view('dashboard.post.market.list', [
+            'posts' => $posts,
+            'staff' => Permission::findUsersHasPermission('manager.dashboard.access')
+        ]);
     }
 
     public function update(string $id, UpdatePost $request)
     {
         $post = Post::findOrFail($id);
 
-        $post = PostService::update($post, $request->all());
+        $post = Market::update($post, $request->all())
+            ->forceFill([
+                'user_id' => user()->id,
+                'status' => PostStatus::Published,
+                'publish_at' => now()
+            ]);
 
-        $this->syncUploadFiles($post, $request);
+        $this->syncUploadFiles(tap($post)->save(), $request);
 
         return back()->with('success', 'Cập nhật thành công');
+    }
+
+    public function store(UpdatePost $request)
+    {
+        $post = Market::create($request->all())
+            ->forceFill([
+                'user_id' => user()->id,
+                'status' => PostStatus::Published,
+                'publish_at' => now()
+            ]);
+
+        $this->syncUploadFiles(tap($post)->save(), $request);
+
+        return back()->with('success', 'ok');
+    }
+
+    public function fetch(string $id)
+    {
+        $this->authorize('manager.post.market.view');
+
+        return Market::findOrFail($id)->load(['files', 'user']);
+    }
+
+    public function delete(string $id)
+    {
+        $this->authorize('manager.post.market.delete');
+
+        Market::findOrFail($id)->delete();
+
+        return back()->with('success', 'Đã xóa tin thị trường này');
     }
 }

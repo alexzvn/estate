@@ -67,8 +67,21 @@
             </form>
         </div>
         <div class="col-md-7 text-center my-auto">
-            <img class="mb-3" width="80%" src="https://cdn.vietnambiz.vn/2020/1/14/random-reinforcement-1578972191747814403297.png" alt="" srcset="">
-            <h4>Chúc bạn 1 buổi tối tốt lành !</h4>
+            @php
+                $wall = glob(public_path('/assets/img/wallpaper/*'));
+                $wall = $wall[array_rand($wall)];
+                $wall = explode('/', $wall);
+
+                $now = (int) now()->format('H');
+                $in = fn($small, $middle, $large) => $small <= $middle && $middle <= $large;
+
+                $greeting = $in(5, $now, 11) ? 'sáng' :
+                    ($in(11, $now, 1)  ? 'trưa':
+                    ($in(11, $now, 5) ? 'chiều': 'tối'));
+
+            @endphp
+            <img class="mb-3" width="80%" src="{{ asset('/assets/img/wallpaper/' . $wall[count($wall) -1]) }}">
+            <h4>Chúc bạn buổi {{ $greeting }} tốt lành !</h4>
             <p>Hãy nghỉ ngơi và thư giãn cùng gia đình nhé.</p>
         </div>
     </div>

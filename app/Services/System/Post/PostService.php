@@ -22,10 +22,12 @@ trait PostService
         'phone',
         'price',
         'hash',
+        'source',
         'commission',
         'province_id',
         'district_id',
-        'publish_at'
+        'publish_at',
+        'extra'
     ];
 
     /**
@@ -38,9 +40,11 @@ trait PostService
     {
         $attr = collect(self::handleRawAttribute($attr));
 
-        $post = Post::forceCreate(
+        $post = new Post;
+
+        $post->forceFill(
             $attr->only(static::$fillable)->toArray()
-        );
+        )->save();
 
         $post->categories()->sync($attr['categories']);
 

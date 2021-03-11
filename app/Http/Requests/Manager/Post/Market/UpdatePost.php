@@ -33,8 +33,8 @@ class UpdatePost extends FormRequest
             'province'  => 'required|exists:provinces,id',
             'district'  => 'required|exists:districts,id',
             'images'    => 'nullable',
-            'images.*'   => 'image|mimes:jpeg,png,jpg,gif|max:8192',
-            'image_ids' => 'nullable|array|exists:files,id',
+            'images.*'   => 'image|mimes:jpeg,png,jpg,gif',
+            'image_ids' => 'nullable|array|exists:files,_id',
             'type'      => [
                 'nullable',
                 Rule::in(PostType::getValues())

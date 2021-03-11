@@ -19,16 +19,13 @@
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"> --}}
 
     <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
-    @stack('style')
+    @livewireStyles
 
-    <style>
-        body {
-            /* background: url("{{ asset('assets/img/background-1.jpg') }}") no-repeat center; */
-        }
-    </style>
+    @stack('style')
 </head>
 <body>
     <div id="app">
@@ -40,8 +37,9 @@
 
         @include('layouts.footer')
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    @livewireScripts
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     @stack('script')
 </body>
 </html>

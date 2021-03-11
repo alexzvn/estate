@@ -7,12 +7,12 @@ use App\Enums\PostType;
 use App\Models\Category;
 use App\Enums\PostStatus;
 use Illuminate\Support\Carbon;
-use App\Jobs\Post\ImportPostJob;
+use App\Jobs\Post\ImportTccJob;
 use App\Services\System\Post\Online;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class TestImportCrawlJobs extends TestCase
+class ImportCrawlJobsTest extends TestCase
 {
     /**
      * A basic feature test example.
@@ -21,7 +21,7 @@ class TestImportCrawlJobs extends TestCase
      */
     public function test_import_crawl_jobs_tcc()
     {
-        $this->expectsJobs(ImportPostJob::class);
+        $this->expectsJobs(ImportTccJob::class);
 
         $exampleData = file_get_contents(base_path('example.json'));
 

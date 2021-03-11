@@ -68,7 +68,7 @@ use App\Enums\PostType;
                             <div class="form-group input-group-sm">
                                 <label for="post-phone">Số điện thoại</label>
                                 <input type="text"
-                                  class="form-control" value="" name="phone" id="post-phone" placeholder="0355...." required>
+                                  class="form-control" value="" name="phone" id="post-phone" placeholder="0355....">
                               </div>
                         </div>
                     </div>
@@ -132,9 +132,9 @@ use App\Enums\PostType;
                         <p class="text-muted m-0">Ngày cập nhật cuối cùng là <span class="text-info"></span>, đăng bởi
                     </div>
 
-                    <div id="sync-file-ids"></div>
+                    <div class="d-none" id="sync-file-ids"></div>
 
-                    <div class="widget-content widget-content-area">
+                    <div class="d-none widget-content widget-content-area">
                         <div class="custom-file-container" data-upload-id="mySecondImage">
                             <label>Chọn ảnh đại diện <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image">x</a></label>
                             <label class="custom-file-container__custom-file" >

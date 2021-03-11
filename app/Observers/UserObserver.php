@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Repository\Role;
-use App\Repository\Setting;
+use App\Setting;
 
 class UserObserver
 {
@@ -16,7 +16,7 @@ class UserObserver
      */
     public function created(User $user)
     {
-        $role = app(Setting::class)->config('user.role.default');
+        $role = app(Setting::class)->get('user.role.default');
 
         if ($role = Role::find($role)) {
             $user->assignRole($role->name);

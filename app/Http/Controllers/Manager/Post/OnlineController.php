@@ -18,10 +18,16 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.view');
 
-        $posts = Online::with(['province', 'district','categories', 'user', 'whitelist'])
+        $posts = Online::with([
+                'province',
+                'district',
+                'categories',
+                'tracking',
+                'user'
+            ])
             ->filter($request)
             ->newest()
-            ->paginate(30);
+            ->paginate(40);
 
         $this->shareCategoriesProvinces();
 
@@ -36,7 +42,9 @@ class OnlineController extends PostController
             ->with(['categories', 'district'])
             ->filter($request)
             ->newest()
-            ->paginate(20);
+            ->paginate();
+
+        view()->share('staff', Permission::findUsersHasPermission('manager.dashboard.access'));
 
         $this->shareCategoriesProvinces();
 

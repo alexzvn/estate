@@ -221,6 +221,7 @@ return [
             'manager.post.online.reserve' => 'Đảo tin',
 
             'manager.post.fee.view'   => 'Xem',
+            'manager.post.fee.view.all' => 'Xem tất',
             'manager.post.fee.create' => 'Tạo mới',
             'manager.post.fee.modify' => 'Chỉnh sửa',
             'manager.post.fee.delete' => 'Xóa',
@@ -241,6 +242,7 @@ return [
             'blacklist.phone.create' => 'Thêm SĐT đen',
             'blacklist.phone.modify' => 'Sửa SĐT đen',
             'blacklist.phone.delete' => 'Bỏ chặn SĐT đen',
+            'blacklist.phone.sms'    => 'Đếm SMS SĐT đen',
             'whitelist.phone.create' => 'Thêm SĐT trắng',
 
             'manager.note.user.view' => 'Xem ghi chú của khách',
@@ -262,6 +264,7 @@ return [
                     'blacklist.phone.create',
                     'blacklist.phone.modify',
                     'blacklist.phone.delete',
+                    'blacklist.phone.sms',
                     'whitelist.phone.create'
                 ]
             ],[
@@ -281,6 +284,7 @@ return [
                     'manager.post.fee.create',
                     'manager.post.fee.modify',
                     'manager.post.fee.delete',
+                    'manager.post.fee.view.all'
                 ]
             ],[
                 'name' => 'Quản lý tin thị trường',

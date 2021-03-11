@@ -72,6 +72,9 @@
                                 @isset($post->phone)
                                 <div class="d-flex">
                                     {!! implode('<br>', explode(',', $post->phone ?? '')) ?? 'N/a' !!}
+                                    @if ($post->tracking)
+                                        <small class="text-muted">({{ $post->tracking->seen ?? 1 }})</small>
+                                    @endif
                                     <i class="lookup-phone t-icon t-hover-icon" data-feather="search" data-phone="{{ $post->phone ?? '' }}"></i>
                                 </div>
                                 @endisset
@@ -111,7 +114,7 @@
 
 
                 <div class="d-flex justify-content-center">
-                    {!! $posts->appends($_GET)->render() !!}
+                    {!! $posts->onEachSide(0)->withQueryString()->render() !!}
                 </div>
                 </form>
             </div>
@@ -215,7 +218,7 @@ ClassicEditor
                 }
 
                 // let files = post.files.map(file => {
-                //     return `/storage/${file.path}?fid=${file.id}`;
+                //     return `${file.path}?fid=${file._id}`;
                 // });
 
                 // upload.addImagesFromPath(files);

@@ -28,9 +28,9 @@ class AddPhoneBlackListViaApiTest extends TestCase
      */
     public function test_add_phone_list()
     {
-        $response = $this->postJson('api/blacklist/add', $this->mapPhoneData(
+        $response = $this->postJson('api/blacklist/add',
             $this->getExamplePhone()
-        ));
+        );
 
         $response->assertJson([
             'success' => true,
@@ -40,9 +40,9 @@ class AddPhoneBlackListViaApiTest extends TestCase
 
     public function test_add_duplicated_phone_list()
     {
-        $response = $this->postJson('api/blacklist/add', $this->mapPhoneData(
+        $response = $this->postJson('api/blacklist/add',
             $this->getExtraExamplePhone()
-        ));
+        );
 
         $response->assertJson([
             'success' => true,
@@ -57,15 +57,6 @@ class AddPhoneBlackListViaApiTest extends TestCase
             'success' => true,
             'phoneToAdd' => 0
         ]);
-    }
-
-    private function mapPhoneData(array $phones)
-    {
-        foreach ($phones as $phone) {
-            $data[]['phoneNumber'] = $phone;
-        }
-
-        return $data ?? [];
     }
 
     private function getExamplePhone()
@@ -85,7 +76,13 @@ class AddPhoneBlackListViaApiTest extends TestCase
     protected function generatePhone(int $times = 1)
     {
         while ($times--) {
-            $phone[] = '0' . random_int(100000000, 999999999);
+            $phone[] = [
+                'agencyName'  => 'random name',
+                'phoneNumber' => '0' . random_int(100000000, 999999999),
+                'region'      => 'Quảng Nam',
+                'category'    => 'Mua bán',
+                'url'         => 'https://nha.chotot.com'
+            ];
         }
 
         return $phone;

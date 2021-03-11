@@ -1,4 +1,7 @@
-<?php use App\Enums\PostType; ?>
+<?php
+use App\Enums\PostType;
+use App\Enums\PostSource;
+?>
 <!--  BEGIN SIDEBAR  -->
         
         <div class="sidebar-wrapper sidebar-theme">
@@ -48,8 +51,20 @@
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled @active($active, 'show')" id="online-post" data-parent="#accordionExample">
+                            @php
+                                $online = route('manager.post.online');
+                            @endphp
                             <li class="@active('manager.post.online')">
-                                <a href="{{ route('manager.post.online') }}"> Tất cả </a>
+                                <a href="{{ $online }}"> Tất cả </a>
+                            </li>
+                            <li class="@active(request('source', -1) == PostSource::TinChinhChu)">
+                                <a href="{{ "$online?source=" . PostSource::TinChinhChu }}">Tin chính chủ</a>
+                            </li>
+                            <li class="@active(request('source') == PostSource::LocTinBds)">
+                                <a href="{{ "$online?source=" . PostSource::LocTinBds }}">Lọc tin BDS</a>
+                            </li>
+                            <li class="@active(request('source') == PostSource::ChoTot)">
+                                <a href="{{ "$online?source=" . PostSource::ChoTot }}">Tin chợ tốt</a>
                             </li>
                             <li class="@active('manager.post.online.trashed')">
                                 <a href="{{ route('manager.post.online.trashed') }}">Tin đã xóa </a>
@@ -76,9 +91,34 @@
                             <li class="@active('manager.post.fee')">
                                 <a href="{{ route('manager.post.fee') }}"> Tất cả </a>
                             </li>
-                            <li class="@active('manager.post.online.trashed')">
+                            <li class="@active('manager.post.fee.trashed')">
                                 <a href="{{ route('manager.post.fee.trashed') }}">Tin đã xóa </a>
                             </li>
+                        </ul>
+                    </li>
+                    @endcan
+
+                    @can('manager.post.market.view')
+                    @php
+                        $active = request()->is('manager/post/market*');
+                    @endphp
+                    <li class="menu">
+                        <a href="#market-post" data-toggle="collapse" @active($active, 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="file-text"></i>
+                                <span>Tin thị trường</span>
+                            </div>
+                            <div>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled @active($active, 'show')" id="market-post" data-parent="#accordionExample">
+                            <li class="@active('manager.post.market')">
+                                <a href="{{ route('manager.post.market') }}"> Tất cả </a>
+                            </li>
+                            {{-- <li class="@active('manager.post.market.trashed')">
+                                <a href="{{ route('manager.post.market.trashed') }}">Tin đã xóa </a>
+                            </li> --}}
                         </ul>
                     </li>
                     @endcan

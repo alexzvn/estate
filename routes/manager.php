@@ -67,8 +67,10 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
     Route::group(['prefix' => 'market'], function ()
     {
         Route::get('/', 'MarketController@index')->name('manager.post.market');
-        Route::post('/{id}/update', 'MarketController@updateMarket')->name('manager.post.market.update');
-        Route::post('/store', 'MarketController@storeMarket')->name('manager.post.market.store');
+        Route::post('/{id}/update', 'MarketController@update')->name('manager.post.market.update');
+        Route::post('/store', 'MarketController@store')->name('manager.post.market.store');
+        Route::get('/{id}/delete', 'MarketController@delete')->name('manager.post.market.delete');
+        Route::get('/{id}/fetch', 'MarketController@fetch')->name('manager.post.market.fetch');
     });
 
 });
@@ -182,6 +184,8 @@ Route::group(['prefix' => 'blacklist'], function () {
         Route::post('/store', 'BlacklistController@store')->name('manager.blacklist.phone.store');
         Route::post('/{id}/update', 'BlacklistController@update')->name('manager.blacklist.phone.update');
         Route::post('/{id}/delete', 'BlacklistController@delete')->name('manager.blacklist.phone.delete');
+        Route::get('{blacklist}/sms', 'BlacklistSmsController@fetch')->name('manager.blacklist.sms.show');
+        Route::post('{blacklist}/sms/increase', 'BlacklistSmsController@increase')->name('manager.blacklist.increase');
     });
 });
 

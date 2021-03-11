@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Location\Province;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CacheDefault;
 use App\Models\Traits\CanFilter;
@@ -20,22 +21,36 @@ class Blacklist extends Model implements Auditable
 
     protected $keyType = 'string';
 
-    protected $fillable = ['phone'];
+    protected $casts = ['sms_history' => 'array'];
+
+    protected $fillable = ['phone', 'source'];
+
+    protected $filterable = ['phone', 'source'];
 
     const NAME = 'danh sách đen';
-
-    public function filterPhone(Builder $builder, $value)
-    {
-        return $builder->where('phone', $value);
-    }
 
     public function posts()
     {
         return $this->hasMany(Post::class, 'phone', 'phone');
     }
 
+    public function adder()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'phone', 'phone');
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function filterProvince(Builder $builder, $value)
+    {
+        return $builder->where('province_id', $value);
     }
 }

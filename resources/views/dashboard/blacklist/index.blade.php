@@ -23,22 +23,52 @@
 
             <form id="search-form" action="" method="GET">
                 <div class="row">
-                    <div class="col-md-5 pl-md-0 order-first">
+                    <div class="col-md-4 pl-md-0 order-first">
                         <div class="form-row">
                             <label for="phone" class="col-md-3 col-form-label text-md-right d-none d-md-block"><strong>Tìm kiếm: </strong></label>
-            
+
                             <div class="col-md-9">
                                 <div class="form-group input-group-sm">
-                                <input id="phone" type="text" class="form-control" name="phone" value="{{ request('phone') }}" placeholder="tìm theo SĐT">
+                                    <input id="phone" type="text" class="form-control" name="phone" value="{{ request('phone') }}" placeholder="tìm theo SĐT">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 pl-md-0 order-md-first order-last">
-                        <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
-                        </a>
+
+                    <div class="row col-md-2 order-first">
+                        <div class="form-group">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                  <input type="checkbox" class="form-check-input" name="source" id="source" value="api" {{ request('source') === 'api' ? 'checked' : '' }}>
+                                  Nguồn khác
+                                </label>
+                              </div>
+                        </div>
                     </div>
-            
+
+                    <div class="col-md-2 pl-md-0 order-first">
+                        <div class="form-group input-group-sm">
+                            <select class="form-control" name="province" id="province">
+                              <option value="">Chọn Tỉnh/TP</option>
+                              @foreach ($provinces ?? [] as $item)
+                                  <option value="{{ $item->id }}" {{ $item->id === request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                              @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 pl-md-0 order-first">
+                        <div class="form-group input-group-sm">
+                            <input type="text" value="{{ request('page') }}"
+                              class="form-control" name="page" id="page" aria-describedby="helpId" placeholder="Phân trang">
+                            <small id="helpId" class="form-text text-muted">Phân trang</small>
+                          </div>
+                    </div>
+
+                    <div class="col-md-2 pl-md-0 order-md-first order-last">
+                        <button type="submit" class="btn btn-sm btn-primary mb-2">Tìm kiếm</button>
+                    </div>
+
                 </div>
             </form>
             <div class="table-responsive">
@@ -48,23 +78,59 @@
                             <th>#</th>
                             <th>Số điện thoại</th>
                             <th>Người thêm</th>
+                            <th>Thông tin</th>
                             <th>Ngày thêm</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         
-                        @foreach ($blacklist as $blackphone)
+                        @foreach ($blacklist as $phone)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td><span class="text-secondary font-weight-bold">{{ $blackphone->phone }}</span></td>
-                            {{-- <td><input type="text" class="form-control note" value="{{ $blackphone->readNote() }}" placeholder="" data-id="{{ $blackphone->id }}" @cannot('blacklist.phone.modify') disabled @endcannot ></td> --}}
-                            <td>{{ $blackphone->user->name ?? '' }}</td>
-                            <td>{{ $blackphone->created_at->format('d/m/Y H:i:s') }}</td>
                             <td>
-                                @can('blacklist.phone.delete')
-                                <button type="button" class="btn btn-danger delete" data-id="{{ $blackphone->id }}">Xóa</button>
-                                @endcan
+                                <span class="text-secondary font-weight-bold">
+                                    {{ $phone->phone }} 
+                                    <span class="text-muted">
+                                        ({{ $phone->posts->count() }})
+                                    </span>
+                                </span>
+                            </td>
+                            <td>{{ $phone->adder->name ?? '' }} @empty($phone->adder->name) <strong class="text-info">API</strong> @endEmpty</td>
+                            <td>
+                                <strong>
+                                    @isset($phone->name)
+                                        <p class="m-0">{{ $phone->name }}</p>
+                                    @endisset
+                                    @isset($phone->province)
+                                        <p class="m-0">{{ $phone->province->name }}</p>
+                                    @endisset
+                                    @isset($phone->category)
+                                        <p class="m-0">{{ $phone->category }}</p>
+                                    @endisset
+                                    @isset ($phone->url)
+                                        <a class="text-info" href="{{ $phone->url }}">Link bài gốc</a>
+                                    @endisset
+                                </strong>
+                            </td>
+                            <td>{{ $phone->created_at ? $phone->created_at->format('d/m/Y H:i:s') : 'n/a' }}</td>
+                            <td>
+                                <div class="">
+                                    @can('blacklist.phone.sms')
+                                    <button type="button" class="btn btn-primary sms" data-id="{{ $phone->id }}"><small>{{ $phone->sms_count }}</small> SMS</button>
+                                    @endcan
+
+                                    @can('blacklist.phone.delete')
+                                    <button type="button" class="btn btn-danger delete" data-id="{{ $phone->id }}">Xóa</button>
+                                    @endcan
+
+                                    @can('manager.customer.create')
+                                    @empty($phone->user)
+                                    <a target="_blank" href="{{ route('manager.customer.create') . "?phone=$phone->phone&name=$phone->name" }}" type="button" class="btn btn-success">Tạo TK</a>
+                                    @endempty
+                                    @endcan
+
+                                </div>
                             </td>
                         </tr>
                         @endforeach
@@ -80,8 +146,11 @@
                     </tfoot>
                 </table>
             </div>
+            <span class="text-muted">Tìm thấy {{ $blacklist->total() }} kết quả</span>
 
-            {{ $blacklist->onEachSide(0)->withQueryString()->render() }}
+            <div class="d-flex justify-content-center">
+                {{ $blacklist->onEachSide(0)->withQueryString()->render() }}
+            </div>
 
         </div>
     </div>
@@ -118,6 +187,39 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="fetch-sms" tabindex="-1" role="dialog" aria-labelledby="Sms" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Lịch sử nhắn SMS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" id="fetch-sms-form">
+                    @csrf
+
+                    <div class="form-group">
+                        <p>Tổng số lần: <strong id="sms-count"></strong> </p>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Lịch sử nhắn: </label>
+                      <textarea id="sms-history" class="form-control w-100" readonly rows="3"></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-success">Thêm lần SMS</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <form id="delete-form" action="" method="POST">@csrf</form>
 @endsection
 
@@ -125,6 +227,7 @@
 <script>
 
     $(document).ready(function() {
+
         $('.note').on('change', function () {
             let id = $(this).data('id');
 
@@ -147,6 +250,35 @@
             form.attr('action', `/manager/blacklist/phone/${id}/delete`);
 
             form.submit();
+        });
+
+        $('.sms').on('click', function () {
+            const id = $(this).data('id');
+
+            fetch(`/manager/blacklist/phone/${id}/sms`)
+                .then(res => res.json())
+                .then(data => {
+                    let i = 0;
+
+                    const histories = data.history.map(e => ++i + '. ' + e).join('\n');
+
+                    $('#sms-count').html(data.count);
+                    $('#sms-history').val(histories);
+                }).catch(() => {
+                    Snackbar.show({
+                        text: 'Danger',
+                        actionTextColor: '#fff',
+                        backgroundColor: '#e7515a',
+                        text: 'Có lỗi trong quá trình lấy dữ liệu',
+                        pos: 'bottom-right',
+                        duration: 5000,
+                        showAction: false
+                    });
+                });
+
+            $('#fetch-sms-form').attr('action', `/manager/blacklist/phone/${id}/sms/increase`);
+
+            $('#fetch-sms').modal();
         });
     });
 

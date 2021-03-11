@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/forms/theme-checkbox-radio.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/lightbox/photoswipe.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/lightbox/default-skin/default-skin.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/lightbox/custom-photswipe.css') }}">
 
 <style>
@@ -30,14 +31,18 @@
 <div class="col-12 mb-4">
     <h4>
         Danh sách bài viết
-        <a href="javascript:void(0)" id="create-button" class="btn btn-success rounded-circle"><i data-feather="plus"></i></a>
+        <a id="create-button" class="btn btn-success rounded-circle"><i data-feather="plus"></i></a>
     </h4>
+</div>
+
+<div class="col-12 mb-4">
+    @include('dashboard.post.fee.components.search')
 </div>
 
 @foreach ($posts as $post)
 <div class="col-md-4 col-sm-6 mb-3">
     <div class="card component-card_2">
-        <img src="{{ '/storage/' . $post->files[0]->path ?? '' }}" class="card-img-header cursor-pointer" data-images='@json($post->files)'>
+        <img src="@isset($post->files[0]) {{ asset($post->files[0]->path) }} @endisset" class="card-img-header cursor-pointer" data-images='@json($post->files)'>
         <div class="card-body">
             <h5 class="card-title">{{ $post->title }}</h5>
             <p class="card-text">
@@ -48,29 +53,27 @@
             </p>
         </div>
         <div class="card-footer">
+            @can('manager.post.market.modify')
             <a href="javascript:void(0)" class="btn btn-primary editable" data-id="{{ $post->id }}">Chỉnh sửa</a>
+            @endcan
         </div>
     </div>
 </div>
 @endforeach
 
 <div class="col-12 justify-content-center">
-    {{ $posts->withQueryString()->render() }}
+    {{ $posts->onEachSide(0)->withQueryString()->render() }}
 </div>
 
 @include('dashboard.layouts.photoswipe')
 
-
-{{-- <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#edit">
-  Launch
-</button> --}}
 
 <!-- Modal -->
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form id="form-modal" action="" method="POST" enctype="multipart/form-data"> @csrf
+                <input id="unique-id" type="hidden" name="id" value="">
                 <div class="modal-header">
                     <h5 class="modal-title">Tin thị trường</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -106,7 +109,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group input-group-sm">
                                         <label for="category">Danh mục</label>
-                                        <select class="form-control" name="category_ids" id="category" required>
+                                        <select class="form-control" name="category_ids[]" id="category" required>
                                         <option value="">Chọn danh mục</option>
                                         @php
                                             $catId = $category->id ?? null;
@@ -128,15 +131,10 @@
                                 <div class="col-md-4">
                                     <div class="form-group input-group-sm">
                                         <label for="province">Tỉnh, thành phố</label>
-                                        <select class="form-control" name="province" id="province" required>
+                                        <select class="form-control" name="province" id="main-province" required>
                                             <option value="" selected>Trống</option>
                                             @foreach ($provinces as $province)
-                                            <option value="{{ $province->id }}" {{ $post->province_id == $province->id ? 'selected' :'' }}>{{ $province->name }}</option>
-                                            @php
-                                                if ($post->province_id == $province->id) {
-                                                    $activeProvince = $province;
-                                                }
-                                            @endphp
+                                            <option value="{{ $province->id }}">{{ $province->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -145,11 +143,11 @@
                                 <div class="col-md-4">
                                     <div class="form-group input-group-sm">
                                         <label for="district">Quận/huyện</label>
-                                        <select class="form-control" name="district" id="district" required>
+                                        <select class="form-control" name="district" id="main-district" required>
                                             <option value="" selected>Trống</option>
                                             @isset($activeProvince)
                                             @foreach ($activeProvince->districts as $district)
-                                            <option value="{{ $district->id }}" {{ $post->district_id == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
+                                            <option value="{{ $district->id }}">{{ $district->name }}</option>
                                             @endforeach
                                             @endisset
                                         </select>
@@ -183,10 +181,14 @@
                     </div>
 
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Lưu</button>
-                </div>
+                <div class="modal-footer justify-content-between">
+                    @can('manager.post.market.delete')
+                    <a href="javascript:void(0)" class="btn btn-danger removable">Xóa bài</a>
+                    @endcan
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
             </form>
         </div>
     </div>
@@ -211,14 +213,25 @@
     $(document).ready(() => {
         $('#create-button').click(() => {
             $('#form-modal').attr('action', "{{ route('manager.post.market.store') }}")
+            $('#edit').modal()
         });
+
+        $('.removable').click(() => {
+            const id = $('#unique-id').val();
+
+            window.location.href = `/manager/post/market/${id}/delete`
+        })
+
+        $('#main-province').on('change', (e) => {
+            address.setDistricts($(e.currentTarget).val());
+        })
 
         $('.editable').on('click', (e) => {
             const id = $(e.currentTarget).data('id');
-
+            $('#unique-id').val(id)
             $('#form-modal').attr('action', `/manager/post/market/${id}/update`);
 
-            fetch('/manager/post/' + id + '/view', {headers: {Accept: 'application/json'}})
+            fetch('/manager/post/market/' + id + '/fetch', {headers: {Accept: 'application/json'}})
                 .then(res => res.json())
                 .then(post => {
                     let map = {
@@ -244,7 +257,7 @@
                         status: post.status,
                     };
 
-                    address.setDistricts(options.province);
+                    address.setDistricts(options['main-province']);
 
                     for (const key in options) {
                         if (options.hasOwnProperty(key) && options[key]) {
@@ -254,7 +267,7 @@
                     }
 
                     let files = post.files.map(file => {
-                        return `/storage/${file.path}?fid=${file.id}`;
+                        return `${file.path}?fid=${file._id}`;
                     });
 
                     upload.addImagesFromPath(files);
@@ -323,7 +336,7 @@
 $(document).ready(function () {
     $('.card-img-header').on('click', function () {
         const images = $(this).data('images').map(image => {
-            return {src: `/storage/${image.path}`, w: 0, h: 0};
+            return {src: `${image.path}`, w: 0, h: 0};
         });
 
         let pswpElement = document.querySelectorAll('.pswp')[0];

@@ -163,8 +163,6 @@
             rightAlign: false
         });
 
-        $('#phone').inputmask("9999.999.999")
-
         ClassicEditor
         .create(document.querySelector('#post_content'))
         .catch( err => {

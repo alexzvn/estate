@@ -79,11 +79,13 @@
                     <tbody>
                         @foreach ($notes as $note)
 
-                        {{-- @dd($note->new_values) --}}
-
                         <tr>
                             <td class="text-center" >{{ $loop->index }}</td>
+                            @if ($note->user)
                             <td><a class="text-primary font-weight-bolder" href="{{ route('manager.customer.view', ['id' => $note->user]) }}">{{ $note->user->name }}</a></td>
+                            @else
+                            <td><span class="text-muted">[deleted]</span></td>
+                            @endif
                             <td><span class="text-info">{{ $note->new_values['content'] ?? '' }}</span></td>
                             @empty($note->auditable->user)
                             <td></td>
@@ -99,7 +101,7 @@
                 <span class="text-muted">Tổng cộng có {{ $notes->total() }} bản ghi</span>
 
                 <div class="d-flex justify-content-center">
-                    {!! $notes->appends($_GET)->render() !!}
+                    {{ $notes->onEachSide(0)->withQueryString()->render() }}
                 </div>
             </div>
 

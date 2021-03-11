@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\Post;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Jobs\Post\ImportPostJob as ImportPost;
+use App\Repository\Location\District;
+use App\Repository\Location\Province;
 
-class ImportController extends Controller
+abstract class ImportController extends Controller
 {
-    protected $price = [
+    private $price = [
         'tỷ'    => 1000000000,
         'triệu' => 1000000,
         'nghìn' => 1000,
@@ -17,41 +18,49 @@ class ImportController extends Controller
     ];
 
     /**
-     * Store a newly created resource in storage.
+     * Body payload posts
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @var \Illuminate\Support\Collection
      */
-    public function store(Request $request)
-    {
-        $posts = collect(json_decode($request->getContent()));
+    protected $posts;
 
-        if ($posts->isEmpty()) {
+    public function __construct() {
+        $this->posts = collect(json_decode(request()->getContent()));
+    }
+
+    public function store()
+    {
+        if ($this->posts->isEmpty()) {
             return response([
                 'message' => 'the post was empty',
                 'success' => false
             ], 400);
         }
 
-        $this->queue($posts);
+        $this->queue($this->posts);
 
         return ['message' => 'okey', 'success' => true];
     }
 
-    protected function queue($posts)
+    protected function normalizePhone($content)
     {
-        $posts->each(function ($post) {
-            $post->hash  = sha1($post->url);
+        $vietnamPhone = '/(\+?84|0)(\s|\.)?(\d{1,4})(\s|\.)?(\d{2,4})(\s|\.)?(\d{2,5})/im';
 
-            $price = $this->stringPriceToNumber($post->price ?? '');
+        if (preg_match($vietnamPhone, $content, $matches)) {
+            return "0{$matches[3]}{$matches[5]}{$matches[7]}";
+        }
 
-            $post->price = $price || $price == 0 ? round($price) : null;
-
-            ImportPost::dispatch($post);
-        });
+        return null;
     }
 
-    protected function stringPriceToNumber(string $price)
+    protected function normalizePrice($price)
+    {
+        $price = $this->priceNumbered($price ?? '');
+
+        return $price || $price == 0 ? round($price) : null;
+    }
+
+    private function priceNumbered($price)
     {
         if (preg_match('/^[0-9]+$/', $price)) {
             return (float) $price;
@@ -71,4 +80,34 @@ class ImportController extends Controller
 
         return ((float) $price) * $priceString;
     }
+
+    protected function getProvince(string $name)
+    {
+        static $provinces;
+
+        if ($provinces === null) {
+            $provinces = Province::all();
+        }
+
+        return $provinces->filter(function ($province) use ($name)
+        {
+            return preg_match("/$name/", $province->name);
+        })->first();
+    }
+
+    protected function getDistrict(string $name)
+    {
+        static $districts;
+
+        if ($districts === null) {
+            $districts = District::all();
+        }
+
+        return $districts->filter(function ($district) use ($name)
+        {
+            return preg_match("/$name/", $district->name);
+        })->first();
+    }
+
+    abstract public function queue(Collection $posts);
 }
