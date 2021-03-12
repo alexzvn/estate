@@ -50,13 +50,13 @@ $manual  = $order->manual !== null && $order->manual;
                             <div class="col-md-4">
                                 <div class="form-group">
                                   <label for="activated_at">Ngày kích hoạt</label>
-                                  <input type="text" class="form-control" value="{{ $order->activate_at }}" name="activated_at" id="activated_at" placeholder="Ngày hôm nay">
+                                  <input type="text" class="form-control" value="{{ $order->activate_at->format('d/m/Y') }}" name="activated_at" id="activated_at" placeholder="Ngày hôm nay">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                   <label for="expires_at">Ngày hết hạn</label>
-                                  <input type="text" class="form-control" value="{{ $order->expires_at }}" name="expires_at" id="expires_at" placeholder="Tự tính toán" {{ $manual ? '' : 'disabled' }}>
+                                  <input type="text" class="form-control" value="{{ $order->expires_at->format('d/m/Y') }}" name="expires_at" id="expires_at" placeholder="Tự tính toán" {{ $manual ? '' : 'disabled' }}>
                                 </div>
                             </div>
 
@@ -161,8 +161,13 @@ $manual  = $order->manual !== null && $order->manual;
 <script>
 
 (function (window) {
-    let f1 = flatpickr(document.getElementById('activated_at'));
-    let f2 = flatpickr(document.getElementById('expires_at'));
+    let f1 = flatpickr(document.getElementById('activated_at'), {
+        dateFormat: "d/m/Y"
+    });
+
+    let f2 = flatpickr(document.getElementById('expires_at') {
+        dateFormat: "d/m/Y"
+    });
 
     $('.price').inputmask({
         alias: 'currency',
