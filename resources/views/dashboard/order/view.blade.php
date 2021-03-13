@@ -50,13 +50,13 @@ $manual  = $order->manual !== null && $order->manual;
                             <div class="col-md-4">
                                 <div class="form-group">
                                   <label for="activated_at">Ngày kích hoạt</label>
-                                  <input type="text" class="form-control" value="{{ $order->activate_at->format('d/m/Y') }}" name="activated_at" id="activated_at" placeholder="Ngày hôm nay">
+                                  <input type="text" class="form-control" @if($order->activate_at) value="{{ $order->activate_at->format('d/m/Y') }}" @endif name="activated_at" id="activated_at" placeholder="Ngày hôm nay">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                   <label for="expires_at">Ngày hết hạn</label>
-                                  <input type="text" class="form-control" value="{{ $order->expires_at->format('d/m/Y') }}" name="expires_at" id="expires_at" placeholder="Tự tính toán" {{ $manual ? '' : 'disabled' }}>
+                                  <input type="text" class="form-control"  @if($order->expires_at) value="{{ $order->expires_at->format('d/m/Y') }}" @endif name="expires_at" id="expires_at" placeholder="Tự tính toán" {{ $manual ? '' : 'disabled' }}>
                                 </div>
                             </div>
 
