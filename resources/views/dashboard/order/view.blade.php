@@ -165,7 +165,7 @@ $manual  = $order->manual !== null && $order->manual;
         dateFormat: "d/m/Y"
     });
 
-    let f2 = flatpickr(document.getElementById('expires_at') {
+    let f2 = flatpickr(document.getElementById('expires_at'), {
         dateFormat: "d/m/Y"
     });
 
