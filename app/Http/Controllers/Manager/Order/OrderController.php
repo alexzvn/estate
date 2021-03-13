@@ -83,9 +83,8 @@ class OrderController extends Controller
             return back()->with('danger', 'Bạn không đủ thẩm quyền để kích hoạt gói này');
         }
 
-        $activated_at = 
-            ($time = strtotime($request->activated_at)) ?
-            Carbon::createFromTimestamp($time) : now();
+        $activated_at = $request->activated_at ?
+            Carbon::createFromFormat('d/m/Y', $request->activated_at) : now();
 
         (new Customer($order->customer))->renewSubscription($order);
 
