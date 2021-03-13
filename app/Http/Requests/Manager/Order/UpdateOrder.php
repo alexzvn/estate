@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Manager\Order;
 
 use App\Models\Order;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
