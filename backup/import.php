@@ -3,13 +3,13 @@
 require_once __DIR__ . '/importer/helper/Mapper.php';
 require_once __DIR__ . '/importer/helper/functions.php';
 
-// mapIds();
+mapIds();
 
 $restores = [
     'provinces'      => 0,
     'districts'      => 0,
     'wards'          => 0,
-    'users'          => 0,
+    'users'          => 1,
     'whitelists'     => 1,
     'blacklists'     => 1,
     'categories'     => 0,
@@ -31,7 +31,6 @@ $restores = [
     'order_plan'    => 0,
     'plan_province' => 0,
     'category_plan' => 0,
-    'plan_types'    => 0,
 
     'post_user_blacklist'   => 0,
     'post_user_save'        => 0,
