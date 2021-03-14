@@ -19,7 +19,7 @@ class BlacklistController extends Controller
             'user', 'posts', 'adder'
         ])->filter($request);
 
-        if ($request->source) {
+        if ($request->user) {
             $blacklist->whereNotNull('user_id');
         }
 
