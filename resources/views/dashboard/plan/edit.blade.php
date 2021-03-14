@@ -46,7 +46,7 @@
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="categories[]" id="categories"
-                                            value="{{ $item->id }}" {{ $plan->categories->where('id', $item->id)->isNotEmpty() ? 'checked' : '' }}>
+                                            value="{{ $item->id }}" {{ in_array($item->id, $plan->categories->toArray())? 'checked' : '' }}>
                                             {{ $item->name }}
                                         </label>
                                     </div>
@@ -61,7 +61,7 @@
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="post_type[]"
-                                            id="post_type" value="{{ $name }}" {{ in_array($name, $plan->types ?? []) ? 'checked': '' }}>
+                                            id="post_type" value="{{ $name }}" {{ in_array($name, $plan->types->toArray()) ? 'checked': '' }}>
                                             {{ $name }}
                                         </label>
                                     </div>
@@ -75,7 +75,7 @@
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input type="checkbox" class="form-check-input" name="provinces[]" id="provinces"
-                                    value="{{ $item->id }}" {{ $plan->provinces->where('id', $item->id)->isNotEmpty() ? 'checked' : '' }}>
+                                    value="{{ $item->id }}" {{ in_array($item->id, $plan->provinces->toArray()) ? 'checked' : '' }}>
                                     {{ $item->name }}
                                 </label>
                             </div>
