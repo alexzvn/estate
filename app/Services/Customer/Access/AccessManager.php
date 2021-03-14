@@ -2,9 +2,7 @@
 
 namespace App\Services\Customer\Access;
 
-use App\Models\Plan;
 use App\Models\User;
-use Illuminate\Support\Collection;
 
 class AccessManager
 {

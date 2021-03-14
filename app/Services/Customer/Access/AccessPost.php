@@ -3,9 +3,7 @@
 namespace App\Services\Customer\Access;
 
 use App\Models\Plan;
-use App\Models\Subscription;
 use Illuminate\Support\Collection;
-use stdClass;
 
 class AccessPost
 {
@@ -21,84 +19,83 @@ class AccessPost
      *
      * @var array
      */
-    protected $plan = [];
+    protected array $plan = [];
 
-    /**
-     * Default access
-     *
-     * @var string|null
-     */
-    protected $type = null;
-
-    public function __construct(Collection $subs, string $defaultType = null) {
+    public function __construct(Collection $subs) {
         $this->subs = $subs;
-        $this->type = $defaultType;
         $this->mapPlans();
     }
 
-    public function canAccess(string $type = null)
+    /**
+     * Check if user can access type of post
+     *
+     * @param integer $type
+     * @return boolean
+     */
+    public function canAccess(int $type)
     {
-        return isset($this->plan['type'][$type ?? $this->type]);
+        return isset($this->plan[$type]);
     }
 
-    public function categories(string $type = null)
+    /**
+     * Get available categories ids
+     *
+     * @param integer $type
+     * @return integer[]
+     */
+    public function categories(int $type)
     {
-        return $this->plan['type'][$type ?? $this->type]['categories'] ?? [];
+        return $this->canAccess($type) ? $this->plan[$type]['categories'] : [];
     }
 
-    public function provinces(string $type = null)
+    /**
+     * Get available provinces ids
+     *
+     * @param integer $type
+     * @return integer[]
+     */
+    public function provinces(int $type)
     {
-        return $this->plan['type'][$type ?? $this->type]['provinces'] ?? [];
+        return $this->canAccess($type) ? $this->plan[$type]['provinces'] : [];
     }
 
     /**
      * Get accessible type of post
      *
-     * @return string[]
+     * @return int[]
      */
     public function types()
     {
-        return $this->plan['accessible'] ?? [];
+        return array_keys($this->plan);
     }
 
     protected function mapPlans()
     {
-       $this->plans()->each(function (Plan $plan)
-       {
-            foreach ($plan->types ?? [] as $type) {
-                $this->plan['type'][$type] = ['categories' => [], 'provinces' => []];
-                $this->plan['accessible'][] = $type;
+        $this->plans()->each(function (Plan $plan) {
+            foreach ($plan->types as $type) {
+                $this->plan[$type] = [
+                    'categories' => [],
+                    'provinces'  => []
+                ];
+
+                array_push($this->plan[$type]['categories'], ...$plan->categories);
+                array_push($this->plan[$type]['provinces'], ...$plan->provinces);
             }
+        });
 
-            $this->plan['accessible'] = array_unique($this->plan['accessible']);
-
-       })->each(function (Plan $plan)
-       {
-           foreach ($plan->types ?? [] as $type) {
-               array_push($this->plan['type'][$type]['categories'], ...$this->getIds($plan->categories));
-               array_push($this->plan['type'][$type]['provinces'], ...$this->getIds($plan->provinces));
-           }
-       });
+        foreach ($this->plan as $type => $item) {
+            $this->plan[$type]['categories'] = array_unique($this->plan[$type]['categories']);
+            $this->plan[$type]['provinces'] = array_unique($this->plan[$type]['provinces']);
+        }
     }
 
-    protected function getIds(Collection $models)
-    {
-        return $models->reduce(function ($carry, $item)
-        {
-            $carry[] = $item->id;
-
-            return $carry;
-        }, []);
-    }
-
+    /**
+     * Get all plans available from all subscriptions 
+     *
+     * @return Illuminate\Support\Collection
+     */
     private function plans()
     {
-        return $this->subs->map(function ($item)
-        {
-            return $item->plan;
-        })->filter(function ($item)
-        {
-            return $item !== null;
-        });
+        return $this->subs->map(fn($item) => $item->plan);
     }
 }

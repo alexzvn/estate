@@ -24,7 +24,7 @@ class CreatePostsTable extends Migration
 
             $table->string('hash', 80)->nullable()->index();
             $table->tinyInteger('status')->default(0)->index();
-            $table->string('type')->nullable()->index();
+            $table->tinyInteger('type')->nullable()->index();
 
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('verifier_id')->nullable()->constrained('users')->nullOnDelete();
@@ -33,6 +33,8 @@ class CreatePostsTable extends Migration
             $table->boolean('approve_fee')->default(false);
 
             $table->longText('index_meta')->nullable();
+            $table->tinyInteger('source')->nullable();
+            $table->json('extra')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
