@@ -17,9 +17,9 @@ class CreatePlansTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('price')->default(0);
-            $table->json('types')->default('[]');
-            $table->json('categories')->default('[]');
-            $table->json('provinces')->default('[]');
+            $table->json('types')->nullable();
+            $table->json('categories')->nullable();
+            $table->json('provinces')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
