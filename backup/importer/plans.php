@@ -19,14 +19,14 @@ $types = function ($oid, $data) use ($type) {
     return json_encode($types);
 };
 
-$categories = function ($oid, $data) {
+$categories = function ($id, $data) {
     $categories = collect($data['category_ids'] ?? [])
         ->map(fn($oid) => id('categories', $oid));
 
     return json_encode($categories->toArray());
 };
 
-$provinces = function ($oid, $data) {
+$provinces = function ($id, $data) {
     $provinces = collect($data['provinces_ids'] ?? [])
         ->map(fn($oid) => id('provinces', $oid));
 
