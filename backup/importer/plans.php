@@ -27,7 +27,7 @@ $categories = function ($id, $data) {
 };
 
 $provinces = function ($id, $data) {
-    $provinces = collect($data['provinces_ids'] ?? [])
+    $provinces = collect($data['province_ids'] ?? [])
         ->map(fn($oid) => id('provinces', $oid));
 
     return json_encode($provinces->toArray());
