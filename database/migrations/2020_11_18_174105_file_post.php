@@ -14,7 +14,6 @@ class FilePost extends Migration
     public function up()
     {
         Schema::create('file_post', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('post_id')->constrained()->cascadeOnDelete();
             $table->foreignId('file_id')->constrained()->cascadeOnDelete();
         });

@@ -14,7 +14,6 @@ class CreateOrderPlanTable extends Migration
     public function up()
     {
         Schema::create('order_plan', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->foreignId('plan_id')->constrained()->cascadeOnDelete();
         });

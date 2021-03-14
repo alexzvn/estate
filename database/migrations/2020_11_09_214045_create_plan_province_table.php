@@ -14,7 +14,6 @@ class CreatePlanProvinceTable extends Migration
     public function up()
     {
         Schema::create('plan_province', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('plan_id')->constrained()->cascadeOnDelete();
             $table->foreignId('province_id')->constrained()->cascadeOnDelete();
         });

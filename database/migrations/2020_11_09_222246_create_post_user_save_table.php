@@ -14,7 +14,6 @@ class CreatePostUserSaveTable extends Migration
     public function up()
     {
         Schema::create('post_user_save', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('post_id')->constrained()->cascadeOnDelete();
         });
