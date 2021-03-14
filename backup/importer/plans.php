@@ -13,7 +13,7 @@ $type = function ($key) {
 
 $types = function ($oid, $data) use ($type) {
     $types = array_map(function ($key) use ($type) {
-        return $type[$key];
+        return $type($key);
     }, $data['types'] ?? []);
 
     return json_encode($types);
