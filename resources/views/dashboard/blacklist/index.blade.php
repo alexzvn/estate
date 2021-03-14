@@ -109,7 +109,7 @@
                                         <p class="m-0">{{ $phone->category }}</p>
                                     @endisset
                                     @isset ($phone->url)
-                                        <a class="text-info" href="{{ $phone->url }}">Link bài gốc</a>
+                                        <a class="text-info" target="_blank" href="{{ $phone->url }}">Link bài gốc</a>
                                     @endisset
                                 </strong>
                             </td>
