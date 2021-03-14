@@ -3,7 +3,6 @@
 @extends('dashboard.app')
 
 @push('style')
-<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
 <style>
 .active td {

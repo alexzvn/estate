@@ -18,7 +18,7 @@
                         @else
                             @include('customer.components.posts-table', ['posts' => $posts])
                             <div class="d-flex justify-content-center">
-                                {{ $posts->withQueryString()->onEachSide(1)->links('customer.layouts.paginate') }}
+                                {{ $posts->withQueryString()->onEachSide(1)->render() }}
                             </div>
                         @endif
 
