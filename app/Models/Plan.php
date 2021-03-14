@@ -28,11 +28,11 @@ class Plan extends Model implements Auditable
 
     public function provinces()
     {
-        return $this->hasManyJson(Province::class, 'provinces');
+        return $this->belongsToJson(Province::class, 'provinces');
     }
 
     public function categories()
     {
-        return $this->hasManyJson(Category::class, 'categories');
+        return $this->belongsToJson(Category::class, 'categories');
     }
 }
