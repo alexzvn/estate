@@ -29,8 +29,6 @@ class PlanController extends Controller
     {
         $this->authorize('manager.plan.view');
 
-        
-
         return view('dashboard.plan.edit', [
             'plan' => $plan->with(['provinces', 'categories'])->findOrFail($id),
             'postTypes' => PostType::getValues(),
@@ -64,7 +62,9 @@ class PlanController extends Controller
         $plan->fill([
             'name' => $request->name,
             'price' => (float) str_replace(',', '', $request->price ?? ''),
-            'types' => $request->post_type ?? []
+            'types' => $request->post_type ?? [],
+            'provinces' => $request->provinces ?? [],
+            'categories' => $request->categories ?? [],
         ])->save();
 
 
@@ -82,11 +82,5 @@ class PlanController extends Controller
         }
 
         return redirect(route('manager.plan'))->with('success', 'Xóa thành công gói đăng ký');
-    }
-
-    private function savePlansRelation($model, Request $request)
-    {
-        $model->categories()->sync($request->categories ?? []);
-        $model->provinces()->sync($request->provinces ?? []);
     }
 }
