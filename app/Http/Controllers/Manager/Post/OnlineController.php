@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Manager\Post;
 
-use App\Models\Post;
 use App\Enums\PostStatus;
 use Illuminate\Http\Request;
+use App\Repository\Permission;
 use App\Services\System\Post\Fee;
 use App\Services\System\Post\Online;
 use App\Http\Requests\Manager\Post\ClonePost;

@@ -15,11 +15,16 @@ class BlacklistController extends Controller
     {
         $this->authorize('blacklist.phone.view');
 
-        return view('dashboard.blacklist.index', [
-            'blacklist' => Blacklist::latest()->with([
-                'user', 'posts', 'adder'
-            ])->filter($request)->paginate(40),
+        $blacklist = Blacklist::latest()->with([
+            'user', 'posts', 'adder'
+        ])->filter($request);
 
+        if ($request->user) {
+            $blacklist->whereNotNull('user_id');
+        }
+
+        return view('dashboard.blacklist.index', [
+            'blacklist' => $blacklist->paginate(40),
             'provinces' => Province::active()->get()
         ]);
     }

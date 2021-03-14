@@ -8,7 +8,6 @@ use App\Http\Requests\Manager\Post\Market\UpdatePost;
 use App\Repository\Permission;
 use App\Repository\Post;
 use App\Services\System\Post\Market;
-use App\Services\System\Post\PostService;
 use Illuminate\Http\Request;
 
 class MarketController extends PostController

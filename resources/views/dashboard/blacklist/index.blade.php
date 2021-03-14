@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" name="source" id="source" value="api" {{ request('source') === 'api' ? 'checked' : '' }}>
+                                  <input type="checkbox" class="form-check-input" name="user" id="user" value="user" {{ request('user') === 'user' ? 'checked' : '' }}>
                                   Nguồn khác
                                 </label>
                               </div>
@@ -109,7 +109,7 @@
                                         <p class="m-0">{{ $phone->category }}</p>
                                     @endisset
                                     @isset ($phone->url)
-                                        <a class="text-info" href="{{ $phone->url }}">Link bài gốc</a>
+                                        <a class="text-info" target="_blank" href="{{ $phone->url }}">Link bài gốc</a>
                                     @endisset
                                 </strong>
                             </td>

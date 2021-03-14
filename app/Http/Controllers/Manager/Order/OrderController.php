@@ -83,9 +83,8 @@ class OrderController extends Controller
             return back()->with('danger', 'Bạn không đủ thẩm quyền để kích hoạt gói này');
         }
 
-        $activated_at = 
-            ($time = strtotime($request->activated_at)) ?
-            Carbon::createFromTimestamp($time) : now();
+        $activated_at = $request->activated_at ?
+            Carbon::createFromFormat('d/m/Y', $request->activated_at) : now();
 
         (new Customer($order->customer))->renewSubscription($order);
 
@@ -101,14 +100,18 @@ class OrderController extends Controller
     {
         $this->authorize('*');
 
-        $order = Order::findOrFail($id)->verify();
+        Order::findOrFail($id)->verify();
 
         return back()->with('success', 'Đã xác thực đơn hàng');
     }
 
     protected function updateAuto(ModelsOrder $order, UpdateOrder $request)
     {
-        $order->fill($request->all())->fill([
+        $filler = $request->all();
+
+        unset($filler['expires_at']);
+
+        $order->fill($filler)->fill([
             'month' => (int) $request->expires_month,
             'price' => $order->plans->sum('price') ?? 0,
             'status'=> $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
@@ -123,7 +126,11 @@ class OrderController extends Controller
     {
         $price = (int) str_replace(',', '', $request->price ?? 0);
 
-        $order->fill($request->all())->fill([
+        $filler = $request->all();
+
+        unset($filler['expires_at']);
+
+        $order->fill($filler)->fill([
             'month' => null,
             'price' => $price,
             'status'=> $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,

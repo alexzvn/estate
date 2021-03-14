@@ -52,7 +52,11 @@ class BlacklistController extends Controller
     {
         return collect(
             json_decode($request->getContent())
-        );
+        )->map(function ($phone) {
+            $phone->region = trim(preg_replace('/^Tp/', '', $phone->region, 1));
+
+            return $phone;
+        });
     }
 
     protected function getProvinceId($name)
