@@ -25,7 +25,7 @@ class PostController extends Controller
             ->withoutWhitelist();
 
         return view('dashboard.censorship.index', [
-            'posts' => $post->paginate(40),
+            'posts' => $post->simplePaginate(40),
             'provinces' => Province::with('districts')->active()->get()
         ]);
     }
