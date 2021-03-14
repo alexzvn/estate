@@ -15,7 +15,6 @@ class Category extends Model implements Auditable
 
     protected $fillable = ['name', 'description'];
 
-    
     /**
      * The attributes that should be hidden for arrays.
      *
