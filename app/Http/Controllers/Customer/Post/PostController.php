@@ -26,7 +26,7 @@ class PostController extends BaseController
 
         return view('customer.post.fee', [
             'canAccess' => $this->access->canAccess($type),
-            'posts' => $this->defaultPost($type)->paginate(20)
+            'posts' => $this->defaultPost($type)->simplePaginate(20)
         ]);
     }
 
@@ -43,7 +43,7 @@ class PostController extends BaseController
 
         return view('customer.post.online', [
             'canAccess' => $this->access->canAccess($type),
-            'posts' => $this->defaultPost($type)->paginate(20)
+            'posts' => $this->defaultPost($type)->simplePaginate(20)
         ]);
     }
 
@@ -60,7 +60,7 @@ class PostController extends BaseController
 
         return view('customer.post.market', [
             'canAccess' => $this->access->canAccess($type),
-            'posts' => $this->defaultPost($type)->with('files')->paginate(20)
+            'posts' => $this->defaultPost($type)->with('files')->simplePaginate(20)
         ]);
     }
 
@@ -90,7 +90,7 @@ class PostController extends BaseController
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function defaultPost(string $type)
+    private function defaultPost(int $type)
     {
         $categories = Category::flat($this->accessCategories($type))
             ->map(function ($cat) {
