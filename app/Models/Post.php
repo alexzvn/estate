@@ -108,7 +108,7 @@ class Post extends Model implements Auditable
     {
         return $builder
             ->whereNotNull('publish_at')
-            ->where('status', (string) PostStatus::Published);
+            ->where('status', PostStatus::Published);
     }
 
     public function scopeNewest(Builder $builder)
@@ -118,7 +118,7 @@ class Post extends Model implements Auditable
 
     public function scopePending(Builder $builder)
     {
-        $builder->where('status', (string)  PostStatus::Pending());
+        $builder->where('status', PostStatus::Pending());
     }
 
     public function scopeWithoutWhitelist(Builder $builder)
