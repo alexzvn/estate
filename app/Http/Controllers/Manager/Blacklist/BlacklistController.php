@@ -20,7 +20,7 @@ class BlacklistController extends Controller
         ])->filter($request);
 
         if ($request->source) {
-            $blacklist->whereHas('user');
+            $blacklist->whereHas('adder');
         }
 
         return view('dashboard.blacklist.index', [
