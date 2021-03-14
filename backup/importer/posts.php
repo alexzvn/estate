@@ -1,11 +1,22 @@
 <?php
 
+$type = function ($oid, $data) {
+    $mapped = [
+        'Tin Xin Phí' => 1,
+        'Tin Mua Bán - Thuê' => 2,
+        'Tin Thị Trường' => 3,
+        'Tin web online' => 4
+    ];
+
+    return $mapped[$data['type']] ?? null;
+};
+
 return get('posts', new Mapper([
     'title' => 'string',
     'content' => 'string',
     'phone' => 'string',
     'hash' => 'string',
-    'type' => 'string',
+    'type' => $type,
     'reverser' => 'boolean',
     'approve_fee' => 'boolean',
     'commission' => 'string',
