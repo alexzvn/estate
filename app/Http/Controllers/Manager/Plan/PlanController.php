@@ -67,9 +67,6 @@ class PlanController extends Controller
             'categories' => $request->categories ?? [],
         ])->save();
 
-
-        $this->savePlansRelation($plan, $request);
-
         return redirect(route('manager.plan'))->with('success', 'Cập nhật thành công');
     }
 
