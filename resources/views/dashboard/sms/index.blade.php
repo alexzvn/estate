@@ -70,7 +70,7 @@
                     <tr>
                         <th class="text-center">#</th>
                         <th>tên mẫu</th>
-                        <th>Nội dung</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,7 +78,11 @@
                     <tr>
                         <td>{{ $item->iteration }}</td>
                         <th>{{ $item->name }}</th>
-                        <th>{{ $item->content }}</th>
+                        <th>
+                            <a href="{{ route('manager.sms.template.edit', $item) }}">
+                                <i class="role-edit" data-feather="edit"></i>
+                            </a>
+                        </th>
                     </tr>
                     @endforeach
                 </tbody>

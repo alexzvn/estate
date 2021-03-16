@@ -72,10 +72,13 @@ class SmsController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'content' => 'required|string'
+            'message' => 'required|string'
         ]);
 
-        $template->fill($request->all())->save();
+        $template->fill([
+            'name' => $request->name,
+            'content' => $request->message
+        ])->save();
 
         return back()->with('success', 'Sửa mẫu sms thành công');
     }
