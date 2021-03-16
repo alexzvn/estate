@@ -63,13 +63,17 @@ class SmsController extends Controller
         return redirect(route('manager.sms.template'))->with('success', 'Tạo mẫu tin nhắn mới thành công');
     }
 
-    public function edit(SmsTemplate $template)
+    public function edit($template)
     {
+        $template = SmsTemplate::findOrFail($template);
+
         return view('dashboard.sms.edit', compact('template'));
     }
 
-    public function update(SmsTemplate $template, Request $request)
+    public function update(Request $request, $template)
     {
+        $template = SmsTemplate::findOrFail($template);
+
         $request->validate([
             'name' => 'required|string',
             'message' => 'required|string'
@@ -83,11 +87,13 @@ class SmsController extends Controller
         return back()->with('success', 'Sửa mẫu sms thành công');
     }
 
-    public function delete(SmsTemplate $template)
+    public function delete($template)
     {
+        $template = SmsTemplate::findOrFail($template);
+
         $template->delete();
 
-        return redirect('manager.sms.template')->with('success', 'Đã xóa mẫu này');
+        return redirect(route('manager.sms.template'))->with('success', 'Đã xóa mẫu này');
     }
 
     public function send(Request $request)

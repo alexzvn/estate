@@ -15,26 +15,22 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                   <form action="" method="post">
+                   <form action="{{ route('manager.sms.template.update', $template) }}" method="post">
                     @csrf
                        <div class="form-group input-group-sm">
                          <label for="name">Tên danh mục</label>
                          <input type="text"
-                           class="form-control" value="" name="name" id="name" placeholder="Tên mẫu sms" required>
+                           class="form-control" value="{{ $template->name }}" name="name" id="name" placeholder="Tên mẫu sms" required>
                        </div>
                        <div class="form-group">
                          <label for="message">Mô tả</label>
-                         <textarea class="form-control" name="message" id="message" rows="3" placeholder="Nội dung tin nhắn"></textarea>
+                         <textarea class="form-control" name="message" id="message" rows="3" placeholder="Nội dung tin nhắn">{{ $template->content }}</textarea>
                          <span class="text-danger" id="message-length"></span>
                         </div>
 
                        <div>
-                            @can('manager.category.modify')
                             <button id="delete" type="button" class="btn btn-danger float-left">Xóa</button>
-                            @endcan
-                            @can('manager.category.delete')
                             <button type="submit" class="btn btn-primary float-right">Cập nhật</button>
-                            @endcan
                        </div>
 
                    </form>
@@ -44,7 +40,7 @@
     </div>
 </div>
 
-<form id="delete-form" class="d-none" action="{{ route('manager.sms.template.delete') }}" method="post">@csrf</form>
+<form id="delete-form" class="d-none" action="{{ route('manager.sms.template.delete', ['SmsTemplate' => $template]) }}" method="post">@csrf</form>
 @endsection
 
 @push('script')
