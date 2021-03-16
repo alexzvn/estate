@@ -85,6 +85,19 @@ Route::group(['prefix' => 'censorship', 'namespace' => 'Censorship'], function (
 });
 
 /**
+ * SMS
+ */
+Route::group(['prefix' => 'sms', 'namespace' => 'Sms'], function () {
+    Route::get('/', 'SmsController@index')->name('manager.sms.template');
+    Route::get('/create', 'SmsController@create')->name('manager.sms.template.create');
+    Route::get('/{SmsTemplate}/edit', 'SmsController@edit')->name('manager.sms.template.edit');
+    Route::post('/{SmsTemplate}/delete', 'SmsController@delete')->name('manager.sms.template.delete');
+    Route::post('/store', 'SmsController@store')->name('manager.sms.template.store');
+    Route::post('/{SmsTemplate}/update', 'SmsController@update')->name('manager.sms.template.update');
+    Route::post('/send', 'SmsController@send')->name('manager.sms.send');
+});
+
+/**
  * REPORTS
  */
 Route::group(['prefix' => 'report', 'namespace' => 'Report'], function () {
