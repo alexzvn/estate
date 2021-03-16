@@ -115,9 +115,9 @@ class SmsController extends Controller
 
         $this->sendMany($sms, $message);
 
-        dispatch(queueable(function () use ($sms) {
+        dispatch(function () use ($sms) {
             $sms->each(fn(SmsHistory $sms) => $sms->save());
-        }));
+        });
 
         return back()->with('success', 'Đang gửi '. $sms->count() . ' tin nhắn');
     }
