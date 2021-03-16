@@ -75,7 +75,12 @@
                 <table id="example" class="table table-hover">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th class="checkbox-column">
+                                <div class="custom-control custom-checkbox checkbox-primary">
+                                  <input type="checkbox" class="custom-control-input" id="check-all">
+                                  <label class="custom-control-label" for="check-all"></label>
+                                </div>
+                            </th>
                             <th>Số điện thoại</th>
                             <th>Người thêm</th>
                             <th>Thông tin</th>
@@ -87,7 +92,12 @@
                         
                         @foreach ($blacklist as $phone)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td class="checkbox-column">
+                                <div class="custom-control custom-checkbox checkbox-primary">
+                                  <input type="checkbox" class="custom-control-input phone" id="phone-{{ $loop->index }}" name="phone[]" value="{{ $phone->phone }}">
+                                  <label class="custom-control-label" for="phone-{{ $loop->index }}">{{ $loop->index }}</label>
+                                </div>
+                            </td>
                             <td>
                                 <span class="text-secondary font-weight-bold">
                                     {{ $phone->phone }} 
@@ -145,6 +155,16 @@
                         </tr>
                     </tfoot>
                 </table>
+
+                <div class="btn-group mb-4 mr-2" role="group">
+                    <button id="btndefault" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Hành động 
+                        <i data-feather="chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="btndefault">
+                        <a id="send-sms" href="javascript:void(0)">Gửi tin nhắn</a>
+                    </div>
+                </div>
             </div>
             <span class="text-muted">Tìm thấy {{ $blacklist->total() }} kết quả</span>
 
@@ -225,6 +245,23 @@
 
 @push('script')
 <script>
+
+    $('#check-all').click(function () {
+        let checked = $('#check-all').prop('checked');
+        $('.phone').prop('checked', checked);
+    });
+
+    $('#send-sms').click(() => {
+        const phones = []
+
+        $('.phone').each(function () {
+            phones.push($(this).val())
+        })
+
+        const uri = phones.map((phone) => `recipients[]=${phone}`).join('&');
+
+        location.href = "{{ route('manager.sms.template') }}?" + uri
+    })
 
     $(document).ready(function() {
 
