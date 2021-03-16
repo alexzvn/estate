@@ -33,8 +33,6 @@ class Kernel extends ConsoleKernel
     {
         $setting = Setting::load();
 
-        $schedule->command('telescope:prune --hours=1')->hourly();
-
         if ($setting->compareStrict('post.reverse', false)) {
             $schedule->command('post:reverser --item=3')
                 ->everyTenMinutes()

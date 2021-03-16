@@ -276,6 +276,17 @@ use App\Enums\PostSource;
                     </li>
                     @endcan
 
+                    @can('manager.sms')
+                    <li class="menu">
+                        <a href="{{ route('manager.sms.template') }}" @active('manager.sms.template', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="mail"></i>
+                                <span>Quản lý SMS</span>
+                            </div>
+                        </a>
+                    </li>
+                    @endcan
+
                     @can('manager.site.setting')
                     <li class="menu">
                         <a href="{{ route('manager.setting') }}" @active('manager.setting*', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">

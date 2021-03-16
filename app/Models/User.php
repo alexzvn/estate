@@ -118,6 +118,11 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         return $this->hasMany(Report::class);
     }
 
+    public function smsTemplates()
+    {
+        return $this->hasMany(SmsTemplate::class);
+    }
+
     public function isBanned()
     {
         return ! empty($this->banned_at);
