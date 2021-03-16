@@ -4,8 +4,47 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "20e2841bc96c8d2147957b5c4e5b6ea0",
+    "content-hash": "7a8e7813d8698aa12e1e78c26d3bba58",
     "packages": [
+        {
+            "name": "alexzvn/speedsms-api",
+            "version": "v0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexzvn/speedsms-api.git",
+                "reference": "4ae914fec1431ca6aee5ba61ad5bceed838e564d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexzvn/speedsms-api/zipball/4ae914fec1431ca6aee5ba61ad5bceed838e564d",
+                "reference": "4ae914fec1431ca6aee5ba61ad5bceed838e564d",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.0|^6.0|^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alexzvn\\Speedsms\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex",
+                    "email": "alex.zdea@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/alexzvn/speedsms-api/issues",
+                "source": "https://github.com/alexzvn/speedsms-api/tree/v0.0.1"
+            },
+            "time": "2021-03-05T05:19:04+00:00"
+        },
         {
             "name": "asm89/stack-cors",
             "version": "v2.0.2",
