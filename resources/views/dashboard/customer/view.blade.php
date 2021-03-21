@@ -92,6 +92,15 @@
                     </div>
                     @endif
 
+                    <div class="form-group">
+                        <label for="provinces">Khu vực hoạt động: </label>
+                        <select class="form-control tagging" name="provinces[]" id="provinces" multiple @cannot('*') disabled @endcannot>
+                          @foreach ($provinces as $item)
+                              <option value="{{ $item->id }}" {{ $user->provinces->where('id', $item->id)->isNotEmpty() ? 'selected' : '' }}>{{ $item->name }}</option>
+                          @endforeach
+                        </select>
+                    </div>
+
                     <hr>
 
                     <div>
