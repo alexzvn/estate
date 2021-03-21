@@ -14,6 +14,7 @@ use App\Http\Requests\Manager\Customer\StoreCustomer;
 use App\Http\Requests\Manager\Customer\AssignCustomer;
 use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
+use App\Models\Location\Province;
 
 class CustomerController extends Controller
 {
@@ -59,6 +60,7 @@ class CustomerController extends Controller
             'plans' => Plan::all(),
             'staffs' => $staffs,
             'user' => $user,
+            'provinces' => Province::active()->get()
         ]);
     }
 
@@ -110,6 +112,10 @@ class CustomerController extends Controller
 
         if (! empty($request->note)) {
             $user->writeNote($request->note);
+        }
+
+        if (user()->can('*')) {
+            $user->provinces()->sync($request->provinces);
         }
 
         if ( ! empty($request->password)) {

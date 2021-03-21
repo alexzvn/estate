@@ -2,6 +2,7 @@
 
 namespace App\Models\Location;
 
+use App\Models\User;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Builder;
 
@@ -14,6 +15,11 @@ class Province extends Model
     public function districts()
     {
         return $this->hasMany(District::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 
     public function scopeActive(Builder $builder)

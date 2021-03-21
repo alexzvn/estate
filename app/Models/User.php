@@ -7,6 +7,7 @@ use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanVerifyPhone;
 use Maklad\Permission\Traits\HasRoles;
 use App\Contracts\Auth\MustVerifyPhone;
+use App\Models\Location\Province;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CanSearch;
 use App\Models\Traits\HasNote;
@@ -81,6 +82,11 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         'banned_at',
         'birthday'
     ];
+
+    public function provinces()
+    {
+        return $this->belongsToMany(Province::class);
+    }
 
     public function logs()
     {
