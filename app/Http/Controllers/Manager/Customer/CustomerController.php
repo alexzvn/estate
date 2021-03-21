@@ -114,7 +114,7 @@ class CustomerController extends Controller
             $user->writeNote($request->note);
         }
 
-        if (user()->can('*')) {
+        if (user()->can('*') && $request->provinces) {
             $user->provinces()->sync($request->provinces);
         }
 
