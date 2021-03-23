@@ -24,7 +24,7 @@ class Plan extends Model implements Auditable
 
     public function scopeForCustomer(Builder $builder)
     {
-        return $builder->whereRenewable("true");
+        return $builder->whereRenewable(true);
     }
 
     public function provinces()
