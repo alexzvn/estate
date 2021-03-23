@@ -34,13 +34,20 @@
                         </div>
         
                         <h5 class="mb-3">Chọn các tính năng</h5>
-        
+
+                        <div class="form-check mb-3">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="renewable" id="renewable" value="true" @if($plan->renewable) checked @endif>
+                            Khách tự gia hạn
+                          </label>
+                        </div>
+
                         <div class="form-row">
-        
+
                             <div class="col-md-4 col-sm-6 mb-4">
-        
+
                                 <p class="text-info m-0"><strong>Danh mục được truy cập</strong></p>
-        
+
                                 <div class="ml-3">
                                     @foreach ($categories as $item)
                                     <div class="form-check">

@@ -38,6 +38,9 @@ Route::group(['middleware' => ['auth', 'customer'], 'namespace' => 'Customer'], 
         Route::get('/orders', 'Customer@orders')->name('customer.self.orders');
         Route::get('/subscriptions', 'Customer@subscriptions')->name('customer.self.subscriptions');
 
+        Route::get('plans', 'Customer@plans')->name('customer.self.plans');
+        Route::post('/orders', 'Customer@registerOrder')->name('customer.self.orders.register');
+
         Route::post('/account/update', 'Customer@update')->name('customer.self.account.update');
         // Route::get('/update/avatar', 'Customer@me')->name('customer.self.account');
 

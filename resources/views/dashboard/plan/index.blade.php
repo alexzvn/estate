@@ -35,6 +35,13 @@
 
                 <h5 class="mb-3">Chọn các tính năng</h5>
 
+                <div class="form-check mb-3">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" name="renewable" id="renewable" value="true" checked>
+                      Khách tự gia hạn
+                    </label>
+                </div>
+
                 <div class="form-row">
 
                     <div class="col-md-4 col-sm-6 mb-4">

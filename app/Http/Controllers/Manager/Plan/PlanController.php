@@ -47,6 +47,7 @@ class PlanController extends Controller
     public function store(StorePlan $request, Plan $plan)
     {
         $plan->fill([
+            'renewable' => (bool) $request->renewable,
             'name' => $request->name,
             'price' => (float) str_replace(',', '', $request->price ?? ''),
             'types' => $request->post_type ?? []
@@ -62,11 +63,11 @@ class PlanController extends Controller
         $plan = $request->getPlan();
 
         $plan->fill([
+            'renewable' => (bool) $request->renewable,
             'name' => $request->name,
             'price' => (float) str_replace(',', '', $request->price ?? ''),
             'types' => $request->post_type ?? []
         ])->save();
-
 
         $this->savePlansRelation($plan, $request);
 

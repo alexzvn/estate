@@ -26,14 +26,14 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
-            {{-- <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link"> Tôi bán</a>
+                    <a href="{{ route('customer.self.plans') }}" class="nav-link">Đăng ký gói</a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="#" class="nav-link"> Hỗ trợ</a>
-                </li>
-            </ul> --}}
+                </li> --}}
+            </ul>
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
