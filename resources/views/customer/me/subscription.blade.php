@@ -26,7 +26,6 @@ function planToString($plans) {
                     <th>Trạng thái</th>
                     <th>Kích hoạt</th>
                     <th>Hết hạn</th>
-                    <th>Lúc tạo</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,12 +37,11 @@ function planToString($plans) {
                         @if($sub->isActivated())
                             <span class="badge badge-success">Đang hoạt động</span>
                         @else
-                        <span class="badge badge-success">Đã hết hạn</span>
+                            <span class="badge badge-warning">Đã hết hạn</span>
                         @endif
                     </td>
                     <td>{{ $sub->activate_at }}</td>
                     <td>{{ $sub->expires_at }}</td>
-                    <td>{{ $sub->created_at }}</td>
                 </tr>
                 @endforeach
             </tbody>
