@@ -65,7 +65,7 @@ function planToString($plans) {
 
                             $canSupport =  ($customer && user()->canSupport($customer)) || user()->can('manager.order.phone.view') || user()->can('*');
                         @endphp
-                        <tr>
+                        <tr @empty($order->creator) class="font-weight-bold" @endempty>
                             <td class="text-center" >{{ $loop->index + 1 }}</td>
                             <td>
                                 <a class="bs-tooltip" title="{{ $customer->readNote() }}" class="{{ $canSupport ? 'text-primary' : '' }} font-weight-bolder d-block" href="{{ $canSupport  ? route('manager.customer.view', ['id' => $customer->id]) : 'javascript:void(0)' }}">
