@@ -4,7 +4,7 @@
 <div class="card">
     <div class="card-body">
 
-        <h1 class="tw-text-xl tw-font-bold tw-mb-4">Gia hạn & đăng ký gói</h1>
+        <h1 class="tw-text-xl tw-font-bold tw-mb-4">Đăng ký & gia hạn</h1>
 
         @if ($order = session('success'))
         <div class="alert alert-primary alert-dismissible fade show" role="alert">
