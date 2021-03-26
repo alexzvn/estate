@@ -100,9 +100,9 @@
                                     {{ hide_phone($user->phone) }}
                                 @endif
                             </td>
-                            <th>
+                            <td>
                                 {!! $user->provinces->map(fn($province) => $province->name)->join('<br />') !!}
-                            </th>
+                            </td>
                             <td>
                                 {{ $user->created_at->format('d/m/Y') }} <br>
                                 {{ $user->created_at->format('H:i:s') }}
