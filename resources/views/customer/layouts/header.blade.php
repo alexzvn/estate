@@ -28,7 +28,10 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a href="{{ route('customer.self.plans') }}" class="nav-link">Đăng ký gói</a>
+                    <a href="{{ route('customer.self.plans') }}" class="nav-link">
+                        Đăng ký gói
+                        <span class="badge badge-light">Mới</span>
+                    </a>
                 </li>
                 {{-- <li class="nav-item">
                     <a href="#" class="nav-link"> Hỗ trợ</a>
