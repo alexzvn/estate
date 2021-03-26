@@ -119,7 +119,13 @@
                     @foreach ($plans as $item)
                     <tr>
                         <td>{{ $loop->iteration +1 }}</td>
-                        <td>{{ $item->name }}</td>
+                        <td>
+                            {{ $item->name }}
+
+                            @if ($plan->renewable)
+                            <span class="badge badge-info">Khách</span>
+                            @endif
+                        </td>
                         <td>{{ number_format($item->price) }}</td>
                         <td>
                             <a href="{{ route('manager.plan.view', ['id' => $item->id]) }}">
