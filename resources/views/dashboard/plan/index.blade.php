@@ -122,7 +122,7 @@
                         <td>
                             {{ $item->name }}
 
-                            @if ($plan->renewable)
+                            @if ($item->renewable)
                             <span class="badge badge-info">Khách</span>
                             @endif
                         </td>
