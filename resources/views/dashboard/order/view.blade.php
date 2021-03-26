@@ -137,7 +137,7 @@ $manual  = $order->manual !== null && $order->manual;
                         @endif
 
                         @can('manager.order.delete')
-                        <a id="delete-btn" href="javascript:void(0)" class="btn btn-danger btn-sm float-right">Xóa đơn hàng</a>
+                        <a id="delete-btn" href="javascript:void(0)" class="btn btn-danger btn-sm float-right">Xóa</a>
                         @endcan
 
                     </form>

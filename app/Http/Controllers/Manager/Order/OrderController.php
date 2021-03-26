@@ -25,7 +25,7 @@ class OrderController extends Controller
 
         return view('dashboard.order.index', [
             'orders' => $order->paginate(40),
-            'plans' => Plan::get(),
+            'plans' => Plan::whereRenewable(false)->get(),
             'staff' => Permission::findUsersHasPermission('manager.dashboard.access')
         ]);
     }

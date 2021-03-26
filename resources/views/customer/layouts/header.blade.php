@@ -17,6 +17,10 @@
                 Đăng Bài
             </a>
             @endauth --}}
+            <a class="nav-link d-block d-md-none" href="{{ route('customer.self.plans') }}" style="color: white">
+                Đăng ký
+                <span class="badge badge-light">Mới</span>
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                 <span class="navbar-toggler-icon"></span>
@@ -28,7 +32,10 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a href="{{ route('customer.self.plans') }}" class="nav-link">Đăng ký gói</a>
+                    <a class="nav-link d-none d-md-block" href="{{ route('customer.self.plans') }}">
+                        Đăng ký gói
+                        <span class="badge badge-light">Mới</span>
+                    </a>
                 </li>
                 {{-- <li class="nav-item">
                     <a href="#" class="nav-link"> Hỗ trợ</a>

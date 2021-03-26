@@ -44,6 +44,7 @@
                                 </div>
                             </th>
                             <th>Họ tên</th>
+                            <th>Tỉnh/Vùng</th>
                             <th>Ngày đăng ký</th>
                             <th>Đã chi</th>
                             <th>Đăng ký</th>
@@ -99,6 +100,9 @@
                                     {{ hide_phone($user->phone) }}
                                 @endif
                             </td>
+                            <th>
+                                {!! $user->provinces->map(fn($province) => $province->name)->join('<br />') !!}
+                            </th>
                             <td>
                                 {{ $user->created_at->format('d/m/Y') }} <br>
                                 {{ $user->created_at->format('H:i:s') }}

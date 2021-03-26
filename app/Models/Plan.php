@@ -6,11 +6,12 @@ use App\Models\Location\Province;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Plan extends Model implements Auditable
 {
-    use TraitsAuditable;
+    use TraitsAuditable, SoftDeletes;
 
     const NAME = 'gói đăng ký';
 
