@@ -57,7 +57,7 @@ class CustomerController extends Controller
         $staffs = Permission::findUsersHasPermission('manager.dashboard.access');
 
         return view('dashboard.customer.view', [
-            'plans' => Plan::all(),
+            'plans' => Plan::where('renewable', '<>', true)->get(),
             'staffs' => $staffs,
             'user' => $user,
             'provinces' => Province::active()->get()
