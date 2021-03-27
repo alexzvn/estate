@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth', 'customer'], 'namespace' => 'Customer'], 
     Route::get('/online', 'Post\PostController@online')->name('post.online');
     Route::get('/fee', 'Post\PostController@fee')->name('post.fee');
     Route::get('/market', 'Post\PostController@market')->name('post.market');
+    Route::get('/price', 'HomeController@price')->name('post.price');
     Route::get('/post/{id}/view', 'Post\PostController@view')->name('post.view');
     Route::post('/post/store', 'Post\PostController@store')->name('post.store');
 

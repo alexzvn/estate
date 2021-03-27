@@ -10,6 +10,14 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    public function price()
+    {
+        return view('customer.price', [
+            'provinces' => collect(),
+            'categories' => collect(),
+        ]);
+    }
+
     /**
      * Show the application dashboard.
      *

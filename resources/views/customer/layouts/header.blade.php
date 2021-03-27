@@ -37,6 +37,11 @@
                         <span class="badge badge-light">Mới</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link d-none d-md-block" href="{{ route('post.price') }}">
+                        Bảng giá
+                    </a>
+                </li>
                 {{-- <li class="nav-item">
                     <a href="#" class="nav-link"> Hỗ trợ</a>
                 </li> --}}
