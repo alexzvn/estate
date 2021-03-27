@@ -24,14 +24,14 @@
 
         @endisset
 
-        <hr class="d-block d-md-none tw-mx-2">
+        <hr class="d-block d-md-none tw-my-2">
     </div>
 
     <div class="col-md-4 pl-lg-0">
         <p>
             <strong>Số điện thoại: </strong>
             @isset($post->phone)
-            <span onclick="$(this).html(`<a href='tel:${$(this).data('phone')}'>${$(this).data('phone')}</a>`)" data-phone="{{ $post->phone }}">
+            <span onclick="$(this).html(`<a class='tw-text-blue-600 hover:tw-to-blue-400' href='tel:${$(this).data('phone')}'>${$(this).data('phone')}</a>`)" data-phone="{{ $post->phone }}">
                 <button class="btn btn-sm btn-success">Xem SĐT</button>
             </span>
             @else
@@ -56,7 +56,7 @@
         <p style="color: red" id="reported"></p>
         @endisset
 
-        <hr class="d-block d-md-none tw-mx-2">
+        <hr class="d-block d-md-none tw-my-2">
 
         <div class="d-flex justify-content-center">
             @if (in_array($post->id, $customer->post_save_ids ??[]))
