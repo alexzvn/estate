@@ -1,14 +1,14 @@
 <div class="row" id="modal-post-data" data-post-id="{{ $post->id }}">
     <div class="col-md-8" style="font-size: medium;">
 
-        <p><strong><i class="fa fa-hand-o-right"></i> Tiêu đề: {{ Str::ucfirst($post->title) }}</strong></p>
+        <p class="tw-mb-2"><strong><i class="fa fa-hand-o-right"></i> Tiêu đề: {{ Str::ucfirst($post->title) }}</strong></p>
 
 
         <strong><i class="fa fa-hand-o-right"></i> Nội dung:</strong>
         {!! $post->content !!}
 
         @isset($post->extra)
-        <strong>Thông tin thêm: </strong>
+        <strong class="tw-mt-2">Thông tin thêm: </strong>
 
             @isset($post->extra['groupName'])
             <br>Nhóm FB: <a target="_blank" href="{{ $post->extra['groupUrl'] }}">{{ $post->extra['groupName'] }}</a>
@@ -19,12 +19,12 @@
             @endisset
 
             @isset($post->extra['originalUrl'])
-            <br><a target="_blank" href="{{ $post->extra['originalUrl'] }}">Link bài viết gốc</a>
+            <br><a class="tw-text-blue-600 hover:tw-to-blue-400" target="_blank" href="{{ $post->extra['originalUrl'] }}">Link bài viết gốc</a>
             @endisset
 
         @endisset
 
-        <hr class="d-block d-md-none">
+        <hr class="d-block d-md-none tw-mx-2">
     </div>
 
     <div class="col-md-4 pl-lg-0">
@@ -56,7 +56,7 @@
         <p style="color: red" id="reported"></p>
         @endisset
 
-        <hr class="d-block d-md-none">
+        <hr class="d-block d-md-none tw-mx-2">
 
         <div class="d-flex justify-content-center">
             @if (in_array($post->id, $customer->post_save_ids ??[]))
