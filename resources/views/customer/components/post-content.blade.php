@@ -24,7 +24,7 @@
 
         @endisset
 
-        <hr class="d-block d-md-none tw-mx-2">
+        <hr class="d-block d-md-none tw-my-2">
     </div>
 
     <div class="col-md-4 pl-lg-0">
@@ -56,7 +56,7 @@
         <p style="color: red" id="reported"></p>
         @endisset
 
-        <hr class="d-block d-md-none tw-mx-2">
+        <hr class="d-block d-md-none tw-my-2">
 
         <div class="d-flex justify-content-center">
             @if (in_array($post->id, $customer->post_save_ids ??[]))
