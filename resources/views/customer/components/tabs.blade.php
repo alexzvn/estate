@@ -21,7 +21,7 @@
                     <a href="{{ route('customer.post.blacklist') }}" class="nav-link @active('customer.post.blacklist')"> Tin đã xóa</a>
                 </li>
                 @endif
-                
+
                 <li class="nav-item d-none">
                     <a class="nav-link">Tin thị trường</a>
                 </li>

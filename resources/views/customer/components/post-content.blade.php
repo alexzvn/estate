@@ -11,11 +11,11 @@
         <strong class="tw-mt-2">Thông tin thêm: </strong>
 
             @isset($post->extra['groupName'])
-            <br>Nhóm FB: <a target="_blank" href="{{ $post->extra['groupUrl'] }}">{{ $post->extra['groupName'] }}</a>
+            <br>Nhóm FB: <a class="tw-text-blue-600 hover:tw-to-blue-400" target="_blank" href="{{ $post->extra['groupUrl'] }}">{{ $post->extra['groupName'] }}</a>
             @endisset
 
             @isset($post->extra['authorName'])
-            <br>Người đăng: <a target="_blank" href="{{ $post->extra['authorUrl'] }}">{{ $post->extra['authorName'] }}</a>
+            <br>Người đăng: <a class="tw-text-blue-600 hover:tw-to-blue-400" target="_blank" href="{{ $post->extra['authorUrl'] }}">{{ $post->extra['authorName'] }}</a>
             @endisset
 
             @isset($post->extra['originalUrl'])
@@ -38,27 +38,25 @@
             Liên hệ
             @endisset
         </p>
-        <p><strong>Giá khoảng: </strong> {{ format_web_price($post->price) ?? 'Không rõ' }}</p>
+        <p class="tw-mt-1"><strong>Giá khoảng: </strong> {{ format_web_price($post->price) ?? 'Không rõ' }}</p>
         @if ($post->commission)
-        <p><strong>Hoa Hồng: </strong> {{ $post->commission }}</p>
+        <p class="tw-mt-1"><strong>Hoa Hồng: </strong> {{ $post->commission }}</p>
         @endif
-        <p><strong>Quận/huyện: </strong> {{ $post->district->name ?? 'Không rõ' }}</p>
-        <p><strong>Tỉnh/Thành phố: </strong> {{ $post->province->name ?? 'Không rõ' }}</p>
+        <p class="tw-mt-1"><strong>Quận/huyện: </strong> {{ $post->district->name ?? 'Không rõ' }}</p>
+        <p class="tw-mt-1"><strong>Tỉnh/Thành phố: </strong> {{ $post->province->name ?? 'Không rõ' }}</p>
         @isset($post->categories[0])
-        <p><strong>Danh mục: </strong> {{ $post->categories[0]->name }}</p>
+        <p class="tw-mt-1"><strong>Danh mục: </strong> {{ $post->categories[0]->name }}</p>
         @endisset
         
-        <p><strong>Ngày đăng: </strong> {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'Không rõ' }}</p>
+        <p class="tw-mt-1"><strong>Ngày đăng: </strong> {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'Không rõ' }}</p>
 
         @isset($post->report)
         <p style="color: red"><strong>Đã báo môi giới bởi: </strong> {{ Auth::id() == $post->report->user_id ? 'Bạn' : $post->report->user->name }}</p>
-        @else
-        <p style="color: red" id="reported"></p>
         @endisset
 
         <hr class="d-block d-md-none tw-my-2">
 
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center tw-mt-2">
             @if (in_array($post->id, $customer->post_save_ids ??[]))
             <button id="post-save" type="button" class="btn btn-sm btn-primary mr-2">Bỏ lưu</button>
             @else
