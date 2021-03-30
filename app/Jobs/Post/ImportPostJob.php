@@ -8,6 +8,7 @@ use App\Enums\PostStatus;
 use App\Models\Blacklist;
 use Illuminate\Bus\Queueable;
 use App\Services\System\Post\Online;
+use App\Setting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -30,8 +31,35 @@ class ImportPostJob implements ShouldQueue
         $this->post = $post;
     }
 
+    protected function shouldLock(Post $post)
+    {
+        return $this->isInBlacklist($post->phone) ||
+            $this->containsKeywords($post->content);
+    }
+
     protected function isInBlacklist($phone)
     {
         return Blacklist::wherePhone($phone)->exists();
+    }
+
+    /**
+     * Should it locked cause contain blacklist keywords
+     *
+     * @param string $content
+     * @return boolean
+     */
+    protected function containsKeywords($content)
+    {
+        $keywords = Setting::load()->get('blacklist.keywords', []);
+
+        foreach ($keywords as $keyword) {
+            $keyword = '/' . preg_quote($keyword) . '/';
+
+            if (preg_match($keyword, $content)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

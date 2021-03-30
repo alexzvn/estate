@@ -52,7 +52,7 @@ class ImportTccJob extends ImportPostJob
             'extra'       => ['url' => $this->post->url ?? null]
         ]);
 
-        if ($this->isInBlacklist($post->phone)) {
+        if ($this->shouldLock($post)) {
             $post->fill(['status' => PostStatus::Locked]);
         }
 

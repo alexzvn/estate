@@ -23,12 +23,13 @@ class SettingController extends Controller
         Province::whereNotIn('_id', $request->provinces)->update(['active' => false]);
 
         $setting->fill([
-            'title'             => $request->title,
-            'user.role.default' => $request->role,
-            'notification'      => $request->notification,
-            'google.analytics'  => $request->google_analytics,
-            'post.reverse'      => (bool) $request->reverse,
-            'telescope'         => (bool) $request->telescope
+            'title'              => $request->title,
+            'user.role.default'  => $request->role,
+            'notification'       => $request->notification,
+            'google.analytics'   => $request->google_analytics,
+            'blacklist.keywords' => $request->keywords ?? [],
+            'post.reverse'       => (bool) $request->reverse,
+            'telescope'          => (bool) $request->telescope
         ]);
 
         return redirect(route('manager.setting'))->with('success', 'Cập nhật thành công');
