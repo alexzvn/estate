@@ -21,7 +21,7 @@ class ImportChoTotJob extends ImportPostJob
 
         $post = Online::create((array) $this->post);
 
-        if ($this->isInBlacklist($post->phone)) {
+        if ($this->shouldLock($post)) {
             $post->fill(['status' => PostStatus::Locked])->save();
         }
     }
