@@ -30,12 +30,16 @@ class KeywordController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'key' => 'required|string'
+            'key' => 'required|string|unique:keywords,key',
+            'linear' => 'nullable|boolean'
+        ], [], [
+            'key' => 'từ khóa'
         ]);
 
         Keyword::create([
             'key' => $request->key,
-            'posts' => collect()
+            'posts' => collect(),
+            'linear' => $request->boolean('linear')
         ]);
 
         return back()->with('success', 'Đã tạo từ mới');
