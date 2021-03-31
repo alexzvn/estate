@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Keyword;
 use App\Models\Post;
 use App\Models\TrackingPost;
 
@@ -64,8 +65,7 @@ class PostObserver
 
     protected function index(Post $post)
     {
-        Post::withoutEvents(function () use ($post)
-        {
+        Post::withoutEvents(function () use ($post) {
             $post->index();
         });
 
@@ -74,10 +74,12 @@ class PostObserver
 
     public function tracking(Post $post)
     {
-        if (! $post->phone) {
-            return;
+        if ($post->phone) {
+            TrackingPost::findByPhoneOrCreate($post->phone)->tracking();
         }
 
-        TrackingPost::findByPhoneOrCreate($post->phone)->tracking();
+        Keyword::all()->each(function (Keyword $keyword) use ($post) {
+            $keyword->indexPost($post);
+        });
     }
 }

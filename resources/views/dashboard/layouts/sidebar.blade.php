@@ -254,6 +254,17 @@ use App\Enums\PostSource;
                     </li>
                     @endcan
 
+                    @can('*')
+                    <li class="menu">
+                        <a href="{{ route('manager.keyword') }}" @active('manager.keyword*', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="flag"></i>
+                                <span>Chặn từ khóa</span>
+                            </div>
+                        </a>
+                    </li>
+                    @endcan
+
                     @can('blacklist.phone.view')
                     <li class="menu">
                         <a href="{{ route('manager.blacklist.phone') }}" @active('manager.blacklist.phone', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">

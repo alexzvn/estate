@@ -202,6 +202,17 @@ Route::group(['prefix' => 'blacklist'], function () {
     });
 });
 
+
+/**
+ * BLACK KEYWORDS
+ */
+Route::group(['prefix' => 'keywords', 'namespace' => 'Keyword', 'middleware' => 'can:*'], function () {
+    Route::get('/', 'KeywordController@index')->name('manager.keyword');
+    Route::get('/{keyword}', 'KeywordController@view')->name('manager.keyword.view');
+    Route::post('/store', 'KeywordController@store')->name('manager.keyword.store');
+    Route::post('/{keyword}/delete', 'KeywordController@delete')->name('manager.keyword.delete');
+});
+
 /**
  * WHITELIST
  */
