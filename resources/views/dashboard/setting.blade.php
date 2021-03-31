@@ -49,16 +49,6 @@
                       </select>
                     </div>
 
-                    <div class="form-group">
-                      <label for="keywords">Danh sách chặn từ khóa:</label>
-                      <select class="form-control tagging" name="keywords[]" id="keywords" multiple>
-                        @foreach ($setting->get('blacklist.keywords', []) as $keyword)
-                          <option value="{{ $keyword }}" selected>{{ $keyword }}</option>
-                        @endforeach
-                      </select>
-                      <small class="text-muted">Chặn tin online theo từ khóa</small>
-                    </div>
-
                     <div class="form-group input-group-sm">
                       <label for="google_analytics">Mã tracking google Analytics</label>
                       <input type="text" name="google_analytics" id="google_analytics" class="form-control" placeholder="UA-17429...." value="{{ $setting->get('google.analytics') }}">

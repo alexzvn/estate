@@ -27,7 +27,6 @@ class SettingController extends Controller
             'user.role.default'  => $request->role,
             'notification'       => $request->notification,
             'google.analytics'   => $request->google_analytics,
-            'blacklist.keywords' => $request->keywords ?? [],
             'post.reverse'       => (bool) $request->reverse,
             'telescope'          => (bool) $request->telescope
         ]);

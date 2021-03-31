@@ -33,33 +33,11 @@ class ImportPostJob implements ShouldQueue
 
     protected function shouldLock(Post $post)
     {
-        return $this->isInBlacklist($post->phone) ||
-            $this->containsKeywords($post->content);
+        return $this->isInBlacklist($post->phone);
     }
 
     protected function isInBlacklist($phone)
     {
         return Blacklist::wherePhone($phone)->exists();
-    }
-
-    /**
-     * Should it locked cause contain blacklist keywords
-     *
-     * @param string $content
-     * @return boolean
-     */
-    protected function containsKeywords($content)
-    {
-        $keywords = Setting::load()->get('blacklist.keywords', []);
-
-        foreach ($keywords as $keyword) {
-            $keyword = '/' . preg_quote($keyword) . '/';
-
-            if (preg_match($keyword, $content)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
