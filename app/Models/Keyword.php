@@ -50,12 +50,13 @@ class Keyword extends Model
     {
         $keywords = Keyword::all()->filter(fn(Keyword $key) => $key->isNot($this));
 
-        // remove duplicated id from another 
+        // remove duplicated id from another
         $posts = $keywords->reduce(function (Collection $carry, Keyword $key) {
             return $carry->diff($key->posts)->values();
         }, $this->posts);
 
         Post::whereStatus(PostStatus::Locked)
+            ->whereDoesntHave('blacklists')
             ->whereIn('_id', $posts)
             ->update([
                 'status' => PostStatus::Published
@@ -112,7 +113,7 @@ class Keyword extends Model
     private function makeUnicodeRegex()
     {
         $characters = collect(
-            preg_split('//u', preg_quote($this->key))
+            preg_split('//u', preg_quote($this->key, '/'))
         );
 
         return $characters->map(function ($char) {
