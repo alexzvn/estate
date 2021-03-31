@@ -39,7 +39,12 @@
                             <td class="text-center">
                                 {{ $loop->index + 1 }}
                             </td>
-                            <td>{{ $keyword->key }}</td>
+                            <td>
+                                @if ($keyword->linear)
+                                    <span class="badge badge-info">Tuyến tính</span>
+                                @endif
+                                {{ $keyword->key }}
+                            </td>
                             <td>{{ number_format($keyword->count) }}</td>
                             <td>{{ $keyword->created_at->format('d/m/Y') }}</td>
                             <td class="text-center">
@@ -98,6 +103,20 @@
                       <label for="key">Từ khóa</label>
                       <input type="text"
                         class="form-control" name="key" id="key" placeholder="Thêm từ khóa">
+                    </div>
+
+                    <div class="form-check">
+                        <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="linear" value="0" checked>
+                        Khớp cụm từ
+                      </label>
+                    </div>
+
+                    <div class="form-check">
+                        <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="linear" value="1">
+                        Khớp bất kỳ
+                      </label>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -93,6 +93,21 @@ class Post extends Model implements Auditable
         return $this->belongsTo(User::class, 'verifier_id');
     }
 
+    public function isLocked()
+    {
+        return $this->status === PostStatus::Locked;
+    }
+
+    public function lock()
+    {
+        return $this->fill(['status' => PostStatus::Locked])->save();
+    }
+
+    public function publish()
+    {
+        return $this->fill(['status' => PostStatus::Published])->save();
+    }
+
     public function scopePublished(Builder $builder)
     {
         return $builder
