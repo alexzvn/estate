@@ -6,6 +6,9 @@ use App\Models\Keyword;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
+use App\Models\Category;
+use App\Models\Location\Province;
+use App\Models\Whitelist;
 
 class KeywordController extends Controller
 {
@@ -17,7 +20,7 @@ class KeywordController extends Controller
     public function index()
     {
         return view('dashboard.keyword.index', [
-            'keywords' => Keyword::latest()->paginate()
+            'keywords' => Keyword::latest()->paginate(40)
         ]);
     }
 
@@ -54,8 +57,12 @@ class KeywordController extends Controller
     public function view(Keyword $keyword)
     {
         return view('dashboard.keyword.view', [
-            'keyword' => $keyword,
-            'posts'   => Post::whereIn('_id', $keyword->posts)->paginate()
+            'keyword'    => $keyword,
+            'categories' => Category::parentOnly()->with('children')->get(),
+            'provinces' => Province::with('districts')->get(),
+            'whitelist'  => Whitelist::all(),
+            'posts'      => Post::whereIn('_id', $keyword->posts)
+                ->with(['categories', 'province', 'district', 'tracking'])->paginate(40)
         ]);
     }
 

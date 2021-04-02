@@ -20,7 +20,7 @@
         <div class="widget-content widget-content-area shadow-none">
 
             <div class="table-responsive">
-                <table id="example" class="table table-hover">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>
@@ -72,6 +72,7 @@
                             <th>#</th>
                             <th>Từ khóa</th>
                             <th>Số tin</th>
+                            <th>Tin liên quan</th>
                             <th>Ngày thêm</th>
                             <th>Actions</th>
                         </tr>
@@ -139,6 +140,8 @@
 
     $(document).ready(function() {
         $('.delete').on('click', function () {
+            if (! confirm('Xác nhận xóa?')) return;
+
             let id = $(this).data('id');
 
             let form = $('#delete-form');

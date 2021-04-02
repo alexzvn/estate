@@ -14,7 +14,7 @@ class KeywordObserver
      */
     public function created(Keyword $keyword)
     {
-        dispatch(fn() => $keyword->lock());
+        dispatch(fn() => $keyword->index());
     }
 
     /**

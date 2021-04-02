@@ -162,7 +162,7 @@ ClassicEditor
         console.error( err.stack );
     });
 
-let upload = new FileUploadWithPreview('mySecondImage', {
+    let upload = new FileUploadWithPreview('mySecondImage', {
         text: {
             chooseFile: 'Chọn ảnh',
             browse: 'Tìm',
