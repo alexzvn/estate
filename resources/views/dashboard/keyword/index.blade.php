@@ -20,7 +20,7 @@
         <div class="widget-content widget-content-area shadow-none">
 
             <div class="table-responsive">
-                <table id="example" class="table table-hover">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>
@@ -28,6 +28,7 @@
                             </th>
                             <th>Từ khóa</th>
                             <th>Số tin</th>
+                            <th>Tin liên quan</th>
                             <th>Ngày thêm</th>
                             <th>Actions</th>
                         </tr>
@@ -46,6 +47,7 @@
                                 {{ $keyword->key }}
                             </td>
                             <td>{{ number_format($keyword->count) }}</td>
+                            <td>{{ number_format($keyword->relative) }}</td>
                             <td>{{ $keyword->created_at->format('d/m/Y') }}</td>
                             <td class="text-center">
                                 <ul class="table-controls">
@@ -70,6 +72,7 @@
                             <th>#</th>
                             <th>Từ khóa</th>
                             <th>Số tin</th>
+                            <th>Tin liên quan</th>
                             <th>Ngày thêm</th>
                             <th>Actions</th>
                         </tr>
@@ -77,6 +80,7 @@
                 </table>
 
             </div>
+            <small class="text-muted">Tin liên quan tính bao gồm cả số tin</small> <br>
             <span class="text-muted">Tìm thấy {{ $keywords->total() }} kết quả</span>
 
             <div class="d-flex justify-content-center">
@@ -136,6 +140,8 @@
 
     $(document).ready(function() {
         $('.delete').on('click', function () {
+            if (! confirm('Xác nhận xóa?')) return;
+
             let id = $(this).data('id');
 
             let form = $('#delete-form');
