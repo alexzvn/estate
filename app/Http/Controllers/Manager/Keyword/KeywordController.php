@@ -59,8 +59,9 @@ class KeywordController extends Controller
         return view('dashboard.keyword.view', [
             'keyword'    => $keyword,
             'categories' => Category::parentOnly()->with('children')->get(),
-            'provinces' => Province::with('districts')->get(),
+            'provinces'  => Province::with('districts')->get(),
             'whitelist'  => Whitelist::all(),
+            'keywords'   => Keyword::all(),
             'posts'      => Post::whereIn('_id', $keyword->posts)
                 ->with(['categories', 'province', 'district', 'tracking'])->paginate(40)
         ]);
