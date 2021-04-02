@@ -14,29 +14,21 @@ class KeywordObserver
      */
     public function created(Keyword $keyword)
     {
-        $keyword->index();
+        dispatch(fn() => $keyword->lock());
     }
 
     /**
-     * Handle the Keyword "updated" event.
+     * Handle the Keyword "deleted" event.
      *
      * @param  \App\Models\Keyword  $keyword
      * @return void
      */
-    public function updated(Keyword $keyword)
+    public function deleted(Keyword $keyword)
     {
-        $keyword->lock();
-    }
+        // Keyword no longer exists in DB after delete so use serialize instead
+        $keyword = serialize($keyword);
 
-    /**
-     * Handle the Keyword "deleting" event.
-     *
-     * @param  \App\Models\Keyword  $keyword
-     * @return void
-     */
-    public function deleting(Keyword $keyword)
-    {
-        $keyword->unlock();
+        dispatch(fn() => unserialize($keyword)->unlock());
     }
 
 }

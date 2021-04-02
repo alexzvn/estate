@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\PostStatus;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Bus;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,7 +17,8 @@ class Keyword extends Model
         'key',
         'count',
         'linear',  // enable linear regex match
-        'posts'
+        'posts',
+        'relative'
     ];
 
     protected $casts = [
@@ -44,23 +44,20 @@ class Keyword extends Model
             ->update([
                 'status' => PostStatus::Locked
             ]);
+
+        $this->lockRelative();
     }
 
     public function unlock()
     {
-        $keywords = Keyword::all()->filter(fn(Keyword $key) => $key->isNot($this));
-
-        // remove duplicated id from another
-        $posts = $keywords->reduce(function (Collection $carry, Keyword $key) {
-            return $carry->diff($key->posts)->values();
-        }, $this->posts);
-
         Post::whereStatus(PostStatus::Locked)
             ->whereDoesntHave('blacklists')
-            ->whereIn('_id', $posts)
+            ->whereIn('_id', $this->filterKeywords($this->posts))
             ->update([
                 'status' => PostStatus::Published
             ]);
+
+        $this->unlockRelative();
     }
 
     /**
@@ -76,28 +73,26 @@ class Keyword extends Model
 
     public function index()
     {
-        $indexer = function () {
-            $posts = Post::where('content', 'regexp', $this->toRegex())
-                ->orWhere('title', 'regexp', $this->toRegex())->get();
+        $posts = Post::where('content', 'regexp', $this->toRegex())
+            ->orWhere('title', 'regexp', $this->toRegex())
+            ->whereDoesntHave('whitelists')
+            ->get();
 
-            $this->fill([
-                'count' => $posts->count(),
-                'posts' => $posts->map(fn($post) => $post->id)
-            ])->save();
-        };
+        $this->fill([
+            'count' => $posts->count(),
+            'posts' => $posts->map(fn($post) => $post->id)
+        ]);
 
-        return Bus::chain([
-            $indexer,
-            fn() => $this->refresh()->lock()
-        ])->dispatch();
+        $this->fill(['relative' => $this->countRelative()])->save();
+
+        $this->lock();
     }
 
     public function indexPost(Post $post)
     {
-        $content = "$post->title $post->content";
+        if ($post->whitelists) return;
 
-        if ($this->test($content)) {
-            $post->lock();
+        if ($this->test("$post->title $post->content")) {
             $this->posts = $this->posts->push($post->id);
 
         } elseif ($post->isLocked()) {
@@ -108,6 +103,83 @@ class Keyword extends Model
             'count' => $this->posts->count(),
             'posts' => $this->posts
         ])->save();
+    }
+
+    protected function lockSingle(Post $post)
+    {
+        $post->lock();
+    }
+
+    protected function unlockSingle(Post $post)
+    {
+        $isMatch = false;
+
+        foreach (static::all() as $keyword) {
+            if ($keyword->is($this)) {
+                continue;
+            }
+
+            if ($keyword->test("$post->content $post->title")) {
+                $isMatch = true;
+
+                break;
+            }
+        }
+
+        $isMatch === false && $post->publish();
+    }
+
+    public function countRelative()
+    {
+        return $this->getRelativePostId()->count();
+    }
+
+    public function lockRelative()
+    {
+        return Post::whereIn('phone', $this->getPhones())
+            ->whereStatus(PostStatus::Published)
+            ->whereDoesntHave('whitelists')
+            ->update([
+                'status' => PostStatus::Locked
+            ]);
+    }
+
+    public function unlockRelative()
+    {
+        return Post::whereIn('_id', $this->getRelativePostId())
+            ->whereDoesntHave('blacklists')
+            ->whereStatus(PostStatus::Locked)
+            ->update([
+                'status' => PostStatus::Published
+            ]);
+    }
+
+    public function filterKeywords(Collection $posts)
+    {
+        $keywords = Keyword::all()->filter(fn(Keyword $key) => $key->isNot($this));
+
+        return $keywords->reduce(function (Collection $carry, Keyword $key) {
+            return $carry->diff($key->posts)->values();
+        }, $posts);
+    }
+
+    public function getRelativePostId()
+    {
+        return Post::whereIn('phone', $this->getPhones())
+            ->whereNotIn('_id', $this->posts)
+            ->get(['_id'])
+            ->keyBy('id')
+            ->keys();
+    }
+
+    public function getPhones()
+    {
+        return Post::whereIn('_id', $this->posts)
+            ->get(['phone'])
+            ->whereNotNull('phone')
+            ->keyBy('phone')
+            ->keys()
+            ->unique();
     }
 
     private function makeUnicodeRegex()
