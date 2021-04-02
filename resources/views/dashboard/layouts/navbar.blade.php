@@ -22,7 +22,7 @@
                     <div class="dropdown-menu position-absolute" aria-labelledby="notificationDropdown">
                         <div class="notification-scroll">
 
-                            @foreach (user()->notifications->take(15) as $notify)
+                            @foreach (user()->notifications()->limit(15)->get() as $notify)
                             @php
                                 $payload = (object) $notify->data;
                             @endphp
