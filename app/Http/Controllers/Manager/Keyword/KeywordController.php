@@ -62,7 +62,7 @@ class KeywordController extends Controller
             'provinces'  => Province::with('districts')->get(),
             'whitelist'  => Whitelist::all(),
             'keywords'   => Keyword::all(),
-            'posts'      => Post::whereIn('_id', $keyword->posts)
+            'posts'      => Post::whereIn('_id', $keyword->posts)->latest()
                 ->with(['categories', 'province', 'district', 'tracking'])->paginate(40)
         ]);
     }
