@@ -77,9 +77,5 @@ class PostObserver
         if ($post->phone) {
             TrackingPost::findByPhoneOrCreate($post->phone)->tracking();
         }
-
-        Keyword::all()->each(function (Keyword $keyword) use ($post) {
-            $keyword->indexPost($post);
-        });
     }
 }
