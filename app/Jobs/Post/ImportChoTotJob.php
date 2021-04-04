@@ -3,7 +3,6 @@
 namespace App\Jobs\Post;
 
 use App\Enums\PostStatus;
-use App\Models\Blacklist;
 use App\Services\System\Post\Online;
 
 class ImportChoTotJob extends ImportPostJob

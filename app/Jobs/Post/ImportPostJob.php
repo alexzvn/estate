@@ -51,7 +51,7 @@ class ImportPostJob implements ShouldQueue
             if ($key->test("$post->title $post->content")) {
                 $inKeyword = true;
 
-                $key->posts = $key->posts->push($post->id);
+                $key->posts = $key->posts->push($post->id)->unique();
 
                 $key->save();
             }

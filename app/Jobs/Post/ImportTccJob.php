@@ -53,10 +53,8 @@ class ImportTccJob extends ImportPostJob
         ]);
 
         if ($this->shouldLock($post)) {
-            $post->fill(['status' => PostStatus::Locked]);
+            $post->fill(['status' => PostStatus::Locked])->save();
         }
-
-        $post->save();
     }
 
     protected function checkItems(...$items)
