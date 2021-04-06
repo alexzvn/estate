@@ -63,15 +63,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="telescope" id="telescope" value="true" @if($setting->get('telescope', false)) checked @endif>
-                            Telescope record debug
-                          </label>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>

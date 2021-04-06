@@ -28,7 +28,6 @@ class SettingController extends Controller
             'notification'      => $request->notification,
             'google.analytics'  => $request->google_analytics,
             'post.reverse'      => (bool) $request->reverse,
-            'telescope'         => (bool) $request->telescope
         ]);
 
         return redirect(route('manager.setting'))->with('success', 'Cập nhật thành công');
