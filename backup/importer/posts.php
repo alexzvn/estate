@@ -12,17 +12,13 @@ $type = function ($oid, $data) {
 };
 
 $price = function ($oid, $data) {
-    $price = $data['price'];
+    $price = $data['price'] ?? null;
 
     if (! $price) {
-        return 0;
+        return null;
     }
 
-    if ( !is_int($price) && $price !== null) {
-        return (int) $price->{'$numberLong'};
-    }
-
-    return $price;
+    return (int) ($price['$numberLong'] ?? $price);
 };
 
 return get('posts', new Mapper([
