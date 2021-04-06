@@ -23,6 +23,7 @@ class OnlineController extends PostController
                 'province',
                 'district',
                 'categories',
+                'whitelist',
                 'tracking',
                 'user'
             ])

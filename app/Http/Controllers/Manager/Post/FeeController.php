@@ -20,6 +20,7 @@ class FeeController extends PostController
                 'district',
                 'categories',
                 'user',
+                'whitelist',
                 'verifier',
                 'tracking'
             ])
