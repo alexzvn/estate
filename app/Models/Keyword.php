@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Enums\PostStatus;
 use Illuminate\Support\Str;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Collection;

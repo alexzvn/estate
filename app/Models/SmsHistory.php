@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\AsCollection;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class SmsHistory extends Model
 {
