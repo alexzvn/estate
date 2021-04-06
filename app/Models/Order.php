@@ -129,4 +129,13 @@ class Order extends Model implements CanNote, Auditable
     {
         return $builder->where('price', '>=', (int) $value);
     }
+
+    public function sumMonthPrice()
+    {
+        $price = $this->plans->reduce(function ($carry, $plan) {
+            return $carry + $plan->price;
+        }, 0);
+
+        return $price * $this->month;
+    }
 }

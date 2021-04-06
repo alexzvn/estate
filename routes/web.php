@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth', 'customer'], 'namespace' => 'Customer'], 
     Route::get('/online', 'Post\PostController@online')->name('post.online');
     Route::get('/fee', 'Post\PostController@fee')->name('post.fee');
     Route::get('/market', 'Post\PostController@market')->name('post.market');
+    Route::get('/price', 'HomeController@price')->name('post.price');
     Route::get('/post/{id}/view', 'Post\PostController@view')->name('post.view');
     Route::post('/post/store', 'Post\PostController@store')->name('post.store');
 
@@ -37,6 +38,9 @@ Route::group(['middleware' => ['auth', 'customer'], 'namespace' => 'Customer'], 
         Route::get('/history', 'Customer@history')->name('customer.self.history');
         Route::get('/orders', 'Customer@orders')->name('customer.self.orders');
         Route::get('/subscriptions', 'Customer@subscriptions')->name('customer.self.subscriptions');
+
+        Route::get('plans', 'Customer@plans')->name('customer.self.plans');
+        Route::post('/orders', 'Customer@registerOrder')->name('customer.self.orders.register');
 
         Route::post('/account/update', 'Customer@update')->name('customer.self.account.update');
         // Route::get('/update/avatar', 'Customer@me')->name('customer.self.account');

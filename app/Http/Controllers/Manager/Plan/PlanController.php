@@ -45,6 +45,7 @@ class PlanController extends Controller
     public function store(StorePlan $request, Plan $plan)
     {
         $plan->fill([
+            'renewable' => (bool) $request->renewable,
             'name' => $request->name,
             'price' => (float) str_replace(',', '', $request->price ?? ''),
             'types' => $request->post_type ?? []
@@ -60,12 +61,15 @@ class PlanController extends Controller
         $plan = $request->getPlan();
 
         $plan->fill([
+            'renewable' => (bool) $request->renewable,
             'name' => $request->name,
             'price' => (float) str_replace(',', '', $request->price ?? ''),
             'types' => $request->post_type ?? [],
             'provinces' => $request->provinces ?? [],
             'categories' => $request->categories ?? [],
         ])->save();
+
+        $this->savePlansRelation($plan, $request);
 
         return redirect(route('manager.plan'))->with('success', 'Cập nhật thành công');
     }

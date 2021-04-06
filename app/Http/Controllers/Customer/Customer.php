@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Models\Plan;
+use App\Enums\PostType;
+use App\Models\Category;
+use Illuminate\Support\Carbon;
+use App\Models\Location\Province;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Customer\UpdateInfo;
-use Illuminate\Support\Carbon;
+use App\Models\Order;
+use Illuminate\Http\Request;
 
 class Customer extends Controller
 {
@@ -22,6 +28,41 @@ class Customer extends Controller
         return view('customer.me.history', [
             'logs' => user()->logs()->latest()->limit(20)->get()
         ]);
+    }
+
+    /**
+     * Show price
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function plans()
+    {
+        return view('customer.me.plan.index', [
+            'plans' => Plan::forCustomer()->get(),
+            'postTypes' => PostType::getValues(),
+            'provinces' => Province::active()->get(),
+            'categories' => Category::parentOnly()->get(),
+        ]);
+    }
+
+    public function registerOrder(Request $request)
+    {
+        $this->validate($request, [
+            'plans' => 'required|array|exists:plans,_id',
+            'month' => 'required|numeric|max:12|min:1'
+        ]);
+
+        $order = user()->orders()->create([
+            'manual' => false,
+            'month'  => (int) $request->month,
+            'status' => Order::PENDING
+        ]);
+
+        $order->plans()->sync($request->plans);
+
+        $order->writeNote('Yêu cầu gia hạn');
+
+        return back()->with('success', $order);
     }
 
     public function orders()

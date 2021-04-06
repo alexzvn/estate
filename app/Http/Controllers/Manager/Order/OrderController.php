@@ -19,9 +19,9 @@ class OrderController extends Controller
         $this->authorize('manager.order.view');
 
         $order = Order::with(['plans', 'customer.note', 'creator', 'note'])
-        ->whereHas('customer')
-        ->filter($request)
-        ->latest();
+            ->whereHas('customer')
+            ->filter($request)
+            ->latest();
 
         return view('dashboard.order.index', [
             'orders' => $order->paginate(40),

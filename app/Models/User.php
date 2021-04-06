@@ -6,6 +6,7 @@ use App\Enums\Role as Type;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanVerifyPhone;
 use App\Contracts\Auth\MustVerifyPhone;
+use App\Models\Location\Province;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CacheDefault;
 use App\Models\Traits\HasNote;
@@ -82,6 +83,11 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         'birthday'
     ];
 
+    public function provinces()
+    {
+        return $this->belongsToMany(Province::class);
+    }
+
     public function logs()
     {
         return $this->hasMany(Log::class);
@@ -116,6 +122,11 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     public function report()
     {
         return $this->hasMany(Report::class);
+    }
+
+    public function smsTemplates()
+    {
+        return $this->hasMany(SmsTemplate::class);
     }
 
     public function isBanned()

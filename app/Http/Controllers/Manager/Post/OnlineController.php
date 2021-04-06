@@ -11,6 +11,7 @@ use App\Http\Requests\Manager\Post\ClonePost;
 use App\Http\Requests\Manager\Post\UpdatePost;
 use App\Http\Requests\Manager\Post\StoreRequest;
 use App\Http\Controllers\Manager\Post\PostController;
+use App\Models\Keyword;
 
 class OnlineController extends PostController
 {
@@ -31,7 +32,10 @@ class OnlineController extends PostController
 
         $this->shareCategoriesProvinces();
 
-        return view('dashboard.post.online.list', compact('posts'));
+        return view('dashboard.post.online.list', [
+            'posts' => $posts,
+            'keywords' => Keyword::all()
+        ]);
     }
 
     public function trashed(Request $request)

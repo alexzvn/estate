@@ -81,6 +81,7 @@
                                         <strong>Ngày đăng: </strong> <i class="text-info">{{ $post->publish_at ? $post->publish_at->format('d/m/Y H:i:s') : $post->updated_at->format('d/m/Y H:i:s') }}</i>
                                         @if ($post->reverser) <span class="text-muted">|</span> <span class="text-danger">Đã đảo</span> @endif
                                     </span>
+                                    @include('dashboard.post.components.block-info', ['post' => $post])
                                 </p>
                             </td>
                             @if ($hasCommission)
@@ -161,7 +162,7 @@ ClassicEditor
         console.error( err.stack );
     });
 
-let upload = new FileUploadWithPreview('mySecondImage', {
+    let upload = new FileUploadWithPreview('mySecondImage', {
         text: {
             chooseFile: 'Chọn ảnh',
             browse: 'Tìm',

@@ -5,7 +5,7 @@
 <div class="col-lg-3 col-md-4">
     <div class="wrap-info card">
         <div class="wrap-avatar">
-            <img class="w-100 h-100" src="{{ $customer->avatar ?? 'https://media.laodong.vn/Storage/NewsPortal/2020/8/4/825080/Amee.jpg' }}"
+            <img class="w-100 h-100" src="{{ $customer->avatar ?? asset('assets/img/user.jpg') }}"
                 alt="">
             <div class="overlay-change-avatar">
                 <div>

@@ -78,16 +78,6 @@ class Post extends Model implements Auditable
         return $this->belongsTo(TrackingPost::class, 'phone', 'phone');
     }
 
-    public function whitelists()
-    {
-        return $this->belongsTo(Whitelist::class, 'phone', 'phone');
-    }
-
-    public function blacklists()
-    {
-        return $this->belongsTo(Blacklist::class, 'phone', 'phone');
-    }
-
     public function verifier()
     {
         return $this->belongsTo(User::class, 'verifier_id');
@@ -101,6 +91,21 @@ class Post extends Model implements Auditable
     public function blacklist()
     {
         return $this->belongsTo(Blacklist::class, 'phone', 'phone');
+    }
+
+    public function isLocked()
+    {
+        return $this->status === PostStatus::Locked;
+    }
+
+    public function lock()
+    {
+        return $this->fill(['status' => PostStatus::Locked])->save();
+    }
+
+    public function publish()
+    {
+        return $this->fill(['status' => PostStatus::Published])->save();
     }
 
     public function scopePublished(Builder $builder)

@@ -38,6 +38,8 @@ class UpdateCustomer extends FormRequest
                 'regex:/^[0-9.]+$/',
                 Rule::unique('users', 'phone')->ignoreModel($updateUser)
             ],
+            'provinces' => 'nullable|array',
+            'provinces.*' => 'string|exists:provinces,_id',
             'name' => 'required|string',
             'password' => 'nullable|string',
             'password_confirm' => 'required_with:password|same:password'

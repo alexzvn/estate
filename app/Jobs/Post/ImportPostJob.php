@@ -6,8 +6,10 @@ use stdClass;
 use App\Models\Post;
 use App\Enums\PostStatus;
 use App\Models\Blacklist;
+use App\Models\Keyword;
 use Illuminate\Bus\Queueable;
 use App\Services\System\Post\Online;
+use App\Setting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -30,8 +32,31 @@ class ImportPostJob implements ShouldQueue
         $this->post = $post;
     }
 
+    protected function shouldLock(Post $post)
+    {
+        return $this->isInKeyword($post) || $this->isInBlacklist($post->phone);
+    }
+
     protected function isInBlacklist($phone)
     {
         return Blacklist::wherePhone($phone)->exists();
+    }
+
+    protected function isInKeyword(Post $post)
+    {
+        $inKeyword = false;
+        $keywords = Keyword::all();
+
+        foreach ($keywords as $key) {
+            if ($key->test("$post->title $post->content")) {
+                $inKeyword = true;
+
+                $key->posts = $key->posts->push($post->id)->unique();
+
+                $key->save();
+            }
+        }
+
+        return $inKeyword;
     }
 }

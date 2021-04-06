@@ -20,6 +20,7 @@ class CreatePlansTable extends Migration
             $table->json('types')->nullable();
             $table->json('categories')->nullable();
             $table->json('provinces')->nullable();
+            $table->boolean('renewable')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

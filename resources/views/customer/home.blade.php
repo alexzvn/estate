@@ -12,7 +12,7 @@
                 <div class="col-md-12 px-0" id="myTabContent">
                         @if (request()->user()->subscriptions->isEmpty() || (isset($canAccess) && $canAccess === false))
                         <div class="text-center">
-                            <h3 class="my-3 tw-text-2xl" style="color: cadetblue;">Có vẻ bạn chưa đăng ký gói tin nào. <br> Hãy liên hệ hotline để đăng ký và bắt đầu xem tin nhé!</h3>
+                            <h3 class="my-3 tw-text-2xl tw-text-green-500 tw-uppercase">Có vẻ bạn chưa đăng ký gói tin nào. <br> Hãy liên hệ hotline để đăng ký và bắt đầu xem tin nhé!</h3>
                             <img class="tw-inline" src="{{ asset('assets/img/empty-state.jpg') }}?ver=1" alt="" style="height: 100%; max-width: 100%;">
                         </div>
                         @else

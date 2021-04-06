@@ -137,7 +137,7 @@ $manual  = $order->manual !== null && $order->manual;
                         @endif
 
                         @can('manager.order.delete')
-                        <a id="delete-btn" href="javascript:void(0)" class="btn btn-danger btn-sm float-right">Xóa đơn hàng</a>
+                        <a id="delete-btn" href="javascript:void(0)" class="btn btn-danger btn-sm float-right">Xóa</a>
                         @endcan
 
                     </form>
@@ -196,7 +196,7 @@ $manual  = $order->manual !== null && $order->manual;
         $('#change-password-input').fadeIn();
     });
 
-    $('#update-form').change(function () {
+    const testPrice = () => {
         let form = {
             price: $('#price').val().replace(/,/g, '') - 0,
             expires: $('#expires_month').val() - 0,
@@ -217,9 +217,9 @@ $manual  = $order->manual !== null && $order->manual;
         }
 
         $('#total-value').html(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price));
-    });
+    }
 
-    $('#manual').change(function () {
+    const testManual = () => {
         let isManual = $('#manual').prop('checked'),
             month = $('#expires_month'),
             price = $('#price'),
@@ -236,7 +236,13 @@ $manual  = $order->manual !== null && $order->manual;
             expires.val('');
             price.val(price.data('value'));
         }
-    });
+    }
+
+    $('#update-form').change(testPrice);
+    $('#manual').change(testManual);
+
+    testManual();
+    testPrice();
 }(window))
 </script>
 @endpush

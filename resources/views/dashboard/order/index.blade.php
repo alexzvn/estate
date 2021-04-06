@@ -65,7 +65,7 @@ function planToString($plans) {
 
                             $canSupport =  ($customer && user()->canSupport($customer)) || user()->can('manager.order.phone.view') || user()->can('*');
                         @endphp
-                        <tr>
+                        <tr @empty($order->creator) class="font-weight-bold" @endempty>
                             <td class="text-center" >{{ $loop->index + 1 }}</td>
                             <td>
                                 <a class="bs-tooltip" title="{{ $customer->readNote() }}" class="{{ $canSupport ? 'text-primary' : '' }} font-weight-bolder d-block" href="{{ $canSupport  ? route('manager.customer.view', ['id' => $customer->id]) : 'javascript:void(0)' }}">
@@ -76,13 +76,25 @@ function planToString($plans) {
                                 </a>
                             </td>
                             <td>{{ planToString($order->plans) }}</td>
-                            <td>{{ $order->after_discount_price ? number_format($order->after_discount_price) : number_format($order->price) }}đ</td>
+                            <td>
+                                @if ($total = $order->after_discount_price)
+                                    {{ number_format($total) }} đ
+                                @else
+                                    {{ $order->month ? $order->sumMonthPrice() : number_format($order->price)  }}
+                                @endif
+                            </td>
                             <td>{{ $order->activate_at ? $order->activate_at->format('d/m/Y ') . $order->created_at->format('h:iA') : 'N/a' }}</td>
                             <td>{{ $order->expires_at ? $order->expires_at : ($order->month ? $order->month . ' tháng' : 'N/a') }}</td>
                             <td>
                                 @include('dashboard.order.status', ['status' => $order->status])
                             </td>
-                            <td>{{ $order->creator->name ?? 'N/a' }}</td>
+                            <td>
+                                @isset ($order->creator->name)
+                                    {{ $order->creator->name }}
+                                @else
+                                    <span class="tw-to-blue-500">KH</span>
+                                @endisset
+                            </td>
                             <td class="text-center">
                                 <ul class="table-controls">
                                     <li>

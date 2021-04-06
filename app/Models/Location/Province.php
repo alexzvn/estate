@@ -19,6 +19,11 @@ class Province extends Model
         return $this->hasMany(District::class);
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
     public function scopeActive(Builder $builder)
     {
         $builder->where('active', true);

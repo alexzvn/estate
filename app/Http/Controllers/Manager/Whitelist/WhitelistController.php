@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Manager\Whitelist;
 
 use App\Http\Controllers\Manager\Controller;
-use App\Http\Requests\Manager\whitelist\Phone\StorePhone;
+use App\Http\Requests\Manager\Whitelist\Phone\StorePhone;
 use App\Http\Requests\Manager\whitelist\Phone\UpdatePhone;
 use App\Models\Whitelist;
 use Illuminate\Http\Request;

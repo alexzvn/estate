@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'speedsms' => [
+        'key' => env('SPEEDSMS_KEY'),
+        'devices' => explode(',', env('SPEEDSMS_DEVICES', ''))
+    ]
+
 ];
