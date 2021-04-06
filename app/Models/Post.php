@@ -13,11 +13,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Builder as ScoutBuilder;
+use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Post extends Model implements Auditable
 {
-    use TraitsAuditable, CacheDefault;
+    use TraitsAuditable, CacheDefault, Searchable;
     use SoftDeletes, CanFilter, HasFiles;
 
     const NAME = 'tin';
@@ -234,7 +236,7 @@ class Post extends Model implements Auditable
         return $builder->where('price', '<=', $price);
     }
 
-    public function getIndexDocumentData()
+    public function toSearchableArray()
     {
         $extra = '';
 
@@ -245,14 +247,22 @@ class Post extends Model implements Auditable
         }
 
         return [
-            'title' => $this->title,
-            'content' => remove_tags($this->content),
-            'commission' => $this->commission,
-            'phone' => $this->phone,
-            'province' => $this->province->name ?? null,
-            'district' => $this->district->name ?? null,
-            'categories' => $this->categories[0]->name ?? null,
-            'extra' => $extra
+            'id'          => $this->id,
+            'title'       => $this->title,
+            'content'     => remove_tags($this->content),
+            'price'       => format_web_price($this->price),
+            'commission'  => $this->commission,
+            'phone'       => $this->phone,
+            'province'    => $this->province->name ?? null,
+            'district'    => $this->district->name ?? null,
+            'categories'  => $this->categories->keyBy('name')->keys()->join(' ,'),
+            'province_id' => $this->province_id,
+            'district_id' => $this->district_id,
+            'category_id' => $this->categories->first()->id ?? null,
+            'deleted_at'  => $this->deleted_at,
+            'updated_at'  => $this->updated_at,
+            'created_at'  => $this->created_at,
+            'extra'       => $extra
         ];
     }
 }

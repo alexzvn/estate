@@ -12,10 +12,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CacheDefault;
+use Laravel\Scout\Searchable;
 
 class Order extends Model implements CanNote, Auditable
 {
-    use CacheDefault;
+    use CacheDefault, Searchable;
     use SoftDeletes, HasNote, CanFilter, TraitsAuditable;
 
     public const DISCOUNT_PERCENT = 1;
@@ -137,5 +138,15 @@ class Order extends Model implements CanNote, Auditable
         }, 0);
 
         return $price * $this->month;
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            ...$this->toArray(),
+            'plans'          => $this->plans->keyBy('name')->keys()->join(', '),
+            'customer_name'  => $this->customer->name ?? null,
+            'customer_phone' => $this->customer->phone ?? null,
+        ];
     }
 }

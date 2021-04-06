@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -23,7 +24,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements MustVerifyPhone, Auditable
 {
     use Notifiable, TraitsAuditable, CacheDefault, HasNote;
-    use HasRoles, CanVerifyPhone, CanFilter;
+    use HasRoles, CanVerifyPhone, CanFilter, Searchable;
 
     const BANNED = 'banned';
 
@@ -324,16 +325,6 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             static::SPEND_MORE => 'Tài khoản trên 0đ',
             static::NEVER_LOGIN_BEFORE => 'Chưa đăng nhập lần nào',
             static::NEVER_READ_POST_BEFORE => 'Chưa xem tin nào'
-        ];
-    }
-
-    public function getIndexDocumentData()
-    {
-        return [
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'address' => $this->address,
         ];
     }
 }
