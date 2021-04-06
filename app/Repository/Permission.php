@@ -17,14 +17,13 @@ class Permission extends BaseRepository
      */
     public static function findUsersHasPermission(string $perm)
     {
-        $findPerm = function ($builder) use ($perm) {
-            $builder->orWhereIn('name', [$perm, '*']);
+        $permission = function ($builder) use ($perm) {
+            $builder->whereIn('name', [$perm, '*']);
         };
 
-        $user = User::orWhereHas('permissions', $findPerm)
-            ->orWhereHas('roles', function ($builder) use ($findPerm)
-            {
-                $builder->orWhereHas('permissions', $findPerm);
+        $user = User::whereHas('permissions', $permission)
+            ->orWhereHas('roles', function ($builder) use ($permission) {
+                $builder->whereHas('permissions', $permission);
             });
 
         return $user->get();
