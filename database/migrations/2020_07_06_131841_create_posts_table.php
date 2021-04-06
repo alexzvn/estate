@@ -32,7 +32,6 @@ class CreatePostsTable extends Migration
             $table->boolean('reverser')->default(false);
             $table->boolean('approve_fee')->default(false);
 
-            $table->longText('index_meta')->nullable();
             $table->tinyInteger('source')->nullable();
             $table->json('extra')->nullable();
 

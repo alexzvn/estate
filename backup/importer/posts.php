@@ -21,6 +21,14 @@ $price = function ($oid, $data) {
     return (int) ($price['$numberLong'] ?? $price);
 };
 
+$extra = function ($oid, $data) {
+    if ($extra = $data['extra'] ?? false) {
+        return json_encode($extra);
+    }
+
+    return null;
+};
+
 return get('posts', new Mapper([
     'title' => 'string',
     'content' => 'string',
@@ -33,6 +41,8 @@ return get('posts', new Mapper([
     'index_meta' => 'string',
     'price' => $price,
     'status' => 'int',
+    'extra' => $extra,
+    'source' => 'int',
     'verifier_id' => 'id.users',
     'user_id' => 'id.users',
     'province_id' => 'id.provinces',
