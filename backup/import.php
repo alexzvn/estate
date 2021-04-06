@@ -32,6 +32,10 @@ $restores = [
     'plan_province' => 1,
     'category_plan' => 1,
 
+    'sms_templates'  => 0,
+    'sms_histories'  => 0,
+    'keywords'       => 1,
+
     'post_user_blacklist'   => 1,
     'post_user_save'        => 1,
     'role_has_permissions'  => 1,
