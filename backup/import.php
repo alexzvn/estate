@@ -3,7 +3,7 @@
 require_once __DIR__ . '/importer/helper/Mapper.php';
 require_once __DIR__ . '/importer/helper/functions.php';
 
-// mapIds();
+mapIds();
 
 $restores = [
     'provinces'      => 0,
@@ -31,6 +31,7 @@ $restores = [
     'order_plan'    => 1,
     'plan_province' => 1,
     'category_plan' => 1,
+    'province_user' => 1,
 
     'sms_templates'  => 0,
     'sms_histories'  => 0,
