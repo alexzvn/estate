@@ -38,7 +38,6 @@ return get('posts', new Mapper([
     'reverser' => 'boolean',
     'approve_fee' => 'boolean',
     'commission' => 'string',
-    'index_meta' => 'string',
     'price' => $price,
     'status' => 'int',
     'extra' => $extra,

@@ -8,7 +8,6 @@ use App\Models\Traits\CanVerifyPhone;
 use App\Contracts\Auth\MustVerifyPhone;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CacheDefault;
-use App\Models\Traits\CanSearch;
 use App\Models\Traits\HasNote;
 use App\Models\Traits\Notifiable;
 use Illuminate\Support\Carbon;
@@ -23,7 +22,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements MustVerifyPhone, Auditable
 {
     use Notifiable, TraitsAuditable, CacheDefault, HasNote;
-    use HasRoles, CanVerifyPhone, CanFilter, CanSearch;
+    use HasRoles, CanVerifyPhone, CanFilter;
 
     const BANNED = 'banned';
 

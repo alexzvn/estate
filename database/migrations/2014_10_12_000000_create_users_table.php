@@ -22,7 +22,6 @@ class CreateUsersTable extends Migration
             $table->string('address')->nullable();
             $table->string('session_id')->unique()->nullable();
             $table->rememberToken();
-            $table->longText('index_meta')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->timestamp('banned_at')->nullable();

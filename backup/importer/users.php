@@ -8,7 +8,6 @@ return get('users', new Mapper([
     'address'           => 'string',
     'session_id'        => 'string',
     'remember_token'    => 'string',
-    'index_meta'        => 'string',
     'supporter_id'      => 'id.users',
     'updated_at'        => 'datetime',
     'created_at'        => 'datetime',
