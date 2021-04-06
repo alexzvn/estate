@@ -1,5 +1,7 @@
 <?php
 
+use Spatie\Async\Pool;
+
 /**
  * Map all ids from collection required backup data first
  *
@@ -7,13 +9,20 @@
  */
 function mapIds()
 {
-    foreach (glob(backup_path('e/*.json')) as $collection) {
-        $collection = str_replace('.json', '', $collection);
-        $collection = explode('/', $collection);
-        $collection = $collection[count($collection) - 1];
+    $pool = Pool::create()->concurrency(10);
 
-        saveCollectionIds($collection);
+    foreach (glob(backup_path('e/*.json')) as $collection) {
+
+        $pool->add(function () use ($collection) {
+            $collection = str_replace('.json', '', $collection);
+            $collection = explode('/', $collection);
+            $collection = $collection[count($collection) - 1];
+
+            saveCollectionIds($collection);
+        });
     }
+
+    $pool->wait();
 }
 
 /**

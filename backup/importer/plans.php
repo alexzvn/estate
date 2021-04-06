@@ -11,7 +11,7 @@ $type = function ($key) {
     return $mapped[$key];
 };
 
-$types = function ($oid, $data) use ($type) {
+$types = function ($value, $data) use ($type) {
     $types = array_map(function ($key) use ($type) {
         return $type($key);
     }, $data['types'] ?? []);
@@ -19,14 +19,14 @@ $types = function ($oid, $data) use ($type) {
     return json_encode($types);
 };
 
-$categories = function ($id, $data) {
+$categories = function ($value, $data) {
     $categories = collect($data['category_ids'] ?? [])
         ->map(fn($oid) => id('categories', $oid));
 
     return json_encode($categories->toArray());
 };
 
-$provinces = function ($id, $data) {
+$provinces = function ($value, $data) {
     $provinces = collect($data['province_ids'] ?? [])
         ->map(fn($oid) => id('provinces', $oid));
 

@@ -2,12 +2,12 @@
 
 use Illuminate\Support\Str;
 
-$auditable = function ($oid, $data)
+$auditable = function ($value, $data)
 {
     $table = explode('\\', $data['auditable_type']);
     $table = Str::plural(Str::snake($table[count($table) -1]));
 
-    return id($table, $oid);
+    return id($table, $data['_id']);
 };
 
 return get('audits', new Mapper([

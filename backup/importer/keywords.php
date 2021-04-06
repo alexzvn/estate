@@ -1,7 +1,7 @@
 <?php
 
-$post = function ($oid, $data) {
-    $posts = collect($data['posts'] ?? [])->map(
+$post = function ($posts) {
+    $posts = collect($posts ?? [])->map(
         fn($oid) => id('posts', $oid)
     );
 

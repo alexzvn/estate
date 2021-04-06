@@ -1,6 +1,6 @@
 <?php
 
-$type = function ($oid, $data) {
+$type = function ($type) {
     $mapped = [
         'Tin Xin Phí' => 1,
         'Tin Mua Bán - Thuê' => 2,
@@ -8,25 +8,16 @@ $type = function ($oid, $data) {
         'Tin web online' => 4
     ];
 
-    return $mapped[$data['type']] ?? null;
+    return $mapped[$type] ?? null;
 };
 
-$price = function ($oid, $data) {
-    $price = $data['price'] ?? null;
+$price = function ($price) {
 
     if (! $price) {
         return null;
     }
 
     return (int) ($price['$numberLong'] ?? $price);
-};
-
-$extra = function ($oid, $data) {
-    if ($extra = $data['extra'] ?? false) {
-        return json_encode($extra);
-    }
-
-    return null;
 };
 
 return get('posts', new Mapper([
@@ -40,7 +31,7 @@ return get('posts', new Mapper([
     'commission' => 'string',
     'price' => $price,
     'status' => 'int',
-    'extra' => $extra,
+    'extra' => fn($extra) => $extra ? json_encode($extra) : null,
     'source' => 'int',
     'verifier_id' => 'id.users',
     'user_id' => 'id.users',
