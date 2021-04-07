@@ -90,15 +90,6 @@ class Order extends Model implements CanNote, Auditable
         return $this->status === static::PAID;
     }
 
-    public function filterQuery(Builder $builder, $query)
-    {
-        $search = function ($builder) use ($query) {
-            $builder->search($query);
-        };
-
-        $builder->whereHas('customer', $search);
-    }
-
     public function filterActivatedFrom(Builder $builder, $time)
     {
         return $builder->where(
@@ -142,8 +133,14 @@ class Order extends Model implements CanNote, Auditable
 
     public function toSearchableArray()
     {
+        $this->load(['plans', 'creator', 'verifier', 'customer']);
+
+
+        $attrs = $this->transform($this->toArray());
+
         return [
-            ...$this->toArray(),
+            ...$attrs,
+            'plan_id'        => $this->plans->keyBy('id')->keys()->toArray(),
             'plans'          => $this->plans->keyBy('name')->keys()->join(', '),
             'customer_name'  => $this->customer->name ?? null,
             'customer_phone' => $this->customer->phone ?? null,
