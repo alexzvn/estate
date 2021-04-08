@@ -19,7 +19,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Post extends Model implements Auditable
 {
-    use TraitsAuditable, CacheDefault, Searchable;
+    use TraitsAuditable, CacheDefault;
     use SoftDeletes, CanFilter, HasFiles;
 
     const NAME = 'tin';

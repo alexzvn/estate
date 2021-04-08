@@ -25,7 +25,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements MustVerifyPhone, Auditable
 {
     use Notifiable, TraitsAuditable, CacheDefault, HasNote;
-    use HasRoles, CanVerifyPhone, CanFilter, Searchable;
+    use HasRoles, CanVerifyPhone, CanFilter;
 
     const BANNED = 'banned';
 

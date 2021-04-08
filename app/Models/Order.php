@@ -16,7 +16,7 @@ use Laravel\Scout\Searchable;
 
 class Order extends Model implements CanNote, Auditable
 {
-    use CacheDefault, Searchable;
+    use CacheDefault;
     use SoftDeletes, HasNote, CanFilter, TraitsAuditable;
 
     public const DISCOUNT_PERCENT = 1;
