@@ -182,7 +182,7 @@ class Post extends Model implements Auditable
 
     public function filterQuery(Builder $builder, $value)
     {
-        return $this->scopeSearch($builder, $value);
+        // return $this->scopeSearch($builder, $value);
     }
 
     public function filterProvince(Builder $builder, $value)
