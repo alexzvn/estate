@@ -106,12 +106,6 @@ class PostController extends BaseController
                 'provinces'  => $this->access->provinces($type)
             ])->filter(request());
 
-        if (request('order') === 'newest' || empty(request('query'))) {
-            $post->newest();
-        } elseif(! empty(request('query'))) {
-            $post->OrderByScore();
-        }
-
         return $post;
     }
 }

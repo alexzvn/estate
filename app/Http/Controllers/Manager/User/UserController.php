@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $this->authorize('manager.user.view');
-        
+
         return view('dashboard.user.index', [
             'users' => User::filter($request)->latest()->paginate(20)
         ]);
