@@ -26,7 +26,7 @@ class PostController extends BaseController
 
         return view('customer.post.fee', [
             'canAccess' => $this->access->canAccess($type),
-            'posts' => $this->defaultPost($type)->simplePaginate(20)
+            'posts' => $this->defaultPost($type)->paginate(40)
         ]);
     }
 
@@ -43,7 +43,7 @@ class PostController extends BaseController
 
         return view('customer.post.online', [
             'canAccess' => $this->access->canAccess($type),
-            'posts' => $this->defaultPost($type)->simplePaginate(20)
+            'posts' => $this->defaultPost($type)->paginate(40)
         ]);
     }
 
@@ -60,7 +60,7 @@ class PostController extends BaseController
 
         return view('customer.post.market', [
             'canAccess' => $this->access->canAccess($type),
-            'posts' => $this->defaultPost($type)->with('files')->simplePaginate(20)
+            'posts' => $this->defaultPost($type)->with('files')->paginate(40)
         ]);
     }
 
