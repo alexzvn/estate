@@ -29,7 +29,7 @@ class OnlineController extends PostController
             ])
             ->filter($request)
             ->newest()
-            ->simplePaginate(40);
+            ->paginate(40);
 
         $this->shareCategoriesProvinces();
 

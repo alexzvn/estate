@@ -34,7 +34,7 @@ class FeeController extends PostController
         $this->shareCategoriesProvinces();
 
         return view('dashboard.post.fee.list', [
-            'posts' => $posts->simplePaginate(30),
+            'posts' => $posts->paginate(30),
             'staff' => Permission::findUsersHasPermission('manager.dashboard.access')
         ]);
     }
