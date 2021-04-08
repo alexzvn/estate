@@ -10,7 +10,6 @@
     "require": {
         "php": "^7.4.0",
         "alexzvn/speedsms-api": "^0.0.1",
-        "algolia/algoliasearch-client-php": "^2.7",
         "bensampo/laravel-enum": "^3.0",
         "boytunghc/laravel-git-hook": "^1.0",
         "ezyang/htmlpurifier": "^4.13",
