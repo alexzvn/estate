@@ -246,13 +246,8 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
 
     protected function filterRoles(Builder $builder, $roles)
     {
-        $roles = is_string($roles) ? explode(',', $roles) : $roles;
-
-        return $builder->whereHas('roles', function (Builder $builder) use ($roles)
-        {
-            foreach ($roles as $role) {
-                $builder->orWhere('id', $role);
-            }
+        return $builder->whereHas('roles', function (Builder $builder) use ($roles) {
+            $builder->orWhere('id', $roles);
         });
     }
 
