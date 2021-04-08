@@ -238,31 +238,13 @@ class Post extends Model implements Auditable
 
     public function toSearchableArray()
     {
-        $extra = '';
+        $this->load(['categories', 'province', 'district', 'user']);
 
-        foreach ($this->extra ?? [] as $key => $value) {
-            if (is_string($value)) {
-                $extra = "$extra. $value";
-            }
-        }
+        $attr = $this->toArray();
 
-        return [
-            'id'          => $this->id,
-            'title'       => $this->title,
-            'content'     => remove_tags($this->content),
-            'price'       => format_web_price($this->price),
-            'commission'  => $this->commission,
-            'phone'       => $this->phone,
-            'province'    => $this->province->name ?? null,
-            'district'    => $this->district->name ?? null,
-            'categories'  => $this->categories->keyBy('name')->keys()->join(' ,'),
-            'province_id' => $this->province_id,
-            'district_id' => $this->district_id,
-            'category_id' => $this->categories->first()->id ?? null,
-            'deleted_at'  => $this->deleted_at,
-            'updated_at'  => $this->updated_at,
-            'created_at'  => $this->created_at,
-            'extra'       => $extra
-        ];
+        $attr['content'] = remove_tags($attr['content']);
+        $attr['timestamp_publish_at'] = $this->publish_at->timestamp ?? null;
+
+        return $attr;
     }
 }

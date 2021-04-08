@@ -135,15 +135,11 @@ class Order extends Model implements CanNote, Auditable
     {
         $this->load(['plans', 'creator', 'verifier', 'customer']);
 
+        $attr = $this->toArray();
 
-        $attrs = $this->transform($this->toArray());
+        $attr['plans'] = $this->plans->keyBy('id')->keys()->toArray();
+        $attr['activated_at'] = $this->activated_at->timestamp ?? null;
 
-        return [
-            ...$attrs,
-            'plan_id'        => $this->plans->keyBy('id')->keys()->toArray(),
-            'plans'          => $this->plans->keyBy('name')->keys()->join(', '),
-            'customer_name'  => $this->customer->name ?? null,
-            'customer_phone' => $this->customer->phone ?? null,
-        ];
+        return $attr;
     }
 }

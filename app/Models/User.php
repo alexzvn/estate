@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Scout\Builder as ScoutBuilder;
 use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
@@ -240,8 +241,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
 
     protected function filterQuery(Builder $builder, $value)
     {
-        $builder = $this->scopeSearch($builder, $value);
-        return $this->scopeOrderByScore($builder);
+        
     }
 
     protected function filterRoles(Builder $builder, $roles)

@@ -9,7 +9,7 @@ use Rennokki\QueryCache\Traits\QueryCacheable;
  */
 trait CacheDefault
 {
-    use QueryCacheable;
+    // use QueryCacheable;
 
     public $cacheFor = 86400; // 1 day
 
