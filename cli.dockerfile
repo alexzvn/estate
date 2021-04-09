@@ -1,7 +1,5 @@
 FROM php:7.4-fpm-alpine
 
-LABEL maintainer="Mai Trung Duc (maitrungduc1410@gmail.com)"
-
 # Set working directory
 WORKDIR /var/www/html
 
@@ -32,15 +30,6 @@ RUN docker-php-ext-install pcntl
 # Remove Cache
 RUN rm -rf /var/cache/apk/*
 
-COPY .docker/supervisord.conf /etc/supervisord.conf
-COPY .docker/supervisor.d /etc/supervisor.d
-
-# COPY .docker/php/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
-# COPY .docker/php/local.ini /usr/local/etc/php/conf.d/local.ini
-
-# Use the default production configuration ($PHP_INI_DIR variable already set by the default image)
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-
 # Add UID '1000' to www-data
 RUN usermod -u 1000 www-data
 
@@ -48,11 +37,3 @@ RUN usermod -u 1000 www-data
 #COPY . .
 
 RUN chown -R www-data:www-data .
-
-ENV ENABLE_CRONTAB 1
-ENV ENABLE_HORIZON 1
-ENV CURRENT_USER www-data
-
-ENTRYPOINT ["sh", "/var/www/html/.docker/docker-entrypoint.sh"]
-
-CMD supervisord -n -c /etc/supervisord.conf
