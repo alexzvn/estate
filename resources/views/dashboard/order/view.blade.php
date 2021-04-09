@@ -120,7 +120,7 @@ $manual  = $order->manual !== null && $order->manual;
                             </div>
                         </div>
 
-                        <h5 class="mb-3">Tổng tiền: <span id="total-value" class="text-danger">{{ $order->after_discount_price !== null ? number_format($order->after_discount_price) : number_format($plans->sum('price')) }}đ</span></h5>
+                        <h5 class="mb-3">Tổng tiền: <span id="total-value" class="text-danger">{{ $order->total !== null ? number_format($order->total) : number_format($plans->sum('price')) }}đ</span></h5>
 
                         @if ($order->isPaid())
                             @can('manager.category.modify.force')

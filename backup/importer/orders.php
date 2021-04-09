@@ -6,8 +6,8 @@ return get('orders', new Mapper([
     'verified'             => 'boolean',
     'discount'             => fn($val) => (int) $val,
     'discount_type'        => fn($val) => (int) $val,
-    'origin_price'         => fn($val, $data) => ($data['price'] ?? 0),
-    'price'                => fn($val, $data) => ($data['after_discount_price'] ?? 0),
+    'price'                => 'int',
+    'total'                => fn($val, $data) => ($data['after_discount_price'] ?? 0),
 
     'customer_id'          => 'id.users',
     'creator_id'           => 'id.users',

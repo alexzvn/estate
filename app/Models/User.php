@@ -211,7 +211,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     {
         return $builder->whereDoesntHave('orders', function (Builder $builder)
         {
-            $builder->where('after_discount_price', '>', 0);
+            $builder->where('total', '>', 0);
         });
     }
 
@@ -219,7 +219,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     {
         return $builder->whereHas('orders', function (Builder $builder)
         {
-            $builder->where('after_discount_price', '>', 0);
+            $builder->where('total', '>', 0);
         });
     }
 

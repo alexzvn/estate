@@ -37,7 +37,7 @@ class Order extends Model implements CanNote, Auditable
         'verified',
         'discount',
         'discount_type',
-        'after_discount_price',
+        'total',
         'activate_at',
         'expires_at',
     ];

@@ -149,7 +149,7 @@ class OrderController extends Controller
             $price -= $price * ($order->discount/100);
         }
 
-        $order->after_discount_price = $price;
+        $order->total = $price;
 
         return $order;
     }

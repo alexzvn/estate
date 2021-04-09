@@ -33,7 +33,7 @@ function planToString($plans) {
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{!! planToString($order->plans) !!}</td>
-                    <td>{{ $order->after_discount_price ? number_format($order->after_discount_price) : number_format($order->price) }}đ</td>
+                    <td>{{ $order->total ? number_format($order->total) : number_format($order->price) }}đ</td>
                     <td>@include('dashboard.order.status', ['status' => $order->status])</td>
                     <td>{{ $order->creator->name ?? 'n/A' }}</td>
                     <td>{{ $order->created_at->format('d/m/Y H:i:s') }}</td>

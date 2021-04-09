@@ -77,7 +77,7 @@ function planToString($plans) {
                             </td>
                             <td>{{ planToString($order->plans) }}</td>
                             <td>
-                                @if ($total = $order->after_discount_price)
+                                @if ($total = $order->total)
                                     {{ number_format($total) }} đ
                                 @else
                                     {{ $order->month ? $order->sumMonthPrice() : number_format($order->price)  }}
