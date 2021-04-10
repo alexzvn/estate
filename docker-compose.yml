@@ -52,7 +52,7 @@ services:
       - database
       - cache
 
-  Nginx Service
+  # Nginx Service
   webserver:
     image: nginx:alpine
     restart: unless-stopped
