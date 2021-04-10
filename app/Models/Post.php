@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Elastic\PostIndexer;
 use App\Enums\PostStatus;
 use App\Models\Location\District;
 use App\Models\Location\Province;
@@ -13,16 +14,17 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Builder as ScoutBuilder;
-use Laravel\Scout\Searchable;
+use ScoutElastic\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Post extends Model implements Auditable
 {
-    use TraitsAuditable, CacheDefault;
+    use TraitsAuditable, CacheDefault, Searchable;
     use SoftDeletes, CanFilter, HasFiles;
 
     const NAME = 'tin';
+
+    protected $indexConfigurator = PostIndexer::class;
 
     protected $filterable = [
         'verifier_id',
@@ -48,6 +50,18 @@ class Post extends Model implements Auditable
 
     protected $casts = [
         'extra' => 'json'
+    ];
+
+    protected $mapping = [
+        'properties' => [
+            'title'        => ['type' => 'keyword'],
+            'content'      => ['type' => 'keyword'],
+            'phone'        => ['type' => 'text'],
+            'meta'         => ['type' => 'keyword'],
+            'published_at' => ['type' => 'date'],
+            'created_at'   => ['type' => 'date'],
+            'updated_at'   => ['type' => 'date'],
+        ]
     ];
 
     public function user()
@@ -236,15 +250,25 @@ class Post extends Model implements Auditable
         return $builder->where('price', '<=', $price);
     }
 
+    public function shouldBeSearchable()
+    {
+        return ! $this->blacklist && $this->status === PostStatus::Published;
+    }
+
     public function toSearchableArray()
     {
-        $this->load(['categories', 'province', 'district', 'user']);
+        $category = $this->categories->first();
 
-        $attr = $this->toArray();
+        $meta = collect([
+            $category->name ?? null,
+            $this->province->name ?? null,
+            $this->district->name ?? null,
+        ]);
 
-        $attr['content'] = remove_tags($attr['content']);
-        $attr['timestamp_publish_at'] = $this->publish_at->timestamp ?? null;
-
-        return $attr;
+        return array_merge($this->toArray(), [
+            'meta'        => $meta->join(', '),
+            'content'     => remove_tags($this->content),
+            'category_id' => $category->id ?? null
+        ]);
     }
 }

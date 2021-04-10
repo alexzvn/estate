@@ -6,18 +6,21 @@ use App\Models\Traits\HasNote;
 use Illuminate\Support\Carbon;
 use App\Models\Traits\CanFilter;
 use App\Contracts\Models\CanNote;
+use App\Elastic\OrderIndexer;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CacheDefault;
-use Laravel\Scout\Searchable;
+use ScoutElastic\Searchable;
 
 class Order extends Model implements CanNote, Auditable
 {
-    use CacheDefault;
+    use CacheDefault, Searchable;
     use SoftDeletes, HasNote, CanFilter, TraitsAuditable;
+
+    protected $indexConfigurator = OrderIndexer::class;
 
     public const DISCOUNT_PERCENT = 1;
 
@@ -28,6 +31,19 @@ class Order extends Model implements CanNote, Auditable
     public const PAID = 2;
 
     const NAME = 'đơn hàng';
+
+    protected $mapping = [
+        'properties' => [
+            'plan_name'      => ['type' => 'keyword'],
+            'customer_name'  => ['type' => 'text'],
+            'customer_phone' => ['type' => 'text'],
+            'activate_at'    => ['type' => 'date'],
+            'expires_at'     => ['type' => 'date'],
+            'updated_at'     => ['type' => 'date'],
+            'created_at'     => ['type' => 'date'],
+        ]
+    ];
+
 
     protected $fillable = [
         'manual',
@@ -135,11 +151,10 @@ class Order extends Model implements CanNote, Auditable
     {
         $this->load(['plans', 'creator', 'verifier', 'customer']);
 
-        $attr = $this->toArray();
-
-        $attr['plans'] = $this->plans->keyBy('id')->keys()->toArray();
-        $attr['activated_at'] = $this->activated_at->timestamp ?? null;
-
-        return $attr;
+        return array_merge($this->toArray(), [
+            'plan_name'     => $this->plans->map(fn($p) => $p->name)->join(', '),
+            'customer_name' => $this->customer->name ?? '',
+            'customer_phone' => $this->customer->phone ?? '',
+        ]);
     }
 }

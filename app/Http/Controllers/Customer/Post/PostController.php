@@ -8,6 +8,7 @@ use App\Repository\Post;
 use App\Repository\Category;
 use App\Http\Controllers\Customer\Post\BaseController;
 use App\Http\Requests\Customer\Post\StorePost;
+use App\Models\ScoutFilter\PostFilter;
 use App\Repository\Meta;
 use Illuminate\Http\Request;
 
@@ -97,14 +98,24 @@ class PostController extends BaseController
                 return $cat->id;
             });
 
-        $post = Post::withRelation()
-            ->published()
+        $post = Post::search(request('query', '*'))
+            ->with(['categories', 'province', 'district'])
+            ->where('status', PostStatus::Published)
             ->where('type', $type)
             ->whereNotIn('id', $this->customer->post_blacklist_ids ?? [])
-            ->filter([
-                'categories' => $categories,
-                'provinces'  => $this->access->provinces($type)
-            ])->filter(request());
+            ->whereIn('category_id', $categories->toArray())
+            ->whereIn('province_id', $this->access->provinces($type));
+
+        PostFilter::filter($post, request());
+
+        // $post = Post::withRelation()
+        //     ->published()
+        //     ->where('type', $type)
+        //     ->whereNotIn('id', )
+        //     ->filter([
+        //         'categories' => $categories,
+        //         'provinces'  => $this->access->provinces($type)
+        //     ])->filter(request());
 
         return $post;
     }

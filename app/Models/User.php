@@ -6,6 +6,7 @@ use App\Enums\Role as Type;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanVerifyPhone;
 use App\Contracts\Auth\MustVerifyPhone;
+use App\Elastic\UserIndexer;
 use App\Models\Location\Province;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use App\Models\Traits\CacheDefault;
@@ -15,9 +16,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Scout\Builder as ScoutBuilder;
-use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
+use ScoutElastic\Searchable;
 use Spatie\Permission\Traits\HasRoles;
 
 // use Illuminate\Notifications\Notifiable;
@@ -25,7 +25,9 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements MustVerifyPhone, Auditable
 {
     use Notifiable, TraitsAuditable, CacheDefault, HasNote;
-    use HasRoles, CanVerifyPhone, CanFilter;
+    use HasRoles, CanVerifyPhone, CanFilter, Searchable;
+
+    protected $indexConfigurator = UserIndexer::class;
 
     const BANNED = 'banned';
 
@@ -50,6 +52,17 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
      * Used for check only one auth session at time
      */
     public const SESSION_TIMEOUT = 30;
+
+    protected $mapping = [
+        'properties' => [
+            'name'      => ['type' => 'keyword'],
+            'phone'     => ['type' => 'text'],
+            'email'     => ['type' => 'text'],
+            'address'   => ['type' => 'keyword'],
+            'banned_at' => ['type' => 'date'],
+            'last_seen' => ['type' => 'text'],
+        ]
+    ];
 
     /**
      * The attributes that are mass assignable.

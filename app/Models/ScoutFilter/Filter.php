@@ -2,13 +2,12 @@
 
 namespace App\Models\ScoutFilter;
 
-use Laravel\Scout\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 abstract class Filter
 {
-    public static function filter(Builder $query, $filters)
+    public static function filter($query, $filters)
     {
         $filters = $filters instanceof Request ? $filters->all() : $filters;
 
