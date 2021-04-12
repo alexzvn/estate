@@ -265,10 +265,14 @@ class Post extends Model implements Auditable
             $this->district->name ?? null,
         ]);
 
-        return array_merge($this->toArray(), [
+        $post = array_merge($this->toArray(), [
             'meta'        => $meta->join(', '),
             'content'     => remove_tags($this->content),
             'category_id' => $category->id ?? null
         ]);
+
+        unset($post['extra']);
+
+        return $post;
     }
 }
