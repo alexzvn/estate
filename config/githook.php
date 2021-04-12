@@ -74,7 +74,7 @@ return [
         'php artisan queue:restart',
         'php artisan optimize',
         'php artisan up',
-        'php artisan permission:sync'
+        // 'php artisan permission:sync'
     ],
 
     /*
