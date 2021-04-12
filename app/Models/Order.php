@@ -36,6 +36,7 @@ class Order extends Model implements CanNote, Auditable
         'properties' => [
             'plan_name'      => ['type' => 'keyword'],
             'manual'         => ['type' => 'boolean'],
+            'verified'       => ['type' => 'boolean'],
             'customer_name'  => ['type' => 'text'],
             'customer_phone' => ['type' => 'text'],
             'activate_at'    => ['type' => 'date'],
@@ -60,9 +61,10 @@ class Order extends Model implements CanNote, Auditable
     ];
 
     protected $casts = [
-        'verified' => 'boolean',
+        'manual'        => 'boolean',
+        'verified'      => 'boolean',
         'discount_type' => 'integer',
-        'price' => 'float',
+        'price'         => 'float',
     ];
 
     protected $dates = [
