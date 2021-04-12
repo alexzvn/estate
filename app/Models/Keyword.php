@@ -39,7 +39,7 @@ class Keyword extends Model
 
     public function lock()
     {
-        Post::whereIn('_id', $this->posts)
+        Post::whereIn('id', $this->posts)
             ->whereStatus(PostStatus::Published)
             ->update([
                 'status' => PostStatus::Locked
@@ -52,7 +52,7 @@ class Keyword extends Model
     {
         Post::whereStatus(PostStatus::Locked)
             ->whereDoesntHave('blacklists')
-            ->whereIn('_id', $this->filterKeywords($this->posts))
+            ->whereIn('id', $this->filterKeywords($this->posts))
             ->update([
                 'status' => PostStatus::Published
             ]);
@@ -146,7 +146,7 @@ class Keyword extends Model
 
     public function unlockRelative()
     {
-        return Post::whereIn('_id', $this->getRelativePostId())
+        return Post::whereIn('id', $this->getRelativePostId())
             ->whereDoesntHave('blacklists')
             ->whereStatus(PostStatus::Locked)
             ->update([
@@ -166,15 +166,15 @@ class Keyword extends Model
     public function getRelativePostId()
     {
         return Post::whereIn('phone', $this->getPhones())
-            ->whereNotIn('_id', $this->posts)
-            ->get(['_id'])
+            ->whereNotIn('id', $this->posts)
+            ->get(['id'])
             ->keyBy('id')
             ->keys();
     }
 
     public function getPhones()
     {
-        return Post::whereIn('_id', $this->posts)
+        return Post::whereIn('id', $this->posts)
             ->get(['phone'])
             ->whereNotNull('phone')
             ->keyBy('phone')
