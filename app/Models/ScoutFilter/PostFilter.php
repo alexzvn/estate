@@ -65,4 +65,12 @@ class PostFilter extends Filter
     {
         $builder->where('price', '<=', $price);
     }
+
+    public function filterOrder($builder, $type)
+    {
+        switch ($type) {
+            case 'accurate':  return $builder->orderBy('_score', 'desc');
+            case 'newest':    return $builder->orderBy('publish_at', 'desc');
+        }
+    }
 }

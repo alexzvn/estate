@@ -55,12 +55,18 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
 
     protected $mapping = [
         'properties' => [
-            'name'      => ['type' => 'keyword'],
-            'phone'     => ['type' => 'text'],
-            'email'     => ['type' => 'text'],
-            'address'   => ['type' => 'keyword'],
-            'banned_at' => ['type' => 'date'],
-            'last_seen' => ['type' => 'text'],
+            'name'              => ['type' => 'keyword'],
+            'phone'             => ['type' => 'text'],
+            'email'             => ['type' => 'text'],
+            'address'           => ['type' => 'keyword'],
+            'phone_verified_at' => ['type' => 'date'],
+            'email_verified_at' => ['type' => 'date'],
+            'banned_at'         => ['type' => 'date'],
+            'last_seen'         => ['type' => 'date'],
+            'updated_at'        => ['type' => 'date'],
+            'updated_at'        => ['type' => 'date'],
+            'created_at'        => ['type' => 'date'],
+            'deleted_at'        => ['type' => 'date'],
         ]
     ];
 

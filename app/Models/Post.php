@@ -58,7 +58,7 @@ class Post extends Model implements Auditable
             'content'      => ['type' => 'keyword'],
             'phone'        => ['type' => 'text'],
             'meta'         => ['type' => 'keyword'],
-            'published_at' => ['type' => 'date'],
+            'publish_at'   => ['type' => 'date'],
             'created_at'   => ['type' => 'date'],
             'updated_at'   => ['type' => 'date'],
         ]
@@ -265,10 +265,14 @@ class Post extends Model implements Auditable
             $this->district->name ?? null,
         ]);
 
-        return array_merge($this->toArray(), [
+        $post = array_merge($this->toArray(), [
             'meta'        => $meta->join(', '),
             'content'     => remove_tags($this->content),
             'category_id' => $category->id ?? null
         ]);
+
+        unset($post['extra']);
+
+        return $post;
     }
 }

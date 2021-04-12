@@ -17,6 +17,7 @@ class CreateBlacklistsTable extends Migration
             $table->string('phone', 50)->primary();
             $table->string('name')->nullable();
             $table->string('url', 2048)->nullable();
+            $table->string('category')->nullable();
             $table->foreignId('province_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();

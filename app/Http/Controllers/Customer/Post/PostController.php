@@ -108,14 +108,9 @@ class PostController extends BaseController
 
         PostFilter::filter($post, request());
 
-        // $post = Post::withRelation()
-        //     ->published()
-        //     ->where('type', $type)
-        //     ->whereNotIn('id', )
-        //     ->filter([
-        //         'categories' => $categories,
-        //         'provinces'  => $this->access->provinces($type)
-        //     ])->filter(request());
+        if (! request('order')) {
+            $post->orderBy('publish_at', 'desc');
+        }
 
         return $post;
     }
