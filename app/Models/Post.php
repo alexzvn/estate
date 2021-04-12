@@ -58,7 +58,7 @@ class Post extends Model implements Auditable
             'content'      => ['type' => 'keyword'],
             'phone'        => ['type' => 'text'],
             'meta'         => ['type' => 'keyword'],
-            'published_at' => ['type' => 'date'],
+            'publish_at'   => ['type' => 'date'],
             'created_at'   => ['type' => 'date'],
             'updated_at'   => ['type' => 'date'],
         ]
