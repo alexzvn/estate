@@ -36,7 +36,7 @@ class MakeCategories implements Handler
     protected function removeNullCategories(array &$category)
     {
         for ($i=0; $i < count($category); $i++) { 
-            if (is_null($category[$i])) {
+            if (empty($category[$i])) {
                 unset($category[$i]);
             }
         }
@@ -44,9 +44,8 @@ class MakeCategories implements Handler
 
     protected function converterCategoryToIds($categories)
     {
-        return collect($categories)->map(function ($category)
-        {
-            return $category->_id;
+        return collect($categories)->map(function ($category) {
+            return $category->id;
         })->toArray();
     }
 
@@ -58,11 +57,15 @@ class MakeCategories implements Handler
      */
     protected function converterCategoryToInstances($ids)
     {
-        if (is_string($ids)) {
-            return [Category::find($ids)];
+        if (is_array($ids)) {
+            return Category::findMany($ids);
         }
 
-        return Category::findMany($ids);
+        if ($category = Category::find($ids)) {
+            return [$category];
+        }
+
+        return [];
     }
 
     protected function checkCategoriesAttribute($attr)
