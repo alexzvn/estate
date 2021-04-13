@@ -3,10 +3,11 @@
 return get('orders', new Mapper([
     'status'               => 'int',
     'month'                => 'int',
+    'manual'                => 'boolean',
     'verified'             => 'boolean',
     'discount'             => fn($val) => (int) $val,
     'discount_type'        => fn($val) => (int) $val,
-    'price'                => 'int',
+    'price'                => fn($val) => (int) $val,
     'total'                => fn($val, $data) => ($data['after_discount_price'] ?? 0),
 
     'customer_id'          => 'id.users',
