@@ -8,6 +8,6 @@ trait HasFiles
 {
     public function files()
     {
-        return $this->belongsToMany(File::class);
+        return $this->hasMany(File::class);
     }
 }
