@@ -49,13 +49,17 @@ class Post extends Model implements Auditable
     ];
 
     protected $casts = [
-        'extra' => 'json'
+        'extra' => 'json',
+        'reverser' => 'boolean',
+        'approve_fee' => 'boolean',
     ];
 
     protected $mapping = [
         'properties' => [
             'title'        => ['type' => 'keyword'],
             'content'      => ['type' => 'keyword'],
+            'reverser'     => ['type' => 'boolean'],
+            'approve_fee'  => ['type' => 'boolean'],
             'phone'        => ['type' => 'text'],
             'meta'         => ['type' => 'keyword'],
             'publish_at'   => ['type' => 'date'],
