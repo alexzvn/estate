@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\PostStatus;
+
 $type = function ($type) {
     $mapped = [
         'Tin Xin Phí' => 1,
@@ -11,14 +13,19 @@ $type = function ($type) {
     return $mapped[$type] ?? null;
 };
 
-$price = function ($price) {
+$maxInt = pow(2, 64) - 1;
+
+$price = function ($price) use ($maxInt) {
 
     if (! $price) {
         return null;
     }
 
-    return (int) ($price['$numberLong'] ?? $price);
+    $price = ($price['$numberLong'] ?? $price);
+
+    return $price < 1 || $price >= $maxInt ? null : $price;
 };
+
 
 return get('posts', new Mapper([
     'title' => 'string',
@@ -30,7 +37,7 @@ return get('posts', new Mapper([
     'approve_fee' => 'boolean',
     'commission' => 'string',
     'price' => $price,
-    'status' => 'int',
+    'status' => fn($status = null) => $status ?? PostStatus::Draft,
     'extra' => fn($extra) => $extra ? json_encode($extra) : null,
     'source' => 'int',
     'verifier_id' => 'id.users',
