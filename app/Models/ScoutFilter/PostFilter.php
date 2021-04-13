@@ -8,17 +8,17 @@ class PostFilter extends Filter
 {
     public function filterProvince($builder, $value)
     {
-        $builder->where('province_id', $value);
+        $builder->where('province_id', (int) $value);
     }
 
     public function filterProvinces($builder, $value)
     {
-        $builder->whereIn('province_id', $value);
+        $builder->whereIn('province_id', (int) $value);
     }
 
     public function filterDistrict($builder, $value)
     {
-        $builder->where('district_id', $value);
+        $builder->where('district_id', (int) $value);
     }
 
     public function filterCategories($builder, $values)
