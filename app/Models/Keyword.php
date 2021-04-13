@@ -37,6 +37,17 @@ class Keyword extends Model
         return "/(?:^|\W)$keyword(?:$|\W)/i";
     }
 
+    public function toSearchRegex()
+    {
+        $keyword = $this->makeUnicodeRegex();
+
+        if ($this->linear) {
+            return "$keyword";
+        }
+
+        return "(?:^|\W)$keyword(?:$|\W)";
+    }
+
     public function lock()
     {
         Post::whereIn('id', $this->posts)
@@ -73,8 +84,8 @@ class Keyword extends Model
 
     public function index()
     {
-        $posts = Post::where('content', 'regexp', $this->toRegex())
-            ->orWhere('title', 'regexp', $this->toRegex())
+        $posts = Post::where('content', 'regexp', $this->toSearchRegex())
+            ->orWhere('title', 'regexp', $this->toSearchRegex())
             ->whereDoesntHave('whitelists')
             ->get();
 

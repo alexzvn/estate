@@ -245,14 +245,14 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     public function scopeNeverLogin(Builder $builder)
     {
         return $builder->whereDoesntHave('logs', function (Builder $builder) {
-            $builder->where('content', 'regexp', '/^(Đã đăng nhập)/');
+            $builder->where('content', 'regexp', '^(Đã đăng nhập)');
         });
     }
 
     public function scopeNeverReadPostBefore(Builder $builder)
     {
         return $builder->whereDoesntHave('logs', function (Builder $builder) {
-            $builder->where('content', 'like', 'Đã xem tin%');
+            $builder->where('content', 'regexp', '^(Đã xem tin)');
         });
     }
 

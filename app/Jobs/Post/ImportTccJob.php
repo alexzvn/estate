@@ -29,8 +29,8 @@ class ImportTccJob extends ImportPostJob
         $date = array_reverse(explode('/', $this->post->createDate));
 
         $category = $this->getCategory();
-        $province = Province::where('name', 'regexp', "/{$this->post->province}/")->first();
-        $district = District::where('name', 'regexp', "/{$this->post->district}/")->first();
+        $province = Province::where('name', 'regexp', $this->post->province)->first();
+        $district = District::where('name', 'regexp', $this->post->district)->first();
 
         if (! $province && $district && $district->province) {
             $province = $district->province;

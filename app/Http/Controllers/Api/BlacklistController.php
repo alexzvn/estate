@@ -61,6 +61,6 @@ class BlacklistController extends Controller
 
     protected function getProvinceId($name)
     {
-        return Province::where('name', 'regexp', "/$name/")->first()->id ?? null;
+        return Province::where('name', 'regexp', $name)->first()->id ?? null;
     }
 }

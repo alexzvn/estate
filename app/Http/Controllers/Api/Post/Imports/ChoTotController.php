@@ -71,7 +71,7 @@ class ChoTotController extends ImportController
             return [];
         }
 
-        $category = Category::where('name', 'regexp', "/$type/")->first();
+        $category = Category::where('name', 'regexp', $type)->first();
 
         return $category ? [$category] : [];
     }
