@@ -75,7 +75,9 @@ class LoginController extends Controller
             return $this->sendHasSessionLoginResponse($request);
         }
 
-        Auth::login($user, true);
+        User::withoutEvents(function () {
+            Auth::login($user, true);
+        });
 
         $request->session()->regenerate();
 
