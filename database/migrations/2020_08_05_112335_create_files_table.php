@@ -17,6 +17,7 @@ class CreateFilesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('path');
+            $table->foreignId('post_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }
