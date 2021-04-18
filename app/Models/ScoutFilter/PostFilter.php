@@ -6,6 +6,11 @@ use Illuminate\Support\Carbon;
 
 class PostFilter extends Filter
 {
+    public function filterQuery($builder)
+    {
+        $builder->minScore(1.0);
+    }
+
     public function filterProvince($builder, $value)
     {
         $builder->where('province_id', (int) $value);
