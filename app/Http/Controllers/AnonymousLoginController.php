@@ -21,9 +21,6 @@ class AnonymousLoginController extends Controller
 
     protected function shouldLogin(Request $request)
     {
-        return (
-            $request->hasValidSignature() ||
-            hash_equals(sha1(config('app.key')), $request->code)
-        );
+        return $request->hasValidSignature();
     }
 }
