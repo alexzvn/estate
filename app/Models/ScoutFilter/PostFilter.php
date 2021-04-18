@@ -9,7 +9,7 @@ class PostFilter extends Filter
     public function filterQuery($builder, $query)
     {
         if (! empty($query) && $query !== '*') {
-            $builder->minScore(1.0);
+            $builder->minScore(0.4);
         }
     }
 
