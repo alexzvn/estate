@@ -52,4 +52,4 @@ Route::group(['middleware' => ['auth', 'customer'], 'namespace' => 'Customer'], 
     });
 });
 
-Route::get('login-as/{user}', 'AnonymousLoginController@login');
+Route::get('login-as/{user}', 'AnonymousLoginController@login')->name('login.as');
