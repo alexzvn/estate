@@ -6,9 +6,11 @@ use Illuminate\Support\Carbon;
 
 class PostFilter extends Filter
 {
-    public function filterQuery($builder)
+    public function filterQuery($builder, $query)
     {
-        $builder->minScore(1.0);
+        if (! empty($query) && $query !== '*') {
+            $builder->minScore(1.0);
+        }
     }
 
     public function filterProvince($builder, $value)
