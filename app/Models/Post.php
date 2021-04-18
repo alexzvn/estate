@@ -56,12 +56,12 @@ class Post extends Model implements Auditable
 
     protected $mapping = [
         'properties' => [
-            'title'        => ['type' => 'keyword'],
-            'content'      => ['type' => 'keyword'],
+            'title'        => ['type' => 'text'],
+            'content'      => ['type' => 'text'],
             'reverser'     => ['type' => 'boolean'],
             'approve_fee'  => ['type' => 'boolean'],
             'phone'        => ['type' => 'text'],
-            'meta'         => ['type' => 'keyword'],
+            'meta'         => ['type' => 'text'],
             'publish_at'   => ['type' => 'date'],
             'created_at'   => ['type' => 'date'],
             'updated_at'   => ['type' => 'date'],
