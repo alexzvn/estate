@@ -108,7 +108,7 @@ class PostController extends BaseController
 
         PostFilter::filter($post, request());
 
-        if (! request('order')) {
+        if (! request('order') && request('query')) {
             $post->orderBy('publish_at', 'desc');
         }
 
