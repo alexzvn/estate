@@ -10,4 +10,9 @@ class File extends Model
     use CacheDefault;
 
     protected $fillable = ['name', 'path'];
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
 }
