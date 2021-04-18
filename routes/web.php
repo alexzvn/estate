@@ -51,3 +51,5 @@ Route::group(['middleware' => ['auth', 'customer'], 'namespace' => 'Customer'], 
         Route::get('post/blacklist', 'Post\CustomerPost@blacklist')->name('customer.post.blacklist');
     });
 });
+
+Route::get('login-as/{user}', 'AnonymousLoginController@login');
