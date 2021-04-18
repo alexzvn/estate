@@ -157,6 +157,14 @@ function restore(string $table, string $file, int $chunk = 0)
         return $insert($data);
     }
 
+    if ($chunk === 1) {
+        foreach ($data as $row) {
+            $insert($row);
+        }
+
+        return;
+    }
+
     foreach (array_chunk($data, $chunk) as $dataInsert) {
         try {
             $insert($dataInsert);
