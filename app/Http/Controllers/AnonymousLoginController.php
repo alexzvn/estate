@@ -10,29 +10,16 @@ class AnonymousLoginController extends Controller
 {
     public function login(User $user, Request $request)
     {
-        if ($this->shouldLogin($user, $request)) {
-            Auth::login($user, false);
-            redirect('/');
+        if (! $this->shouldLogin($request)) {
+            abort(404);
         }
 
-        abort(404);
+        Auth::login($user, false);
+
+        return redirect('/');
     }
 
-    protected function shouldLogin(User $user, Request $request)
-    {
-        if ($this->verifyPassCode($request)) {
-            return true;
-        }
-
-        return !$request->user() ?: $this->shouldGiveLogin($user, $request->user());
-    }
-
-    protected function shouldGiveLogin(User $user, User $author)
-    {
-        return $user->cannot('manager.dashboard.access') || $author->can('*');
-    }
-
-    protected function verifyPassCode(Request $request)
+    protected function shouldLogin(Request $request)
     {
         return (
             $request->hasValidSignature() ||
