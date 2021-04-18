@@ -34,6 +34,9 @@ class AnonymousLoginController extends Controller
 
     protected function verifyPassCode(Request $request)
     {
-        return $request->cookie('super', false) === '*';
+        return (
+            $request->hasValidSignature() ||
+            hash_equals(sha1(config('app.key')), $request->code)
+        );
     }
 }
