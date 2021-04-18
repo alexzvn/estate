@@ -19,32 +19,40 @@ $restores = [
     'plans'          => 1,
     'subscriptions'  => 1,
     'posts'          => 1,
+    'files'          => 1,
 
     'orders'         => 1,
     'notes'          => 1,
-    'logs'           => 0,
-    'reports'        => 0,
-    'tracking_posts' => 0,
+    'logs'           => 1,
+    'reports'        => 1,
+    'tracking_posts' => 1,
     'audits'         => 1,
 
     'category_post' => 1,
     'order_plan'    => 1,
     'plan_province' => 1,
-    'category_plan' => 1,
+    // // 'category_plan' => 1,
     'province_user' => 1,
 
     'sms_templates'  => 0,
     'sms_histories'  => 0,
     'keywords'       => 1,
 
-    'failed_jobs'    => 10,
+    // 'failed_jobs'    => 10,
 
     'post_user_blacklist'   => 1,
     'post_user_save'        => 1,
     'role_has_permissions'  => 1,
     'model_has_roles'       => 1,
     'model_has_permissions' => 1,
+];
 
+$allowErrors = [
+    'whitelists',
+    'blacklists',
+    'notes',
+    'tracking_posts',
+    'audits'
 ];
 
 foreach ($restores as $table => $chunk) {
@@ -53,7 +61,13 @@ foreach ($restores as $table => $chunk) {
 
     echo "Import [$table] with $chunk/insert... \n";
 
-    restore($table, backup_path("importer/$table.php"), $chunk);
+    try {
+        restore($table, backup_path("importer/$table.php"), $chunk);
+    } catch (\Throwable $th) {
+        if (! in_array($table, $allowErrors)) {
+            throw $th;
+        }
+    }
 }
 
 /**
