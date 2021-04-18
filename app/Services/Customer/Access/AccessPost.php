@@ -73,10 +73,8 @@ class AccessPost
     {
         $this->plans()->each(function (Plan $plan) {
             foreach ($plan->types as $type) {
-                $this->plan[$type] = [
-                    'categories' => [],
-                    'provinces'  => []
-                ];
+                $this->plan[$type]['categories'] ??= [];
+                $this->plan[$type]['provinces']  ??= [];
 
                 array_push($this->plan[$type]['categories'], ...$plan->categories);
                 array_push($this->plan[$type]['provinces'], ...$plan->provinces);
