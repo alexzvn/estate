@@ -73,6 +73,11 @@ class Post extends Model implements Auditable
         return $this->belongsTo(User::class);
     }
 
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);
