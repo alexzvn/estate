@@ -69,7 +69,7 @@
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="post_type[]"
                                             id="post_type" value="{{ $name }}" {{ in_array($name, $plan->types->toArray()) ? 'checked': '' }}>
-                                            {{ $name }}
+                                            {{ \App\Enums\PostType::getDescription($name) }}
                                         </label>
                                     </div>
                                     @endforeach
