@@ -268,16 +268,12 @@ class Post extends Model implements Auditable
     {
         $category = $this->categories->first();
 
-        $meta = collect([
-            $category->name ?? null,
-            $this->province->name ?? null,
-            $this->district->name ?? null,
-        ]);
-
         $post = array_merge($this->toArray(), [
-            'meta'        => $meta->join(', '),
             'content'     => remove_tags($this->content),
-            'category_id' => $category->id ?? null
+            'province'    => $this->province->name ?? null,
+            'district'    => $this->district->name ?? null,
+            'category_id' => $category->id ?? null,
+            'price'       => $this->price > 100_000_000_000 ? null : $this->price
         ]);
 
         unset($post['extra']);
