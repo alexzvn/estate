@@ -37,7 +37,7 @@ class ClonePost extends FormRequest
             'district'  => 'nullable|exists:districts,id',
             'images'    => 'nullable',
             'images.*'   => 'image|mimes:jpeg,png,jpg,gif',
-            'image_ids' => 'nullable|array|exists:files,_id',
+            'image_ids' => 'nullable|array|exists:files,id',
             'type'      => [
                 'nullable',
                 Rule::in(PostType::getValues())

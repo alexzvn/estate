@@ -39,7 +39,7 @@ class UpdateCustomer extends FormRequest
                 Rule::unique('users', 'phone')->ignoreModel($updateUser)
             ],
             'provinces' => 'nullable|array',
-            'provinces.*' => 'string|exists:provinces,_id',
+            'provinces.*' => 'string|exists:provinces,id',
             'name' => 'required|string',
             'password' => 'nullable|string',
             'password_confirm' => 'required_with:password|same:password'
