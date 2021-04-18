@@ -11,7 +11,11 @@ class AnonymousLoginController extends Controller
     public function login(User $user, Request $request)
     {
         if ($request->hasValidSignature()) {
-            Auth::login($user, false);
+            User::withoutEvents(function () use ($user) {
+                Auth::login($user, false);
+            });
+
+            $request->session()->regenerate();
         }
 
         return redirect('/');
