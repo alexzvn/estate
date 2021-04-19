@@ -39,6 +39,7 @@ return get('plans', new Mapper([
     'types' => $types,
     'categories' => $categories,
     'provinces'  => $provinces,
+    'renewable'  => 'boolean',
     'updated_at' => 'datetime',
     'created_at' => 'datetime',
 ]));
