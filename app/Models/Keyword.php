@@ -46,7 +46,7 @@ class Keyword extends Model
             return "$keyword";
         }
 
-        return "(?:^|\W)$keyword(?:$|\W)";
+        return "(^|\W)$keyword($|\W)";
     }
 
     public function lock()
