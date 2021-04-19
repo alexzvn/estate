@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PostStatus;
+use App\Jobs\UpdateManyPostJob;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
@@ -50,23 +51,29 @@ class Keyword extends Model
 
     public function lock()
     {
-        Post::whereIn('id', $this->posts)
-            ->whereStatus(PostStatus::Published)
-            ->update([
-                'status' => PostStatus::Locked
-            ]);
+        $updater = new UpdateManyPostJob(function () {
+            return Post::whereIn('id', $this->posts)
+                ->whereStatus(PostStatus::Published);
+        });
+
+        $updater->update(['status' => PostStatus::Locked]);
+
+        $updater->dispatch();
 
         $this->lockRelative();
     }
 
     public function unlock()
     {
-        Post::whereStatus(PostStatus::Locked)
-            ->whereDoesntHave('blacklists')
-            ->whereIn('id', $this->filterKeywords($this->posts))
-            ->update([
-                'status' => PostStatus::Published
-            ]);
+        $updater = new UpdateManyPostJob(function () {
+            return Post::whereStatus(PostStatus::Locked)
+                ->whereDoesntHave('blacklists')
+                ->whereIn('id', $this->filterKeywords($this->posts));
+        });
+
+        $updater->update(['status' => PostStatus::Published]);
+
+        $updater->dispatch();
 
         $this->unlockRelative();
     }
@@ -147,22 +154,28 @@ class Keyword extends Model
 
     public function lockRelative()
     {
-        return Post::whereIn('phone', $this->getPhones())
-            ->whereStatus(PostStatus::Published)
-            ->whereDoesntHave('whitelists')
-            ->update([
-                'status' => PostStatus::Locked
-            ]);
+        $updater = new UpdateManyPostJob(function () {
+            return  Post::whereIn('phone', $this->getPhones())
+                ->whereStatus(PostStatus::Published)
+                ->whereDoesntHave('whitelists');
+        });
+
+        $updater->update(['status' => PostStatus::Locked]);
+
+        $updater->dispatch();
     }
 
     public function unlockRelative()
     {
-        return Post::whereIn('id', $this->getRelativePostId())
-            ->whereDoesntHave('blacklists')
-            ->whereStatus(PostStatus::Locked)
-            ->update([
-                'status' => PostStatus::Published
-            ]);
+        $updater = new UpdateManyPostJob(function () {
+            return Post::whereIn('id', $this->getRelativePostId())
+                ->whereDoesntHave('blacklists')
+                ->whereStatus(PostStatus::Locked);
+        });
+
+        $updater->update(['status' => PostStatus::Published]);
+
+        $updater->dispatch();
     }
 
     public function filterKeywords(Collection $posts)

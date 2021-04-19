@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Elastic\PostIndexer;
 use App\Enums\PostStatus;
+use App\Jobs\UpdateManyPostJob;
 use App\Models\Location\District;
 use App\Models\Location\Province;
 use App\Models\Traits\Auditable as TraitsAuditable;
@@ -170,9 +171,15 @@ class Post extends Model implements Auditable
             return;
         }
 
-        return static::whereIn('phone', $phones)->update([
+        $updater = new UpdateManyPostJob(function () use ($phones) {
+            return static::whereIn('phone', $phones);
+        });
+
+        $updater->update([
             'status' => PostStatus::Locked
         ]);
+
+        $updater->dispatch();
     }
 
     public function filterFrom(Builder $builder, $date)
