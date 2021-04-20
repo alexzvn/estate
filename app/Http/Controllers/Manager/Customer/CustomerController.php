@@ -31,10 +31,10 @@ class CustomerController extends Controller
             $users = User::latest();
         }
 
-        $users->with(['subscriptions', 'supporter', 'orders', 'logs', 'note'])->paginate(40);
+        $users->with(['subscriptions', 'supporter', 'orders', 'logs', 'note']);
 
         return view('dashboard.customer.index', [
-            'users' => $users,
+            'users' => $users->paginate(40),
             'staff' => Permission::findUsersHasPermission('manager.customer.view')
         ]);
     }
