@@ -86,7 +86,7 @@ class Keyword extends Model
     {
         $posts = Post::where('content', 'regexp', $this->toSearchRegex())
             ->orWhere('title', 'regexp', $this->toSearchRegex())
-            ->whereDoesntHave('whitelists')
+            ->whereDoesntHave('whitelist')
             ->get();
 
         $this->fill([
@@ -101,7 +101,7 @@ class Keyword extends Model
 
     public function indexPost(Post $post)
     {
-        if ($post->whitelists) return;
+        if ($post->whitelist) return;
 
         if ($this->test("$post->title $post->content")) {
             $this->posts = $this->posts->push($post->id);
@@ -149,7 +149,7 @@ class Keyword extends Model
     {
         return updater(Post::whereIn('phone', $this->getPhones())
             ->whereStatus(PostStatus::Published)
-            ->whereDoesntHave('whitelists'))
+            ->whereDoesntHave('whitelist'))
             ->update([
                 'status' => PostStatus::Locked
             ]);
@@ -158,7 +158,7 @@ class Keyword extends Model
     public function unlockRelative()
     {
         return updater(Post::whereIn('id', $this->getRelativePostId())
-            ->whereDoesntHave('blacklists')
+            ->whereDoesntHave('blacklist')
             ->whereStatus(PostStatus::Locked))
             ->update([
                 'status' => PostStatus::Published
