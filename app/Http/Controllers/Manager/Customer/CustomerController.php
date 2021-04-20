@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Manager\Customer;
 
 use App\Models\Order;
-use App\Repository\Plan;
-use App\Repository\User;
+use App\Models\Plan;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Repository\Permission;
@@ -15,24 +15,21 @@ use App\Http\Requests\Manager\Customer\AssignCustomer;
 use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Location\Province;
+use App\Models\ScoutFilter\UserFilter;
 
 class CustomerController extends Controller
 {
-    public function index(Request $request)
+    public function index(User $users, Request $request)
     {
         $this->authorize('manager.customer.view');
 
-        $users = User::with(['subscriptions', 'supporter', 'orders', 'logs', 'note'])
-            ->filter($request)
-            ->onlyCustomer();
-
-        if (! empty($request->expires_last) || ! empty($request->expires)) {
-            $users = $users->whereHas('subscriptions', function ($q) use ($request) {
-                $q->filter($request);
-            });
+        if ($query = request('query', false)) {
+            UserFilter::filter($users->search($query), request());
+        } else {
+            $users = User::latest();
         }
 
-        $users = $users->latest()->paginate(40);
+        $users->with(['subscriptions', 'supporter', 'orders', 'logs', 'note'])->paginate(40);
 
         return view('dashboard.customer.index', [
             'users' => $users,

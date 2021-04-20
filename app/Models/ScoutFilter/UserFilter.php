@@ -8,6 +8,11 @@ use Illuminate\Support\Carbon;
 
 class UserFilter extends Filter
 {
+    public function filterQuery(Builder $builder)
+    {
+        $builder->orderBy('created_at', 'desc');
+    }
+
     public function filterOnline(Builder $builder)
     {
         return $builder
