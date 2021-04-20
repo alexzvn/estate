@@ -26,9 +26,9 @@ class CustomerController extends Controller
         $users = User::query();
 
         if ($query = request('query', false)) {
-            UserFilter::filter($users = $users->search($query), request());
+            UserFilter::filter($users = User::search($query), request());
         } else {
-            $users = User::latest();
+            $users = User::latest()->filter($request);
         }
 
         $users->with(['subscriptions', 'supporter', 'orders', 'logs', 'note']);
