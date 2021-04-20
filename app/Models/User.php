@@ -300,6 +300,13 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         );
     }
 
+    protected function filterExpiresLast(Builder $builder, $days)
+    {
+        $builder->whereHas('subscriptions', function ($q) use ($days) {
+            $q->filter(['expires_last' => $days]);
+        });
+    }
+
     protected function filterStatus(Builder $builder, $status)
     {
         switch ($status) {
