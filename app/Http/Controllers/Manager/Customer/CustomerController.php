@@ -19,12 +19,14 @@ use App\Models\ScoutFilter\UserFilter;
 
 class CustomerController extends Controller
 {
-    public function index(User $users, Request $request)
+    public function index(Request $request)
     {
         $this->authorize('manager.customer.view');
 
+        $users = User::query();
+
         if ($query = request('query', false)) {
-            UserFilter::filter($users->search($query), request());
+            UserFilter::filter($users = $users->search($query), request());
         } else {
             $users = User::latest();
         }
