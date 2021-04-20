@@ -316,8 +316,8 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             case static::ONLINE: return $this->scopeOnline($builder);
             case static::SPEND_ZERO: return $this->scopeSpendZero($builder);
             case static::SPEND_MORE: return $this->scopeSpendMore($builder);
-            case static::NEVER_LOGIN_BEFORE: return $this->scopeNeverLogin($builder);
-            case static::NEVER_READ_POST_BEFORE: return $this->scopeNeverReadPostBefore($builder);
+            // case static::NEVER_LOGIN_BEFORE: return $this->scopeNeverLogin($builder);
+            // case static::NEVER_READ_POST_BEFORE: return $this->scopeNeverReadPostBefore($builder);
         }
     }
 
@@ -346,8 +346,8 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             static::ONLINE => 'Đang online',
             static::SPEND_ZERO => 'Tài khoản 0đ',
             static::SPEND_MORE => 'Tài khoản trên 0đ',
-            static::NEVER_LOGIN_BEFORE => 'Chưa đăng nhập lần nào',
-            static::NEVER_READ_POST_BEFORE => 'Chưa xem tin nào'
+            // static::NEVER_LOGIN_BEFORE => 'Chưa đăng nhập lần nào',
+            // static::NEVER_READ_POST_BEFORE => 'Chưa xem tin nào'
         ];
     }
 
