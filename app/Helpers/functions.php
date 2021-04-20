@@ -1,5 +1,7 @@
 <?php
 
+use App\Helpers\Updater;
+
 /**
  * Get logged user
  *
@@ -103,4 +105,15 @@ function fulltext(string $table, string ...$columns)
     Illuminate\Support\Facades\DB::statement(
         "ALTER TABLE $table ADD FULLTEXT `search` ($columns)"
     );
+}
+
+/**
+ * Update model by query but keep events
+ *
+ * @param mixed $builder
+ * @return \App\Helpers\Updater
+ */
+function updater($builder)
+{
+    return new Updater($builder);
 }
