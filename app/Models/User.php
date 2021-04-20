@@ -57,8 +57,8 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         'properties' => [
             'name'              => ['type' => 'keyword'],
             'phone'             => ['type' => 'keyword'],
-            'email'             => ['type' => 'keyword'],
-            'address'           => ['type' => 'keyword'],
+            'email'             => ['type' => 'completion'],
+            'address'           => ['type' => 'text'],
             'phone_verified_at' => ['type' => 'date'],
             'email_verified_at' => ['type' => 'date'],
             'banned_at'         => ['type' => 'date'],
@@ -67,6 +67,10 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             'updated_at'        => ['type' => 'date'],
             'created_at'        => ['type' => 'date'],
             'deleted_at'        => ['type' => 'date'],
+
+            'order.total'       => ['type' => 'long'],
+            'post.seen'         => ['type' => 'boolean'],
+            'has_login'         => ['type' => 'boolean'],
         ]
     ];
 
@@ -214,8 +218,8 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     public function scopeOnline(Builder $builder)
     {
         return $builder
-        ->whereNotNull('session_id')
-        ->where('last_seen', '>=', now()->subMinutes(static::SESSION_TIMEOUT));
+            ->whereNotNull('session_id')
+            ->where('last_seen', '>=', now()->subMinutes(static::SESSION_TIMEOUT));
     }
 
     public function scopeOnlyCustomer(Builder $builder)
@@ -245,14 +249,14 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     public function scopeNeverLogin(Builder $builder)
     {
         return $builder->whereDoesntHave('logs', function (Builder $builder) {
-            $builder->where('content', 'regexp', '^(Đã đăng nhập)');
+            $builder->where('content', 'regexp', '^(Đã đăng nhập)')->limit(1);
         });
     }
 
     public function scopeNeverReadPostBefore(Builder $builder)
     {
         return $builder->whereDoesntHave('logs', function (Builder $builder) {
-            $builder->where('content', 'regexp', '^(Đã xem tin)');
+            $builder->where('content', 'regexp', '^(Đã xem tin)')->limit(1);
         });
     }
 
@@ -305,8 +309,8 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             case static::ONLINE: return $this->scopeOnline($builder);
             case static::SPEND_ZERO: return $this->scopeSpendZero($builder);
             case static::SPEND_MORE: return $this->scopeSpendMore($builder);
-            // case static::NEVER_LOGIN_BEFORE: return $this->scopeNeverLogin($builder);
-            // case static::NEVER_READ_POST_BEFORE: return $this->scopeNeverReadPostBefore($builder);
+            case static::NEVER_LOGIN_BEFORE: return $this->scopeNeverLogin($builder);
+            case static::NEVER_READ_POST_BEFORE: return $this->scopeNeverReadPostBefore($builder);
         }
     }
 
@@ -335,8 +339,19 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             static::ONLINE => 'Đang online',
             static::SPEND_ZERO => 'Tài khoản 0đ',
             static::SPEND_MORE => 'Tài khoản trên 0đ',
-            // static::NEVER_LOGIN_BEFORE => 'Chưa đăng nhập lần nào',
-            // static::NEVER_READ_POST_BEFORE => 'Chưa xem tin nào'
+            static::NEVER_LOGIN_BEFORE => 'Chưa đăng nhập lần nào',
+            static::NEVER_READ_POST_BEFORE => 'Chưa xem tin nào'
         ];
+    }
+
+    public function toSearchableArray()
+    {
+        $user = array_merge($this->toArray(), [
+            'order.total' => $this->orders->sum('total'),
+            'post.seen' => $this->logs()->where('content', 'regexp', '^(Đã xem tin)')->exists(),
+            'has_login' => $this->logs()->where('content', 'regexp', '^(Đã đăng nhập)')->exists()
+        ]);
+
+        return $user;
     }
 }

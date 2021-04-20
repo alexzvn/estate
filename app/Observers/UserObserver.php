@@ -21,41 +21,6 @@ class UserObserver
         if ($role = Role::find($role)) {
             $user->assignRole($role->name);
         }
-
-        $this->index($user);
-    }
-
-    /**
-     * Handle the user "updated" event.
-     *
-     * @param  \App\Models\User  $user
-     * @return void
-     */
-    public function updated(User $user)
-    {
-        $this->index($user);
-    }
-
-    /**
-     * Handle the user "deleted" event.
-     *
-     * @param  \App\Models\User  $user
-     * @return void
-     */
-    public function deleted(User $user)
-    {
-
-    }
-
-    /**
-     * Handle the user "restored" event.
-     *
-     * @param  \App\Models\User  $user
-     * @return void
-     */
-    public function restored(User $user)
-    {
-        $this->index($user);
     }
 
     /**
@@ -68,12 +33,6 @@ class UserObserver
     {
         $user->subscriptions()->delete();
         $user->logs()->delete();
-        $user->posts()->update(['user_id' => null]);
-        $user->report()->update(['user_id' => null]);
-    }
-
-    protected function index(User $user)
-    {
-
+        $user->audits()->delete();
     }
 }
