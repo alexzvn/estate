@@ -48,10 +48,10 @@ class PlanController extends Controller
             'renewable' => (bool) $request->renewable,
             'name' => $request->name,
             'price' => (float) str_replace(',', '', $request->price ?? ''),
-            'types' => $request->post_type ?? []
+            'types' => $request->post_type ?? [],
+            'provinces' => $request->provinces ?? [],
+            'categories' => $request->categories ?? [],
         ])->save();
-
-        $this->savePlansRelation($plan, $request);
 
         return redirect(route('manager.plan'))->with('success', 'Tạo mới thành công');
     }
@@ -68,8 +68,6 @@ class PlanController extends Controller
             'provinces' => $request->provinces ?? [],
             'categories' => $request->categories ?? [],
         ])->save();
-
-        $this->savePlansRelation($plan, $request);
 
         return redirect(route('manager.plan'))->with('success', 'Cập nhật thành công');
     }
