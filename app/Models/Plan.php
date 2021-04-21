@@ -25,8 +25,8 @@ class Plan extends Model implements Auditable
 
     protected $casts = [
         'types' => AsArrayObject::class,
-        'categories' => AsCollection::class,
-        'provinces' => AsCollection::class,
+        'categories' => AsArrayObject::class,
+        'provinces' => AsArrayObject::class,
         'renewable' => 'boolean'
 
     ];
