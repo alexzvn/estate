@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Traits\Auditable as TraitsAuditable;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
 class Plan extends Model implements Auditable
@@ -24,8 +25,8 @@ class Plan extends Model implements Auditable
 
     protected $casts = [
         'types' => AsArrayObject::class,
-        'categories' => AsArrayObject::class,
-        'provinces' => AsArrayObject::class,
+        'categories' => AsCollection::class,
+        'provinces' => AsCollection::class,
         'renewable' => 'boolean'
 
     ];
