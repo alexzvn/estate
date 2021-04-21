@@ -93,8 +93,8 @@
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input type="checkbox" class="form-check-input" disabled
-                                        id="post_type" value="{{ $name }}" {{ in_array($name, $plan->types ?? []) ? 'checked': '' }}>
-                                        {{ $name }}
+                                        id="post_type" value="{{ $name }}" {{ in_array($name, (array) $plan->types) ? 'checked': '' }}>
+                                        {{ \App\Enums\PostType::getDescription($name) }}
                                     </label>
                                 </div>
                                 @endforeach
