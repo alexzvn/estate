@@ -19,7 +19,7 @@ class PostController extends BaseController
         $type = PostType::PostFee;
 
         $this->customer->createLog([
-            'content' => 'Đã truy cập '. $type,
+            'content' => 'Đã truy cập '. PostType::getDescription($type),
             'link'    => $request->fullUrl()
         ]);
 
@@ -36,7 +36,7 @@ class PostController extends BaseController
         $type = PostType::Online;
 
         $this->customer->createLog([
-            'content' => 'Đã truy cập '. $type,
+            'content' => 'Đã truy cập '. PostType::getDescription($type),
             'link'    => $request->fullUrl()
         ]);
 
@@ -53,7 +53,7 @@ class PostController extends BaseController
         $type = PostType::PostMarket;
 
         $this->customer->createLog([
-            'content' => 'Đã truy cập '. $type,
+            'content' => 'Đã truy cập '. PostType::getDescription($type),
             'link'    => $request->fullUrl()
         ]);
 
