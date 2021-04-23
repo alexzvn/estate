@@ -306,7 +306,7 @@
 
     window.address = {
         setDistricts(provinceId) {
-            let province = data.filter((e) => {return e.id === provinceId})[0];
+            let province = data.filter((e) => {return e.id == provinceId})[0];
             let district = $('#district');
 
             district.html('');
