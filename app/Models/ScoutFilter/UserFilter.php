@@ -16,7 +16,7 @@ class UserFilter extends Filter
     public function filterOnline(Builder $builder)
     {
         return $builder
-            ->whereNotNull('session_id')
+            ->whereExists('session_id')
             ->where('last_seen', '>=', now()->subMinutes(User::SESSION_TIMEOUT));
     }
 
