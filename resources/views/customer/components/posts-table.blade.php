@@ -57,8 +57,8 @@
         <td class="d-none d-lg-table-cell">
           <div class="d-flex">
             @php
-                $saved = in_array($item->id, auth()->user()->post_save_ids ?? []);
-                $deleted = in_array($item->id, auth()->user()->post_blacklist_ids ?? []);
+                $saved = user()->savedPosts->contains('id', $item->id);
+                $deleted = user()->blacklistPosts->contains('id', $item->id);
             @endphp
             <button class="save-element btn btn-sm btn-primary mr-1" data-active="{{ $saved ? 'true' : 'false' }}" data-id="{{ $item->id }}" type="button">{{ $saved ? 'Bỏ lưu' : 'Lưu' }}</button>
             <button class="delete-element btn btn-sm btn-danger" data-active="{{ $deleted ? 'true' : 'false' }}" data-id="{{ $item->id }}" type="button">{{ $deleted ? 'Bỏ xóa' : 'Xóa' }}</button>
