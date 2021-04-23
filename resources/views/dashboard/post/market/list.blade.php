@@ -222,7 +222,7 @@
         })
 
         $('#main-province').on('change', (e) => {
-            address.setDistricts($(e.currentTarget).val());
+            address.setDistricts($(e.currentTarget).val(), $('#district'));
         })
 
         $('.editable').on('click', (e) => {
@@ -256,7 +256,7 @@
                         status: post.status,
                     };
 
-                    address.setDistricts(options.province);
+                    address.setDistricts(options.province, $('#main-district'));
 
                     for (const key in options) {
                         if (options.hasOwnProperty(key) && options[key]) {
@@ -305,9 +305,9 @@
     }
 
     window.address = {
-        setDistricts(provinceId) {
+        setDistricts(provinceId, districtDom) {
             let province = data.filter((e) => {return e.id == provinceId})[0];
-            let district = $('#district');
+            let district = districtDom;
 
             district.html('');
             district.append('<option value="" selected>Chọn</option');
