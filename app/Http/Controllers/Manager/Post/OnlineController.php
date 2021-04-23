@@ -166,9 +166,9 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.reserve');
 
-        Online::reverseMany($request->ids ?? []);
+        $count = Online::reverseMany($request->ids ?? []);
 
-        return back()->with('success', 'Đã đảo các mục yêu cầu');
+        return back()->with('success', "Đã đảo $count mục yêu cầu");
     }
 
     public function deleteMany(Request $request)
