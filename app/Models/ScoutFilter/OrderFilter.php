@@ -7,6 +7,11 @@ use Illuminate\Support\Carbon;
 
 class OrderFilter extends Filter
 {
+    public function filterQuery($builder)
+    {
+        $builder->orderBy('created_at', 'desc');
+    }
+
     public function filterPlan(Builder $builder, $value)
     {
         $builder->whereIn('plan', [$value]);

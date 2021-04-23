@@ -6,6 +6,7 @@ use App\Repository\Order;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Order\UpdateOrder;
 use App\Models\Order as ModelsOrder;
+use App\Models\ScoutFilter\OrderFilter;
 use App\Repository\Permission;
 use App\Repository\Plan;
 use App\Services\Customer\Customer;
@@ -18,10 +19,13 @@ class OrderController extends Controller
     {
         $this->authorize('manager.order.view');
 
-        $order = Order::with(['plans', 'customer.note', 'creator', 'note'])
-            ->whereHas('customer')
-            ->filter($request)
-            ->latest();
+        if ($query = $request->get('query')) {
+            OrderFilter::filter(Order::search($query), request());
+        } else {
+            $order = Order::whereHas('customer')->filter($request)->latest();
+        }
+
+        $order->with(['plans', 'customer.note', 'creator', 'note']);
 
         return view('dashboard.order.index', [
             'orders' => $order->paginate(40),
