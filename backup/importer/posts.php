@@ -38,7 +38,7 @@ return get('posts', new Mapper([
     'commission' => 'string',
     'price' => $price,
     'status' => fn($status = null) => $status ?? PostStatus::Draft,
-    'extra' => fn($extra) => $extra ? json_encode($extra) : null,
+    'extra' => 'string',
     'source' => 'int',
     'verifier_id' => 'id.users',
     'user_id' => 'id.users',
