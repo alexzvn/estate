@@ -57,7 +57,7 @@
         <td class="d-none d-lg-table-cell">
           <div class="d-flex">
             @php
-                $saved = user()->savedPosts->contains('id', $item->id);
+                $saved = user()->savePosts->contains('id', $item->id);
                 $deleted = user()->blacklistPosts->contains('id', $item->id);
             @endphp
             <button class="save-element btn btn-sm btn-primary mr-1" data-active="{{ $saved ? 'true' : 'false' }}" data-id="{{ $item->id }}" type="button">{{ $saved ? 'Bỏ lưu' : 'Lưu' }}</button>
