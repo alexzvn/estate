@@ -124,6 +124,7 @@ class PostController extends BaseController
      */
     protected function getBlacklistIds()
     {
-        return user()->blacklistPosts()->get(['id'])->keyBy('id')->keys();
+        return user()->blacklistPosts()->get(['id'])
+            ->keyBy('id')->keys()->toArray();
     }
 }
