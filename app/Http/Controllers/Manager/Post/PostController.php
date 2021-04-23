@@ -7,27 +7,30 @@ use App\Models\Whitelist;
 use Illuminate\Support\Str;
 use App\Repository\Category;
 use Illuminate\Http\Request;
+use Intervention\Image\Image;
+use App\Repository\Permission;
 use App\Repository\Location\Province;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Manager\Controller;
-use Intervention\Image\Image;
+use App\Models\Keyword;
 
 class PostController extends Controller
 {
     protected function shareCategoriesProvinces()
     {
-        [$categories, $provinces] = Cache::remember(
+        [$categories, $provinces, $keywords] = Cache::remember(
             'dashboard.share.default',
             now()->addSeconds(360),
             function () {
                 return [
                     Category::parentOnly()->with('children')->get(),
                     Province::active()->with('districts')->get(),
+                    Keyword::all(),
                 ];
             }
         );
 
-        view()->share(compact('categories', 'provinces'));
+        view()->share(compact('categories', 'provinces', 'keywords'));
     }
 
     protected function syncUploadFiles($post, Request $request)

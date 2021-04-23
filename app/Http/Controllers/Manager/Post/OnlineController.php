@@ -49,11 +49,12 @@ class OnlineController extends PostController
             ->newest()
             ->paginate();
 
-        view()->share('staff', Permission::findUsersHasPermission('manager.dashboard.access'));
-
         $this->shareCategoriesProvinces();
 
-        return view('dashboard.post.online.list', compact('posts'));
+        return view('dashboard.post.online.list', [
+            'posts' => $posts,
+            'staff' => Permission::findUsersHasPermission('manager.dashboard.access'),
+        ]);
     }
 
     public function fetch(string $id, Online $post)
