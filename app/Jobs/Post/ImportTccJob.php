@@ -55,6 +55,8 @@ class ImportTccJob extends ImportPostJob
         if ($this->shouldLock($post)) {
             $post->fill(['status' => PostStatus::Locked])->save();
         }
+
+        $post->searchable();
     }
 
     protected function checkItems(...$items)
