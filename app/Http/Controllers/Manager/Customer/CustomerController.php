@@ -16,6 +16,7 @@ use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Location\Province;
 use App\Models\ScoutFilter\UserFilter;
+use App\Setting;
 
 class CustomerController extends Controller
 {
@@ -86,7 +87,7 @@ class CustomerController extends Controller
         return redirect($this->pullLastUrl());
     }
 
-    public function store(StoreCustomer $request, User $user)
+    public function store(StoreCustomer $request, User $user, Setting $setting)
     {
         $user->fill($request->all());
 
@@ -95,6 +96,9 @@ class CustomerController extends Controller
         }
 
         $user->save();
+        $user->roles()->sync(
+            [$setting->get('user.role.default')]
+        );
 
         if ($request->user()->cannot('*')) {
             $this->assignCustomerToUser($user, Auth::id());
