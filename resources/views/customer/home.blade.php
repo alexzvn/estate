@@ -102,9 +102,7 @@ function registerAction() {
     });
 
     $('#post-blacklist').click(function () {
-        if (confirm('Bạn có muốn xóa tin này không?')) {
-            fetchAction(`/post/${id}/action/blacklist`);
-        }
+        fetchAction(`/post/${id}/action/blacklist`);
     });
 }
 
