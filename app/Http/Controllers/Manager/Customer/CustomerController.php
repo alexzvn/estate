@@ -73,9 +73,9 @@ class CustomerController extends Controller
         return view('dashboard.customer.create');
     }
 
-    public function storeAndExit(StoreCustomer $request, User $user)
+    public function storeAndExit(StoreCustomer $request, User $user, Setting $setting)
     {
-        $this->store($request, $user);
+        $this->store($request, $user, $setting);
 
         return redirect($this->pullLastUrl());
     }
