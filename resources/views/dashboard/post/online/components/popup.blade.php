@@ -31,7 +31,7 @@ use App\Enums\PostType;
                                 <select class="form-control" name="type" id="post-type">
                                   <option value="">Trống</option>
                                   @foreach (PostType::getValues() as $name)
-                                  <option value="{{ $name }}">{{ $name }}</option>
+                                  <option value="{{ $name }}">{{ PostType::getDescription($name) }}</option>
                                   @endforeach
                                 </select>
                             </div>
