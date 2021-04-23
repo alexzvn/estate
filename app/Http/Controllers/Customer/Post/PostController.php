@@ -114,6 +114,16 @@ class PostController extends BaseController
 
         PostFilter::filter($post, request());
 
-        return $post;
+        return $post->whereNotIn('id', $this->getBlacklistIds());
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getBlacklistIds()
+    {
+        return user()->blacklistPosts()->get(['id'])->keyBy('id')->keys();
     }
 }
