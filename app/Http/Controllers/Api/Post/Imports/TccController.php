@@ -13,6 +13,14 @@ class TccController extends ImportController
         $posts->each(function ($post) {
             $post->hash  = sha1($post->url);
 
+            $phone = $this->normalizePhone($post->phone);
+
+            if ($phone != trim($post->phone)) {
+                $post->content .= "\n $post->phone";
+            }
+
+            $post->phone = $phone;
+
             $post->price = $this->normalizePrice($post->price);
 
             ImportTccJob::dispatch($post);
