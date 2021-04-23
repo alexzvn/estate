@@ -34,11 +34,11 @@ class Order extends Model implements CanNote, Auditable
 
     protected $mapping = [
         'properties' => [
-            'plan_name'      => ['type' => 'keyword'],
+            'plan_name'      => ['type' => 'text'],
             'manual'         => ['type' => 'boolean'],
             'verified'       => ['type' => 'boolean'],
-            'customer_name'  => ['type' => 'keyword'],
-            'customer_phone' => ['type' => 'keyword'],
+            'customer_name'  => ['type' => 'text'],
+            'customer_phone' => ['type' => 'text'],
             'activate_at'    => ['type' => 'date'],
             'expires_at'     => ['type' => 'date'],
             'updated_at'     => ['type' => 'date'],
