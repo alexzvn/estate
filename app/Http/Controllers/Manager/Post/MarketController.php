@@ -63,7 +63,7 @@ class MarketController extends PostController
     {
         $this->authorize('manager.post.market.view');
 
-        return Market::findOrFail($id)->load(['files', 'user']);
+        return Market::findOrFail($id)->load(['files', 'user', 'categories']);
     }
 
     public function delete(string $id)
