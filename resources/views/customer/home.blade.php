@@ -9,7 +9,7 @@
 
         <div class="col-md-12 mt-2">
             <div class="row">
-                <div class="col-md-12 px-0" id="myTabContent">
+                <div class="col-md-12 px-0">
                         @if (request()->user()->subscriptions->isEmpty() || (isset($canAccess) && $canAccess === false))
                         <div class="text-center">
                             @if (request()->user()->subscriptions)
