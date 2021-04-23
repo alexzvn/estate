@@ -12,7 +12,11 @@
                 <div class="col-md-12 px-0" id="myTabContent">
                         @if (request()->user()->subscriptions->isEmpty() || (isset($canAccess) && $canAccess === false))
                         <div class="text-center">
-                            <h3 class="my-3 tw-text-2xl tw-text-green-500 tw-uppercase">Có vẻ bạn chưa đăng ký gói tin nào. <br> Hãy liên hệ hotline để đăng ký và bắt đầu xem tin nhé!</h3>
+                            @if (request()->user()->subscriptions)
+                            <h3 class="my-3 tw-text-2xl tw-text-red-500 tw-uppercase">Tài khoản của bạn đã hết hạn. <br> Hãy liên hệ hotline 096 55.33.958 để gia hạn gói mới!</h3>
+                            @else
+                            <h3 class="my-3 tw-text-2xl tw-text-green-500 tw-uppercase">Có vẻ bạn chưa đăng ký gói tin nào. <br> Hãy liên hệ hotline 096 55.33.958 để đăng ký và bắt đầu xem tin nhé!</h3>
+                            @endif
                             <img class="tw-inline" src="{{ asset('assets/img/empty-state.jpg') }}?ver=1" alt="" style="height: 100%; max-width: 100%;">
                         </div>
                         @else
