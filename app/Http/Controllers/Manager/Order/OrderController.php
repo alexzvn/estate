@@ -20,7 +20,7 @@ class OrderController extends Controller
         $this->authorize('manager.order.view');
 
         if ($query = $request->get('query')) {
-            OrderFilter::filter(Order::search($query), request());
+            $order = OrderFilter::filter(Order::search($query), request());
         } else {
             $order = Order::whereHas('customer')->filter($request)->latest();
         }
