@@ -23,7 +23,9 @@
               <select class="form-control" name="plan" id="plan">
                 <option value="">Gói tin</option>
                 @foreach ($plans as $plan)
-                <option value="{{ $plan->id }}" {{ request('plan') === $plan->id ? 'selected' : '' }}>{{ $plan->name }}</option>
+                <option value="{{ $plan->id }}" {{ request('plan') == $plan->id ? 'selected' : '' }}>
+                    {{ $plan->renewable ? 'KH:' : '' }} {{ $plan->name }}
+                </option>
                 @endforeach
               </select>
             </div>
