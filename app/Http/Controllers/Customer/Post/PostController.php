@@ -102,7 +102,7 @@ class PostController extends BaseController
             ->with(['categories', 'province', 'district'])
             ->where('status', PostStatus::Published)
             ->where('type', $type)
-            ->whereNotIn('id', $this->customer->post_blacklist_ids ?? [])
+            ->whereNotIn('id', $this->getBlacklistIds())
             ->whereIn('category_id', $categories->toArray())
             ->whereIn('province_id', $this->access->provinces($type));
 
@@ -114,7 +114,7 @@ class PostController extends BaseController
 
         PostFilter::filter($post, request());
 
-        return $post->whereNotIn('id', $this->getBlacklistIds());
+        return $post;
     }
 
     /**
