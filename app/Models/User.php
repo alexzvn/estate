@@ -24,7 +24,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyPhone, Auditable
 {
-    use Notifiable, TraitsAuditable, CacheDefault, HasNote;
+    use Notifiable, TraitsAuditable, HasNote;
     use HasRoles, CanVerifyPhone, CanFilter, Searchable;
 
     protected $indexConfigurator = UserIndexer::class;
