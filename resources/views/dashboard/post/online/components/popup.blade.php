@@ -268,10 +268,8 @@ $(document).ready(() => {
 
     window.address = {
         setDistricts(provinceId) {
-            let province = data.filter((e) => {return e.id === provinceId})[0];
+            let province = data.filter((e) => {return e.id == provinceId})[0];
             let district = $('#post-district');
-
-            console.log(province);
 
             district.html('');
             district.append('<option value="" selected>Chọn</option');

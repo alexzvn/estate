@@ -128,8 +128,6 @@
         $('.note').on('change', function () {
             let id = $(this).data('id');
 
-            console.log(id);
-
             fetch(`/manager/whitelist/phone/${id}/update`, {
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded"

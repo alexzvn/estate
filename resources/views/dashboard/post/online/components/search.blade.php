@@ -179,7 +179,7 @@ $districts = ($provinces->where('id', request('province'))->first() ?? $province
             let id = $('#province').val();
             let district = $('#district');
 
-            let province = address.filter((e) => {return e.id === id})[0];
+            let province = address.filter((e) => {return e.id == id})[0];
 
             district.html('');
             district.append('<option value="" selected>Chọn</option');

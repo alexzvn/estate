@@ -261,7 +261,7 @@ $(document).ready(() => {
         let id = $('#province').val();
         let district = $('#district');
 
-        let province = data.filter((e) => {return e.id === id})[0];
+        let province = data.filter((e) => {return e.id == id})[0];
 
         district.html('');
         district.append('<option value="" selected>Chọn</option');
