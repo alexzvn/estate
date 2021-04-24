@@ -28,7 +28,7 @@ class BlacklistController extends Controller
             ]);
         }
 
-        Post::lockByPhone($blacklist);
+        Post::lockByPhone($blacklist->keyBy('phoneNumber')->keys());
 
         return response([
             'success' => true,
