@@ -50,7 +50,7 @@ $districts = ($provinces->where('id', request('province'))->first() ?? $province
                 @foreach ($categories as $item)
                 <option style="color: black; font-weight: bold;" disabled>{{ $item->name }}</option>
                     @foreach ($item->children ?? [] as $item)
-                    <option value="{{ $item->id }}" {{ $item->id === request('categories') ? 'selected' : ''}}>{{ $item->name }}</option>
+                    <option value="{{ $item->id }}" {{ $item->id === request('categories', -1) ? 'selected' : ''}}>{{ $item->name }}</option>
                     @endforeach
                 @endforeach
               </select>
@@ -62,7 +62,7 @@ $districts = ($provinces->where('id', request('province'))->first() ?? $province
                 <select class="form-control" name="district" id="district">
                   <option value="">Chọn Quận/Huyện</option>
                   @foreach ($districts ?? $provinces->first()->districts ?? [] as $item)
-                      <option value="{{ $item->id }}" {{ $item->id === request('district') ? 'selected' : ''}}>{{ $item->name }}</option>
+                      <option value="{{ $item->id }}" {{ $item->id === request('district', -1) ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach
                 </select>
               </div>
@@ -115,7 +115,7 @@ $districts = ($provinces->where('id', request('province'))->first() ?? $province
                         <select class="form-control" name="province" id="province">
                           <option value="">Chọn Tỉnh/TP</option>
                           @foreach ($provinces ?? [] as $item)
-                              <option value="{{ $item->id }}" {{ $item->id == request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                              <option value="{{ $item->id }}" {{ $item->id == request('province', -1) ? 'selected' : ''}}>{{ $item->name }}</option>
                           @endforeach
                         </select>
                     </div>
@@ -126,7 +126,7 @@ $districts = ($provinces->where('id', request('province'))->first() ?? $province
                         <select class="form-control" name="status" id="status">
                           <option value="">Trạng thái</option>
                           @foreach (\App\Enums\PostStatus::getKeyName() as $key => $name)
-                              <option value="{{ $key }}" {{ $key == request('status') ? 'selected' : ''}}>{{ $name }}</option>
+                              <option value="{{ $key }}" {{ $key == request('status', -1) ? 'selected' : ''}}>{{ $name }}</option>
                           @endforeach
                         </select>
                     </div>
