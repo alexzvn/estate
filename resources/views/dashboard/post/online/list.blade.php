@@ -215,7 +215,7 @@ ClassicEditor
                 }
 
                 let options = {
-                    category: post.categories[0].id,
+                    category: post.categories[0] ? post.categories[0].id : null,
                     province: post.province_id,
                     district: post.district_id,
                     type: post.type,

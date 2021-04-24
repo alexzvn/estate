@@ -56,7 +56,7 @@ class FeeController extends PostController
 
         $post = $post->withTrashed()->findOrFail($id);
 
-        return $post->load(['files', 'user']);
+        return $post->load(['files', 'user', 'categories']);
     }
 
     public function create()
