@@ -37,6 +37,11 @@ class PostFilter extends Filter
         $builder->whereIn('category_id', $values);
     }
 
+    public function filterStatus($builder, $status)
+    {
+        $builder->where('status', (int) $status);
+    }
+
     public function filterFrom($builder, $date)
     {
         if ($date = strtotime($date)) {
