@@ -256,8 +256,6 @@
                         status: post.status,
                     };
 
-                    address.setDistricts(options.province, $('#main-district'));
-
                     for (const key in options) {
                         if (options.hasOwnProperty(key) && options[key]) {
                             const option = options[key];
@@ -268,6 +266,8 @@
                     let files = post.files.map(file => {
                         return `${file.path}?fid=${file._id}`;
                     });
+
+                    address.setDistricts(options.province, $('#main-district'));
 
                     upload.addImagesFromPath(files);
                 });
