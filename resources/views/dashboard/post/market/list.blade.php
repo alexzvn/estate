@@ -222,7 +222,7 @@
         })
 
         $('#main-province').on('change', (e) => {
-            address.setDistricts($(e.currentTarget).val(), $('#district'));
+            address.setDistricts($(e.currentTarget).val(), $('#main-district'));
         })
 
         $('.editable').on('click', (e) => {
@@ -252,9 +252,13 @@
                         category: post.categories[0] ? post.categories[0].id : null,
                         province: post.province_id,
                         district: post.district_id,
+                        'main-province': post.province_id,
+                        'main-district': post.district_id,
                         type: post.type,
                         status: post.status,
                     };
+
+                    address.setDistricts(options.province, $('#main-district'));
 
                     for (const key in options) {
                         if (options.hasOwnProperty(key) && options[key]) {
@@ -266,8 +270,6 @@
                     let files = post.files.map(file => {
                         return `${file.path}?fid=${file._id}`;
                     });
-
-                    address.setDistricts(options.province, $('#main-district'));
 
                     upload.addImagesFromPath(files);
                 });
@@ -306,7 +308,7 @@
 
     window.address = {
         setDistricts(provinceId, districtDom) {
-            let province = data.filter((e) => {return e.id == provinceId})[0];
+            let province = data.find((e) => {return e.id == provinceId});
             let district = districtDom;
 
             district.html('');
