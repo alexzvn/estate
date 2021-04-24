@@ -48,7 +48,7 @@ class Kernel extends ConsoleKernel
                 ->orWhere('created_at', '>', $thePast)
                 ->searchable();
 
-        })->everyFifteenMinutes();
+        })->everyFifteenMinutes()->name('Index post to elastic');
 
         // Re-index phone for every 2 hours 
         // Not best solution but honest work
@@ -63,7 +63,7 @@ class Kernel extends ConsoleKernel
                 });
             });
 
-        })->everyTwoHours();
+        })->everyTwoHours()->name('index phone in tracking post');
     }
 
     /**
