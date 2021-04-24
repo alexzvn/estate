@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manager\Post;
 
 use App\Enums\PostStatus;
+use App\Enums\PostType;
 use Illuminate\Http\Request;
 use App\Repository\Permission;
 use App\Services\System\Post\Fee;
@@ -26,7 +27,7 @@ class OnlineController extends PostController
 
             PostFilter::filter($posts, $request);
 
-            $posts->orderBy('publish_at', 'desc');
+            $posts->where('type', PostType::Online)->orderBy('publish_at', 'desc');
         } else {
             $posts = Post::newest()->filter($request);
         }
