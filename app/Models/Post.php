@@ -260,11 +260,6 @@ class Post extends Model implements Auditable
         return $builder->where('price', '<=', $price);
     }
 
-    public function shouldBeSearchable()
-    {
-        return ! $this->blacklist && $this->status === PostStatus::Published;
-    }
-
     public function toSearchableArray()
     {
         $category = $this->categories->first();
