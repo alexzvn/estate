@@ -16,3 +16,4 @@ backup/e
 backup/id
 supervisord.log
 supervisord.pid
+worker.log
