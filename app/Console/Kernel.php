@@ -33,12 +33,22 @@ class Kernel extends ConsoleKernel
     {
         $setting = Setting::load();
 
-        if ($setting->compareStrict('post.reverse', false)) {
+        if ($setting->compareStrict('post.reverse', true)) {
             $schedule->command('post:reverser --item=3')
                 ->everyTenMinutes()
                 ->between('7:00', '22:00')
                 ->appendOutputTo(storage_path('logs/schedule.log'));
         }
+
+        // Index all recent post to elastic
+        $schedule->call(function () {
+            $thePast = now()->subMinutes(30);
+
+            Post::where('publish_at', '>', $thePast)
+                ->orWhere('created_at', '>', $thePast)
+                ->searchable();
+
+        })->everyFifteenMinutes();
 
         // Re-index phone for every 2 hours 
         // Not best solution but honest work
