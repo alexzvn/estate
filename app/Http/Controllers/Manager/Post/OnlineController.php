@@ -12,6 +12,8 @@ use App\Http\Requests\Manager\Post\UpdatePost;
 use App\Http\Requests\Manager\Post\StoreRequest;
 use App\Http\Controllers\Manager\Post\PostController;
 use App\Models\Keyword;
+use App\Models\Post;
+use App\Models\ScoutFilter\PostFilter;
 
 class OnlineController extends PostController
 {
@@ -19,22 +21,29 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.view');
 
-        $posts = Online::with([
+        if ($query = $request->get('query')) {
+            $posts = Post::search($query);
+
+            PostFilter::filter($posts, $request);
+
+            $posts->orderBy('publish_at', 'desc');
+        } else {
+            $posts = Post::newest()->filter($request);
+        }
+
+        $posts->with([
                 'province',
                 'district',
                 'categories',
                 'whitelist',
                 'tracking',
                 'user'
-            ])
-            ->filter($request)
-            ->newest()
-            ->paginate(40);
+            ]);
 
         $this->shareCategoriesProvinces();
 
         return view('dashboard.post.online.list', [
-            'posts' => $posts,
+            'posts' => $posts->paginate(40),
             'keywords' => Keyword::all()
         ]);
     }
