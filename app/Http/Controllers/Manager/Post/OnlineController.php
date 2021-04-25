@@ -29,7 +29,7 @@ class OnlineController extends PostController
 
             $posts->where('type', PostType::Online)->orderBy('publish_at', 'desc');
         } else {
-            $posts = Post::newest()->filter($request);
+            $posts = Online::newest()->filter($request);
         }
 
         $posts->with([

@@ -22,7 +22,7 @@ class MarketController extends PostController
 
             $posts->where('type', PostType::PostMarket)->orderBy('publish_at', 'desc');
         } else {
-            $posts = Post::newest()->filter($request);
+            $posts = Market::newest()->filter($request);
         }
 
         $posts->with(['province', 'district', 'categories', 'user', 'files']);

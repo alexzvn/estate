@@ -25,7 +25,7 @@ class FeeController extends PostController
 
             $posts->where('type', PostType::PostFee)->orderBy('publish_at', 'desc');
         } else {
-            $posts = Post::newest()->filter($request);
+            $posts = Fee::newest()->filter($request);
         }
 
         if (auth()->user()->cannot('manager.post.fee.view.all')) {
