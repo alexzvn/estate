@@ -34,7 +34,16 @@ class ImportPostJob implements ShouldQueue
 
     protected function shouldLock(Post $post)
     {
-        return $this->isInKeyword($post) || $this->isInBlacklist($post->phone);
+       $conditions = [
+            $this->isInKeyword($post),
+            $this->isInBlacklist($post->phone)
+       ];
+
+        foreach ($conditions as $value) {
+            if ($value) return true;
+        }
+
+        return false;
     }
 
     protected function isInBlacklist($phone)
