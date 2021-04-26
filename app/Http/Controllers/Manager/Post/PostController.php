@@ -49,7 +49,7 @@ class PostController extends Controller
         File::where('post_id', $post->id)->update(['post_id' => null]);
 
         if ($ids->count()) {
-            File::whereIn('post_id', $ids)->update(['post_id' => $post->id]);
+            File::whereIn('id', $ids)->update(['post_id' => $post->id]);
         }
     }
 
