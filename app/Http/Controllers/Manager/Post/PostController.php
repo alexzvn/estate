@@ -46,8 +46,10 @@ class PostController extends Controller
             $ids->push($uploaded->id);
         }
 
+        File::where('post_id', $post->id)->update(['post_id' => null]);
+
         if ($ids->count()) {
-            $post->files()->sync($ids->toArray());
+            File::whereIn('post_id', $ids)->update(['post_id' => $post->id]);
         }
     }
 
