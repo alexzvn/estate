@@ -11,8 +11,8 @@ class Ward extends Location
 
     protected $hidden = ['updated_at', 'created_at'];
 
-    public function provinces()
+    public function district()
     {
-        return $this->belongsTo(Province::class);
+        return $this->belongsTo(District::class);
     }
 }
