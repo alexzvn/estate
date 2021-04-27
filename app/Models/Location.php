@@ -17,7 +17,7 @@ abstract class Location extends Model
 
         $name = trim($name);
 
-        return "/(?:^|\W)$name(?:$|\W)/i";
+        return "/(?:^|\W)$name(?:$|\W)/";
     }
 
     public function toAsciiRegex()
@@ -27,6 +27,7 @@ abstract class Location extends Model
 
     public function match(string $content)
     {
-        return (bool) preg_match($this->toRegex(), $content);
+        return (bool) preg_match($this->toRegex(), $content) ||
+            (bool) preg_match($this->toAsciiRegex(), $content);
     }
 }
