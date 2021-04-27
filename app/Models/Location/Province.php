@@ -2,14 +2,12 @@
 
 namespace App\Models\Location;
 
-use App\Models\Traits\CacheDefault;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Location;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 
-class Province extends Model
+class Province extends Location
 {
-    use CacheDefault;
-
     protected $fillable = ['name', 'type'];
 
     protected $hidden = ['updated_at', 'created_at'];
@@ -27,5 +25,14 @@ class Province extends Model
     public function scopeActive(Builder $builder)
     {
         $builder->where('active', true);
+    }
+
+    public function toRegex()
+    {
+        $name = preg_replace("/^(Tỉnh|Thành Phố)/i", '', $this->name, 1);
+
+        $name = trim($name);
+
+        return "/$name/i";
     }
 }
