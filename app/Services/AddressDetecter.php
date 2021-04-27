@@ -20,9 +20,11 @@ class AddressDetecter
     public function __construct(string $content = '') {
         $this->content = $content;
 
-        $this->wards     = Ward::all();
-        $this->districts = District::all();
-        $this->provinces = Province::all();
+        $this->provinces = Province::active()->get();
+
+        $this->districts = District::whereIn('id', $this->provinces->pluck('id'));
+
+        $this->wards     = Ward::whereIn('id', $this->districts->pluck('id'));
     }
 
     public function province()
