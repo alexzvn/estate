@@ -22,9 +22,9 @@ class AddressDetecter
 
         $this->provinces = Province::active()->get();
 
-        $this->districts = District::whereIn('id', $this->provinces->pluck('id'))->get();
+        $this->districts = District::whereIn('province_id', $this->provinces->pluck('id'))->get();
 
-        $this->wards     = Ward::whereIn('id', $this->districts->pluck('id'))->get();
+        $this->wards     = Ward::whereIn('district_id', $this->districts->pluck('id'))->get();
     }
 
     public function province()
