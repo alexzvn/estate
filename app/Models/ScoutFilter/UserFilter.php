@@ -64,6 +64,13 @@ class UserFilter extends Filter
         $builder->where('post.seen', false);
     }
 
+    protected function filterExpires(Builder $builder, $time)
+    {
+        $time = Carbon::createFromFormat('d/m/Y', $time);
+
+        $builder->whereBetween('subscription.expires_at', [$time->startOfDay(), $time->endOfDay()]);
+    }
+
     protected function filterStatus(Builder $builder, $status)
     {
         switch ($status) {
