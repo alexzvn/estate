@@ -358,7 +358,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             'order.total' => $this->orders->sum('total'),
             'post.seen' => $this->logs()->where('content', 'regexp', '^(Đã xem tin)')->exists(),
             'has_login' => $this->logs()->where('content', 'regexp', '^(Đã đăng nhập)')->exists()
-        ], $this->subscriptions->compress('subscriptions.'));
+        ], $this->subscriptions->compress('subscription.'));
 
         return $user;
     }
