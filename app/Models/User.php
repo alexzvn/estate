@@ -356,10 +356,9 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     {
         $user = array_merge($this->toArray(), [
             'order.total' => $this->orders->sum('total'),
-            'subscriptions' => $this->subscriptions->compress('subscriptions.'),
             'post.seen' => $this->logs()->where('content', 'regexp', '^(Đã xem tin)')->exists(),
             'has_login' => $this->logs()->where('content', 'regexp', '^(Đã đăng nhập)')->exists()
-        ]);
+        ], $this->subscriptions->compress('subscriptions.'));
 
         return $user;
     }
