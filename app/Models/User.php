@@ -67,7 +67,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             'updated_at'        => ['type' => 'date'],
             'created_at'        => ['type' => 'date'],
             'deleted_at'        => ['type' => 'date'],
-            'subscriptions'     => ['type' => 'nested'],
+            'subscription'      => ['type' => 'nested'],
 
             'order.total'       => ['type' => 'long'],
             'post.seen'         => ['type' => 'boolean'],
