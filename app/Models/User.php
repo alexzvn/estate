@@ -67,6 +67,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             'updated_at'        => ['type' => 'date'],
             'created_at'        => ['type' => 'date'],
             'deleted_at'        => ['type' => 'date'],
+            'subscriptions'     => ['type' => 'nested'],
 
             'order.total'       => ['type' => 'long'],
             'post.seen'         => ['type' => 'boolean'],
@@ -355,6 +356,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     {
         $user = array_merge($this->toArray(), [
             'order.total' => $this->orders->sum('total'),
+            'subscriptions' => $this->subscriptions->compress(),
             'post.seen' => $this->logs()->where('content', 'regexp', '^(Đã xem tin)')->exists(),
             'has_login' => $this->logs()->where('content', 'regexp', '^(Đã đăng nhập)')->exists()
         ]);
