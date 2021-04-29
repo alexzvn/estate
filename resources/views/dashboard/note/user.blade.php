@@ -82,7 +82,7 @@
                         <tr>
                             <td class="text-center" >{{ $loop->iteration }}</td>
                             @if ($user = $note->notable)
-                            <td><a class="text-primary font-weight-bolder" href="{{ route('manager.customer.view', ['id' => $note->user]) }}">{{ $note->user->name }}</a></td>
+                            <td><a class="text-primary font-weight-bolder" href="{{ route('manager.customer.view' $user) }}">{{ $user->name }}</a></td>
                             @else
                             <td><span class="text-muted">[deleted]</span></td>
                             @endif
