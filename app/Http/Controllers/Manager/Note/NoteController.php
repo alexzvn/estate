@@ -6,6 +6,7 @@ use App\Models\Note;
 use App\Repository\Permission;
 use App\Http\Controllers\Manager\Controller;
 use App\Models\Audit;
+use App\Models\User;
 
 class NoteController extends Controller
 {
@@ -15,11 +16,10 @@ class NoteController extends Controller
 
         $employee = Permission::findUsersHasPermission('manager.dashboard.access');
 
-        $notes = Audit::where('auditable_type', Note::class)
-            ->where('event', '<>', 'created')
-            ->filter(request())
-            ->latest()
-            ->with(['user', 'auditable.user'])
+        $notes = Note::whereHas('notable')
+            ->where('notable_type', User::class)
+            ->where('content', '<>', '')
+            ->with('notable')
             ->paginate();
 
         return view('dashboard.note.user', [

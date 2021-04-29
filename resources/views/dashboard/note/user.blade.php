@@ -70,9 +70,9 @@
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
-                            <th>Nhân viên</th>
-                            <th>Ghi chú</th>
                             <th>Khách hàng</th>
+                            <th>Ghi chú</th>
+                            <th>Nhân viên</th>
                             <th>Thời gian</th>
                         </tr>
                     </thead>
@@ -80,18 +80,14 @@
                         @foreach ($notes as $note)
 
                         <tr>
-                            <td class="text-center" >{{ $loop->index }}</td>
-                            @if ($note->user)
+                            <td class="text-center" >{{ $loop->iteration }}</td>
+                            @if ($user = $note->notable)
                             <td><a class="text-primary font-weight-bolder" href="{{ route('manager.customer.view', ['id' => $note->user]) }}">{{ $note->user->name }}</a></td>
                             @else
                             <td><span class="text-muted">[deleted]</span></td>
                             @endif
-                            <td><span class="text-info">{{ $note->new_values['content'] ?? '' }}</span></td>
-                            @empty($note->auditable->user)
+                            <td><span class="text-info">{{ $note->content }}</span></td>
                             <td></td>
-                            @else
-                            <td><a class="text-primary font-weight-bolder" href="{{ route('manager.customer.view', ['id' => $note->auditable->user ?? '2']) }}">{{ $note->auditable->user->name }}</a></td>
-                            @endempty
                             <td>{{ $note->updated_at->format('d/m/Y H:i:s') }}</td>
                         </tr>
                         @endforeach
