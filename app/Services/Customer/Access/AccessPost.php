@@ -82,8 +82,8 @@ class AccessPost
         });
 
         foreach ($this->plan as $type => $item) {
-            $this->plan[$type]['categories'] = array_unique($this->plan[$type]['categories']);
-            $this->plan[$type]['provinces'] = array_unique($this->plan[$type]['provinces']);
+            $this->plan[$type]['categories'] = array_values(array_unique($this->plan[$type]['categories']));
+            $this->plan[$type]['provinces'] = array_values(array_unique($this->plan[$type]['provinces']));
         }
     }
 
