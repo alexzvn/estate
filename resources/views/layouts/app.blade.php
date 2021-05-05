@@ -39,9 +39,14 @@
     </div>
 
     @livewireScripts
-    <div class="zalo-chat-widget" data-oaid="1743320982180773672" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="350" data-height="420"></div>
 
-    <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+    <div class="widget-chat" style="z-index: 2147483647; position: absolute;bottom: 20px; right: 20px;">
+        <a href="https://zalo.me/0965533958">
+            <span class="tw-animate-ping tw-absolute tw-inline-flex tw-h-full tw-w-full tw-rounded-full tw-bg-purple-400 tw-opacity-75"></span>
+            <img style="max-width: 60px; max-height: 60px;" src="stick_zalo.png" alt="">
+        </a>
+    </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     @stack('script')
 </body>

@@ -21,7 +21,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('assets/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/snackbar/snackbar.min.css') }}">
@@ -52,9 +52,13 @@
     </script>
     @endif
 
-    <div class="zalo-chat-widget" data-oaid="1743320982180773672" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="350" data-height="420"></div>
+    <div style="z-index: 2147483647; position: absolute;bottom: 20px; right: 20px;">
+        <a href="https://zalo.me/0965533958">
+            <span class="tw-animate-ping tw-absolute tw-inline-flex tw-h-full tw-w-full tw-rounded-full tw-bg-purple-400 tw-opacity-75"></span>
+            <img style="max-width: 60px; max-height: 60px;" src="{{ asset('assets/img/stick_zalo.png') }}" alt="">
+        </a>
+    </div>
 
-    <script src="https://sp.zalo.me/plugins/sdk.js"></script>
     <script src="{{ asset('assets/snackbar/snackbar.min.js') }}"></script>
     @stack('script')
 </body>
