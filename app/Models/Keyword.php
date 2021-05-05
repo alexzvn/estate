@@ -41,11 +41,7 @@ class Keyword extends Model
     {
         $keyword = $this->makeUnicodeRegex();
 
-        if ($this->linear) {
-            return "$keyword";
-        }
-
-        return "(^|\W)$keyword($|\W)";
+        return "($keyword)";
     }
 
     public function lock()
