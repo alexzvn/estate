@@ -104,8 +104,11 @@ class PostController extends BaseController
             ->where('type', $type)
             ->whereNotIn('id', $this->getBlacklistIds())
             ->whereIn('category_id', $categories->toArray())
-            ->whereIn('province_id', $this->access->provinces($type))
-            ->orderBy('publish_at', 'desc');
+            ->whereIn('province_id', $this->access->provinces($type));
+
+        if (! request('order')) {
+            $post->orderBy('publish_at', 'desc');
+        }
 
         PostFilter::filter($post, request());
 
