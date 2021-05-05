@@ -84,8 +84,9 @@ class Keyword extends Model
 
     public function index()
     {
-        $posts = Post::where('content', 'regexp', $this->toSearchRegex())
-            ->orWhere('title', 'regexp', $this->toSearchRegex())
+        $regex = $this->toSearchRegex();
+
+        $posts = Post::whereRaw('LOWER(content) REGEXP ? OR LOWER(title) REGEXP ?', [$regex, $regex])
             ->whereDoesntHave('whitelist')
             ->get();
 
