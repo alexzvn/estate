@@ -102,9 +102,12 @@ class PostController extends BaseController
             ->with(['categories', 'province', 'district'])
             ->where('status', PostStatus::Published)
             ->where('type', $type)
-            ->whereNotIn('id', $this->getBlacklistIds())
             ->whereIn('category_id', $categories->toArray())
             ->whereIn('province_id', $this->access->provinces($type));
+
+        if ($blacklist = $this->getBlacklistIds()) {
+            $post->whereNotIn('id', $blacklist);
+        }
 
         if (! request('order')) {
             $post->orderBy('publish_at', 'desc');
