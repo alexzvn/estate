@@ -44,9 +44,10 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $thePast = now()->subMinutes(30);
 
-            Post::where('publish_at', '>', $thePast)
+            Post::withTrashed()
+                ->where('publish_at', '>', $thePast)
                 ->orWhere('created_at', '>', $thePast)
-                ->searchable();
+                ->chunk(2000, fn($posts) => $posts->searchable());
 
         })->everyFifteenMinutes()->name('Index post to elastic');
 
