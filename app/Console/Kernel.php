@@ -47,7 +47,7 @@ class Kernel extends ConsoleKernel
             Post::withTrashed()
                 ->where('publish_at', '>', $thePast)
                 ->orWhere('created_at', '>', $thePast)
-                ->chunk(2000, fn($posts) => $posts->searchable());
+                ->chunk(1, fn($posts) => $posts->searchable());
         };
 
         $schedule->call($indexer)
