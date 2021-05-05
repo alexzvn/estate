@@ -41,30 +41,19 @@ class Kernel extends ConsoleKernel
         }
 
         // Index all recent post to elastic
-        $schedule->call(function () {
+        $indexer = function () {
             $thePast = now()->subMinutes(30);
 
             Post::withTrashed()
                 ->where('publish_at', '>', $thePast)
                 ->orWhere('created_at', '>', $thePast)
                 ->chunk(2000, fn($posts) => $posts->searchable());
+        };
 
-        })->everyFifteenMinutes()->name('Index post to elastic');
-
-        // Re-index phone for every 2 hours 
-        // Not best solution but honest work
-        // TODO fix remove after upgrade to mysql database
-        $schedule->call(function () {
-
-            Post::chunk(2000, function (Collection $posts) {
-                $posts->each(function (Post $post) {
-                    if ($post->phone) {
-                        TrackingPost::findByPhoneOrCreate($post->phone)->tracking();
-                    }
-                });
-            });
-
-        })->everyTwoHours()->name('index phone in tracking post');
+        $schedule->call($indexer)
+            ->everyFifteenMinutes()
+            ->name('Index post to elastic')
+            ->appendOutputTo(storage_path('logs/schedule.log'));
     }
 
     /**
