@@ -106,7 +106,7 @@ class PostController extends BaseController
             ->whereIn('category_id', $categories->toArray())
             ->whereIn('province_id', $this->access->provinces($type));
 
-        if (! request('order') && request('query', false)) {
+        if (! request('order')) {
             $post->orderBy('publish_at', 'desc');
         }
 
