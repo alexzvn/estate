@@ -52,7 +52,7 @@
     </script>
     @endif
 
-    <div style="z-index: 2147483647; position: absolute;bottom: 20px; right: 20px;">
+    <div style="z-index: 2147483647; position: fixed;bottom: 20px; right: 20px;">
         <a href="https://zalo.me/0965533958" target="_blank">
             <span class="tw-animate-ping tw-absolute tw-inline-flex tw-h-full tw-w-full tw-rounded-full tw-bg-purple-400 tw-opacity-75"></span>
             <img style="max-width: 60px; max-height: 60px;" src="{{ asset('assets/img/stick_zalo.png') }}" alt="">
