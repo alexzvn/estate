@@ -262,13 +262,11 @@ class Post extends Model implements Auditable
 
     public function toSearchableArray()
     {
-        $category = $this->categories->first();
-
         $post = array_merge($this->toArray(), [
             'content'     => remove_tags($this->content),
             'province'    => $this->province->name ?? null,
             'district'    => $this->district->name ?? null,
-            'category_id' => $category->id ?? null,
+            'category_id' => $this->categories()->first()->id ?? null,
             'price'       => $this->price > 100_000_000_000 ? null : $this->price
         ]);
 
