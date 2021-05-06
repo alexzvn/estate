@@ -96,9 +96,9 @@ class PostController extends BaseController
         $categories = Category::flat($this->accessCategories($type))
             ->map(fn($cat) => $cat->id);
 
-        if (request('query')) {
+        // if (request('query')) {
             return $this->performSearch($type, $categories);
-        }
+        // }
 
         return Post::newest()
             ->with(['categories', 'province', 'district'])
