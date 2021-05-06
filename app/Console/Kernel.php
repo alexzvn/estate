@@ -42,16 +42,16 @@ class Kernel extends ConsoleKernel
 
         // Index all recent post to elastic
         $indexer = function () {
-            $thePast = now()->subMinutes(30);
+            $thePast = now()->subMinutes(5);
 
-            Post::withTrashed()
-                ->where('publish_at', '>', $thePast)
+            Post::where('publish_at', '>', $thePast)
                 ->orWhere('created_at', '>', $thePast)
-                ->chunk(1, fn($posts) => $posts->searchable());
+                ->get()
+                ->searchable();
         };
 
         $schedule->call($indexer)
-            ->everyFifteenMinutes()
+            ->everyMinute()
             ->name('Index post to elastic')
             ->appendOutputTo(storage_path('logs/schedule.log'));
     }
