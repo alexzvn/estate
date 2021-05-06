@@ -10,7 +10,6 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Category extends Model implements Auditable
 {
-    use CacheDefault;
     use TraitsAuditable;
 
     protected $fillable = ['name', 'description'];
