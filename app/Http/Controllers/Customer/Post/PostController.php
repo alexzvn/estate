@@ -94,20 +94,31 @@ class PostController extends BaseController
     private function defaultPost(int $type)
     {
         $categories = Category::flat($this->accessCategories($type))
-            ->map(function ($cat) {
-                return $cat->id;
-            });
+            ->map(fn($cat) => $cat->id);
 
-        $post = Post::search(request('query', '*'))
+        if (request('query')) {
+            return $this->performSearch($type, $categories);
+        }
+
+        return Post::newest()
             ->with(['categories', 'province', 'district'])
+            ->whereType($type)
+            ->published()
+            ->whereNotIn('id', $this->getBlacklistIds())
+            ->whereIn('province_id', $this->access->provinces($type))
+            ->filter(['categories' => $categories])
+            ->filter(request());
+    }
+
+    protected function performSearch($type, $categories)
+    {
+        $post = Post::search(request('query'))
+            ->with(['categories', 'province', 'district'])
+            ->whereNotIn('id', $this->getBlacklistIds())
             ->where('status', PostStatus::Published)
             ->where('type', $type)
             ->whereIn('category_id', $categories->toArray())
             ->whereIn('province_id', $this->access->provinces($type));
-
-        if ($blacklist = $this->getBlacklistIds()) {
-            $post->whereNotIn('id', $blacklist);
-        }
 
         if (! request('order')) {
             $post->orderBy('publish_at', 'desc');
