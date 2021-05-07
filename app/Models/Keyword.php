@@ -189,6 +189,7 @@ class Keyword extends Model
     {
         return Post::selectRaw('DISTINCT phone')
             ->whereIn('id', $this->posts)
+            ->whereNotNull('phone')
             ->get()
             ->pluck('phone');
     }
