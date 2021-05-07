@@ -100,17 +100,17 @@ class Keyword extends Model
     {
         if ($post->whitelist) return;
 
-        if ($this->test("$post->title $post->content")) {
+        if (
+            $this->getPhones()->contains($post->phone) ||
+            $this->test("$post->title $post->content")
+        ) {
+            $post->lock();
             $this->posts = $this->posts->push($post->id);
-
-        } elseif ($post->isLocked()) {
-            $post->publish();
         }
 
-        return $this->fill([
-            'count' => $this->posts->count(),
-            'posts' => $this->posts
-        ])->save();
+        elseif ($post->isLocked()) {
+            $post->publish();
+        }
     }
 
     protected function lockSingle(Post $post)
@@ -180,14 +180,17 @@ class Keyword extends Model
             ->keys();
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getPhones()
     {
-        return Post::whereIn('id', $this->posts)
-            ->get(['phone'])
-            ->whereNotNull('phone')
-            ->keyBy('phone')
-            ->keys()
-            ->unique();
+        return Post::selectRaw('DISTINCT phone')
+            ->whereIn('id', $this->posts)
+            ->get()
+            ->pluck('phone');
     }
 
     private function makeUnicodeRegex()
