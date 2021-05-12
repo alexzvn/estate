@@ -85,6 +85,8 @@
 @include('customer.components.post-create')
 @endsection
 
+@include('customer.components.feature-popup', ['type' => 'market'])
+
 @push('script')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 <script>

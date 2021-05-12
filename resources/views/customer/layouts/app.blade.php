@@ -59,6 +59,8 @@
         </a>
     </div>
 
+    @stack('before-body')
+
     <script src="{{ asset('assets/snackbar/snackbar.min.js') }}"></script>
     @stack('script')
 </body>
