@@ -28,6 +28,9 @@ class SettingController extends Controller
             'notification'      => $request->notification,
             'google.analytics'  => $request->google_analytics,
             'post.reverse'      => (bool) $request->reverse,
+            'popup.online'      => $request->online,
+            'popup.fee'         => $request->fee,
+            'popup.market'      => $request->market,
         ]);
 
         return redirect(route('manager.setting'))->with('success', 'Cập nhật thành công');
