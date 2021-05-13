@@ -78,17 +78,17 @@
 
                     <div class="form-group">
                       <label for="online">Thông báo tin Online</label>
-                      <textarea class="form-control" name="online" id="online"></textarea>
+                      <textarea class="form-control" name="online" id="online">{{ $setting->get('popup.online') }}</textarea>
                     </div>
 
                     <div class="form-group">
                       <label for="fee">Thông báo tin xin phí</label>
-                      <textarea class="form-control" name="fee" id="fee"></textarea>
+                      <textarea class="form-control" name="fee" id="fee">{{ $setting->get('popup.fee') }}</textarea>
                     </div>
 
                     <div class="form-group">
                       <label for="market">Thông báo tin thị trường</label>
-                      <textarea class="form-control" name="market" id="market"></textarea>
+                      <textarea class="form-control" name="market" id="market">{{ $setting->get('popup.market') }}</textarea>
                     </div>
 
                 </div>
