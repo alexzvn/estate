@@ -8,8 +8,6 @@ use Spatie\Permission\Models\Role as Model;
 
 class Role extends Model
 {
-    use CacheDefault;
-
     public function markAsForCustomer()
     {
         return $this->forceFill([
