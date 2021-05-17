@@ -116,10 +116,11 @@ class OrderController extends Controller
         unset($filler['expires_at']);
 
         $order->fill($filler)->fill([
-            'month' => (int) $request->expires_month,
-            'price' => $order->plans->sum('price') ?? 0,
-            'status'=> $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
-            'verified' => (bool) $request->verified,
+            'month'      => (int) $request->expires_month,
+            'price'      => $order->plans->sum('price') ?? 0,
+            'discount'   => $request->discount ?? 0,
+            'status'     => $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
+            'verified'   => (bool) $request->verified,
             'expires_at' => $request->expiresAt(),
         ]);
 
@@ -137,6 +138,7 @@ class OrderController extends Controller
         $order->fill($filler)->fill([
             'month' => null,
             'price' => $price,
+            'discount'   => $request->discount ?? 0,
             'status'=> $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
             'verified' => (bool) $request->verified,
             'expires_at' => $request->expiresAt(),
