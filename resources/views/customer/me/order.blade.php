@@ -43,7 +43,7 @@ function planToString($plans) {
                             @if ($order->expires_at)
                                 {{ $order->expires_at->format('d/m/Y H:is') }}
                             @elseif ($order->month && $order->activate_at)
-                                {{ $order_activate_at->addMonths($order->month)->format('d/m/Y H:i:s') }}
+                                {{ $order->activate_at->addMonths($order->month)->format('d/m/Y H:i:s') }}
                             @else
                             --
                             @endif
