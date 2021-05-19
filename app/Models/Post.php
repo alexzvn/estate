@@ -66,6 +66,7 @@ class Post extends Model implements Auditable
             'publish_at'   => ['type' => 'date'],
             'created_at'   => ['type' => 'date'],
             'updated_at'   => ['type' => 'date'],
+            'day_reverser' => ['type' => 'boolean'],
         ]
     ];
 
