@@ -22,6 +22,8 @@ class DayReverser extends Command
      */
     protected $description = 'Command description';
 
+    protected $timer = 0;
+
     /**
      * Create a new command instance.
      *
@@ -43,14 +45,17 @@ class DayReverser extends Command
             ->where('day_reverser', false)
             ->whereNotNull('publish_at')
             ->chunkById(2000, function ($posts) {
-                $posts->each(function ($post) {
-                    $post->day_reverser = true;
-                    $post->publish_at = $post->publish_at->addDay();
-
-                    return $post;
-                });
-
-                $posts->each(fn($post) => $post->save());
+                $posts->each(fn($post) => $this->updatePost($post));
             });
+    }
+
+    protected function updatePost(Post $post)
+    {
+        $post->day_reverser = true;
+
+        $post->publish_at = $post->publish_at->addDay()
+            ->startOfDay()->addSeconds($this->timer++);
+
+        return $post->save();
     }
 }
