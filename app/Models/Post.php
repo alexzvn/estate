@@ -52,6 +52,7 @@ class Post extends Model implements Auditable
         'extra' => 'json',
         'reverser' => 'boolean',
         'approve_fee' => 'boolean',
+        'day_reverser' => 'boolean',
     ];
 
     protected $mapping = [
@@ -271,6 +272,7 @@ class Post extends Model implements Auditable
             'price'       => $this->price > 100_000_000_000 ? null : $this->price
         ]);
 
+        unset($post['day_reverser']);
         unset($post['extra']);
 
         return $post;
