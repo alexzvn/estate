@@ -66,7 +66,7 @@
                             <td class="cursor-pointer open-post" data-id="{{ $post->id }}">
                                 <p class="mb-0">
                                     <strong>
-                                        @if ($post->day_reverser) <i data-feather="refresh-cw"></i> @endif
+                                        @if ($post->day_reverser) <i data-feather="refresh-cw t-icon text-danger"></i> @endif
                                         @if ($post->whitelist)
                                         [<span class="text-success font-weight-bolder">Chính chủ</span>]
                                         @endif
