@@ -15,7 +15,6 @@ class CreateMessagesTable extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('topic_id');
             $table->text('content');
             $table->json('extra')->nullable();
             $table->morphs('sender');

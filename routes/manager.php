@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Manager\Message\MessageApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -237,6 +238,10 @@ Route::group(['prefix' => 'activity', 'namespace' => 'Activity'], function () {
  */
 Route::group(['prefix' => 'audit', 'namespace' => 'Audit'], function () {
     Route::get('/', 'AuditController@index')->name('manager.audit');
+});
+
+Route::group(['prefix' => 'messages'], function () {
+    Route::post('store', [MessageApiController::class, 'store'])->name('manager.message.api.store');
 });
 
 /**

@@ -15,6 +15,7 @@ use App\Http\Requests\Manager\Customer\AssignCustomer;
 use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Location\Province;
+use App\Models\Message;
 use App\Models\ScoutFilter\UserFilter;
 use App\Setting;
 
@@ -60,7 +61,8 @@ class CustomerController extends Controller
             'plans' => Plan::where('renewable', '<>', true)->get(),
             'staffs' => $staffs,
             'user' => $user,
-            'provinces' => Province::active()->get()
+            'provinces' => Province::active()->get(),
+            'messages' => Message::whereTopic($user)->with('sender')->get()
         ]);
     }
 

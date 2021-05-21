@@ -109,6 +109,11 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         'birthday'
     ];
 
+    public function messages()
+    {
+        return $this->morphMany(Message::class, 'sender');
+    }
+
     public function provinces()
     {
         return $this->belongsToMany(Province::class);
