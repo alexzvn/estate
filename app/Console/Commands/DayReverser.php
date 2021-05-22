@@ -43,6 +43,7 @@ class DayReverser extends Command
     {
         Post::whereType(PostType::Online)
             ->where('day_reverser', false)
+            ->where('publish_at', '<', now()->startOfDay())
             ->whereNotNull('publish_at')
             ->chunkById(2000, function ($posts) {
                 $posts->each(fn($post) => $this->updatePost($post));
