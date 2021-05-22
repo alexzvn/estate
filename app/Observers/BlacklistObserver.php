@@ -17,9 +17,10 @@ class BlacklistObserver
      */
     public function created(Blacklist $blacklist)
     {
-        Post::where('phone', $blacklist->phone)->update([
-            'status' => PostStatus::Locked
-        ]);
+        updater(Post::where('phone', $blacklist->phone))
+            ->update([
+                'status' => PostStatus::Locked
+            ]);
 
         Whitelist::where('phone', $blacklist->phone)->delete();
     }
@@ -32,9 +33,10 @@ class BlacklistObserver
      */
     public function deleted(Blacklist $blacklist)
     {
-        Post::filter(['phone' => $blacklist->phone])
-        ->where('status', PostStatus::Locked)
-        ->update([
+        $builder = Post::filter(['phone' => $blacklist->phone])
+            ->where('status', PostStatus::Locked);
+
+        updater($builder)->update([
             'status' => PostStatus::Published
         ]);
     }
