@@ -56,12 +56,17 @@
                                 </a>
                             </div>
                             <div class="product-info mt-3">
-                                <i class="fa fa-clock-o"></i>
+                                <i class="fa fa-clock-o mr-1"></i>
                                {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'Không rõ' }}
                             </div>
                             <div class="product-info">
                                 <img src="{{ asset('/assets/img/selection.png') }}" width="16"> <strong>{{ $post->phone ?? '' }}</strong>
                             </div>
+                            @if ($category = $post->categories->first())
+                            <div class="product-info">
+                                <i class="fas fa-bahai"></i> {{ $category->name }}
+                            </div>
+                            @endif
                             <div class="product-info">
                                 <img src="{{ asset('/assets/img/location.png') }}" width="18">
                                 <a href="javascript:void(0)">{{ $post->district->name }}</a>,
