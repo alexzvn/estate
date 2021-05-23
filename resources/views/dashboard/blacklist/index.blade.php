@@ -127,11 +127,11 @@
                             <td>
                                 <div class="">
                                     @can('blacklist.phone.sms')
-                                    <button type="button" class="btn btn-primary sms" data-id="{{ $phone->id }}"><small>{{ $phone->sms_count }}</small> SMS</button>
+                                    <button type="button" class="btn btn-primary sms" data-id="{{ $phone->phone }}"><small>{{ $phone->sms_count }}</small> SMS</button>
                                     @endcan
 
                                     @can('blacklist.phone.delete')
-                                    <button type="button" class="btn btn-danger delete" data-id="{{ $phone->id }}">Xóa</button>
+                                    <button type="button" class="btn btn-danger delete" data-id="{{ $phone->phone }}">Xóa</button>
                                     @endcan
 
                                     @can('manager.customer.create')
