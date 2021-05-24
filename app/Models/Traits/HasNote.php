@@ -21,7 +21,12 @@ trait HasNote
 
     public function writeNote(string $content = '')
     {
-        return $this->note()->firstOrCreate(compact('content'))
-            ->update(compact('content'));
+        if (! $note = $this->note) {
+            $note = new Note(compact('content'));
+        }
+
+        $note->fill(compact('content'));
+
+        return $this->note()->save($note);
     }
 }

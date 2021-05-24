@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model implements Auditable
 {
-    use TraitsAuditable, CacheDefault;
+    use TraitsAuditable;
 
     const NAME = 'ghi chú';
 
