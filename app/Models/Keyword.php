@@ -144,7 +144,17 @@ class Keyword extends Model
 
     public function lockRelative()
     {
-        return updater(Post::whereIn('phone', $this->getPhones())
+        $phones = $this->getPhones();
+        $blacklist = Blacklist::whereIn('phone', $phones)->get('phone')->pluck('phone');
+
+        $phones->diff($blacklist)->values()->each(function ($phone) {
+            Blacklist::forceCreate([
+                'phone' => $phone,
+                'source' => "keyword-$this->id"
+            ]);
+        });
+
+        return updater(Post::whereIn('phone', $phones)
             ->whereStatus(PostStatus::Published)
             ->whereDoesntHave('whitelist'))
             ->update([
@@ -154,6 +164,9 @@ class Keyword extends Model
 
     public function unlockRelative()
     {
+        Blacklist::whereIn('source', "keyword-$this->id")->get()
+            ->each(fn($phone) => $phone->delete());
+
         return updater(Post::whereIn('id', $this->getRelativePostId())
             ->whereDoesntHave('blacklist')
             ->whereStatus(PostStatus::Locked))
