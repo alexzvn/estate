@@ -148,10 +148,12 @@ class Keyword extends Model
         $blacklist = Blacklist::whereIn('phone', $phones)->get('phone')->pluck('phone');
 
         $phones->diff($blacklist)->values()->each(function ($phone) {
-            Blacklist::forceCreate([
-                'phone' => $phone,
-                'source' => "keyword-$this->id"
-            ]);
+            Blacklist::withoutEvents(function () use ($phone) {
+                Blacklist::forceCreate([
+                    'phone' => $phone,
+                    'source' => "keyword-$this->id"
+                ]);
+            });
         });
 
         return updater(Post::whereIn('phone', $phones)
