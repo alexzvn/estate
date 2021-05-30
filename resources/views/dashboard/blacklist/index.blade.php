@@ -106,7 +106,7 @@
                                     </span>
                                 </span>
                             </td>
-                            <td>{{ $phone->adder->name ?? '' }} @empty($phone->adder->name) <strong class="text-info">API</strong> @endEmpty</td>
+                            <td>{{ $phone->adder->name ?? '' }} @empty($phone->adder->name) <strong class="text-info">{{ $phone->source ?? 'API' }}</strong> @endEmpty</td>
                             <td>
                                 <strong>
                                     @isset($phone->name)
