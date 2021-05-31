@@ -63,6 +63,13 @@ class ImportPostJob implements ShouldQueue
                 $key->posts = $key->posts->push($post->id)->unique();
 
                 $key->save();
+
+                if ($post->phone && !$this->isInBlacklist($post->phone)) {
+                    Blacklist::forceCreate([
+                        'phone' => $post->phone,
+                        'source' => "keyword-$post->id"
+                    ]);
+                }
             }
         }
 
