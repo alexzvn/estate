@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth', 'customer'], 'namespace' => 'Customer'], 
     Route::get('/post/{id}/action/save', 'Post\ActionController@save')->name('post.action.save');
     Route::get('/post/{id}/action/report', 'Post\ActionController@report')->name('post.action.report');
 
+    Route::post('/messages/put', 'MessageController@send')->name('message.api.store');
+
     Route::group(['prefix' => 'me'], function () {
 
         Route::get('/account', 'Customer@me')->name('customer.self.account');

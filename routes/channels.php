@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-
+Broadcast::channel('customer.{id}', fn() => true);

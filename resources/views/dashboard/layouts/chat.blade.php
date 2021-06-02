@@ -110,7 +110,7 @@
     input.on('keypress', e => { e.which === 13 && send() })
 
 
-    const channel = Echo.channel('customer.{{ $topic->id }}');
+    const channel = Echo.private('customer.{{ $topic->id }}');
 
     channel.listen('message:created', ({ content, sender }) => {
 

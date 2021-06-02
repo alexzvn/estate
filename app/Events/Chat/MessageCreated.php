@@ -22,6 +22,8 @@ class MessageCreated implements ShouldBroadcast
 
     public array $content;
 
+    public array $topic;
+
     /**
      * Create a new event instance.
      *
@@ -34,6 +36,8 @@ class MessageCreated implements ShouldBroadcast
         $this->sender = $message->sender->only(['name', 'phone', 'id']);
 
         $this->content = $message->only(['content', 'extra', 'id']);
+
+        $this->topic = $message->topic->toArray();
     }
 
     /**
@@ -53,6 +57,9 @@ class MessageCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel("customer." . $this->message->topic->id);
+        return [
+            new PrivateChannel("customer." . $this->message->topic->id),
+            new PrivateChannel('chat')
+        ];
     }
 }
