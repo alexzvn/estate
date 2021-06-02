@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.4.0",
+        "ably/ably-php": "^1.1",
         "alexzvn/speedsms-api": "^0.0.1",
         "babenkoivan/scout-elasticsearch-driver": "^4.3",
         "bensampo/laravel-enum": "^3.0",

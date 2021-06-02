@@ -48,8 +48,12 @@
 </div>
 
 @push('script')
+<script src="{{ mix('assets/js/app.js') }}"></script>
+
 <script>
 !function () {
+    const ids = [];
+
     const input = $('#message-input')
     const messages = $('#message-content')
     const topic = {
@@ -75,6 +79,8 @@
         }).then(res => {
             if (res.ok) return res.json()
         }).then(message => {
+            ids.push(message.id)
+
             messages.append(`
                 <li class="message sent">
                     <img class="avatar" src="{{ $img }}" alt="" />
@@ -102,9 +108,32 @@
     $(document).ready(scroll)
     $('#message-send-btn').click(send)
     input.on('keypress', e => { e.which === 13 && send() })
+
+
+    const channel = Echo.channel('customer.{{ $topic->id }}');
+
+    channel.listen('message:created', ({ content, sender }) => {
+
+
+        const user = '{{ Auth::id() }}'
+
+        if (ids.find(id => content.id === id)) {
+            return
+        }
+
+        messages.append(`
+            <li class="message ${ user == sender.id ? 'sent' : 'replies' }">
+                <img class="avatar" src="{{ $img }}" alt="" />
+                <div class="message-container">
+                    <p class="message-sender">${ sender.name }</p>
+                    <p class="message-content">${content.content}</p>
+                </div>
+            </li>
+        `);
+
+        scroll()
+    });
 }()
-
-
 </script>
 @endpush
 

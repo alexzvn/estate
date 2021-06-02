@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manager\Message;
 
+use App\Events\Chat\MessageCreated;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Manager\Controller;
 use App\Models\Message;
@@ -21,6 +22,8 @@ class MessageApiController extends Controller
 
         $message->sender()->associate(user());
 
-        return tap($message)->save();
+        MessageCreated::dispatch(tap($message)->save());
+
+        return $message;
     }
 }
