@@ -10,7 +10,7 @@
     <title>{{ $setting->title }}</title>
 
     <!-- Scripts -->
-    <script src="{{ mix('assets/js/app.js') }}"></script>
+    <script src="{{ mix('assets/js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

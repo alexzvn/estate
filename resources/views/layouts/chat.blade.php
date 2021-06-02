@@ -69,87 +69,96 @@
 @endphp
 
 <script>
-!function() {
+$(document).ready(function () {
   const ids = [];
 
-  const input = $('#message-input')
-  const messages = $('#message-content')
+  const input = $("#message-input");
+  const messages = $("#message-content");
   const topic = {
-      _token: '{{ csrf_token() }}'
-  }
+    _token: "{{ csrf_token() }}",
+  };
 
   const scroll = () => {
-    const element = $('.main-message > .content')
+    const element = $(".main-message > .content");
 
-    element.scrollTop(element.get(0).scrollHeight)
-  }
+    element.scrollTop(element.get(0).scrollHeight);
+  };
 
   const send = () => {
-        const content = input.val()
-        input.val('')
+    const content = input.val();
+    input.val("");
 
-        fetch('{{ route("message.api.store") }}', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ ...topic, content })
-        }).then(res => {
-            if (res.ok) return res.json()
-        }).then(message => {
-            ids.push(message.id)
+    fetch('{{ route("message.api.store") }}', {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        ...topic,
+        content,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+      })
+      .then((message) => {
+        ids.push(message.id);
 
-            messages.append(`
-                <li class="message sent">
-                    <img class="avatar" src="{{ $img }}" alt="" />
-                    <div class="message-container">
-                        <p class="message-sender">{{ user()->name }}</p>
-                        <p class="message-content">${message.content}</p>
-                    </div>
-                </li>
-            `);
+        messages.append(`
+              <li class="message sent">
+                  <img class="avatar" src="{{ $img }}" alt="" />
+                  <div class="message-container">
+                      <p class="message-sender">{{ user()->name }}</p>
+                      <p class="message-content">${message.content}</p>
+                  </div>
+              </li>
+          `);
 
-            scroll()
-        }).catch(() => {
-            Snackbar.show({
-                text: 'Danger',
-                actionTextColor: '#fff',
-                backgroundColor: '#e7515a',
-                text: "Tin nhắn không gửi được, xin hãy thử lại sau vài phút",
-                pos: 'bottom-right',
-                duration: 5000,
-                showAction: false
-            })
+        scroll();
+      })
+      .catch(() => {
+        Snackbar.show({
+          text: "Danger",
+          actionTextColor: "#fff",
+          backgroundColor: "#e7515a",
+          text: "Tin nhắn không gửi được, xin hãy thử lại sau vài phút",
+          pos: "bottom-right",
+          duration: 5000,
+          showAction: false,
+        });
 
-            input.val(content)
-        })
-    }
+        input.val(content);
+      });
+  };
 
-    $(document).ready(scroll)
-    $('#message-send-btn').click(send)
-    input.on('keypress', e => { e.which === 13 && send() })
+  $(document).ready(scroll);
+  $("#message-send-btn").click(send);
+  input.on("keypress", (e) => {
+    e.which === 13 && send();
+  });
 
-    const channel = Echo.private('customer.{{ $topic->id }}');
+  const channel = Echo.private("customer.{{ $topic->id }}");
 
-    channel.listen('message:created', ({ content, sender }) => {
+  channel.listen("message:created", ({ content, sender }) => {
+    const user = "{{ Auth::id() }}";
 
-    const user = '{{ Auth::id() }}'
-
-    if (ids.find(id => content.id === id)) {
-        return
+    if (ids.find((id) => content.id === id)) {
+      return;
     }
 
     messages.append(`
-        <li class="message ${ user == sender.id ? 'sent' : 'replies' }">
+        <li class="message ${user == sender.id ? "sent" : "replies"}">
             <img class="avatar" src="{{ $img }}" alt="" />
             <div class="message-container">
-                <p class="message-sender">${ sender.name }</p>
+                <p class="message-sender">${sender.name}</p>
                 <p class="message-content">${content.content}</p>
             </div>
         </li>
     `);
 
-    scroll()
+    scroll();
+  });
 });
-}()
 </script>
 @endpush
 
