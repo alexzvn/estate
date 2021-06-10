@@ -23,7 +23,7 @@ class Blacklist extends Model implements Auditable
 
     protected $casts = ['sms_history' => 'array'];
 
-    protected $fillable = ['phone', 'source'];
+    protected $fillable = ['phone', 'source', 'export_count'];
 
     protected $filterable = ['phone', 'source'];
 

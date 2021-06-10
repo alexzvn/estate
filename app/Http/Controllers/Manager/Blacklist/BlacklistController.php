@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Manager\Blacklist;
 
+use App\Exports\BlacklistExport;
 use Illuminate\Http\Request;
 use App\Repository\Blacklist;
 use App\Repository\Location\Province;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Blacklist\Phone\StorePhone;
 use App\Http\Requests\Manager\Blacklist\Phone\UpdatePhone;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BlacklistController extends Controller
 {
@@ -53,6 +55,19 @@ class BlacklistController extends Controller
         });
 
         return back()->with('success', "Đã chặn số $blacklist->phone");
+    }
+
+    public function exportExcel()
+    {
+        $blacklists = Blacklist::latest()->paginate(40)->reduce(function ($carry, $item) {
+            return $carry->push($item);
+        }, collect());
+
+        $exporter = new BlacklistExport($blacklists);
+
+        $exporter->increaseCount();
+
+        return Excel::download($exporter, 'phone-' . now()->format('d-m-Y H-i') . '.xlsx' );
     }
 
     public function update(string $id, UpdatePhone $request)

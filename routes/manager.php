@@ -195,6 +195,7 @@ Route::group(['prefix' => 'order', 'namespace' => 'Order'], function () {
 Route::group(['prefix' => 'blacklist'], function () {
     Route::group(['prefix' => 'phone', 'namespace' => 'Blacklist'], function () {
         Route::get('/', 'BlacklistController@index')->name('manager.blacklist.phone');
+        Route::get('/export', 'BlacklistController@exportExcel')->name('manager.blacklist.export');
         Route::post('/store', 'BlacklistController@store')->name('manager.blacklist.phone.store');
         Route::post('/{id}/update', 'BlacklistController@update')->name('manager.blacklist.phone.update');
         Route::post('/{id}/delete', 'BlacklistController@delete')->name('manager.blacklist.phone.delete');
