@@ -169,7 +169,7 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('manager.blacklist.export') }}?page={{ request('page') }}" type="button" class="btn btn-success">Xuất excel</a>
+                    <a href="{{ route('manager.blacklist.export') }}?{{ http_build_query($_GET) }}" type="button" class="btn btn-success">Xuất excel</a>
                 </div>
 
             </div>

@@ -57,9 +57,15 @@ class BlacklistController extends Controller
         return back()->with('success', "Đã chặn số $blacklist->phone");
     }
 
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
-        $blacklists = Blacklist::latest()->paginate(40)->reduce(function ($carry, $item) {
+        $blacklists = Blacklist::latest()->filter($request);
+
+        if ($request->user) {
+            $blacklists->whereNotNull('user_id');
+        }
+
+        $blacklists = $blacklists->reduce(function ($carry, $item) {
             return $carry->push($item);
         }, collect());
 
