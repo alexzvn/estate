@@ -25,6 +25,7 @@ class BlacklistExport implements FromCollection, WithMapping, WithHeadings, Shou
             'Tên',
             'Danh mục',
             'Thành phố',
+            'Lượt xuất',
             'Tạo lúc'
         ];
     }
@@ -35,6 +36,7 @@ class BlacklistExport implements FromCollection, WithMapping, WithHeadings, Shou
             $row->name,
             $row->category,
             $row->province->name ?? '',
+            $row->export_count,
             $row->created_at->format('d/m/Y')
         ];
     }
