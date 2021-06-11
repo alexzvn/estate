@@ -65,7 +65,7 @@ class BlacklistController extends Controller
             $blacklists->whereNotNull('user_id');
         }
 
-        $blacklists = $blacklists->reduce(function ($carry, $item) {
+        $blacklists = $blacklists->paginate(40)->reduce(function ($carry, $item) {
             return $carry->push($item);
         }, collect());
 
