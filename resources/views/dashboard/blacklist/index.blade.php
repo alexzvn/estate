@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" name="user" id="user" value="user" {{ request('user') === 'user' ? 'checked' : '' }}>
+                                  <input type="checkbox" class="form-check-input" name="user" id="user" value="user" {{ request('user') == 'user' ? 'checked' : '' }}>
                                   Nguồn khác
                                 </label>
                               </div>
@@ -51,7 +51,7 @@
                             <select class="form-control" name="province" id="province">
                               <option value="">Chọn Tỉnh/TP</option>
                               @foreach ($provinces ?? [] as $item)
-                                  <option value="{{ $item->id }}" {{ $item->id === request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                                  <option value="{{ $item->id }}" {{ $item->id == request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
                               @endforeach
                             </select>
                         </div>
