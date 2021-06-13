@@ -17,6 +17,10 @@ class AuthenticateOnceWithBasicAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        return  Auth::onceBasic('phone') ?: $next($request);
+        if ($request->header('Authorization')) {
+            return Auth::onceBasic('phone') ?: $next($request);
+        }
+
+        return $next($request);
     }
 }
