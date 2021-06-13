@@ -15,4 +15,4 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('customer.{id}', fn() => true);
-Broadcast::channel('users', fn() => true);
+Broadcast::channel('users', fn($user) => $user->id);
