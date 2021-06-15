@@ -77,6 +77,15 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
 });
 
 /**
+ * CHAT
+ */
+Route::group(['prefix' => 'chat', 'namespace' => 'Chat'], function () {
+    Route::get('/', 'ChatController@index')->name('manager.chat');
+    Route::get('/{user}/messages', 'ChatController@messages')->name('manager.chat.messages');
+    Route::post('/{user}/messages', 'ChatController@store')->name('manager.chat.store');
+});
+
+/**
  * Censorship
  */
 Route::group(['prefix' => 'censorship', 'namespace' => 'Censorship'], function () {
