@@ -2,6 +2,7 @@
 
 namespace App\Events\Chat;
 
+use App\Models\Conversation;
 use App\Models\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -16,7 +17,9 @@ class MessageCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected Message $message;
+    public Message $message;
+
+    public Conversation $conversation;
 
     public array $sender;
 
@@ -33,11 +36,22 @@ class MessageCreated implements ShouldBroadcast
     {
         $this->message = $message;
 
-        $this->sender = $message->sender->only(['name', 'phone', 'id']);
+        $this->sender = $message->sender->only(['name', 'phone', 'id', 'created_at']);
 
-        $this->content = $message->only(['content', 'extra', 'id']);
+        $this->content = $message->only([
+            'id',
+            'content',
+            'extra',
+            'sender_type',
+            'sender_id',
+            'topic_id',
+            'topic_type',
+            'created_at'
+        ]);
 
         $this->topic = $message->topic->toArray();
+
+        $this->conversation = Conversation::findByMessage($message)->load(['sender', 'topic']);
     }
 
     /**
