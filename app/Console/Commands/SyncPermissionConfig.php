@@ -6,8 +6,10 @@ use App\Models\Permission;
 use App\Models\PermissionGroup;
 use App\Models\Role;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 
-// todo #2 maintain sync group method
 class SyncPermissionConfig extends Command
 {
     /**
@@ -41,76 +43,48 @@ class SyncPermissionConfig extends Command
      */
     public function handle()
     {
-        $this->syncPermission();
-        $this->syncRoles();
-        $this->syncPermissionGroup();
+        Permission::whereNotNull('group_id')->update(['group_id' => null]);
+
+        $permissions = $this->syncPermissions();
+
+        $this->syncGroups($permissions);
+
+        Artisan::call('cache:clear');
     }
 
-
-    protected function syncPermission()
+    public function syncPermissions()
     {
-        foreach ($this->getPermissions() as $name => $displayName) {
+        $permissions = Permission::all();
 
-            if ($perm = Permission::where('name', $name)->first()) {
-                $perm->display_name = $displayName;
-                $perm->save();
-                continue;
+        return collect($this->getPermissions())->map(function ($name, $key) use ($permissions) {
+            if ($permission = $permissions->where('name', $key)->first()) {
+                return $permission;
             }
 
-            $perm = Permission::create([
-                'name' => $name,
-                'display_name' => $displayName
+            return Permission::forceCreate([
+                'name' => $key,
+                'display_name' => $name
             ]);
-        }
+        });
     }
 
-    public function syncRoles()
+    public function syncGroups(Collection $permissions)
     {
-        $syncRoles = function ($role)
-        {
-            $model = Role::where('name', $role->name)
-                    ->firstOrCreate(['name' => $role->name]);
+        $groups = collect($this->getPermissionGroups())->map(fn($group) => (object) $group);
 
-            $permWillSync = Permission::all()->filter(
-                function (Permission $perm) use ($role) {
-                    return in_array($perm->name, $role->permissions);
-                }
+        PermissionGroup::whereNotIn('name', $groups->pluck('name'))->delete();
+
+        $all = PermissionGroup::all();
+
+        $groups->map(function ($item) use ($permissions, $all) {
+            $group = $all->firstWhere('name', $item->name) ?: PermissionGroup::forceCreate([
+                'name' => $item->name
+            ]);
+
+            $group->permissions()->saveMany(
+                $permissions->whereIn('name', $item->permissions)
             );
-
-            foreach ($permWillSync as $perm) {
-               $model->permissions()->save($perm);
-            }
-        };
-
-        foreach ($this->getRoles() as $role) {
-            $role = (object) $role;
-            $syncRoles($role);
-        }
-    }
-
-    protected function syncPermissionGroup()
-    {
-
-        $syncGroup = function ($group)
-        {
-            $groupModel = PermissionGroup::where('name', $group->name)
-                            ->firstOrCreate(['name' => $group->name]);
-
-            $permWillSync = Permission::all()->filter(
-                function (Permission $perm) use ($group) {
-                    return in_array($perm->name, $group->permissions);
-                }
-            );
-
-            foreach ($permWillSync as $perm) {
-                $groupModel->permissions()->save($perm);
-            }
-        };
-
-        foreach ($this->getPermissionGroups() as $group) {
-            $group = (object) $group;
-            $syncGroup($group);
-        }
+        });
     }
 
     private function getPermissions()
