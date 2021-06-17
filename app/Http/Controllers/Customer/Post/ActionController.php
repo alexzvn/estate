@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Customer\Post;
 
 use App\Events\Post\UserReport;
+use App\Models\Report;
 use App\Repository\Post;
+use Illuminate\Support\Facades\Auth;
 
 class ActionController extends BaseController
 {
@@ -55,9 +57,12 @@ class ActionController extends BaseController
             return response('Đã có người báo môi giới tin này');
         }
 
-        $report = request()->user()->report()->save(
-            $post->report()->create([])
-        );
+        $report = new Report;
+
+        $report->forceFill([
+            'user_id' => Auth::id(),
+            'post_id' => $post->id,
+        ])->save();
 
         event(new UserReport($report));
 
@@ -66,11 +71,11 @@ class ActionController extends BaseController
 
     private function shouldNotSave($post)
     {
-        return $this->customer->savePosts()->where('_id', $post->id)->exists();
+        return $this->customer->savePosts()->where('id', $post->id)->exists();
     }
 
     private function shouldNotBlacklist($post)
     {
-        return $this->customer->blacklistPosts()->where('_id', $post->id)->exists();
+        return $this->customer->blacklistPosts()->where('id', $post->id)->exists();
     }
 }

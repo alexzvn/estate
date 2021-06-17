@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use App\Models\Traits\Auditable as TraitsAuditable;
-use Jenssegers\Mongodb\Eloquent\Builder;
-use Jenssegers\Mongodb\Eloquent\Model;
+use App\Models\Traits\CacheDefault;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Category extends Model implements Auditable
@@ -13,7 +14,6 @@ class Category extends Model implements Auditable
 
     protected $fillable = ['name', 'description'];
 
-    
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -63,8 +63,8 @@ class Category extends Model implements Auditable
 
     public function removeChildren()
     {
-        foreach ($this->children()->get() as $child) {
-            $child->forceFill(['parent_id' => null])->save();
-        }
+        $this->children()->update([
+            'parent_id' => null
+        ]);
     }
 }

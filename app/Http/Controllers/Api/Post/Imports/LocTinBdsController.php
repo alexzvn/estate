@@ -143,9 +143,9 @@ class LocTinBdsController extends ImportController
 
         if (! isset($categories)) {
             $categories = [
-                Category::childrenOnly()->where('name', 'regexp', '/bán facebook/')->first(),
-                Category::childrenOnly()->where('name', 'regexp', '/thuê facebook/')->first(),
-                Category::childrenOnly()->where('name', 'regexp', '/Khách cần mua & thuê/')->first(),
+                Category::childrenOnly()->where('name', 'regexp', 'bán facebook')->first(),
+                Category::childrenOnly()->where('name', 'regexp', 'thuê facebook')->first(),
+                Category::childrenOnly()->where('name', 'regexp', 'Khách cần mua & thuê')->first(),
             ];
         }
 

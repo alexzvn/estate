@@ -15,6 +15,11 @@ class CreateSmsHistoriesTable extends Migration
     {
         Schema::create('sms_histories', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('sender_id', false, true)->nullable();
+            $table->string('recipient', 50)->index();
+            $table->string('content');
+            $table->foreignId('sms_template_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreign('sender_id')->references('id')->on('users')->nullOnDelete();
             $table->timestamps();
         });
     }

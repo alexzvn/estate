@@ -8,6 +8,7 @@ use App\Repository\Post;
 use App\Repository\Category;
 use App\Http\Controllers\Customer\Post\BaseController;
 use App\Http\Requests\Customer\Post\StorePost;
+use App\Models\ScoutFilter\PostFilter;
 use App\Repository\Meta;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class PostController extends BaseController
         $type = PostType::PostFee;
 
         $this->customer->createLog([
-            'content' => 'Đã truy cập '. $type,
+            'content' => 'Đã truy cập '. PostType::getDescription($type),
             'link'    => $request->fullUrl()
         ]);
 
@@ -26,7 +27,7 @@ class PostController extends BaseController
 
         return view('customer.post.fee', [
             'canAccess' => $this->access->canAccess($type),
-            'posts' => $this->defaultPost($type)->paginate(20)
+            'posts' => $this->defaultPost($type)->paginate(40)
         ]);
     }
 
@@ -35,7 +36,7 @@ class PostController extends BaseController
         $type = PostType::Online;
 
         $this->customer->createLog([
-            'content' => 'Đã truy cập '. $type,
+            'content' => 'Đã truy cập '. PostType::getDescription($type),
             'link'    => $request->fullUrl()
         ]);
 
@@ -43,7 +44,7 @@ class PostController extends BaseController
 
         return view('customer.post.online', [
             'canAccess' => $this->access->canAccess($type),
-            'posts' => $this->defaultPost($type)->paginate(20)
+            'posts' => $this->defaultPost($type)->paginate(40)
         ]);
     }
 
@@ -52,7 +53,7 @@ class PostController extends BaseController
         $type = PostType::PostMarket;
 
         $this->customer->createLog([
-            'content' => 'Đã truy cập '. $type,
+            'content' => 'Đã truy cập '. PostType::getDescription($type),
             'link'    => $request->fullUrl()
         ]);
 
@@ -60,7 +61,7 @@ class PostController extends BaseController
 
         return view('customer.post.market', [
             'canAccess' => $this->access->canAccess($type),
-            'posts' => $this->defaultPost($type)->with('files')->paginate(20)
+            'posts' => $this->defaultPost($type)->with('files')->paginate(40)
         ]);
     }
 
@@ -72,7 +73,7 @@ class PostController extends BaseController
 
     public function view(string $id, Request $request)
     {
-        $post = Post::withRelation()->where('_id', $id)->firstOrFail();
+        $post = Post::withRelation()->where('id', $id)->firstOrFail();
 
         $this->customer->createLog([
             'content' => "Đã xem tin: $post->title",
@@ -88,30 +89,54 @@ class PostController extends BaseController
     /**
      * default select data from post collection
      *
-     * @return \Jenssegers\Mongodb\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function defaultPost(string $type)
+    private function defaultPost(int $type)
     {
         $categories = Category::flat($this->accessCategories($type))
-            ->map(function ($cat) {
-                return $cat->id;
-            });
+            ->map(fn($cat) => $cat->id);
 
-        $post = Post::withRelation()
+        // if (request('query')) {
+            return $this->performSearch($type, $categories);
+        // }
+
+        return Post::newest()
+            ->with(['categories', 'province', 'district'])
+            ->whereType($type)
             ->published()
-            ->where('type', $type)
-            ->whereNotIn('_id', $this->customer->post_blacklist_ids ?? [])
-            ->filter([
-                'categories' => $categories,
-                'provinces'  => $this->access->provinces($type)
-            ])->filter(request());
+            ->whereNotIn('id', $this->getBlacklistIds())
+            ->whereIn('province_id', $this->access->provinces($type))
+            ->filter(['categories' => $categories])
+            ->filter(request());
+    }
 
-        if (request('order') === 'newest' || empty(request('query'))) {
-            $post->newest();
-        } elseif(! empty(request('query'))) {
-            $post->OrderByScore();
+    protected function performSearch($type, $categories)
+    {
+        $post = Post::search(request('query', '*'))
+            ->with(['categories', 'province', 'district'])
+            ->whereNotIn('id', $this->getBlacklistIds())
+            ->where('status', PostStatus::Published)
+            ->where('type', $type)
+            ->whereIn('category_id', $categories->toArray())
+            ->whereIn('province_id', $this->access->provinces($type));
+
+        if (! request('order')) {
+            $post->orderBy('publish_at', 'desc');
         }
 
+        PostFilter::filter($post, request());
+
         return $post;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getBlacklistIds()
+    {
+        return user()->blacklistPosts()->get(['id'])
+            ->keyBy('id')->keys()->toArray();
     }
 }

@@ -48,7 +48,7 @@ class Customer extends Controller
     public function registerOrder(Request $request)
     {
         $this->validate($request, [
-            'plans' => 'required|array|exists:plans,_id',
+            'plans' => 'required|array|exists:plans,id',
             'month' => 'required|numeric|max:12|min:1'
         ]);
 

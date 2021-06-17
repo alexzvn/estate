@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateCategoriesTable extends Migration
@@ -13,9 +13,12 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $collection) {
-            $collection->index(['name', 'parent_id']);
-            $collection->timestamps();
+        Schema::create('categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 100);
+            $table->string('description', 500)->nullable();
+            $table->foreignId('parent_id')->nullable()->nullOnDelete();
+            $table->timestamps();
         });
     }
 

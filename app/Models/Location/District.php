@@ -2,9 +2,9 @@
 
 namespace App\Models\Location;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use App\Models\Location;
 
-class District extends Model
+class District extends Location
 {
     protected $fillable = ['name', 'type'];
 

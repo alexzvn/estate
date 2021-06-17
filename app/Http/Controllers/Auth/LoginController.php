@@ -75,7 +75,9 @@ class LoginController extends Controller
             return $this->sendHasSessionLoginResponse($request);
         }
 
-        Auth::login($user, true);
+        User::withoutEvents(function () use ($user) {
+            Auth::login($user, true);
+        });
 
         $request->session()->regenerate();
 
@@ -102,7 +104,13 @@ class LoginController extends Controller
             ]);
         }
 
-        return $this->traitLogout($request);
+        $response = null;
+
+        User::withoutEvents(function () use (&$response, $request) {
+            $response = $this->traitLogout($request);
+        });
+
+        return $response;
     }
 
     public function quietLogout(Request $request)
@@ -111,7 +119,13 @@ class LoginController extends Controller
             $user->emptySession();
         }
 
-        return $this->traitLogout($request);
+        $response = null;
+
+        User::withoutEvents(function () use (&$response, $request) {
+            $response = $this->traitLogout($request);
+        });
+
+        return $response;
     }
 
     protected function authenticated()

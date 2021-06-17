@@ -55,9 +55,6 @@
                             <td class="cursor-pointer open-post" data-id="{{ $post->id }}">
                                 <p class="mb-0">
                                     <strong>
-                                        @if (isset($post->phone) && $whitelist->whereIn('phone', $post->phone)->isNotEmpty())
-                                        [<span class="text-success font-weight-bolder">Chính chủ</span>]
-                                        @endif
                                         {{ Str::ucfirst(Str::of($post->title)->limit(73)) }}
                                     </strong>
                                     <br>
@@ -191,7 +188,7 @@ ClassicEditor
                     commission: post.commission,
                     price: post.price,
                     title: post.title,
-                    id: post._id,
+                    id: post.id,
                 };
 
                 editor.setData(post.content);
@@ -204,7 +201,7 @@ ClassicEditor
                 }
 
                 let options = {
-                    category: post.category_ids[0],
+                    category: post.categories[0] ? post.categories[0].id : null,
                     province: post.province_id,
                     district: post.district_id,
                     type: post.type,

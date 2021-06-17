@@ -15,6 +15,9 @@ class CreateSmsTemplatesTable extends Migration
     {
         Schema::create('sms_templates', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('content');
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

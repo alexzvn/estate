@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" name="user" id="user" value="user" {{ request('user') === 'user' ? 'checked' : '' }}>
+                                  <input type="checkbox" class="form-check-input" name="user" id="user" value="user" {{ request('user') == 'user' ? 'checked' : '' }}>
                                   Nguồn khác
                                 </label>
                               </div>
@@ -51,7 +51,7 @@
                             <select class="form-control" name="province" id="province">
                               <option value="">Chọn Tỉnh/TP</option>
                               @foreach ($provinces ?? [] as $item)
-                                  <option value="{{ $item->id }}" {{ $item->id === request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                                  <option value="{{ $item->id }}" {{ $item->id == request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
                               @endforeach
                             </select>
                         </div>
@@ -84,6 +84,7 @@
                             <th>Số điện thoại</th>
                             <th>Người thêm</th>
                             <th>Thông tin</th>
+                            <th>Xuất excel</th>
                             <th>Ngày thêm</th>
                             <th>Actions</th>
                         </tr>
@@ -106,7 +107,7 @@
                                     </span>
                                 </span>
                             </td>
-                            <td>{{ $phone->adder->name ?? '' }} @empty($phone->adder->name) <strong class="text-info">API</strong> @endEmpty</td>
+                            <td>{{ $phone->adder->name ?? '' }} @empty($phone->adder->name) <strong class="text-info">{{ $phone->source ?? 'API' }}</strong> @endEmpty</td>
                             <td>
                                 <strong>
                                     @isset($phone->name)
@@ -123,15 +124,16 @@
                                     @endisset
                                 </strong>
                             </td>
+                            <td>{{ $phone->export_count }}</td>
                             <td>{{ $phone->created_at ? $phone->created_at->format('d/m/Y H:i:s') : 'n/a' }}</td>
                             <td>
                                 <div class="">
                                     @can('blacklist.phone.sms')
-                                    <button type="button" class="btn btn-primary sms" data-id="{{ $phone->id }}"><small>{{ $phone->sms_count }}</small> SMS</button>
+                                    <button type="button" class="btn btn-primary sms" data-id="{{ $phone->phone }}"><small>{{ $phone->sms_count }}</small> SMS</button>
                                     @endcan
 
                                     @can('blacklist.phone.delete')
-                                    <button type="button" class="btn btn-danger delete" data-id="{{ $phone->id }}">Xóa</button>
+                                    <button type="button" class="btn btn-danger delete" data-id="{{ $phone->phone }}">Xóa</button>
                                     @endcan
 
                                     @can('manager.customer.create')
@@ -156,15 +158,20 @@
                     </tfoot>
                 </table>
 
-                <div class="btn-group mb-4 mr-2" role="group">
-                    <button id="btndefault" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Hành động 
-                        <i data-feather="chevron-down"></i>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="btndefault">
-                        <a id="send-sms" href="javascript:void(0)">Gửi tin nhắn</a>
+                <div class="d-flex mb-4">
+                    <div class="btn-group mr-2" role="group">
+                        <button id="btndefault" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Hành động 
+                            <i data-feather="chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btndefault">
+                            <a id="send-sms" href="javascript:void(0)">Gửi tin nhắn</a>
+                        </div>
                     </div>
+
+                    <a href="{{ route('manager.blacklist.export') }}?{{ http_build_query($_GET) }}" type="button" class="btn btn-success">Xuất excel</a>
                 </div>
+
             </div>
             <span class="text-muted">Tìm thấy {{ $blacklist->total() }} kết quả</span>
 
@@ -267,8 +274,6 @@
 
         $('.note').on('change', function () {
             let id = $(this).data('id');
-
-            console.log(id);
 
             fetch(`/manager/blacklist/phone/${id}/update`, {
                 headers: {

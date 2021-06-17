@@ -94,7 +94,7 @@ trait PostService
     public static function deleteMany(array $ids)
     {
         return app(static::class)
-            ->whereIn('_id', $ids)
+            ->whereIn('id', $ids)
             ->get()
             ->each(function ($post) {
                 $post->delete();
@@ -105,7 +105,7 @@ trait PostService
     {
         return app(static::class)
             ->onlyTrashed()
-            ->whereIn('_id', $ids)
+            ->whereIn('id', $ids)
             ->get()
             ->each(function ($post) {
                 $post->forceDelete();
@@ -115,7 +115,7 @@ trait PostService
     public static function reverseMany(array $ids)
     {
         return app(static::class)
-            ->whereIn('_id', $ids)
+            ->whereIn('id', $ids)
             ->get()
             ->each(function ($post) {
                 $post->forceFill(['publish_at' => now(), 'reverser' => true])->save();

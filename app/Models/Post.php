@@ -2,25 +2,29 @@
 
 namespace App\Models;
 
+use App\Elastic\PostIndexer;
 use App\Enums\PostStatus;
 use App\Models\Location\District;
 use App\Models\Location\Province;
 use App\Models\Traits\Auditable as TraitsAuditable;
+use App\Models\Traits\CacheDefault;
 use App\Models\Traits\CanFilter;
-use App\Models\Traits\CanSearch;
 use App\Models\Traits\HasFiles;
 use Carbon\Carbon;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\Builder;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use ScoutElastic\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Post extends Model implements Auditable
 {
-    use TraitsAuditable;
-    use SoftDeletes, CanFilter, CanSearch, HasFiles;
+    use TraitsAuditable, CacheDefault, Searchable;
+    use SoftDeletes, CanFilter, HasFiles;
 
     const NAME = 'tin';
+
+    protected $indexConfigurator = PostIndexer::class;
 
     protected $filterable = [
         'verifier_id',
@@ -45,12 +49,36 @@ class Post extends Model implements Auditable
     ];
 
     protected $casts = [
-        'extra' => 'json'
+        'extra' => 'json',
+        'reverser' => 'boolean',
+        'approve_fee' => 'boolean',
+        'day_reverser' => 'boolean',
+    ];
+
+    protected $mapping = [
+        'properties' => [
+            'title'        => ['type' => 'text'],
+            'content'      => ['type' => 'text'],
+            'reverser'     => ['type' => 'boolean'],
+            'approve_fee'  => ['type' => 'boolean'],
+            'phone'        => ['type' => 'text'],
+            'meta'         => ['type' => 'text'],
+            'extra'        => ['type' => 'object'],
+            'publish_at'   => ['type' => 'date'],
+            'created_at'   => ['type' => 'date'],
+            'updated_at'   => ['type' => 'date'],
+            'day_reverser' => ['type' => 'boolean'],
+        ]
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
     }
 
     public function categories()
@@ -78,19 +106,19 @@ class Post extends Model implements Auditable
         return $this->belongsTo(TrackingPost::class, 'phone', 'phone');
     }
 
-    public function whitelists()
+    public function verifier()
+    {
+        return $this->belongsTo(User::class, 'verifier_id');
+    }
+
+    public function whitelist()
     {
         return $this->belongsTo(Whitelist::class, 'phone', 'phone');
     }
 
-    public function blacklists()
+    public function blacklist()
     {
         return $this->belongsTo(Blacklist::class, 'phone', 'phone');
-    }
-
-    public function verifier()
-    {
-        return $this->belongsTo(User::class, 'verifier_id');
     }
 
     public function isLocked()
@@ -112,7 +140,7 @@ class Post extends Model implements Auditable
     {
         return $builder
             ->whereNotNull('publish_at')
-            ->where('status', (string) PostStatus::Published);
+            ->where('status', PostStatus::Published);
     }
 
     public function scopeNewest(Builder $builder)
@@ -122,17 +150,17 @@ class Post extends Model implements Auditable
 
     public function scopePending(Builder $builder)
     {
-        $builder->where('status', (string)  PostStatus::Pending());
+        $builder->where('status', PostStatus::Pending());
     }
 
     public function scopeWithoutWhitelist(Builder $builder)
     {
-        $builder->whereDoesntHave('whitelists');
+        return $builder->whereDoesntHave('whitelist');
     }
 
     public function scopeWithoutBlacklist(Builder $builder)
     {
-        $builder->whereDoesntHave('blacklists');
+        $builder->whereDoesntHave('blacklist');
     }
 
     public static function lockByPhone($phones)
@@ -145,7 +173,7 @@ class Post extends Model implements Auditable
             return;
         }
 
-        return static::whereIn('phone', $phones)->update([
+        return updater(static::whereIn('phone', $phones))->update([
             'status' => PostStatus::Locked
         ]);
     }
@@ -174,13 +202,13 @@ class Post extends Model implements Auditable
 
         return $builder->whereHas('categories', function (Builder $q) use ($values)
         {
-            $q->whereIn('_id', $values);
+            $q->whereIn('id', $values);
         });
     }
 
     public function filterQuery(Builder $builder, $value)
     {
-        return $this->scopeSearch($builder, $value);
+        // return $this->scopeSearch($builder, $value);
     }
 
     public function filterProvince(Builder $builder, $value)
@@ -234,25 +262,19 @@ class Post extends Model implements Auditable
         return $builder->where('price', '<=', $price);
     }
 
-    public function getIndexDocumentData()
+    public function toSearchableArray()
     {
-        $extra = '';
+        $post = array_merge($this->toArray(), [
+            'content'     => remove_tags($this->content),
+            'province'    => $this->province->name ?? null,
+            'district'    => $this->district->name ?? null,
+            'category_id' => $this->categories()->first()->id ?? null,
+            'price'       => $this->price > 100_000_000_000 ? null : $this->price
+        ]);
 
-        foreach ($this->extra ?? [] as $key => $value) {
-            if (is_string($value)) {
-                $extra = "$extra. $value";
-            }
-        }
+        unset($post['day_reverser']);
+        unset($post['extra']);
 
-        return [
-            'title' => $this->title,
-            'content' => remove_tags($this->content),
-            'commission' => $this->commission,
-            'phone' => $this->phone,
-            'province' => $this->province->name ?? null,
-            'district' => $this->district->name ?? null,
-            'categories' => $this->categories[0]->name ?? null,
-            'extra' => $extra
-        ];
+        return $post;
     }
 }

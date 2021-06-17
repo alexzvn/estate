@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateWardsTable extends Migration
@@ -13,10 +13,12 @@ class CreateWardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('wards', function (Blueprint $collection) {
-            $collection->index(['name', 'district_id']);
-            $collection->string('type');
-            $collection->timestamps();
+        Schema::create('wards', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('type');
+            $table->foreignId('district_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 

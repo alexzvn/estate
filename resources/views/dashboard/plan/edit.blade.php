@@ -53,7 +53,7 @@
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="categories[]" id="categories"
-                                            value="{{ $item->id }}" {{ $plan->categories->where('_id', $item->id)->isNotEmpty() ? 'checked' : '' }}>
+                                            value="{{ $item->id }}" {{ in_array($item->id, $plan->categories->toArray())? 'checked' : '' }}>
                                             {{ $item->name }}
                                         </label>
                                     </div>
@@ -68,8 +68,8 @@
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="post_type[]"
-                                            id="post_type" value="{{ $name }}" {{ in_array($name, $plan->types ?? []) ? 'checked': '' }}>
-                                            {{ $name }}
+                                            id="post_type" value="{{ $name }}" {{ in_array($name, $plan->types->toArray()) ? 'checked': '' }}>
+                                            {{ \App\Enums\PostType::getDescription($name) }}
                                         </label>
                                     </div>
                                     @endforeach
@@ -82,7 +82,7 @@
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input type="checkbox" class="form-check-input" name="provinces[]" id="provinces"
-                                    value="{{ $item->id }}" {{ $plan->provinces->where('_id', $item->id)->isNotEmpty() ? 'checked' : '' }}>
+                                    value="{{ $item->id }}" {{ in_array($item->id, $plan->provinces->toArray()) ? 'checked' : '' }}>
                                     {{ $item->name }}
                                 </label>
                             </div>

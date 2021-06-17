@@ -67,7 +67,7 @@
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input type="checkbox" class="form-check-input" name="post_type[]" id="post_type" value="{{ $name }}">
-                                    {{ $name }}
+                                    {{ \App\Enums\PostType::getDescription($name) }}
                                 </label>
                             </div>
                             @endforeach

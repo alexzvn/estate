@@ -2,9 +2,17 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use App\Models\Traits\CacheDefault;
+use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
 {
+    use CacheDefault;
+
     protected $fillable = ['name', 'path'];
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
 }

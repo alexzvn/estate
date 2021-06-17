@@ -18,10 +18,19 @@ use App\Enums\PostSource;
                             </div>
                         </a>
                     </li>
+
                     <li class="menu">
                         <a href="/" target="_blank" aria-expanded="false" class="dropdown-toggle">
                             <div>
                                 <i data-feather="home"></i> <span>Trang khách hàng</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="menu">
+                        <a href="{{ route('manager.chat') }}" aria-expanded="false" class="dropdown-toggle">
+                            <div>
+                                <i data-feather="message-square"></i> <span>Hỗ trợ trực tuyến</span>
                             </div>
                         </a>
                     </li>

@@ -7,12 +7,16 @@
         
         @include('customer.components.tabs')
 
-        @if (request()->user()->subscriptions->isEmpty())
+        @if (request()->user()->subscriptions->isEmpty() || (isset($canAccess) && $canAccess === false))
         <div class="col-md-12 mt-2">
             <div class="row">
-                <div class="col-md-12 px-0" id="myTabContent">
+                <div class="col-md-12 px-0">
                     <div class="text-center">
-                        <h3 class="my-3 tw-text-2xl" style="color: cadetblue;">Có vẻ bạn chưa đăng ký gói tin nào. <br> Hãy liên hệ hotline để đăng ký và bắt đầu xem tin nhé!</h3>
+                        @if (request()->user()->subscriptions)
+                        <h3 class="my-3 tw-text-2xl tw-text-red-500 tw-uppercase">Tài khoản của bạn đã hết hạn. <br> Hãy liên hệ hotline 096 55.33.958 để gia hạn gói mới!</h3>
+                        @else
+                        <h3 class="my-3 tw-text-2xl tw-text-green-500 tw-uppercase">Có vẻ bạn chưa đăng ký gói tin nào. <br> Hãy liên hệ hotline 096 55.33.958 để đăng ký và bắt đầu xem tin nhé!</h3>
+                        @endif
                         <img class="tw-inline" src="{{ asset('assets/img/empty-state.jpg') }}?ver=1" alt="" style="height: 100%; max-width: 100%;">
                     </div>
                 </div>
@@ -51,8 +55,13 @@
                                 <a class="trigger-show-list-img" data-id="{{ $post->id }}" href="javascript:void(0)"> {{ $post->title }}
                                 </a>
                             </div>
-                            <div class="product-info mt-3">
-                                <i class="fa fa-clock-o"></i>
+                            @if ($category = $post->categories->first())
+                            <div class="product-info">
+                                {{ $category->name }}
+                            </div>
+                            @endif
+                            <div class="product-info mt-2">
+                                <i class="fa fa-clock-o mr-1"></i>
                                {{ $post->publish_at ? $post->publish_at->format('d/m/Y') : 'Không rõ' }}
                             </div>
                             <div class="product-info">
@@ -80,6 +89,8 @@
 
 @include('customer.components.post-create')
 @endsection
+
+@include('customer.components.feature-popup', ['type' => 'market'])
 
 @push('script')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
@@ -110,7 +121,7 @@
             $('.trigger-show-list-img').on('click', function () {
                 let id = $(this).data('id');
 
-                eventFire(document.getElementById(id), 'click');
+                eventFire(document.getElementById('id'), 'click');
             });
         });
     }(window))

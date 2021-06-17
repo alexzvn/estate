@@ -126,6 +126,10 @@
             </form>
 
             <div class="statbox widget box box-shadow my-3">
+                @include('dashboard.layouts.chat', ['topic' => $user])
+            </div>
+
+            <div class="statbox widget box box-shadow my-3">
                 <div class="widget-header">
                     <div class="row">
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">

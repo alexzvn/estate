@@ -12,3 +12,8 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .docker/data/*
+backup/e
+backup/id
+supervisord.log
+supervisord.pid
+worker.log

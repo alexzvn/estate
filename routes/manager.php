@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Manager\Message\MessageApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -73,6 +74,15 @@ Route::group(['prefix' => 'post', 'namespace' => 'Post'], function () {
         Route::get('/{id}/fetch', 'MarketController@fetch')->name('manager.post.market.fetch');
     });
 
+});
+
+/**
+ * CHAT
+ */
+Route::group(['prefix' => 'chat', 'namespace' => 'Chat'], function () {
+    Route::get('/', 'ChatController@index')->name('manager.chat');
+    Route::get('/{user}/messages', 'ChatController@messages')->name('manager.chat.messages');
+    Route::post('/{user}/messages', 'ChatController@store')->name('manager.chat.store');
 });
 
 /**
@@ -194,6 +204,7 @@ Route::group(['prefix' => 'order', 'namespace' => 'Order'], function () {
 Route::group(['prefix' => 'blacklist'], function () {
     Route::group(['prefix' => 'phone', 'namespace' => 'Blacklist'], function () {
         Route::get('/', 'BlacklistController@index')->name('manager.blacklist.phone');
+        Route::get('/export', 'BlacklistController@exportExcel')->name('manager.blacklist.export');
         Route::post('/store', 'BlacklistController@store')->name('manager.blacklist.phone.store');
         Route::post('/{id}/update', 'BlacklistController@update')->name('manager.blacklist.phone.update');
         Route::post('/{id}/delete', 'BlacklistController@delete')->name('manager.blacklist.phone.delete');
@@ -237,6 +248,10 @@ Route::group(['prefix' => 'activity', 'namespace' => 'Activity'], function () {
  */
 Route::group(['prefix' => 'audit', 'namespace' => 'Audit'], function () {
     Route::get('/', 'AuditController@index')->name('manager.audit');
+});
+
+Route::group(['prefix' => 'messages'], function () {
+    Route::post('store', [MessageApiController::class, 'store'])->name('manager.message.api.store');
 });
 
 /**

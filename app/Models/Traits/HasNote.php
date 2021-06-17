@@ -11,7 +11,7 @@ trait HasNote
 {
     public function note()
     {
-        return $this->hasOne(Note::class);
+        return $this->morphOne(Note::class, 'notable');
     }
 
     public function readNote()
@@ -21,6 +21,12 @@ trait HasNote
 
     public function writeNote(string $content = '')
     {
-        return $this->note()->firstOrCreate([])->update(compact('content'));
+        if (! $note = $this->note) {
+            $note = new Note(compact('content'));
+        }
+
+        $note->fill(compact('content'));
+
+        return $this->note()->save($note);
     }
 }

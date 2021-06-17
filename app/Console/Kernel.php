@@ -33,27 +33,31 @@ class Kernel extends ConsoleKernel
     {
         $setting = Setting::load();
 
-        if ($setting->compareStrict('post.reverse', false)) {
+        if ($setting->compareStrict('post.reverse', true)) {
             $schedule->command('post:reverser --item=3')
                 ->everyTenMinutes()
                 ->between('7:00', '22:00')
                 ->appendOutputTo(storage_path('logs/schedule.log'));
         }
 
-        // Re-index phone for every 2 hours 
-        // Not best solution but honest work
-        // TODO fix remove after upgrade to mysql database
-        $schedule->call(function () {
+        $schedule->command('reverser:day')
+            ->dailyAt('0:10')
+            ->appendOutputTo(storage_path('logs/schedule.log'));
 
-            Post::chunk(2000, function (Collection $posts) {
-                $posts->each(function (Post $post) {
-                    if ($post->phone) {
-                        TrackingPost::findByPhoneOrCreate($post->phone)->tracking();
-                    }
-                });
-            });
+        // Index all recent post to elastic
+        $indexer = function () {
+            $thePast = now()->subMinutes(5);
 
-        })->everyTwoHours();
+            Post::where('publish_at', '>', $thePast)
+                ->orWhere('created_at', '>', $thePast)
+                ->get()
+                ->searchable();
+        };
+
+        $schedule->call($indexer)
+            ->everyMinute()
+            ->name('Index post to elastic')
+            ->appendOutputTo(storage_path('logs/schedule.log'));
     }
 
     /**

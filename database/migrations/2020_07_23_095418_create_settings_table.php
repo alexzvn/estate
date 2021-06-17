@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateSettingsTable extends Migration
@@ -13,9 +13,10 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('settings', function (Blueprint $collection) {
-            $collection->unique('key');
-            $collection->boolean('preload');
+        Schema::create('settings', function (Blueprint $table) {
+            $table->string('key', 50)->primary();
+            $table->mediumText('value')->nullable();
+            $table->boolean('preload')->default(true);
         });
     }
 

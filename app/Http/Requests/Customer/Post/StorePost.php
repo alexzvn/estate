@@ -28,7 +28,7 @@ class StorePost extends FormRequest
             'content' => 'required|string',
             'phone' => 'required|string|regex:/^[0-9]+$/',
             'price' => 'required|numeric',
-            'category' => 'nullable|string|exists:categories,_id'
+            'category' => 'nullable|string|exists:categories,id'
         ];
     }
 }

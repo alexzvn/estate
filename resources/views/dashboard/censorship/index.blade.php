@@ -2,7 +2,6 @@
 
 @push('style')
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/tables/table-basic.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
 @endpush
 
 @section('content')

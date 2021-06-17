@@ -5,25 +5,29 @@ namespace App\Models;
 use App\Enums\Role as Type;
 use App\Models\Traits\CanFilter;
 use App\Models\Traits\CanVerifyPhone;
-use Maklad\Permission\Traits\HasRoles;
 use App\Contracts\Auth\MustVerifyPhone;
+use App\Elastic\UserIndexer;
 use App\Models\Location\Province;
 use App\Models\Traits\Auditable as TraitsAuditable;
-use App\Models\Traits\CanSearch;
+use App\Models\Traits\CacheDefault;
 use App\Models\Traits\HasNote;
 use App\Models\Traits\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Jenssegers\Mongodb\Eloquent\Builder;
-use Jenssegers\Mongodb\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use OwenIt\Auditing\Contracts\Auditable;
+use ScoutElastic\Searchable;
+use Spatie\Permission\Traits\HasRoles;
 
 // use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements MustVerifyPhone, Auditable
 {
     use Notifiable, TraitsAuditable, HasNote;
-    use HasRoles, CanVerifyPhone, CanFilter, CanSearch;
+    use HasRoles, CanVerifyPhone, CanFilter, Searchable;
+
+    protected $indexConfigurator = UserIndexer::class;
 
     const BANNED = 'banned';
 
@@ -48,6 +52,28 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
      * Used for check only one auth session at time
      */
     public const SESSION_TIMEOUT = 30;
+
+    protected $mapping = [
+        'properties' => [
+            'name'              => ['type' => 'text'],
+            'phone'             => ['type' => 'keyword'],
+            'email'             => ['type' => 'completion'],
+            'address'           => ['type' => 'text'],
+            'phone_verified_at' => ['type' => 'date'],
+            'email_verified_at' => ['type' => 'date'],
+            'banned_at'         => ['type' => 'date'],
+            'last_seen'         => ['type' => 'date'],
+            'updated_at'        => ['type' => 'date'],
+            'updated_at'        => ['type' => 'date'],
+            'created_at'        => ['type' => 'date'],
+            'deleted_at'        => ['type' => 'date'],
+            'subscription'      => ['type' => 'nested'],
+
+            'order.total'       => ['type' => 'long'],
+            'post.seen'         => ['type' => 'boolean'],
+            'has_login'         => ['type' => 'boolean'],
+        ]
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -82,6 +108,11 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         'banned_at',
         'birthday'
     ];
+
+    public function messages()
+    {
+        return $this->morphMany(Message::class, 'sender');
+    }
 
     public function provinces()
     {
@@ -151,12 +182,12 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
 
     public function blacklistPosts()
     {
-        return $this->belongsToMany(Post::class, null, 'user_blacklist_ids', 'post_blacklist_ids');
+        return $this->belongsToMany(Post::class, 'post_user_blacklist');
     }
 
     public function savePosts()
     {
-        return $this->belongsToMany(Post::class, null, 'user_save_ids', 'post_save_ids');
+        return $this->belongsToMany(Post::class, 'post_user_save');
     }
 
     public function markPhoneAsNotVerified()
@@ -193,8 +224,8 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     public function scopeOnline(Builder $builder)
     {
         return $builder
-        ->whereNotNull('session_id')
-        ->where('last_seen', '>=', now()->subMinutes(static::SESSION_TIMEOUT));
+            ->whereNotNull('session_id')
+            ->where('last_seen', '>=', now()->subMinutes(static::SESSION_TIMEOUT));
     }
 
     public function scopeOnlyCustomer(Builder $builder)
@@ -209,7 +240,7 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     {
         return $builder->whereDoesntHave('orders', function (Builder $builder)
         {
-            $builder->where('after_discount_price', '>', 0);
+            $builder->where('total', '>', 0);
         });
     }
 
@@ -217,41 +248,33 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
     {
         return $builder->whereHas('orders', function (Builder $builder)
         {
-            $builder->where('after_discount_price', '>', 0);
+            $builder->where('total', '>', 0);
         });
     }
 
     public function scopeNeverLogin(Builder $builder)
     {
-        return $builder->whereDoesntHave('logs', function (Builder $builder)
-        {
-            $builder->where('content', 'regexp', '/^(Đã đăng nhập)/');
+        return $builder->whereDoesntHave('logs', function (Builder $builder) {
+            $builder->where('content', 'regexp', '^(Đã đăng nhập)')->limit(1);
         });
     }
 
     public function scopeNeverReadPostBefore(Builder $builder)
     {
-        return $builder->whereDoesntHave('logs', function (Builder $builder)
-        {
-            $builder->where('content', 'regexp', '/^(Đã xem tin)/');
+        return $builder->whereDoesntHave('logs', function (Builder $builder) {
+            $builder->where('content', 'regexp', '^(Đã xem tin)')->limit(1);
         });
     }
 
     protected function filterQuery(Builder $builder, $value)
     {
-        $builder = $this->scopeSearch($builder, $value);
-        return $this->scopeOrderByScore($builder);
+        
     }
 
     protected function filterRoles(Builder $builder, $roles)
     {
-        $roles = is_string($roles) ? explode(',', $roles) : $roles;
-
-        return $builder->whereHas('roles', function (Builder $builder) use ($roles)
-        {
-            foreach ($roles as $role) {
-                $builder->orWhere('_id', $role);
-            }
+        return $builder->whereHas('roles', function (Builder $builder) use ($roles) {
+            $builder->where('id', $roles);
         });
     }
 
@@ -283,6 +306,20 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
         );
     }
 
+    public function filterExpires(Builder $builder, $time)
+    {
+        $builder->whereHas('subscriptions', function ($q) use ($time) {
+            $q->filter(['expires' => $time]);
+        });
+    }
+
+    protected function filterExpiresLast(Builder $builder, $days)
+    {
+        $builder->whereHas('subscriptions', function ($q) use ($days) {
+            $q->filter(['expires_last' => $days]);
+        });
+    }
+
     protected function filterStatus(Builder $builder, $status)
     {
         switch ($status) {
@@ -292,8 +329,8 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             case static::ONLINE: return $this->scopeOnline($builder);
             case static::SPEND_ZERO: return $this->scopeSpendZero($builder);
             case static::SPEND_MORE: return $this->scopeSpendMore($builder);
-            case static::NEVER_LOGIN_BEFORE: return $this->scopeNeverLogin($builder);
-            case static::NEVER_READ_POST_BEFORE: return $this->scopeNeverReadPostBefore($builder);
+            // case static::NEVER_LOGIN_BEFORE: return $this->scopeNeverLogin($builder);
+            // case static::NEVER_READ_POST_BEFORE: return $this->scopeNeverReadPostBefore($builder);
         }
     }
 
@@ -322,18 +359,20 @@ class User extends Authenticatable implements MustVerifyPhone, Auditable
             static::ONLINE => 'Đang online',
             static::SPEND_ZERO => 'Tài khoản 0đ',
             static::SPEND_MORE => 'Tài khoản trên 0đ',
-            static::NEVER_LOGIN_BEFORE => 'Chưa đăng nhập lần nào',
-            static::NEVER_READ_POST_BEFORE => 'Chưa xem tin nào'
+            // static::NEVER_LOGIN_BEFORE => 'Chưa đăng nhập lần nào',
+            // static::NEVER_READ_POST_BEFORE => 'Chưa xem tin nào'
         ];
     }
 
-    public function getIndexDocumentData()
+    public function toSearchableArray()
     {
-        return [
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'address' => $this->address,
-        ];
+        $user = array_merge($this->toArray(), [
+            'order.total' => $this->orders->sum('total'),
+            'subscription' => $this->subscriptions->compress(),
+            'post.seen' => $this->logs()->where('content', 'regexp', '^(Đã xem tin)')->exists(),
+            'has_login' => $this->logs()->where('content', 'regexp', '^(Đã đăng nhập)')->exists()
+        ]);
+
+        return $user;
     }
 }

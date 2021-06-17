@@ -4,7 +4,7 @@ namespace App\Models\Traits;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Jenssegers\Mongodb\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * 

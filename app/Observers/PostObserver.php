@@ -66,7 +66,7 @@ class PostObserver
     protected function index(Post $post)
     {
         Post::withoutEvents(function () use ($post) {
-            $post->index();
+
         });
 
         $this->tracking($post);

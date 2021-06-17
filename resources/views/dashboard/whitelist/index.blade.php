@@ -63,7 +63,7 @@
                             <td>{{ $phone->created_at->format('d/m/Y H:i:s') }}</td>
                             <td>
                                 @can('blacklist.phone.delete')
-                                <button type="button" class="btn btn-danger delete" data-id="{{ $phone->id }}">Xóa</button>
+                                <button type="button" class="btn btn-danger delete" data-id="{{ $phone->phone }}">Xóa</button>
                                 @endcan
                             </td>
                         </tr>
@@ -127,8 +127,6 @@
     $(document).ready(function() {
         $('.note').on('change', function () {
             let id = $(this).data('id');
-
-            console.log(id);
 
             fetch(`/manager/whitelist/phone/${id}/update`, {
                 headers: {

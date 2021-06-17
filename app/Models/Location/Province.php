@@ -2,11 +2,11 @@
 
 namespace App\Models\Location;
 
-use App\Models\User;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\Builder;
+use App\Models\Location;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 
-class Province extends Model
+class Province extends Location
 {
     protected $fillable = ['name', 'type'];
 
@@ -25,5 +25,14 @@ class Province extends Model
     public function scopeActive(Builder $builder)
     {
         $builder->where('active', true);
+    }
+
+    public function toRegex()
+    {
+        $name = preg_replace("/^(Tỉnh|Thành Phố)/i", '', $this->name, 1);
+
+        $name = trim($name);
+
+        return "/$name/i";
     }
 }

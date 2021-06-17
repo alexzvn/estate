@@ -24,7 +24,7 @@ class AssignCustomer extends FormRequest
     public function rules()
     {
         return [
-            'supporter_id' => 'nullable|exists:users,_id'
+            'supporter_id' => 'nullable|exists:users,id'
         ];
     }
 }

@@ -3,7 +3,6 @@
 @extends('dashboard.app')
 
 @push('style')
-<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/file-upload/file-upload-with-preview.min.css') }}">
 <style>
 .active td {
@@ -57,7 +56,7 @@
                     </thead>
                     <tbody>
                         @foreach ($posts as $post)
-                        <tr class="{{ $post->approveFee ? 'active' : '' }}">
+                        <tr class="{{ $post->approve_fee ? 'active' : '' }}">
                             <td class="checkbox-column">
                                 <div class="custom-control custom-checkbox checkbox-primary">
                                   <input type="checkbox" id="todo-{{ $post->id }}" class="custom-control-input todochkbox" name="ids[]" value="{{ $post->id }}">
@@ -67,10 +66,11 @@
                             <td class="cursor-pointer open-post" data-id="{{ $post->id }}">
                                 <p class="mb-0">
                                     <strong>
-                                        @if (isset($post->phone) && $whitelist->whereIn('phone', $post->phone)->isNotEmpty())
+                                        @if ($post->day_reverser) <i class="t-icon text-danger" data-feather="refresh-cw"></i> @endif
+                                        @if ($post->whitelist)
                                         [<span class="text-success font-weight-bolder">Chính chủ</span>]
                                         @endif
-                                        @if ($post->approveFee)
+                                        @if ($post->approve_fee)
                                             [<span class="text-secondary font-weight-bolder">Đã duyệt</span>]
                                         @endif
                                         {{ Str::ucfirst(Str::of($post->title)->limit(73)) }}
@@ -203,7 +203,7 @@ ClassicEditor
                     commission: post.commission,
                     price: post.price,
                     title: post.title,
-                    id: post._id,
+                    id: post.id,
                 };
 
                 editor.setData(post.content);
@@ -216,7 +216,7 @@ ClassicEditor
                 }
 
                 let options = {
-                    category: post.category_ids[0],
+                    category: post.categories[0] ? post.categories[0].id : null,
                     province: post.province_id,
                     district: post.district_id,
                     type: post.type,

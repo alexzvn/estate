@@ -46,7 +46,7 @@ class UpdateUser extends FormRequest
                 Rule::unique('users', 'phone')->ignoreModel($updateUser)
             ],
             'name' => 'required',
-            'roles' => 'nullable|array|exists:roles,_id',
+            'roles' => 'nullable|array|exists:roles,id',
             'password' => 'nullable',
             'password_confirm' => 'required_with:password|same:password'
         ];

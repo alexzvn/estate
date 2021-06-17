@@ -18,34 +18,36 @@ function planToString($plans) {
 <div class="card">
     <div class="card-body">
         @if ($subscriptions->isNotEmpty())
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Tên</th>
-                    <th>Trạng thái</th>
-                    <th>Kích hoạt</th>
-                    <th>Hết hạn</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($subscriptions as $sub)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $sub->plan->name }}</td>
-                    <td>
-                        @if($sub->isActivated())
-                            <span class="badge badge-success">Đang hoạt động</span>
-                        @else
-                            <span class="badge badge-warning">Đã hết hạn</span>
-                        @endif
-                    </td>
-                    <td>{{ $sub->activate_at }}</td>
-                    <td>{{ $sub->expires_at }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tên</th>
+                        <th>Trạng thái</th>
+                        <th>Kích hoạt</th>
+                        <th>Hết hạn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($subscriptions as $sub)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $sub->plan->name }}</td>
+                        <td>
+                            @if($sub->isActivated())
+                                <span class="badge badge-success">Đang hoạt động</span>
+                            @else
+                                <span class="badge badge-warning">Đã hết hạn</span>
+                            @endif
+                        </td>
+                        <td>{{ $sub->activate_at }}</td>
+                        <td>{{ $sub->expires_at }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
         @else
         <div class="jumbotron">
             <h1 class="display-5">Bạn chưa đăng ký dịch vụ nào</h1>

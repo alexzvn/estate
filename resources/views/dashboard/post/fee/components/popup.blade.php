@@ -31,7 +31,7 @@ use App\Enums\PostType;
                                 <select class="form-control" name="type" id="post-type">
                                   <option value="">Trống</option>
                                   @foreach (PostType::getValues() as $name)
-                                  <option value="{{ $name }}">{{ $name }}</option>
+                                  <option value="{{ $name }}">{{ PostType::getDescription($name) }}</option>
                                   @endforeach
                                 </select>
                             </div>
@@ -238,7 +238,7 @@ $(document).ready(() => {
 
     window.address = {
         setDistricts(provinceId) {
-            let province = data.filter((e) => {return e._id === provinceId})[0];
+            let province = data.filter((e) => {return e.id == provinceId})[0];
             let district = $('#post-district');
 
             district.html('');
@@ -247,7 +247,7 @@ $(document).ready(() => {
             if (province === undefined) return;
 
             province.districts.map((e) => {
-                district.append(`<option value="${e._id}">${e.name}</option`);
+                district.append(`<option value="${e.id}">${e.name}</option`);
             });
         }
     };

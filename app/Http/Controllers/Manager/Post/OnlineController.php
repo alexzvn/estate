@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manager\Post;
 
 use App\Enums\PostStatus;
+use App\Enums\PostType;
 use Illuminate\Http\Request;
 use App\Repository\Permission;
 use App\Services\System\Post\Fee;
@@ -12,6 +13,8 @@ use App\Http\Requests\Manager\Post\UpdatePost;
 use App\Http\Requests\Manager\Post\StoreRequest;
 use App\Http\Controllers\Manager\Post\PostController;
 use App\Models\Keyword;
+use App\Models\Post;
+use App\Models\ScoutFilter\PostFilter;
 
 class OnlineController extends PostController
 {
@@ -19,21 +22,29 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.view');
 
-        $posts = Online::with([
+        if ($query = $request->get('query')) {
+            $posts = Post::search($query);
+
+            PostFilter::filter($posts, $request);
+
+            $posts->where('type', PostType::Online)->orderBy('publish_at', 'desc');
+        } else {
+            $posts = Online::newest()->filter($request);
+        }
+
+        $posts->with([
                 'province',
                 'district',
                 'categories',
+                'whitelist',
                 'tracking',
                 'user'
-            ])
-            ->filter($request)
-            ->newest()
-            ->paginate(40);
+            ]);
 
         $this->shareCategoriesProvinces();
 
         return view('dashboard.post.online.list', [
-            'posts' => $posts,
+            'posts' => $posts->paginate(40),
             'keywords' => Keyword::all()
         ]);
     }
@@ -48,18 +59,19 @@ class OnlineController extends PostController
             ->newest()
             ->paginate();
 
-        view()->share('staff', Permission::findUsersHasPermission('manager.dashboard.access'));
-
         $this->shareCategoriesProvinces();
 
-        return view('dashboard.post.online.list', compact('posts'));
+        return view('dashboard.post.online.list', [
+            'posts' => $posts,
+            'staff' => Permission::findUsersHasPermission('manager.dashboard.access'),
+        ]);
     }
 
     public function fetch(string $id, Online $post)
     {
         $this->authorize('manager.post.online.view');
 
-        return $post->with(['user', 'files'])
+        return $post->with(['user', 'files', 'categories'])
             ->findOrFail($id);
     }
 
@@ -135,7 +147,7 @@ class OnlineController extends PostController
                 'publish_at' => now(),
             ])->save();
 
-        $origin->forceFill(['approveFee' => true])->save();
+        $origin->forceFill(['approve_fee' => true])->save();
 
         return response([
             'success' => true,
@@ -164,9 +176,9 @@ class OnlineController extends PostController
     {
         $this->authorize('manager.post.online.reserve');
 
-        Online::reverseMany($request->ids ?? []);
+        $count = Online::reverseMany($request->ids ?? []);
 
-        return back()->with('success', 'Đã đảo các mục yêu cầu');
+        return back()->with('success', "Đã đảo $count mục yêu cầu");
     }
 
     public function deleteMany(Request $request)

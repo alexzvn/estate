@@ -28,7 +28,7 @@ class BlacklistController extends Controller
             ]);
         }
 
-        Post::lockByPhone($blacklist);
+        Post::lockByPhone($blacklist->keyBy('phoneNumber')->keys());
 
         return response([
             'success' => true,
@@ -61,6 +61,6 @@ class BlacklistController extends Controller
 
     protected function getProvinceId($name)
     {
-        return Province::where('name', 'regexp', "/$name/")->first()->id ?? null;
+        return Province::where('name', 'regexp', $name)->first()->id ?? null;
     }
 }

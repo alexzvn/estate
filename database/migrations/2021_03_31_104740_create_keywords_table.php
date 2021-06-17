@@ -16,7 +16,9 @@ class CreateKeywordsTable extends Migration
         Schema::create('keywords', function (Blueprint $table) {
             $table->id();
             $table->string('key');
+            $table->boolean('linear')->default(false);
             $table->integer('count', false, true)->default(0);
+            $table->integer('relative', false, true)->default(0);
             $table->json('posts')->nullable();
             $table->timestamps();
         });

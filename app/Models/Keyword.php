@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Enums\PostStatus;
 use Illuminate\Support\Str;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Collection;
@@ -37,10 +37,17 @@ class Keyword extends Model
         return "/(?:^|\W)$keyword(?:$|\W)/i";
     }
 
+    public function toSearchRegex()
+    {
+        $keyword = $this->makeUnicodeRegex();
+
+        return "($keyword)";
+    }
+
     public function lock()
     {
-        Post::whereIn('_id', $this->posts)
-            ->whereStatus(PostStatus::Published)
+        updater(Post::whereIn('id', $this->posts)
+            ->whereStatus(PostStatus::Published))
             ->update([
                 'status' => PostStatus::Locked
             ]);
@@ -50,9 +57,9 @@ class Keyword extends Model
 
     public function unlock()
     {
-        Post::whereStatus(PostStatus::Locked)
-            ->whereDoesntHave('blacklists')
-            ->whereIn('_id', $this->filterKeywords($this->posts))
+        updater(Post::whereStatus(PostStatus::Locked)
+            ->whereDoesntHave('blacklist')
+            ->whereIn('id', $this->filterKeywords($this->posts)))
             ->update([
                 'status' => PostStatus::Published
             ]);
@@ -73,9 +80,10 @@ class Keyword extends Model
 
     public function index()
     {
-        $posts = Post::where('content', 'regexp', $this->toRegex())
-            ->orWhere('title', 'regexp', $this->toRegex())
-            ->whereDoesntHave('whitelists')
+        $regex = $this->toSearchRegex();
+
+        $posts = Post::whereRaw('LOWER(content) REGEXP ? OR LOWER(title) REGEXP ?', [$regex, $regex])
+            ->whereDoesntHave('whitelist')
             ->get();
 
         $this->fill([
@@ -90,19 +98,19 @@ class Keyword extends Model
 
     public function indexPost(Post $post)
     {
-        if ($post->whitelists) return;
+        if ($post->whitelist) return;
 
-        if ($this->test("$post->title $post->content")) {
+        if (
+            $this->getPhones()->contains($post->phone) ||
+            $this->test("$post->title $post->content")
+        ) {
+            $post->lock();
             $this->posts = $this->posts->push($post->id);
-
-        } elseif ($post->isLocked()) {
-            $post->publish();
         }
 
-        return $this->fill([
-            'count' => $this->posts->count(),
-            'posts' => $this->posts
-        ])->save();
+        elseif ($post->isLocked()) {
+            $post->publish();
+        }
     }
 
     protected function lockSingle(Post $post)
@@ -136,9 +144,21 @@ class Keyword extends Model
 
     public function lockRelative()
     {
-        return Post::whereIn('phone', $this->getPhones())
+        $phones = $this->getPhones();
+        $blacklist = Blacklist::whereIn('phone', $phones)->get('phone')->pluck('phone');
+
+        $phones->diff($blacklist)->values()->each(function ($phone) {
+            Blacklist::withoutEvents(function () use ($phone) {
+                Blacklist::forceCreate([
+                    'phone' => $phone,
+                    'source' => "keyword-$this->id"
+                ]);
+            });
+        });
+
+        return updater(Post::whereIn('phone', $phones)
             ->whereStatus(PostStatus::Published)
-            ->whereDoesntHave('whitelists')
+            ->whereDoesntHave('whitelist'))
             ->update([
                 'status' => PostStatus::Locked
             ]);
@@ -146,9 +166,12 @@ class Keyword extends Model
 
     public function unlockRelative()
     {
-        return Post::whereIn('_id', $this->getRelativePostId())
-            ->whereDoesntHave('blacklists')
-            ->whereStatus(PostStatus::Locked)
+        Blacklist::whereIn('source', "keyword-$this->id")->get()
+            ->each(fn($phone) => $phone->delete());
+
+        return updater(Post::whereIn('id', $this->getRelativePostId())
+            ->whereDoesntHave('blacklist')
+            ->whereStatus(PostStatus::Locked))
             ->update([
                 'status' => PostStatus::Published
             ]);
@@ -166,20 +189,24 @@ class Keyword extends Model
     public function getRelativePostId()
     {
         return Post::whereIn('phone', $this->getPhones())
-            ->whereNotIn('_id', $this->posts)
-            ->get(['_id'])
+            ->whereNotIn('id', $this->posts)
+            ->get(['id'])
             ->keyBy('id')
             ->keys();
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getPhones()
     {
-        return Post::whereIn('_id', $this->posts)
-            ->get(['phone'])
+        return Post::selectRaw('DISTINCT phone')
+            ->whereIn('id', $this->posts)
             ->whereNotNull('phone')
-            ->keyBy('phone')
-            ->keys()
-            ->unique();
+            ->get()
+            ->pluck('phone');
     }
 
     private function makeUnicodeRegex()

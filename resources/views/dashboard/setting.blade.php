@@ -63,13 +63,32 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="telescope" id="telescope" value="true" @if($setting->get('telescope', false)) checked @endif>
-                            Telescope record debug
-                          </label>
+                </div>
+            </div>
+
+            <div class="statbox widget box box-shadow mt-4">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Thông báo & Popup</h4>
                         </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+
+                    <div class="form-group">
+                      <label for="online">Thông báo tin Online</label>
+                      <textarea class="form-control" name="online" id="online">{{ $setting->get('popup.online') }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="fee">Thông báo tin xin phí</label>
+                      <textarea class="form-control" name="fee" id="fee">{{ $setting->get('popup.fee') }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="market">Thông báo tin thị trường</label>
+                      <textarea class="form-control" name="market" id="market">{{ $setting->get('popup.market') }}</textarea>
                     </div>
 
                 </div>
@@ -96,6 +115,7 @@
 @endsection
 
 @push('script')
+<script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
 <script src="{{ asset('dashboard/plugins/select2/select2.min.js') }}"></script>
 <script src="{{ asset('dashboard/plugins/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
 <script src="{{ asset('dashboard/assets/js/elements/tooltip.js') }}"></script>
@@ -103,5 +123,12 @@
 $(".tagging").select2({
     tags: true
 });
+
+const editor =  section => ClassicEditor.create(document.querySelector(section))
+
+const onlineEditor = editor('#online'),
+    marketEditor = editor('#market'),
+    feeEditor = editor('#fee')
+
 </script>
 @endpush

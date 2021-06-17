@@ -32,8 +32,8 @@ class UpdatePlan extends FormRequest
             'name' => 'required|string|unique:plans,name,'. $plan->name .',name',
             'price' => 'nullable|string|regex:/^[0-9,.]+$/',
             'post_type' => ['nullable', 'array', Rule::in(PostType::getValues())],
-            'categories' => 'nullable|array|exists:categories,_id',
-            'provinces' => 'nullable|array|exists:provinces,_id'
+            'categories' => 'nullable|array|exists:categories,id',
+            'provinces' => 'nullable|array|exists:provinces,id'
         ];
     }
 

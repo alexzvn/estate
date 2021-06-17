@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use App\Models\Traits\CacheDefault;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 
 class DatabaseNotification extends Model
 {
+    use CacheDefault;
+
     /**
      * The "type" of the primary key ID.
      *

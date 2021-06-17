@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateReportsTable extends Migration
@@ -13,9 +13,11 @@ class CreateReportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reports', function (Blueprint $collection) {
-            $collection->index(['user_id', 'post_id']);
-            $collection->timestamps();
+        Schema::create('reports', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('post_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 

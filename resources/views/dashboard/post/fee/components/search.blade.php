@@ -26,7 +26,7 @@ $filterPrices = [
     '30000000000-' => '> 30 tỷ',
 ];
 
-$districts = ($provinces->where('_id', request('province'))->first() ?? $provinces->first())->districts;
+$districts = ($provinces->where('id', request('province'))->first() ?? $provinces->first())->districts;
 @endphp
 
 <form id="search-form" action="" method="GET" autocomplete="off">
@@ -50,7 +50,7 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
                 @foreach ($categories as $item)
                 <option style="color: black; font-weight: bold;" disabled>{{ $item->name }}</option>
                     @foreach ($item->children ?? [] as $item)
-                    <option value="{{ $item->id }}" {{ $item->id === request('categories') ? 'selected' : ''}}>{{ $item->name }}</option>
+                    <option value="{{ $item->id }}" {{ $item->id == request('categories') ? 'selected' : ''}}>{{ $item->name }}</option>
                     @endforeach
                 @endforeach
               </select>
@@ -62,7 +62,7 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
                 <select class="form-control" name="district" id="district">
                   <option value="">Chọn Quận/Huyện</option>
                   @foreach ($districts ?? $provinces->first()->districts ?? [] as $item)
-                      <option value="{{ $item->id }}" {{ $item->id === request('district') ? 'selected' : ''}}>{{ $item->name }}</option>
+                      <option value="{{ $item->id }}" {{ $item->id == request('district') ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach
                 </select>
               </div>
@@ -97,7 +97,7 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
                         <select class="form-control" name="price" id="price">
                           <option value="">Chọn khoảng giá</option>
                           @foreach ($filterPrices as $value => $name)
-                              <option value="{{ $value }}" {{ $value === request('price') ? 'selected' : ''}}>{{ $name }}</option>
+                              <option value="{{ $value }}" {{ $value == request('price') ? 'selected' : ''}}>{{ $name }}</option>
                           @endforeach
                         </select>
                     </div>
@@ -108,7 +108,7 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
                         <select class="form-control" name="province" id="province">
                           <option value="">Chọn Tỉnh/TP</option>
                           @foreach ($provinces ?? [] as $item)
-                              <option value="{{ $item->id }}" {{ $item->id === request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                              <option value="{{ $item->id }}" {{ $item->id == request('province', -1) ? 'selected' : ''}}>{{ $item->name }}</option>
                           @endforeach
                         </select>
                     </div>
@@ -119,7 +119,7 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
                         <select class="form-control" name="status" id="status">
                           <option value="">Trạng thái</option>
                           @foreach (\App\Enums\PostStatus::getKeyName() as $key => $name)
-                              <option value="{{ $key }}" {{ $key === request('status') ? 'selected' : ''}}>{{ $name }}</option>
+                              <option value="{{ $key }}" {{ $key == request('status', -1) ? 'selected' : ''}}>{{ $name }}</option>
                           @endforeach
                         </select>
                     </div>
@@ -186,7 +186,7 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
             let id = $('#province').val();
             let district = $('#district');
 
-            let province = address.filter((e) => {return e._id === id})[0];
+            let province = address.filter((e) => {return e.id == id})[0];
 
             district.html('');
             district.append('<option value="" selected>Chọn</option');
@@ -194,7 +194,7 @@ $districts = ($provinces->where('_id', request('province'))->first() ?? $provinc
             if (province === undefined) return;
 
             province.districts.map((e) => {
-                district.append(`<option value="${e._id}">${e.name}</option`);
+                district.append(`<option value="${e.id}">${e.name}</option`);
             });
         });
     });

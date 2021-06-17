@@ -6,6 +6,7 @@ use App\Repository\Order;
 use App\Http\Controllers\Manager\Controller;
 use App\Http\Requests\Manager\Order\UpdateOrder;
 use App\Models\Order as ModelsOrder;
+use App\Models\ScoutFilter\OrderFilter;
 use App\Repository\Permission;
 use App\Repository\Plan;
 use App\Services\Customer\Customer;
@@ -18,10 +19,13 @@ class OrderController extends Controller
     {
         $this->authorize('manager.order.view');
 
-        $order = Order::with(['plans', 'customer.note', 'creator'])
-            ->whereHas('customer')
-            ->filter($request)
-            ->latest();
+        if ($query = $request->get('query')) {
+            $order = OrderFilter::filter(Order::search($query), request());
+        } else {
+            $order = Order::whereHas('customer')->filter($request)->latest();
+        }
+
+        $order->with(['plans', 'customer.note', 'creator', 'note']);
 
         return view('dashboard.order.index', [
             'orders' => $order->paginate(40),
@@ -112,10 +116,11 @@ class OrderController extends Controller
         unset($filler['expires_at']);
 
         $order->fill($filler)->fill([
-            'month' => (int) $request->expires_month,
-            'price' => $order->plans->sum('price') ?? 0,
-            'status'=> $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
-            'verified' => (bool) $request->verified,
+            'month'      => (int) $request->expires_month,
+            'price'      => $order->plans->sum('price') ?? 0,
+            'discount'   => $request->discount ?? 0,
+            'status'     => $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
+            'verified'   => (bool) $request->verified,
             'expires_at' => $request->expiresAt(),
         ]);
 
@@ -133,6 +138,7 @@ class OrderController extends Controller
         $order->fill($filler)->fill([
             'month' => null,
             'price' => $price,
+            'discount'   => $request->discount ?? 0,
             'status'=> $request->verified ? ModelsOrder::PAID : ModelsOrder::PENDING,
             'verified' => (bool) $request->verified,
             'expires_at' => $request->expiresAt(),
@@ -149,7 +155,7 @@ class OrderController extends Controller
             $price -= $price * ($order->discount/100);
         }
 
-        $order->after_discount_price = $price;
+        $order->total = $price;
 
         return $order;
     }

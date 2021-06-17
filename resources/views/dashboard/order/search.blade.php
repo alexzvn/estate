@@ -23,7 +23,9 @@
               <select class="form-control" name="plan" id="plan">
                 <option value="">Gói tin</option>
                 @foreach ($plans as $plan)
-                <option value="{{ $plan->id }}" {{ request('plan') === $plan->id ? 'selected' : '' }}>{{ $plan->name }}</option>
+                <option value="{{ $plan->id }}" {{ request('plan') == $plan->id ? 'selected' : '' }}>
+                    {{ $plan->renewable ? 'KH:' : '' }} {{ $plan->name }}
+                </option>
                 @endforeach
               </select>
             </div>
@@ -34,7 +36,7 @@
               <select class="form-control" name="creator" id="creator">
                 <option value="">Người tạo</option>
                 @foreach ($staff as $user)
-                <option value="{{ $user->id }}" {{ request('creator') === $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                <option value="{{ $user->id }}" {{ request('creator') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
                 @endforeach
               </select>
             </div>
@@ -141,7 +143,7 @@
             let id = $('#province').val();
             let district = $('#district');
 
-            let province = address.filter((e) => {return e._id === id})[0];
+            let province = address.filter((e) => {return e.id == id})[0];
 
             district.html('');
             district.append('<option value="" selected>Chọn</option');
@@ -149,7 +151,7 @@
             if (province === undefined) return;
 
             province.districts.map((e) => {
-                district.append(`<option value="${e._id}">${e.name}</option`);
+                district.append(`<option value="${e.id}">${e.name}</option`);
             });
         });
     });

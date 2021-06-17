@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateAuditsTable extends Migration
@@ -14,6 +14,7 @@ class CreateAuditsTable extends Migration
     public function up()
     {
         Schema::create('audits', function (Blueprint $table) {
+            $table->id();
             $table->string('user_type')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('event');

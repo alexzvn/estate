@@ -60,8 +60,8 @@ class ImportCrawlJobsTest extends TestCase
             'categories'  => [Category::first()],
             'price'       => 100000000,
             'phone'       => '0123456789',
-            'province_id' => 'province_id',
-            'district_id' => 'district_id',
+            'province_id' => 1,
+            'district_id' => 1,
         ];
     }
 }

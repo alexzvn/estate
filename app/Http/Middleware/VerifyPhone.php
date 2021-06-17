@@ -16,11 +16,15 @@ class VerifyPhone
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user() && $request->user()->hasVerifiedPhone()) {
+        if (! $user = $request->user()) {
+            return $next ($request);
+        }
+
+        if ($user->hasVerifiedPhone() || $user->can('*')) {
             return $next($request);
         }
 
-        if ($request->user() && $request->user()->can('*')) {
+        if (now()->subMinutes(5)->greaterThan($user->created_at)) {
             return $next($request);
         }
 

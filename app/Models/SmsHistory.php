@@ -3,17 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\AsCollection;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class SmsHistory extends Model
 {
     protected $fillable = [
         'recipient',
         'content'
-    ];
-
-    protected $casts = [
-        'recipients' => AsCollection::class
     ];
 
     public function sender()

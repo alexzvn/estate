@@ -6,16 +6,21 @@ use App\Models\Traits\HasNote;
 use Illuminate\Support\Carbon;
 use App\Models\Traits\CanFilter;
 use App\Contracts\Models\CanNote;
-use Jenssegers\Mongodb\Eloquent\Model;
+use App\Elastic\OrderIndexer;
+use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Traits\Auditable as TraitsAuditable;
-use App\Models\Traits\CanSearch;
+use App\Models\Traits\CacheDefault;
+use ScoutElastic\Searchable;
 
 class Order extends Model implements CanNote, Auditable
 {
-    use SoftDeletes, HasNote, CanFilter, TraitsAuditable, CanSearch;
+    use CacheDefault, Searchable;
+    use SoftDeletes, HasNote, CanFilter, TraitsAuditable;
+
+    protected $indexConfigurator = OrderIndexer::class;
 
     public const DISCOUNT_PERCENT = 1;
 
@@ -27,6 +32,21 @@ class Order extends Model implements CanNote, Auditable
 
     const NAME = 'đơn hàng';
 
+    protected $mapping = [
+        'properties' => [
+            'plan_name'      => ['type' => 'text'],
+            'manual'         => ['type' => 'boolean'],
+            'verified'       => ['type' => 'boolean'],
+            'customer_name'  => ['type' => 'text'],
+            'customer_phone' => ['type' => 'text'],
+            'activate_at'    => ['type' => 'date'],
+            'expires_at'     => ['type' => 'date'],
+            'updated_at'     => ['type' => 'date'],
+            'created_at'     => ['type' => 'date'],
+        ]
+    ];
+
+
     protected $fillable = [
         'manual',
         'month',
@@ -35,15 +55,16 @@ class Order extends Model implements CanNote, Auditable
         'verified',
         'discount',
         'discount_type',
-        'after_discount_price',
+        'total',
         'activate_at',
         'expires_at',
     ];
 
     protected $casts = [
-        'verified' => 'boolean',
+        'manual'        => 'boolean',
+        'verified'      => 'boolean',
         'discount_type' => 'integer',
-        'price' => 'float',
+        'price'         => 'float',
     ];
 
     protected $dates = [
@@ -88,15 +109,6 @@ class Order extends Model implements CanNote, Auditable
         return $this->status === static::PAID;
     }
 
-    public function filterQuery(Builder $builder, $query)
-    {
-        $search = function ($builder) use ($query) {
-            $builder->search($query);
-        };
-
-        $builder->whereHas('customer', $search);
-    }
-
     public function filterActivatedFrom(Builder $builder, $time)
     {
         return $builder->where(
@@ -120,7 +132,7 @@ class Order extends Model implements CanNote, Auditable
     {
         return $builder->whereHas('plans', function ($builder) use ($plan)
         {
-            $builder->where('_id', $plan);
+            $builder->where('id', $plan);
         });
     }
 
@@ -136,5 +148,16 @@ class Order extends Model implements CanNote, Auditable
         }, 0);
 
         return $price * $this->month;
+    }
+
+    public function toSearchableArray()
+    {
+        $this->load(['plans', 'creator', 'verifier', 'customer']);
+
+        return array_merge($this->toArray(), [
+            'plan_name'     => $this->plans->map(fn($p) => $p->name)->join(', '),
+            'customer_name' => $this->customer->name ?? '',
+            'customer_phone' => $this->customer->phone ?? '',
+        ]);
     }
 }

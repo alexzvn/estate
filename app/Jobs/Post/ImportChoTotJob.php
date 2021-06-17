@@ -23,5 +23,7 @@ class ImportChoTotJob extends ImportPostJob
         if ($this->shouldLock($post)) {
             $post->fill(['status' => PostStatus::Locked])->save();
         }
+
+        $post->searchable();
     }
 }

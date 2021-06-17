@@ -26,7 +26,7 @@ $filterPrices = [
     '30000000000-' => '> 30 tỷ',
 ];
 
-$districts = $provinces->where('_id', request('province'))->first() ?? $provinces->first();
+$districts = $provinces->where('id', request('province'))->first() ?? $provinces->first();
 $districts = $districts->districts ?? null;
 @endphp
 
@@ -51,7 +51,7 @@ $districts = $districts->districts ?? null;
                 @foreach ($categories as $item)
                 <option style="color: black; font-weight: bold;" disabled>{{ $item->name }}</option>
                     @foreach ($item->children ?? [] as $item)
-                    <option value="{{ $item->id }}" {{ $item->id === request('categories') ? 'selected' : ''}}>{{ $item->name }}</option>
+                    <option value="{{ $item->id }}" {{ $item->id == request('categories') ? 'selected' : ''}}>{{ $item->name }}</option>
                     @endforeach
                 @endforeach
               </select>
@@ -63,7 +63,7 @@ $districts = $districts->districts ?? null;
                 <select class="form-control" name="district" id="district">
                   <option value="">Chọn Quận/Huyện</option>
                   @foreach ($districts ?? $provinces->first()->districts ?? [] as $item)
-                      <option value="{{ $item->id }}" {{ $item->id === request('district') ? 'selected' : ''}}>{{ $item->name }}</option>
+                      <option value="{{ $item->id }}" {{ $item->id == request('district') ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach
                 </select>
               </div>
@@ -105,7 +105,7 @@ $districts = $districts->districts ?? null;
                         <select class="form-control" name="price" id="price">
                           <option value="">Chọn khoảng giá</option>
                           @foreach ($filterPrices as $value => $name)
-                              <option value="{{ $value }}" {{ $value === request('price') ? 'selected' : ''}}>{{ $name }}</option>
+                              <option value="{{ $value }}" {{ $value == request('price') ? 'selected' : ''}}>{{ $name }}</option>
                           @endforeach
                         </select>
                     </div>
@@ -115,7 +115,7 @@ $districts = $districts->districts ?? null;
                         <select class="form-control" name="province" id="province">
                           <option value="">Chọn Tỉnh/TP</option>
                           @foreach ($provinces ?? [] as $item)
-                              <option value="{{ $item->id }}" {{ $item->id === request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
+                              <option value="{{ $item->id }}" {{ $item->id == request('province') ? 'selected' : ''}}>{{ $item->name }}</option>
                           @endforeach
                         </select>
                     </div>
@@ -124,8 +124,8 @@ $districts = $districts->districts ?? null;
                     <div class="form-group">
                         <select class="form-control" name="order" id="order">
                           <option value="">Cách sắp xếp</option>
-                          <option value="newest" {{ request('order') === 'newest' ? 'selected' :'' }}>Mới nhất</option>
-                          <option value="accurate" {{ request('order') === 'accurate' ? 'selected' :'' }}>Chính xác nhất</option>
+                          <option value="newest" {{ request('order') == 'newest' ? 'selected' :'' }}>Mới nhất</option>
+                          <option value="accurate" {{ request('order') == 'accurate' ? 'selected' :'' }}>Chính xác nhất</option>
                         </select>
                     </div>
                 </div>
@@ -176,7 +176,7 @@ $districts = $districts->districts ?? null;
             let id = $('#province').val();
             let district = $('#district');
 
-            let province = address.filter((e) => {return e._id === id})[0];
+            let province = address.filter((e) => {return e.id == id})[0];
 
             district.html('');
             district.append('<option value="" selected>Chọn</option');
@@ -184,7 +184,7 @@ $districts = $districts->districts ?? null;
             if (province === undefined) return;
 
             province.districts.map((e) => {
-                district.append(`<option value="${e._id}">${e.name}</option`);
+                district.append(`<option value="${e.id}">${e.name}</option`);
             });
         });
     });

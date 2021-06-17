@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateTrackingPostsTable extends Migration
@@ -13,9 +13,14 @@ class CreateTrackingPostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tracking_posts', function (Blueprint $collection) {
-            $collection->unique('phone');
-            $collection->integer(['district_unique', 'categories_unique', 'seen']);
+        Schema::create('tracking_posts', function (Blueprint $table) {
+            $table->string('phone', 50)->primary();
+
+            $table->unsignedInteger('district_unique')->default(0);
+            $table->unsignedInteger('categories_unique')->default(0);
+            $table->unsignedInteger('seen')->default(0);
+
+            $table->timestamps();
         });
     }
 

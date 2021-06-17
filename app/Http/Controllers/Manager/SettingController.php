@@ -19,16 +19,18 @@ class SettingController extends Controller
 
     public function update(SaveSetting $request, Setting $setting)
     {
-        Province::whereIn('_id', $request->provinces)->update(['active' => true]);
-        Province::whereNotIn('_id', $request->provinces)->update(['active' => false]);
+        Province::whereIn('id', $request->provinces)->update(['active' => true]);
+        Province::whereNotIn('id', $request->provinces)->update(['active' => false]);
 
         $setting->fill([
-            'title'              => $request->title,
-            'user.role.default'  => $request->role,
-            'notification'       => $request->notification,
-            'google.analytics'   => $request->google_analytics,
-            'post.reverse'       => (bool) $request->reverse,
-            'telescope'          => (bool) $request->telescope
+            'title'             => $request->title,
+            'user.role.default' => $request->role,
+            'notification'      => $request->notification,
+            'google.analytics'  => $request->google_analytics,
+            'post.reverse'      => (bool) $request->reverse,
+            'popup.online'      => $request->online,
+            'popup.fee'         => $request->fee,
+            'popup.market'      => $request->market,
         ]);
 
         return redirect(route('manager.setting'))->with('success', 'Cập nhật thành công');

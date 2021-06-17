@@ -34,7 +34,16 @@ class ImportPostJob implements ShouldQueue
 
     protected function shouldLock(Post $post)
     {
-        return $this->isInKeyword($post) || $this->isInBlacklist($post->phone);
+       $conditions = [
+            $this->isInKeyword($post),
+            $this->isInBlacklist($post->phone)
+       ];
+
+        foreach ($conditions as $value) {
+            if ($value) return true;
+        }
+
+        return false;
     }
 
     protected function isInBlacklist($phone)
@@ -54,6 +63,13 @@ class ImportPostJob implements ShouldQueue
                 $key->posts = $key->posts->push($post->id)->unique();
 
                 $key->save();
+
+                if ($post->phone && !$this->isInBlacklist($post->phone)) {
+                    Blacklist::forceCreate([
+                        'phone' => $post->phone,
+                        'source' => "keyword-$post->id"
+                    ]);
+                }
             }
         }
 

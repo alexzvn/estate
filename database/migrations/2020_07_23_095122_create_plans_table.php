@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreatePlansTable extends Migration
@@ -13,8 +13,16 @@ class CreatePlansTable extends Migration
      */
     public function up()
     {
-        Schema::create('plans', function (Blueprint $collection) {
-            $collection->timestamps();
+        Schema::create('plans', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->unsignedBigInteger('price')->default(0);
+            $table->json('types')->nullable();
+            $table->json('categories')->nullable();
+            $table->json('provinces')->nullable();
+            $table->boolean('renewable')->default(false);
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

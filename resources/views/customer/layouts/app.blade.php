@@ -10,7 +10,7 @@
     <title>{{ $setting->title }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('assets/js/app.js') }}" defer></script>
+    <script src="{{ mix('assets/js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -21,7 +21,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('assets/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/snackbar/snackbar.min.css') }}">
@@ -40,6 +40,8 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    @include('layouts.chat')
+
     @if ($tracking = $setting->get('google.analytics', false))
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ $tracking }}"></script>
@@ -51,6 +53,15 @@
         gtag('config', '{{ $tracking }}');
     </script>
     @endif
+
+    <div style="z-index: 5; position: fixed;bottom: 60px; right: 20px;">
+        <a href="https://zalo.me/0965533958" target="_blank">
+            <span class="tw-animate-ping tw-absolute tw-inline-flex tw-h-full tw-w-full tw-rounded-full tw-bg-purple-400 tw-opacity-75"></span>
+            <img style="max-width: 60px; max-height: 60px;" src="{{ asset('assets/img/stick_zalo.png') }}" alt="">
+        </a>
+    </div>
+
+    @stack('before-body')
 
     <script src="{{ asset('assets/snackbar/snackbar.min.js') }}"></script>
     @stack('script')

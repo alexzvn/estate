@@ -4,14 +4,14 @@ namespace App\Repository;
 
 use App\Contracts\RepositoryInterface;
 use Illuminate\Support\Traits\ForwardsCalls;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * @method \Jenssegers\Mongodb\Eloquent\Model fill(array $attr = [])
- * @method \Jenssegers\Mongodb\Eloquent\Model forceFill(array $attr = [])
- * @method static \Jenssegers\Mongodb\Eloquent\Model findOrFail(string $id)
- * @method static \Jenssegers\Mongodb\Eloquent\Model where(string $column, $operation, $value)
- * @method static \Jenssegers\Mongodb\Eloquent\Model find(string $id)
+ * @method \Illuminate\Database\Eloquent\Model fill(array $attr = [])
+ * @method \Illuminate\Database\Eloquent\Model forceFill(array $attr = [])
+ * @method static \Illuminate\Database\Eloquent\Model findOrFail(string $id)
+ * @method static \Illuminate\Database\Eloquent\Model where(string $column, $operation, $value)
+ * @method static \Illuminate\Database\Eloquent\Model find(string $id)
  */
 abstract class BaseRepository implements RepositoryInterface
 {
@@ -20,7 +20,7 @@ abstract class BaseRepository implements RepositoryInterface
     /**
      * The model
      *
-     * @var \Jenssegers\Mongodb\Eloquent\Model
+     * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model;
 

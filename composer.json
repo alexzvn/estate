@@ -9,7 +9,9 @@
     "license": "MIT",
     "require": {
         "php": "^7.4.0",
+        "ably/ably-php": "^1.1",
         "alexzvn/speedsms-api": "^0.0.1",
+        "babenkoivan/scout-elasticsearch-driver": "^4.3",
         "bensampo/laravel-enum": "^3.0",
         "boytunghc/laravel-git-hook": "^1.0",
         "ezyang/htmlpurifier": "^4.13",
@@ -17,18 +19,21 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.5",
-        "jenssegers/mongodb": "^3.8",
         "laravel/framework": "^8.0",
         "laravel/legacy-factories": "^1.1",
+        "laravel/scout": "^8.6",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.1",
+        "laravel/ui": "^3.3",
         "livewire/livewire": "^2.4",
+        "maatwebsite/excel": "^3.1",
         "mews/purifier": "^3.2",
-        "mostafamaklad/laravel-permission-mongodb": "^3.1",
         "owen-it/laravel-auditing": "^11.0",
         "predis/predis": "^1.1",
         "rennokki/laravel-eloquent-query-cache": "^2.1",
-        "sentry/sentry-laravel": "^1.9.0"
+        "sentry/sentry-laravel": "^1.9.0",
+        "spatie/laravel-permission": "^3.17",
+        "staudenmeir/eloquent-json-relations": "^1.1",
+        "symfony/http-kernel": "5.1.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
@@ -36,7 +41,8 @@
         "fzaninotto/faker": "^1.9.1",
         "mockery/mockery": "^1.3.1",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.0"
+        "phpunit/phpunit": "^9.0",
+        "spatie/async": "^1.5"
     },
     "config": {
         "optimize-autoloader": true,

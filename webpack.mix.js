@@ -11,8 +11,7 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.disableSuccessNotifications()
-    .js('resources/js/app.js', 'public/assets/js')
-    .postCss('resources/css/app.css', 'public/assets/css', [
-        require('tailwindcss')
-    ]);
+mix.js('resources/js/app.js', 'public/assets/js')
+    .js('resources/js/chat.js', 'public/assets/js')
+    .vue()
+    .sass('resources/sass/app.scss', 'public/css');

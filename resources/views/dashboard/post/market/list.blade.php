@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/forms/theme-checkbox-radio.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/lightbox/photoswipe.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/lightbox/default-skin/default-skin.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/table/datatable/dt-global_style.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/lightbox/custom-photswipe.css') }}">
 
 <style>
@@ -223,7 +222,7 @@
         })
 
         $('#main-province').on('change', (e) => {
-            address.setDistricts($(e.currentTarget).val());
+            address.setDistricts($(e.currentTarget).val(), $('#main-district'));
         })
 
         $('.editable').on('click', (e) => {
@@ -239,7 +238,7 @@
                         commission: post.commission,
                         price: post.price,
                         title: post.title,
-                        id: post._id,
+                        id: post.id,
                     };
 
                     for (const key in map) {
@@ -250,14 +249,16 @@
                     }
 
                     let options = {
-                        category: post.category_ids[0],
+                        category: post.categories[0] ? post.categories[0].id : null,
+                        province: post.province_id,
+                        district: post.district_id,
                         'main-province': post.province_id,
                         'main-district': post.district_id,
                         type: post.type,
                         status: post.status,
                     };
 
-                    address.setDistricts(options['main-province']);
+                    address.setDistricts(options.province, $('#main-district'));
 
                     for (const key in options) {
                         if (options.hasOwnProperty(key) && options[key]) {
@@ -306,9 +307,9 @@
     }
 
     window.address = {
-        setDistricts(provinceId) {
-            let province = data.filter((e) => {return e._id === provinceId})[0];
-            let district = $('#main-district');
+        setDistricts(provinceId, districtDom) {
+            let province = data.find((e) => {return e.id == provinceId});
+            let district = districtDom;
 
             district.html('');
             district.append('<option value="" selected>Chọn</option');
@@ -316,7 +317,7 @@
             if (province === undefined) return;
 
             province.districts.map((e) => {
-                district.append(`<option value="${e._id}">${e.name}</option`);
+                district.append(`<option value="${e.id}">${e.name}</option`);
             });
         }
     };

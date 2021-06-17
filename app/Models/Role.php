@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Builder;
-use Maklad\Permission\Models\Role as Model;
+use App\Models\Traits\CacheDefault;
+use Illuminate\Database\Eloquent\Builder;
+use Spatie\Permission\Models\Role as Model;
 
 class Role extends Model
 {

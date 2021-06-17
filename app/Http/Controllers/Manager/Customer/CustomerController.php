@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Manager\Customer;
 
 use App\Models\Order;
-use App\Repository\Plan;
-use App\Repository\User;
+use App\Models\Plan;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Repository\Permission;
@@ -15,6 +15,9 @@ use App\Http\Requests\Manager\Customer\AssignCustomer;
 use App\Http\Requests\Manager\Customer\UpdateCustomer;
 use App\Http\Requests\Manager\Customer\Order\StoreOrder;
 use App\Models\Location\Province;
+use App\Models\Message;
+use App\Models\ScoutFilter\UserFilter;
+use App\Setting;
 
 class CustomerController extends Controller
 {
@@ -22,20 +25,18 @@ class CustomerController extends Controller
     {
         $this->authorize('manager.customer.view');
 
-        $users = User::with(['subscriptions', 'supporter', 'orders', 'logs', 'note'])
-            ->filter($request)
-            ->onlyCustomer();
+        $users = User::query();
 
-        if (! empty($request->expires_last) || ! empty($request->expires)) {
-            $users = $users->whereHas('subscriptions', function ($q) use ($request) {
-                $q->filter($request);
-            });
+        if ($query = request('query', false)) {
+            UserFilter::filter($users = User::search($query), request());
+        } else {
+            $users = User::latest()->filter($request);
         }
 
-        $users = $users->latest()->paginate(40);
+        $users->with(['subscriptions', 'supporter', 'orders', 'logs', 'note']);
 
         return view('dashboard.customer.index', [
-            'users' => $users,
+            'users' => $users->paginate(40),
             'staff' => Permission::findUsersHasPermission('manager.customer.view')
         ]);
     }
@@ -60,7 +61,8 @@ class CustomerController extends Controller
             'plans' => Plan::where('renewable', '<>', true)->get(),
             'staffs' => $staffs,
             'user' => $user,
-            'provinces' => Province::active()->get()
+            'provinces' => Province::active()->get(),
+            'messages' => Message::whereTopic($user)->with('sender')->get()
         ]);
     }
 
@@ -73,9 +75,9 @@ class CustomerController extends Controller
         return view('dashboard.customer.create');
     }
 
-    public function storeAndExit(StoreCustomer $request, User $user)
+    public function storeAndExit(StoreCustomer $request, User $user, Setting $setting)
     {
-        $this->store($request, $user);
+        $this->store($request, $user, $setting);
 
         return redirect($this->pullLastUrl());
     }
@@ -87,7 +89,7 @@ class CustomerController extends Controller
         return redirect($this->pullLastUrl());
     }
 
-    public function store(StoreCustomer $request, User $user)
+    public function store(StoreCustomer $request, User $user, Setting $setting)
     {
         $user->fill($request->all());
 
@@ -96,6 +98,9 @@ class CustomerController extends Controller
         }
 
         $user->save();
+        $user->roles()->sync(
+            [$setting->get('user.role.default')]
+        );
 
         if ($request->user()->cannot('*')) {
             $this->assignCustomerToUser($user, Auth::id());

@@ -2,29 +2,35 @@
 
 namespace App\Http\Controllers\Manager\Post;
 
-use App\Enums\PostStatus;
 use App\Enums\PostType;
-use App\Http\Requests\Manager\Post\Market\UpdatePost;
-use App\Repository\Permission;
 use App\Repository\Post;
-use App\Services\System\Post\Market;
+use App\Enums\PostStatus;
 use Illuminate\Http\Request;
+use App\Repository\Permission;
+use App\Services\System\Post\Market;
+use App\Models\ScoutFilter\PostFilter;
+use App\Http\Requests\Manager\Post\Market\UpdatePost;
 
 class MarketController extends PostController
 {
     public function index(Request $request)
     {
-        $posts = Post::with(['province', 'district'])
-            ->with(['categories', 'user', 'files'])
-            ->where('type', PostType::PostMarket)
-            ->filter($request)
-            ->orderBy('publish_at', 'desc')
-            ->paginate(40);
+        if ($query = $request->get('query')) {
+            $posts = Post::search($query);
+
+            PostFilter::filter($posts, $request);
+
+            $posts->where('type', PostType::PostMarket)->orderBy('publish_at', 'desc');
+        } else {
+            $posts = Market::newest()->filter($request);
+        }
+
+        $posts->with(['province', 'district', 'categories', 'user', 'files']);
 
         $this->shareCategoriesProvinces();
 
         return view('dashboard.post.market.list', [
-            'posts' => $posts,
+            'posts' => $posts->paginate(20),
             'staff' => Permission::findUsersHasPermission('manager.dashboard.access')
         ]);
     }
@@ -63,7 +69,7 @@ class MarketController extends PostController
     {
         $this->authorize('manager.post.market.view');
 
-        return Market::findOrFail($id)->load(['files', 'user']);
+        return Market::findOrFail($id)->load(['files', 'user', 'categories']);
     }
 
     public function delete(string $id)
