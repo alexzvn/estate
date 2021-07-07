@@ -101,11 +101,11 @@
                     <span>Tìm thấy tổng cộng {{ number_format($posts->total()) }} tin</span>
 
                     <div class="btn-group mb-4 mr-2" role="group">
-                        <button id="btndefault" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button onclick="$('#sub-action').toggleClass('d-block')" id="btndefault" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Hành động 
                             <i data-feather="chevron-down"></i>
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="btndefault">
+                        <div id="sub-action" class="dropdown-menu" aria-labelledby="btndefault">
                             <a href="javascript:void(0);" id="reverse-many" class="dropdown-item text-info"><i class="flaticon-home-fill-1 mr-1"></i>Đảo tin</a>
                             <a href="javascript:void(0);" id="delete-many" class="dropdown-item text-danger"><i class="flaticon-home-fill-1 mr-1"></i>Xóa</a>
                         </div>

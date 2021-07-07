@@ -160,11 +160,11 @@
 
                 <div class="d-flex mb-4">
                     <div class="btn-group mr-2" role="group">
-                        <button id="btndefault" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button onclick="$('#sub-action').toggleClass('d-block')" id="btndefault" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Hành động 
                             <i data-feather="chevron-down"></i>
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="btndefault">
+                        <div id="sub-action" class="dropdown-menu" aria-labelledby="btndefault">
                             <a id="send-sms" href="javascript:void(0)">Gửi tin nhắn</a>
                         </div>
                     </div>
