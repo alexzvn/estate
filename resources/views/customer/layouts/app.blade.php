@@ -21,7 +21,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link href="{{ mix('assets/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/snackbar/snackbar.min.css') }}">
