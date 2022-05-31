@@ -112,7 +112,9 @@ class PostController extends BaseController
 
     protected function performSearch($type, $categories)
     {
-        $post = Post::search(request('query', '*'))
+        $query = str_replace(['\\', '/'], ['\\\\', '\\/'], request('query', '*'));
+
+        $post = Post::search($query)
             ->with(['categories', 'province', 'district'])
             ->whereNotIn('id', $this->getBlacklistIds())
             ->where('status', PostStatus::Published)
