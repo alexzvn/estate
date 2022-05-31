@@ -296,7 +296,7 @@ use App\Enums\PostSource;
                     </li>
                     @endcan
 
-                    @can('manager.sms')
+                    {{-- @can('manager.sms')
                     <li class="menu">
                         <a href="{{ route('manager.sms.template') }}" @active('manager.sms.template', 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div class="">
@@ -305,7 +305,7 @@ use App\Enums\PostSource;
                             </div>
                         </a>
                     </li>
-                    @endcan
+                    @endcan --}}
 
                     @can('manager.site.setting')
                     <li class="menu">
