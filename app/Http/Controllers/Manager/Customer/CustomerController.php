@@ -116,7 +116,7 @@ class CustomerController extends Controller
         $user->fill($request->all())->save();
 
         if (! empty($request->note)) {
-            $user->writeNote($request->note);
+            $user->writeNote($request->note, user());
         }
 
         if (user()->can('*') && $request->provinces) {

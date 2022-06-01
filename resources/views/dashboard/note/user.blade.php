@@ -86,7 +86,7 @@
                             <td><span class="text-muted">[deleted]</span></td>
                             @endif
                             <td><span class="text-info">{{ $note->content }}</span></td>
-                            <td></td>
+                            <td>{{ $note->user->name ?? '' }}</td>
                             <td>{{ $note->updated_at->format('d/m/Y H:i:s') }}</td>
                         </tr>
                         @endforeach

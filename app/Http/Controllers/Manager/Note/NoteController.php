@@ -20,6 +20,7 @@ class NoteController extends Controller
             ->where('notable_type', User::class)
             ->where('content', '<>', '')
             ->with('notable')
+            ->with('user')
             ->orderBy('updated_at', 'desc')
             ->paginate();
 
