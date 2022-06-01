@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUserFieldNoteTable extends Migration
+class AddUserFieldNotesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -25,8 +25,6 @@ class AddUserFieldNoteTable extends Migration
      */
     public function down()
     {
-        Schema::table('notes', function (Blueprint $table) {
-            //
-        });
+        //
     }
 }
