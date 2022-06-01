@@ -25,6 +25,8 @@ class AddUserFieldNoteTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notes');
+        Schema::table('notes', function (Blueprint $table) {
+            //
+        });
     }
 }
