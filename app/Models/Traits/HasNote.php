@@ -15,11 +15,6 @@ trait HasNote
         return $this->morphOne(Note::class, 'notable');
     }
 
-    public function author()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
     public function readNote()
     {
         return $this->note->content ?? null;
