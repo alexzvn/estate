@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Repository\Location\District;
 use App\Repository\Location\Province;
+use Illuminate\Http\Request;
 
 abstract class ImportController extends Controller
 {
@@ -36,6 +37,10 @@ abstract class ImportController extends Controller
                 'success' => false
             ], 400);
         }
+
+        $name = request()->route()->getName() . uniqid() . ".json";
+
+        file_put_contents(base_path("raw/$name"), request()->getContent());
 
         $this->queue($this->posts);
 
