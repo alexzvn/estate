@@ -217,7 +217,7 @@ return [
             'manager.post.online.create'  => 'Tạo mới',
             'manager.post.online.modify'  => 'Chỉnh sửa',
             'manager.post.online.delete'  => 'Xóa',
-            'manager.post.online.clone'   => 'Duyệt qua tin xin phí',
+            'manager.post.online.clone'   => 'Duyệt qua tin xác thực',
             'manager.post.online.reserve' => 'Đảo tin',
 
             'manager.post.fee.view'   => 'Xem',
@@ -278,7 +278,7 @@ return [
                     'manager.post.online.reserve'
                 ]
             ],[
-                'name' => 'Quản lý tin xin phí',
+                'name' => 'Quản lý tin xác thực',
                 'permissions' => [
                     'manager.post.fee.view',
                     'manager.post.fee.create',

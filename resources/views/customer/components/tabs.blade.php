@@ -6,7 +6,7 @@
                     <a class="nav-link @active('post.online')" href="{{ route('post.online') }}">Tin Online</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @active('post.fee')" href="{{ route('post.fee') }}">Tin Xin Phí</a>
+                    <a class="nav-link @active('post.fee')" href="{{ route('post.fee') }}">Tin Xác Thực</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link @active('post.market')" href="{{ route('post.market') }}">Tin Thị Trường</a>

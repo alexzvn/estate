@@ -4,7 +4,7 @@ use App\Enums\PostStatus;
 
 $type = function ($type) {
     $mapped = [
-        'Tin Xin Phí' => 1,
+        'Tin Xác Thực' => 1,
         'Tin Mua Bán - Thuê' => 2,
         'Tin Thị Trường' => 3,
         'Tin web online' => 4

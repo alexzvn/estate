@@ -22,7 +22,7 @@ final class PostType extends Enum
     public static function getDescription($value): string
     {
         $mapType = [
-            self::PostFee => 'Tin Xin Phí',
+            self::PostFee => 'Tin Xác Thực',
             self::PostSellRent => 'Tin mua bán - thuê',
             self::PostMarket => 'Tin thị trường',
             self::Online => 'Tin web online',

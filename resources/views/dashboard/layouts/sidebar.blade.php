@@ -90,7 +90,7 @@ use App\Enums\PostSource;
                         <a href="#fee-post" data-toggle="collapse" @active($active, 'data-active="true"') aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="file-text"></i>
-                                <span>Tin xin phí</span>
+                                <span>Tin xác thực</span>
                             </div>
                             <div>
                                 <i data-feather="chevron-right"></i>

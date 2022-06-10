@@ -82,7 +82,7 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="fee">Thông báo tin xin phí</label>
+                      <label for="fee">Thông báo tin xác thực</label>
                       <textarea class="form-control" name="fee" id="fee">{{ $setting->get('popup.fee') }}</textarea>
                     </div>
 
