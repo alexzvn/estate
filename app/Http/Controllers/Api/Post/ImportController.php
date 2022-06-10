@@ -38,10 +38,6 @@ abstract class ImportController extends Controller
             ], 400);
         }
 
-        $name = request()->route()->getName() . uniqid() . ".json";
-
-        file_put_contents(base_path("raw/$name"), request()->getContent());
-
         $this->queue($this->posts);
 
         return ['message' => 'okey', 'success' => true];
