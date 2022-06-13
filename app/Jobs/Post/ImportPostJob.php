@@ -76,11 +76,6 @@ class ImportPostJob implements ShouldQueue
         return $inKeyword;
     }
 
-    public function failed($exception)
-    {
-        $this->setReport((array) $this->post);
-    }
-
     protected function setReport(array $context)
     {
         \Sentry\configureScope(function (\Sentry\State\Scope $scope) use ($context) {

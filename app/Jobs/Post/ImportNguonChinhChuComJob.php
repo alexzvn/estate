@@ -20,6 +20,8 @@ class ImportNguonChinhChuComJob extends ImportTccJob
      */
     public function handle(Post $post)
     {
+        $this->setReport((array) $this->post);
+
         if ($post->where('hash', $this->post->hash)->exists()) {
             return;
         }
