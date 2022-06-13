@@ -17,7 +17,7 @@ class CustomerPost extends BaseController
 
     public function saved()
     {
-        $post = $this->customer->savePosts()->with([
+        $post = $this->customer->savePosts()->dontCache()->with([
             'province',
             'district',
             'categories'
@@ -55,7 +55,7 @@ class CustomerPost extends BaseController
             'province',
             'district',
             'categories'
-        ])->filter(request())->newest()->paginate(20);
+        ])->dontCache()->filter(request())->newest()->paginate(20);
 
         $this->customer->createLog([
             'content' => 'Truy cập trang tin đã xóa',
