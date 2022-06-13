@@ -30,8 +30,6 @@ class ImportPostJob implements ShouldQueue
     public function __construct(stdClass $post)
     {
         $this->post = $post;
-
-        $this->setReport((array) $post);
     }
 
     protected function shouldLock(Post $post)
@@ -80,7 +78,7 @@ class ImportPostJob implements ShouldQueue
 
     public function failed($exception)
     {
-        
+        $this->setReport((array) $this->post);
     }
 
     protected function setReport(array $context)
