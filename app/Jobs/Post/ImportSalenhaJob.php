@@ -34,9 +34,9 @@ class ImportSalenhaJob extends ImportTccJob
             $province = $district->province;
         }
 
-        $post = Fee::create([
+        Fee::create([
             'title'       => $this->post->title,
-            'content'     => nl2br($this->post->content),
+            'content'     => nl2br($this->post->content . "\n Địa chỉ: " . $this->post->address),
             'hash'        => $this->post->hash,
             'publish_at'  => Carbon::createFromDate(...$date),
             'status'      => PostStatus::Published,
@@ -51,8 +51,6 @@ class ImportSalenhaJob extends ImportTccJob
                 'url' => $this->post->url ?? null,
                 'area' => $this->post->area ?? null,
             ]
-        ]);
-
-        $post->searchable();
+        ])->searchable();
     }
 }
