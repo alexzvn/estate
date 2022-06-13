@@ -86,9 +86,7 @@ class ImportPostJob implements ShouldQueue
     protected function setReport(array $context)
     {
         \Sentry\configureScope(function (\Sentry\State\Scope $scope) use ($context) {
-            foreach ($context as $key => $value) {
-                $scope->setExtra("post.$key", $value);
-            }
+            $scope->setContext('Post', $context);
         });
     }
 }
