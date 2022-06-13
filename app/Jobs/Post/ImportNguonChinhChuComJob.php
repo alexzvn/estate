@@ -36,7 +36,7 @@ class ImportNguonChinhChuComJob extends ImportTccJob
 
         Fee::create([
             'title'       => $this->post->title,
-            'content'     => nl2br($this->post->content . "\n Địa chỉ: " . $this->post->address),
+            'content'     => nl2br($this->post->content),
             'hash'        => $this->post->hash,
             'publish_at'  => Carbon::createFromDate(...$date),
             'status'      => PostStatus::Published,
