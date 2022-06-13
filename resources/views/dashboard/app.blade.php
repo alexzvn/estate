@@ -23,7 +23,7 @@
     <link href="{{ asset('dashboard/plugins/notification/snackbar/snackbar.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
 
-    <script src="{{ mix('assets/js/app.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 
     <style>
