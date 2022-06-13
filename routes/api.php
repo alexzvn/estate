@@ -25,4 +25,5 @@ Route::group(['middleware' => 'extension'], function ()
     Route::post('import/crawl/tcc', 'Api\Post\Imports\TccController@store')->name('api.crawl.import.tcc');
     Route::post('import/crawl/chotot', 'Api\Post\Imports\ChoTotController@store')->name('api.crawl.import.chotot');
     Route::post('import/crawl/loctinbds', 'Api\Post\Imports\LocTinBdsController@store')->name('api.crawl.import.loctinbds');
+    Route::post('import/crawl/salenha', 'Api\Post\Imports\SalenhaController@store')->name('api.crawl.import.salenha');
 });

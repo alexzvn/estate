@@ -11,7 +11,9 @@ use BenSampo\Enum\Enum;
  */
 final class PostSource extends Enum
 {
-    const TinChinhChu         = 0;
-    const LocTinBds = 1;
-    const ChoTot     = 2;
+    const TinChinhChu       = 0;
+    const LocTinBds         = 1;
+    const ChoTot            = 2;
+    const Salenha           = 3;
+    const NguonChinhChuCom  = 4;
 }
