@@ -33,7 +33,7 @@ function planToString($plans) {
                     @foreach ($subscriptions as $sub)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $sub->plan->name }}</td>
+                        <td>{{ $sub->plan->name ?? 'Không rõ' }}</td>
                         <td>
                             @if($sub->isActivated())
                                 <span class="badge badge-success">Đang hoạt động</span>
