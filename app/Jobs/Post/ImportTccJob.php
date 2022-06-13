@@ -68,15 +68,6 @@ class ImportTccJob extends ImportPostJob
         return false;
     }
 
-    protected function setReport(array $context)
-    {
-        \Sentry\configureScope(function (\Sentry\State\Scope $scope) use ($context) {
-            foreach ($context as $key => $value) {
-                $scope->setExtra("post.$key", $value);
-            }
-        });
-    }
-
     protected function getCategory()
     {
         $category = trim(

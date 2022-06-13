@@ -30,6 +30,8 @@ class ImportPostJob implements ShouldQueue
     public function __construct(stdClass $post)
     {
         $this->post = $post;
+
+        $this->setReport((array) $post);
     }
 
     protected function shouldLock(Post $post)
@@ -74,5 +76,19 @@ class ImportPostJob implements ShouldQueue
         }
 
         return $inKeyword;
+    }
+
+    public function failed($exception)
+    {
+        
+    }
+
+    protected function setReport(array $context)
+    {
+        \Sentry\configureScope(function (\Sentry\State\Scope $scope) use ($context) {
+            foreach ($context as $key => $value) {
+                $scope->setExtra("post.$key", $value);
+            }
+        });
     }
 }
