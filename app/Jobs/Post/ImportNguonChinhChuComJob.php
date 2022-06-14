@@ -36,7 +36,7 @@ class ImportNguonChinhChuComJob extends ImportTccJob
             $province = $district->province;
         }
 
-        if (! $category) {
+        if ($category[0] === null) {
             throw new \Exception('Category not found');
         }
 
