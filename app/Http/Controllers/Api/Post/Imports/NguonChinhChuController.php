@@ -12,14 +12,16 @@ class NguonChinhChuController extends ImportController
     public function queue(Collection $posts)
     {
         $posts->each(function ($post) {
-           $hash = sha1($post->url);
-           $phone = $this->normalizePhone($post->phone);
+            parse_str(parse_url($post->url, PHP_URL_QUERY), $query);
 
-           $post->hash = $hash;
-           $post->phone = $phone;
-           $post->price = $this->normalizePrice($post->price);
+            $hash = 'nguonchinhchu.com.' . $query['id'];
+            $phone = $this->normalizePhone($post->phone);
 
-           ImportNguonChinhChuComJob::dispatch($post);
+            $post->hash = $hash;
+            $post->phone = $phone;
+            $post->price = $this->normalizePrice($post->price);
+
+            ImportNguonChinhChuComJob::dispatch($post);
         });
     }
 }
