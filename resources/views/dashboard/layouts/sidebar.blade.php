@@ -100,6 +100,15 @@ use App\Enums\PostSource;
                             <li class="@active('manager.post.fee')">
                                 <a href="{{ route('manager.post.fee') }}"> Tất cả </a>
                             </li>
+                            @php
+                                $fee = route('manager.post.fee');
+                            @endphp
+                            <li class="@active(request('source') == PostSource::NguonChinhChuCom)">
+                                <a href="{{ "$fee?source=" . PostSource::NguonChinhChuCom }}">Nguồn Chính Chủ .com</a>
+                            </li>
+                            <li class="@active(request('source') == PostSource::Salenha)">
+                                <a href="{{ "$fee?source=" . PostSource::Salenha }}">Salenha</a>
+                            </li>
                             <li class="@active('manager.post.fee.trashed')">
                                 <a href="{{ route('manager.post.fee.trashed') }}">Tin đã xóa </a>
                             </li>
