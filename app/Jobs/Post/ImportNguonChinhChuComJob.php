@@ -36,6 +36,10 @@ class ImportNguonChinhChuComJob extends ImportTccJob
             $province = $district->province;
         }
 
+        if (! $category) {
+            throw new \Exception('Category not found');
+        }
+
         Fee::create([
             'title'       => $this->post->title,
             'content'     => nl2br($this->post->content),
