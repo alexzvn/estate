@@ -109,7 +109,10 @@ class FeeController extends PostController
 
         $this->shareCategoriesProvinces();
 
-        return view('dashboard.post.fee.list', compact('posts'));
+        return view('dashboard.post.fee.list', [
+            'posts' => $posts,
+            'staff' => Permission::findUsersHasPermission('manager.dashboard.access')
+        ]);
     }
 
     public function update(string $id, UpdatePost $request)
