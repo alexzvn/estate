@@ -123,7 +123,8 @@ class PostController extends BaseController
             ->whereIn('province_id', $this->access->provinces($type));
 
         $query = request()->toArray();
-        $query['order'] = request('order', 'accurate');
+
+        $query['order'] = isset($query['query']) ? request('order', 'accurate') : 'newest';
 
         PostFilter::filter($post, $query);
 
