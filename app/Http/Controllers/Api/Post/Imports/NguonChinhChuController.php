@@ -12,12 +12,11 @@ class NguonChinhChuController extends ImportController
     public function queue(Collection $posts)
     {
         $posts->each(function ($post) {
-            parse_str(parse_url($post->url, PHP_URL_QUERY), $query);
+            preg_match('/id=([0-9]+)/', $post->url, $matches);
 
-            $hash = 'nguonchinhchu.com.' . $query['id'];
             $phone = $this->normalizePhone($post->phone);
 
-            $post->hash = $hash;
+            $post->hash  = 'nguonchinhchu.com.' . $matches[1];
             $post->phone = $phone;
             $post->price = $this->normalizePrice($post->price);
 
