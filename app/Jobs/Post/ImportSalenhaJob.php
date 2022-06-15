@@ -2,17 +2,29 @@
 
 namespace App\Jobs\Post;
 
+use Carbon\Carbon;
+use App\Enums\PostType;
+use App\Repository\Post;
 use App\Enums\PostSource;
 use App\Enums\PostStatus;
-use App\Enums\PostType;
+use Illuminate\Support\Str;
+use App\Services\System\Post\Fee;
 use App\Repository\Location\District;
 use App\Repository\Location\Province;
-use App\Repository\Post;
-use App\Services\System\Post\Fee;
-use Carbon\Carbon;
 
 class ImportSalenhaJob extends ImportTccJob
 {
+    protected $mapped = [
+        'bán đất' => 'Bán đất ở, đất thổ cư',
+        'nhà trong ngõ' => 'Bán nhà nhà riêng, trong ngõ',
+        'bán chung cư' => 'Bán căn hộ, chung cư',
+        'nhà mặt phố' => 'Bán nhà mặt phố',
+
+        'thuê nhà mặt phố' => 'Cho thuê nhà mặt phố',
+        'thuê nhà trong ngõ' => 'Cho thuê nhà riêng, trong ngõ',
+        'thuê chung cư' => 'Cho thuê căn hộ, chung cư',
+    ];
+
     /**
      * Execute the job.
      *
@@ -21,6 +33,7 @@ class ImportSalenhaJob extends ImportTccJob
     public function handle(Post $post)
     {
         $this->setReport((array) $this->post);
+        $this->post->category = $this->mapped[Str::lower($this->post->category)] ?? $this->post->category;
 
         if ($post->where('hash', $this->post->hash)->exists()) {
             return;
