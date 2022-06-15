@@ -26,7 +26,9 @@ abstract class ImportController extends Controller
     protected $posts;
 
     public function __construct() {
-        $this->posts = collect(json_decode(request()->getContent()));
+        $post = json_decode(request()->getContent());
+
+        $this->posts = is_array($post) ? collect($post) : collect([$post]);
     }
 
     public function store()
