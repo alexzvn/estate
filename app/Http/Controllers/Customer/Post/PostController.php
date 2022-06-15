@@ -122,11 +122,10 @@ class PostController extends BaseController
             ->whereIn('category_id', $categories->toArray())
             ->whereIn('province_id', $this->access->provinces($type));
 
-        if (! request('order')) {
-            $post->orderBy('publish_at', 'desc');
-        }
+        $query = request()->toArray();
+        $query['order'] = request('order', 'accurate');
 
-        PostFilter::filter($post, request());
+        PostFilter::filter($post, $query);
 
         return $post;
     }
