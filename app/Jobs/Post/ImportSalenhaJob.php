@@ -33,6 +33,7 @@ class ImportSalenhaJob extends ImportTccJob
     public function handle(Post $post)
     {
         $this->setReport((array) $this->post);
+
         $this->post->category = $this->mapped[Str::lower($this->post->category)] ?? $this->post->category;
 
         if ($post->where('hash', $this->post->hash)->exists()) {
@@ -44,6 +45,10 @@ class ImportSalenhaJob extends ImportTccJob
         $category = $this->getCategory();
         $province = Province::where('name', 'regexp', $this->post->province)->first();
         $district = District::where('name', 'regexp', $this->post->district)->first();
+
+        if ($category[0] === null) {
+            throw new \Exception('Category not found');
+        }
 
         if (! $province && $district && $district->province) {
             $province = $district->province;
