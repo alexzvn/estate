@@ -34,7 +34,7 @@ class ImportSalenhaJob extends ImportTccJob
     {
         $this->setReport((array) $this->post);
 
-        $this->post->category = $this->mapped[Str::lower($this->post->category)] ?? $this->post->category;
+        $this->post->category = $this->mapped[Str::lower(trim($this->post->category))] ?? $this->post->category;
 
         if ($post->where('hash', $this->post->hash)->exists()) {
             return;
